@@ -1,0 +1,425 @@
+{
+  "createdAt": "2026-09-17T19:06:49.048Z",
+  "base": "http://127.0.0.1:3016",
+  "checks": [
+    {
+      "name": "health-v2",
+      "status": "pass"
+    },
+    {
+      "name": "deterministic-1km2-replay",
+      "status": "pass"
+    },
+    {
+      "name": "bounded-honest-area-1",
+      "status": "pass"
+    },
+    {
+      "name": "bounded-honest-area-10",
+      "status": "pass"
+    },
+    {
+      "name": "bounded-honest-area-100",
+      "status": "pass"
+    },
+    {
+      "name": "bad-json",
+      "status": "pass"
+    },
+    {
+      "name": "unknown-field",
+      "status": "pass"
+    },
+    {
+      "name": "oversized-body",
+      "status": "pass"
+    },
+    {
+      "name": "cross-origin-blocked",
+      "status": "pass"
+    },
+    {
+      "name": "wrong-content-type-blocked",
+      "status": "pass"
+    }
+  ],
+  "benchmarks": [
+    {
+      "areaKm2": 1,
+      "httpMs": 327.21590000000003,
+      "computationMs": 105,
+      "candidates": [
+        {
+          "objective": "makespan",
+          "status": "feasible_model",
+          "metrics": {
+            "makespanSec": 2344.8494548734357,
+            "flightTimeSec": 3183.457645221667,
+            "distanceM": 24159.443887305617,
+            "sortieCount": 3,
+            "vehicleCount": 2,
+            "coveragePct": 99.99999999841981,
+            "grossCoveragePct": 99.99999999841981,
+            "batteryChanges": 1,
+            "minimumRemainingPct": 31.50403966829299
+          },
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "rgb-01:QUALITY_rgb-01_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            }
+          ]
+        },
+        {
+          "objective": "flightTime",
+          "status": "feasible_model",
+          "metrics": {
+            "makespanSec": 2344.8494548734357,
+            "flightTimeSec": 3183.457645221667,
+            "distanceM": 24159.443887305617,
+            "sortieCount": 3,
+            "vehicleCount": 2,
+            "coveragePct": 99.99999999841981,
+            "grossCoveragePct": 99.99999999841981,
+            "batteryChanges": 1,
+            "minimumRemainingPct": 31.50403966829299
+          },
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "rgb-01:QUALITY_rgb-01_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "areaKm2": 10,
+      "httpMs": 1278.2635,
+      "computationMs": 1179,
+      "candidates": [
+        {
+          "objective": "makespan",
+          "status": "feasible_model",
+          "metrics": {
+            "makespanSec": 9731.860443479447,
+            "flightTimeSec": 30795.688594172923,
+            "distanceM": 233098.19039042707,
+            "sortieCount": 34,
+            "vehicleCount": 4,
+            "coveragePct": 99.99999999850091,
+            "grossCoveragePct": 99.99999999850091,
+            "batteryChanges": 30,
+            "minimumRemainingPct": 43.6978220314029
+          },
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "rgb-01:QUALITY_rgb-01_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            }
+          ]
+        },
+        {
+          "objective": "flightTime",
+          "status": "feasible_model",
+          "metrics": {
+            "makespanSec": 9731.860443479447,
+            "flightTimeSec": 30795.688594172923,
+            "distanceM": 233098.19039042707,
+            "sortieCount": 34,
+            "vehicleCount": 4,
+            "coveragePct": 99.99999999850091,
+            "grossCoveragePct": 99.99999999850091,
+            "batteryChanges": 30,
+            "minimumRemainingPct": 43.6978220314029
+          },
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "rgb-01:QUALITY_rgb-01_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "areaKm2": 100,
+      "httpMs": 96.09799999999996,
+      "computationMs": 34,
+      "candidates": [
+        {
+          "objective": "makespan",
+          "status": "not_found",
+          "metrics": {
+            "makespanSec": 0,
+            "flightTimeSec": 0,
+            "distanceM": 0,
+            "sortieCount": 0,
+            "vehicleCount": 0,
+            "coveragePct": 0,
+            "grossCoveragePct": 0,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 0
+          },
+          "failures": [
+            {
+              "id": "STRIPS",
+              "status": "fail",
+              "title": "Все рабочие полосы назначены",
+              "detail": "Сверены идентификаторы и геометрия каждой исходной полосы, пропуски и повторы запрещены."
+            },
+            {
+              "id": "COVERAGE_rgb-01",
+              "status": "fail",
+              "title": "Геометрическое покрытие работы",
+              "detail": "0.000% доступной области; 0.000% исходной. Исключённая запретами часть не засчитана как выполненная."
+            }
+          ],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "rgb-01:QUALITY_rgb-01_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            }
+          ]
+        },
+        {
+          "objective": "flightTime",
+          "status": "not_found",
+          "metrics": {
+            "makespanSec": 0,
+            "flightTimeSec": 0,
+            "distanceM": 0,
+            "sortieCount": 0,
+            "vehicleCount": 0,
+            "coveragePct": 0,
+            "grossCoveragePct": 0,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 0
+          },
+          "failures": [
+            {
+              "id": "STRIPS",
+              "status": "fail",
+              "title": "Все рабочие полосы назначены",
+              "detail": "Сверены идентификаторы и геометрия каждой исходной полосы, пропуски и повторы запрещены."
+            },
+            {
+              "id": "COVERAGE_rgb-01",
+              "status": "fail",
+              "title": "Геометрическое покрытие работы",
+              "detail": "0.000% доступной области; 0.000% исходной. Исключённая запретами часть не засчитана как выполненная."
+            }
+          ],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "rgb-01:QUALITY_rgb-01_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "sourceHashes": {
+    "lib/planner/schema.ts": "c7829503e3e1f57014b9a3a99a167dba774eacd7a80a669db60819416912088e",
+    "lib/planner/demo.ts": "9bf59163df99f150ee9094be6f563606d3276b224b617bd7aba3cdab335337ef",
+    "lib/planner/engine.ts": "3f96ceb3a4a04f937a78d65aba1ca8729ca7042db54144ce7d11c61faf36d50c",
+    "lib/planner/geometry.ts": "da5e3f693fb141807179ff73a48e48e0d912ebb36a6b15fe4c9b818b95ff34c5",
+    "lib/planner/mission-schema.ts": "8f236d058c8d7e227468d325e872faed64b443fb4e14b311dffd461788730113",
+    "lib/planner/mission-demo.ts": "712795091748ff18e5f7de07b2da9e7fe7765486f11c3a5f2ac308aa7e412c04",
+    "lib/planner/mission-engine.ts": "2e59a5d742d2ac6d45db6081cc2884b910c7cf04418c38190dcd9aaee1129d35",
+    "lib/planner/mission-events.ts": "667ded53017ba496667728e13b74109be539765b15565475d9ac4fcdb6810d86",
+    "lib/planner/mission-validation.ts": "6e2015aba2f44383be9f6fde7c7eb2f4548085ad46efe52e7f67048bda4ce6a8",
+    "lib/planner/quality.ts": "58e203bf8e111c4229ed6f043b3982ed5eece34b3a044422fbdaf98b87593e60",
+    "lib/planner/mission-export.ts": "756e738fb9d254f4381a86f654453731dd7f8ebcf93c4d63031f30b092dd2c97",
+    "lib/planner/mission-io.ts": "d1746b23f7f4801f8e6611d66315d4a407ff344587c6c8c7cc8d356b55582e41",
+    "lib/planner/mission-library.ts": "d5d8b44f12faed1b4b001ae3062f6833c185feb546616a1a1404015f798cf008",
+    "lib/planner/mission-comparison.ts": "68e464b9b6f60d898a9c0b6f793c85656606a4e2b374ef3407e7ac7351ec285a",
+    "lib/planner/mission-layers.ts": "a877aac48daf2dc69be5067874006e16dc30e880074fd3c29462a1ff8419a3c9",
+    "lib/planner/mission-fleet.ts": "02e8cceaa6df8c168b96e74254722909b990c66f0d9038dc19947bb379545fc1",
+    "lib/planner/mission-showcase.ts": "91c4f90a5badb4bb1f88ec0534001848159a03a20c8ccfed808353fd6f3a5f83",
+    "components/planner/mission-workbench.tsx": "12f7198772dcdf88db477eedc022fffd1ef0c0706d942ee5099c74eb3660c56b",
+    "components/planner/mission-wizard.tsx": "4c89b897fd341b974e24882f962363a2b266d651628e770e878768e6f622503c",
+    "components/planner/mission-map.tsx": "bf48b6bc8b7693c98476fceb8cb3ae167106fffe7fa8bf3453fa4577abf66699",
+    "components/planner/mission-brief.tsx": "50643a9ae1fe696fef94986198971ed0c56d06fa8b65f737dc0a8185e1a52ab7",
+    "components/planner/mission-gallery.tsx": "565d96439a321c10af6c297ff9e7df42b9889e23e94b528b768a50c73dc52c2f",
+    "components/planner/mission-comparison-view.tsx": "3bcab9c6708353ac185ccec286af4716a5eeabb2a1f98cf30585b94157352731",
+    "components/planner/mission-fleet-editor.tsx": "53647bfc30f79a194ce8e33584b0e9d8a134ac555865031833dad7e417ea601a",
+    "app/planner/page.tsx": "b46ebe225c5078aa3a4902e9a9b8ccd21baaf73be5669595f5850a54ee333e99",
+    "app/planner/mission-workbench.css": "3094837385b0457f2e6b3782e26b3babbd300d51f40e1f7fdc1379f14dcc2ebf",
+    "app/planner/mission-showcase.css": "82a0fc831ce0231f6b91cd23c7722683fb3102e8634d16f6a175e2738af7ae31",
+    "app/api/planner/missions/solve/route.ts": "a97b2a1dc065382660c5207f37b52971d43674403a4ef50fc788171a5978638d",
+    "app/api/planner/health/route.ts": "01ac02a63099ed199a1d562ba0ea55af1cb04f8a3c0cc5dafa39d989d1b57c29",
+    "scripts/verify-missions.ts": "c95c2f938743519a782c83225d7094eae87a5cb454772855f226b157dea0dae6",
+    "scripts/verify-mission-evidence.ts": "088a87046e770773e4e12cff3475ac206e6fe7433c4215a375fa87db8589efce",
+    "Dockerfile.planner": "88c98509b7fe9bacbcadbf67d1819a0300c28f4c27a542a14a71740f53e0586b",
+    "compose.planner.yaml": "bfeff559c0ddfa430daedde95fbcaba2327d777de6413d7390a74b7606b6b65e",
+    "package.json": "90dea1dc5da4431408b39c87608334011d4571afe47b9939ecbce26da52ea63c",
+    "package-lock.json": "96ddfa1489857f2e6d57f5f6e8b8f02ef39abd2c561275552fee17fff7c93231"
+  },
+  "limitations": [
+    "Model only; not real flight or telemetry.",
+    "100 km² checks bounded rejection too, not guaranteed feasibility.",
+    "Host timing is not target-hardware certification."
+  ]
+}

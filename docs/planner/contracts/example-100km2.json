@@ -1,0 +1,1407 @@
+{
+  "schemaVersion": "2.0",
+  "id": "demo-100km2",
+  "name": "Учебная съёмка · 100 км²",
+  "scenario": {
+    "schemaVersion": "1.0",
+    "name": "Учебная съёмка · 100 км²",
+    "area": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            30.3,
+            60.035
+          ],
+          [
+            30.480054613043876,
+            60.035
+          ],
+          [
+            30.480054613043876,
+            60.12493203637245
+          ],
+          [
+            30.3,
+            60.12493203637245
+          ],
+          [
+            30.3,
+            60.035
+          ]
+        ]
+      ]
+    },
+    "airspace": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            30.292797815478245,
+            60.031402718545095
+          ],
+          [
+            30.487256797565628,
+            60.031402718545095
+          ],
+          [
+            30.487256797565628,
+            60.12852931782735
+          ],
+          [
+            30.292797815478245,
+            60.12852931782735
+          ],
+          [
+            30.292797815478245,
+            60.031402718545095
+          ]
+        ]
+      ]
+    },
+    "exclusions": [],
+    "reserveSites": [
+      [
+        30.309002730652196,
+        60.033920815563526
+      ],
+      [
+        30.327008191956583,
+        60.033920815563526
+      ],
+      [
+        30.34501365326097,
+        60.033920815563526
+      ],
+      [
+        30.363019114565358,
+        60.033920815563526
+      ],
+      [
+        30.381024575869745,
+        60.033920815563526
+      ],
+      [
+        30.399030037174132,
+        60.033920815563526
+      ],
+      [
+        30.41703549847852,
+        60.033920815563526
+      ],
+      [
+        30.435040959782906,
+        60.033920815563526
+      ],
+      [
+        30.453046421087294,
+        60.033920815563526
+      ],
+      [
+        30.47105188239168,
+        60.033920815563526
+      ]
+    ],
+    "job": {
+      "type": "RGB",
+      "altitudeM": 100,
+      "swathM": 117.5,
+      "sideOverlap": 0.6,
+      "triggerDistanceM": 15.6,
+      "bearingDeg": 0,
+      "autoBearing": true,
+      "qualitySource": "Учебный RGB-профиль PF1B: 23,5 мм / 20 мм на 100 м; перекрытие 60% и шаг 15,6 м — параметры сценария. Скорость затвора не подтверждена."
+    },
+    "wind": {
+      "speedMps": 2,
+      "fromDeg": 270
+    },
+    "reservePct": 25,
+    "clearanceM": 15,
+    "objective": "makespan",
+    "terrain": "unknown",
+    "vehicles": [
+      {
+        "id": "gemini-1",
+        "name": "Gemini · 01",
+        "model": "Gemini",
+        "kind": "multirotor",
+        "enabled": true,
+        "airspeedMps": 9,
+        "maxWindMps": 10,
+        "batteryPct": 100,
+        "effectiveEnduranceMin": 28,
+        "climbMps": 3,
+        "descentMps": 1,
+        "turnSeconds": 4,
+        "start": [
+          30.309002730652196,
+          60.033920815563526
+        ],
+        "landing": [
+          30.309002730652196,
+          60.033920815563526
+        ],
+        "jobs": [
+          "RGB",
+          "MS"
+        ],
+        "assumptions": [
+          "28 мин — расчётный бюджет учебной конфигурации, не измеренная выносливость.",
+          "Скорость, развороты, набор/снижение и частота кадров требуют калибровки."
+        ],
+        "source": "https://download.geoscan.ru/site-files/gemini/Gemini_Specs_EN_RUS.pdf?v2"
+      },
+      {
+        "id": "gemini-2",
+        "name": "Gemini · 02",
+        "model": "Gemini",
+        "kind": "multirotor",
+        "enabled": true,
+        "airspeedMps": 9,
+        "maxWindMps": 10,
+        "batteryPct": 100,
+        "effectiveEnduranceMin": 28,
+        "climbMps": 3,
+        "descentMps": 1,
+        "turnSeconds": 4,
+        "start": [
+          30.327008191956583,
+          60.033920815563526
+        ],
+        "landing": [
+          30.327008191956583,
+          60.033920815563526
+        ],
+        "jobs": [
+          "RGB",
+          "MS"
+        ],
+        "assumptions": [
+          "28 мин — расчётный бюджет учебной конфигурации, не измеренная выносливость.",
+          "Скорость, развороты, набор/снижение и частота кадров требуют калибровки."
+        ],
+        "source": "https://download.geoscan.ru/site-files/gemini/Gemini_Specs_EN_RUS.pdf?v2"
+      },
+      {
+        "id": "gemini-3",
+        "name": "Gemini · 03",
+        "model": "Gemini",
+        "kind": "multirotor",
+        "enabled": true,
+        "airspeedMps": 9,
+        "maxWindMps": 10,
+        "batteryPct": 100,
+        "effectiveEnduranceMin": 28,
+        "climbMps": 3,
+        "descentMps": 1,
+        "turnSeconds": 4,
+        "start": [
+          30.34501365326097,
+          60.033920815563526
+        ],
+        "landing": [
+          30.34501365326097,
+          60.033920815563526
+        ],
+        "jobs": [
+          "RGB",
+          "MS"
+        ],
+        "assumptions": [
+          "28 мин — расчётный бюджет учебной конфигурации, не измеренная выносливость.",
+          "Скорость, развороты, набор/снижение и частота кадров требуют калибровки."
+        ],
+        "source": "https://download.geoscan.ru/site-files/gemini/Gemini_Specs_EN_RUS.pdf?v2"
+      },
+      {
+        "id": "gemini-4",
+        "name": "Gemini · 04",
+        "model": "Gemini",
+        "kind": "multirotor",
+        "enabled": true,
+        "airspeedMps": 9,
+        "maxWindMps": 10,
+        "batteryPct": 100,
+        "effectiveEnduranceMin": 28,
+        "climbMps": 3,
+        "descentMps": 1,
+        "turnSeconds": 4,
+        "start": [
+          30.363019114565358,
+          60.033920815563526
+        ],
+        "landing": [
+          30.363019114565358,
+          60.033920815563526
+        ],
+        "jobs": [
+          "RGB",
+          "MS"
+        ],
+        "assumptions": [
+          "28 мин — расчётный бюджет учебной конфигурации, не измеренная выносливость.",
+          "Скорость, развороты, набор/снижение и частота кадров требуют калибровки."
+        ],
+        "source": "https://download.geoscan.ru/site-files/gemini/Gemini_Specs_EN_RUS.pdf?v2"
+      },
+      {
+        "id": "gemini-5",
+        "name": "Gemini · 05",
+        "model": "Gemini",
+        "kind": "multirotor",
+        "enabled": true,
+        "airspeedMps": 9,
+        "maxWindMps": 10,
+        "batteryPct": 100,
+        "effectiveEnduranceMin": 28,
+        "climbMps": 3,
+        "descentMps": 1,
+        "turnSeconds": 4,
+        "start": [
+          30.381024575869745,
+          60.033920815563526
+        ],
+        "landing": [
+          30.381024575869745,
+          60.033920815563526
+        ],
+        "jobs": [
+          "RGB",
+          "MS"
+        ],
+        "assumptions": [
+          "28 мин — расчётный бюджет учебной конфигурации, не измеренная выносливость.",
+          "Скорость, развороты, набор/снижение и частота кадров требуют калибровки."
+        ],
+        "source": "https://download.geoscan.ru/site-files/gemini/Gemini_Specs_EN_RUS.pdf?v2"
+      },
+      {
+        "id": "gemini-6",
+        "name": "Gemini · 06",
+        "model": "Gemini",
+        "kind": "multirotor",
+        "enabled": true,
+        "airspeedMps": 9,
+        "maxWindMps": 10,
+        "batteryPct": 100,
+        "effectiveEnduranceMin": 28,
+        "climbMps": 3,
+        "descentMps": 1,
+        "turnSeconds": 4,
+        "start": [
+          30.399030037174132,
+          60.033920815563526
+        ],
+        "landing": [
+          30.399030037174132,
+          60.033920815563526
+        ],
+        "jobs": [
+          "RGB",
+          "MS"
+        ],
+        "assumptions": [
+          "28 мин — расчётный бюджет учебной конфигурации, не измеренная выносливость.",
+          "Скорость, развороты, набор/снижение и частота кадров требуют калибровки."
+        ],
+        "source": "https://download.geoscan.ru/site-files/gemini/Gemini_Specs_EN_RUS.pdf?v2"
+      },
+      {
+        "id": "gemini-7",
+        "name": "Gemini · 07",
+        "model": "Gemini",
+        "kind": "multirotor",
+        "enabled": true,
+        "airspeedMps": 9,
+        "maxWindMps": 10,
+        "batteryPct": 100,
+        "effectiveEnduranceMin": 28,
+        "climbMps": 3,
+        "descentMps": 1,
+        "turnSeconds": 4,
+        "start": [
+          30.41703549847852,
+          60.033920815563526
+        ],
+        "landing": [
+          30.41703549847852,
+          60.033920815563526
+        ],
+        "jobs": [
+          "RGB",
+          "MS"
+        ],
+        "assumptions": [
+          "28 мин — расчётный бюджет учебной конфигурации, не измеренная выносливость.",
+          "Скорость, развороты, набор/снижение и частота кадров требуют калибровки."
+        ],
+        "source": "https://download.geoscan.ru/site-files/gemini/Gemini_Specs_EN_RUS.pdf?v2"
+      },
+      {
+        "id": "gemini-8",
+        "name": "Gemini · 08",
+        "model": "Gemini",
+        "kind": "multirotor",
+        "enabled": true,
+        "airspeedMps": 9,
+        "maxWindMps": 10,
+        "batteryPct": 100,
+        "effectiveEnduranceMin": 28,
+        "climbMps": 3,
+        "descentMps": 1,
+        "turnSeconds": 4,
+        "start": [
+          30.435040959782906,
+          60.033920815563526
+        ],
+        "landing": [
+          30.435040959782906,
+          60.033920815563526
+        ],
+        "jobs": [
+          "RGB",
+          "MS"
+        ],
+        "assumptions": [
+          "28 мин — расчётный бюджет учебной конфигурации, не измеренная выносливость.",
+          "Скорость, развороты, набор/снижение и частота кадров требуют калибровки."
+        ],
+        "source": "https://download.geoscan.ru/site-files/gemini/Gemini_Specs_EN_RUS.pdf?v2"
+      },
+      {
+        "id": "gemini-9",
+        "name": "Gemini · 09",
+        "model": "Gemini",
+        "kind": "multirotor",
+        "enabled": true,
+        "airspeedMps": 9,
+        "maxWindMps": 10,
+        "batteryPct": 100,
+        "effectiveEnduranceMin": 28,
+        "climbMps": 3,
+        "descentMps": 1,
+        "turnSeconds": 4,
+        "start": [
+          30.453046421087294,
+          60.033920815563526
+        ],
+        "landing": [
+          30.453046421087294,
+          60.033920815563526
+        ],
+        "jobs": [
+          "RGB",
+          "MS"
+        ],
+        "assumptions": [
+          "28 мин — расчётный бюджет учебной конфигурации, не измеренная выносливость.",
+          "Скорость, развороты, набор/снижение и частота кадров требуют калибровки."
+        ],
+        "source": "https://download.geoscan.ru/site-files/gemini/Gemini_Specs_EN_RUS.pdf?v2"
+      },
+      {
+        "id": "gemini-10",
+        "name": "Gemini · 10",
+        "model": "Gemini",
+        "kind": "multirotor",
+        "enabled": true,
+        "airspeedMps": 9,
+        "maxWindMps": 10,
+        "batteryPct": 100,
+        "effectiveEnduranceMin": 28,
+        "climbMps": 3,
+        "descentMps": 1,
+        "turnSeconds": 4,
+        "start": [
+          30.47105188239168,
+          60.033920815563526
+        ],
+        "landing": [
+          30.47105188239168,
+          60.033920815563526
+        ],
+        "jobs": [
+          "RGB",
+          "MS"
+        ],
+        "assumptions": [
+          "28 мин — расчётный бюджет учебной конфигурации, не измеренная выносливость.",
+          "Скорость, развороты, набор/снижение и частота кадров требуют калибровки."
+        ],
+        "source": "https://download.geoscan.ru/site-files/gemini/Gemini_Specs_EN_RUS.pdf?v2"
+      }
+    ]
+  },
+  "jobs": [
+    {
+      "id": "rgb-01",
+      "name": "RGB · вся территория",
+      "area": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              30.3,
+              60.035
+            ],
+            [
+              30.480054613043876,
+              60.035
+            ],
+            [
+              30.480054613043876,
+              60.12493203637245
+            ],
+            [
+              30.3,
+              60.12493203637245
+            ],
+            [
+              30.3,
+              60.035
+            ]
+          ]
+        ]
+      },
+      "job": {
+        "type": "RGB",
+        "altitudeM": 100,
+        "swathM": 117.5,
+        "sideOverlap": 0.6,
+        "triggerDistanceM": 15.6,
+        "bearingDeg": 0,
+        "autoBearing": true,
+        "qualitySource": "Учебный RGB-профиль PF1B: 23,5 мм / 20 мм на 100 м; перекрытие 60% и шаг 15,6 м — параметры сценария. Скорость затвора не подтверждена."
+      },
+      "assignedVehicleIds": [],
+      "quality": {
+        "mode": "camera",
+        "status": "assumed",
+        "source": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры.",
+        "sensorWidthMm": 23.5,
+        "sensorHeightMm": 15.6,
+        "focalLengthMm": 20,
+        "imageWidthPx": 6000,
+        "imageHeightPx": 4000,
+        "forwardOverlap": 0.7,
+        "minimumIntervalSec": 1,
+        "maximumGsdCm": 3,
+        "shutterSec": 0.001,
+        "maximumBlurPx": 1
+      },
+      "daylight": "topographicClearSky"
+    }
+  ],
+  "window": {
+    "start": "2026-09-24T10:00:00+03:00",
+    "end": "2026-09-24T18:00:00+03:00",
+    "timezone": "Europe/Moscow"
+  },
+  "planning": {
+    "preparationSec": 120,
+    "serviceSec": 180,
+    "separationHorizontalM": 30,
+    "separationVerticalM": 15,
+    "temporalBufferSec": 5,
+    "separationSource": "Учебные допуски, не подтверждённая норма жюри.",
+    "maxSortiesPerVehicle": 8,
+    "maxComputeMs": 6000,
+    "altitudePreference": "balanced",
+    "windModel": "constantGroundSpeed"
+  },
+  "batteries": [
+    {
+      "id": "gemini-1-battery-1",
+      "vehicleId": "gemini-1",
+      "name": "Gemini · 01 · АКБ 1",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-1-battery-2",
+      "vehicleId": "gemini-1",
+      "name": "Gemini · 01 · АКБ 2",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-1-battery-3",
+      "vehicleId": "gemini-1",
+      "name": "Gemini · 01 · АКБ 3",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-1-battery-4",
+      "vehicleId": "gemini-1",
+      "name": "Gemini · 01 · АКБ 4",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-1-battery-5",
+      "vehicleId": "gemini-1",
+      "name": "Gemini · 01 · АКБ 5",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-1-battery-6",
+      "vehicleId": "gemini-1",
+      "name": "Gemini · 01 · АКБ 6",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-1-battery-7",
+      "vehicleId": "gemini-1",
+      "name": "Gemini · 01 · АКБ 7",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-1-battery-8",
+      "vehicleId": "gemini-1",
+      "name": "Gemini · 01 · АКБ 8",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-2-battery-1",
+      "vehicleId": "gemini-2",
+      "name": "Gemini · 02 · АКБ 1",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-2-battery-2",
+      "vehicleId": "gemini-2",
+      "name": "Gemini · 02 · АКБ 2",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-2-battery-3",
+      "vehicleId": "gemini-2",
+      "name": "Gemini · 02 · АКБ 3",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-2-battery-4",
+      "vehicleId": "gemini-2",
+      "name": "Gemini · 02 · АКБ 4",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-2-battery-5",
+      "vehicleId": "gemini-2",
+      "name": "Gemini · 02 · АКБ 5",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-2-battery-6",
+      "vehicleId": "gemini-2",
+      "name": "Gemini · 02 · АКБ 6",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-2-battery-7",
+      "vehicleId": "gemini-2",
+      "name": "Gemini · 02 · АКБ 7",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-2-battery-8",
+      "vehicleId": "gemini-2",
+      "name": "Gemini · 02 · АКБ 8",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-3-battery-1",
+      "vehicleId": "gemini-3",
+      "name": "Gemini · 03 · АКБ 1",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-3-battery-2",
+      "vehicleId": "gemini-3",
+      "name": "Gemini · 03 · АКБ 2",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-3-battery-3",
+      "vehicleId": "gemini-3",
+      "name": "Gemini · 03 · АКБ 3",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-3-battery-4",
+      "vehicleId": "gemini-3",
+      "name": "Gemini · 03 · АКБ 4",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-3-battery-5",
+      "vehicleId": "gemini-3",
+      "name": "Gemini · 03 · АКБ 5",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-3-battery-6",
+      "vehicleId": "gemini-3",
+      "name": "Gemini · 03 · АКБ 6",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-3-battery-7",
+      "vehicleId": "gemini-3",
+      "name": "Gemini · 03 · АКБ 7",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-3-battery-8",
+      "vehicleId": "gemini-3",
+      "name": "Gemini · 03 · АКБ 8",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-4-battery-1",
+      "vehicleId": "gemini-4",
+      "name": "Gemini · 04 · АКБ 1",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-4-battery-2",
+      "vehicleId": "gemini-4",
+      "name": "Gemini · 04 · АКБ 2",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-4-battery-3",
+      "vehicleId": "gemini-4",
+      "name": "Gemini · 04 · АКБ 3",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-4-battery-4",
+      "vehicleId": "gemini-4",
+      "name": "Gemini · 04 · АКБ 4",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-4-battery-5",
+      "vehicleId": "gemini-4",
+      "name": "Gemini · 04 · АКБ 5",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-4-battery-6",
+      "vehicleId": "gemini-4",
+      "name": "Gemini · 04 · АКБ 6",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-4-battery-7",
+      "vehicleId": "gemini-4",
+      "name": "Gemini · 04 · АКБ 7",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-4-battery-8",
+      "vehicleId": "gemini-4",
+      "name": "Gemini · 04 · АКБ 8",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-5-battery-1",
+      "vehicleId": "gemini-5",
+      "name": "Gemini · 05 · АКБ 1",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-5-battery-2",
+      "vehicleId": "gemini-5",
+      "name": "Gemini · 05 · АКБ 2",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-5-battery-3",
+      "vehicleId": "gemini-5",
+      "name": "Gemini · 05 · АКБ 3",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-5-battery-4",
+      "vehicleId": "gemini-5",
+      "name": "Gemini · 05 · АКБ 4",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-5-battery-5",
+      "vehicleId": "gemini-5",
+      "name": "Gemini · 05 · АКБ 5",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-5-battery-6",
+      "vehicleId": "gemini-5",
+      "name": "Gemini · 05 · АКБ 6",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-5-battery-7",
+      "vehicleId": "gemini-5",
+      "name": "Gemini · 05 · АКБ 7",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-5-battery-8",
+      "vehicleId": "gemini-5",
+      "name": "Gemini · 05 · АКБ 8",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-6-battery-1",
+      "vehicleId": "gemini-6",
+      "name": "Gemini · 06 · АКБ 1",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-6-battery-2",
+      "vehicleId": "gemini-6",
+      "name": "Gemini · 06 · АКБ 2",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-6-battery-3",
+      "vehicleId": "gemini-6",
+      "name": "Gemini · 06 · АКБ 3",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-6-battery-4",
+      "vehicleId": "gemini-6",
+      "name": "Gemini · 06 · АКБ 4",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-6-battery-5",
+      "vehicleId": "gemini-6",
+      "name": "Gemini · 06 · АКБ 5",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-6-battery-6",
+      "vehicleId": "gemini-6",
+      "name": "Gemini · 06 · АКБ 6",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-6-battery-7",
+      "vehicleId": "gemini-6",
+      "name": "Gemini · 06 · АКБ 7",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-6-battery-8",
+      "vehicleId": "gemini-6",
+      "name": "Gemini · 06 · АКБ 8",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-7-battery-1",
+      "vehicleId": "gemini-7",
+      "name": "Gemini · 07 · АКБ 1",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-7-battery-2",
+      "vehicleId": "gemini-7",
+      "name": "Gemini · 07 · АКБ 2",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-7-battery-3",
+      "vehicleId": "gemini-7",
+      "name": "Gemini · 07 · АКБ 3",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-7-battery-4",
+      "vehicleId": "gemini-7",
+      "name": "Gemini · 07 · АКБ 4",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-7-battery-5",
+      "vehicleId": "gemini-7",
+      "name": "Gemini · 07 · АКБ 5",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-7-battery-6",
+      "vehicleId": "gemini-7",
+      "name": "Gemini · 07 · АКБ 6",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-7-battery-7",
+      "vehicleId": "gemini-7",
+      "name": "Gemini · 07 · АКБ 7",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-7-battery-8",
+      "vehicleId": "gemini-7",
+      "name": "Gemini · 07 · АКБ 8",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-8-battery-1",
+      "vehicleId": "gemini-8",
+      "name": "Gemini · 08 · АКБ 1",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-8-battery-2",
+      "vehicleId": "gemini-8",
+      "name": "Gemini · 08 · АКБ 2",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-8-battery-3",
+      "vehicleId": "gemini-8",
+      "name": "Gemini · 08 · АКБ 3",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-8-battery-4",
+      "vehicleId": "gemini-8",
+      "name": "Gemini · 08 · АКБ 4",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-8-battery-5",
+      "vehicleId": "gemini-8",
+      "name": "Gemini · 08 · АКБ 5",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-8-battery-6",
+      "vehicleId": "gemini-8",
+      "name": "Gemini · 08 · АКБ 6",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-8-battery-7",
+      "vehicleId": "gemini-8",
+      "name": "Gemini · 08 · АКБ 7",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-8-battery-8",
+      "vehicleId": "gemini-8",
+      "name": "Gemini · 08 · АКБ 8",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-9-battery-1",
+      "vehicleId": "gemini-9",
+      "name": "Gemini · 09 · АКБ 1",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-9-battery-2",
+      "vehicleId": "gemini-9",
+      "name": "Gemini · 09 · АКБ 2",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-9-battery-3",
+      "vehicleId": "gemini-9",
+      "name": "Gemini · 09 · АКБ 3",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-9-battery-4",
+      "vehicleId": "gemini-9",
+      "name": "Gemini · 09 · АКБ 4",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-9-battery-5",
+      "vehicleId": "gemini-9",
+      "name": "Gemini · 09 · АКБ 5",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-9-battery-6",
+      "vehicleId": "gemini-9",
+      "name": "Gemini · 09 · АКБ 6",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-9-battery-7",
+      "vehicleId": "gemini-9",
+      "name": "Gemini · 09 · АКБ 7",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-9-battery-8",
+      "vehicleId": "gemini-9",
+      "name": "Gemini · 09 · АКБ 8",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-10-battery-1",
+      "vehicleId": "gemini-10",
+      "name": "Gemini · 10 · АКБ 1",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-10-battery-2",
+      "vehicleId": "gemini-10",
+      "name": "Gemini · 10 · АКБ 2",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-10-battery-3",
+      "vehicleId": "gemini-10",
+      "name": "Gemini · 10 · АКБ 3",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-10-battery-4",
+      "vehicleId": "gemini-10",
+      "name": "Gemini · 10 · АКБ 4",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-10-battery-5",
+      "vehicleId": "gemini-10",
+      "name": "Gemini · 10 · АКБ 5",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-10-battery-6",
+      "vehicleId": "gemini-10",
+      "name": "Gemini · 10 · АКБ 6",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-10-battery-7",
+      "vehicleId": "gemini-10",
+      "name": "Gemini · 10 · АКБ 7",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    },
+    {
+      "id": "gemini-10-battery-8",
+      "vehicleId": "gemini-10",
+      "name": "Gemini · 10 · АКБ 8",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    }
+  ],
+  "restrictions": [],
+  "terrainModel": {
+    "kind": "flat",
+    "elevationM": 0,
+    "source": "Синтетическая горизонтальная поверхность; не реальный DEM участка."
+  },
+  "flightEnvelope": {
+    "minSurveyAltitudeM": 10,
+    "maxAltitudeM": 500,
+    "source": "Учебный диапазон сценария, не разрешение воздушного пространства."
+  },
+  "notes": "Учебный сценарий. Координаты реальные; область, базы, допуски, ресурсы и плоская поверхность синтетические. 100 км² — нагрузочный вход: выполнимость и время расчёта не гарантируются."
+}

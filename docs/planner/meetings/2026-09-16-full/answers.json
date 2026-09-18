@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "source_file": "output/geoscan-qna-2026-09-16-full/source.mp4",
+  "source_sha256": "2af365ccf07f4be63c0399a4207b46d4f084ec46dd8ef0f42982ca589c63aa95",
+  "meeting_date": "2026-09-16",
+  "timecodes": "seconds relative to the supplied full recording; not the earlier fragment",
+  "evidence_type": "oral_answers_local_machine_transcription",
+  "not_a_written_tz_amendment": true,
+  "facts": [
+    {
+      "id": "GEO-QA-01",
+      "topic": "Предмет решения",
+      "status": "oral_clarification",
+      "start": 4952,
+      "end": 5018,
+      "answer": "Нужно распределить общие авиационные работы между БВС; обязательного импорта результата в Geoscan Planner нет.",
+      "review": "01-geoscan-import-optional",
+      "review_file": "../../../../output/geoscan-qna-2026-09-16-full/reviews/01-geoscan-import-optional.json"
+    },
+    {
+      "id": "GEO-QA-02",
+      "topic": "Вход и оценка",
+      "status": "oral_clarification",
+      "start": 4820,
+      "end": 4941,
+      "answer": "Команда документирует свой вход; эксперты анализируют выходные маршруты со временем старта, запреты и опасные сближения. Нельзя считать проверку ограниченной демо команды.",
+      "review": "10-expert-test-input-output",
+      "review_file": "../../../../output/geoscan-qna-2026-09-16-full/reviews/10-expert-test-input-output.json"
+    },
+    {
+      "id": "GEO-QA-03",
+      "topic": "Время выполнения",
+      "status": "oral_clarification",
+      "start": 2449,
+      "end": 2501,
+      "answer": "Включает подготовку, замену АКБ и возвращение аппаратов с данными. Наземные затраты допустимо представить фиксированной добавкой; конкретная формула и числа не заданы.",
+      "review": "02-makespan",
+      "review_file": "../../../../output/geoscan-qna-2026-09-16-full/reviews/02-makespan.json"
+    },
+    {
+      "id": "GEO-QA-04",
+      "topic": "Суммарный налёт",
+      "status": "oral_clarification",
+      "start": 2300,
+      "end": 2426,
+      "answer": "Ресурс БВС упрощённо считают суммарным временем работы/налётом; число взлётов обсуждается как дополнительная сложность, не установленный отдельный обязательный критерий."
+    },
+    {
+      "id": "GEO-QA-05",
+      "topic": "Расписание",
+      "status": "oral_clarification",
+      "start": 3023,
+      "end": 3034,
+      "answer": "Расписание со временем старта вылетов требуется.",
+      "review": "04-schedule-repeat-infeasible",
+      "review_file": "../../../../output/geoscan-qna-2026-09-16-full/reviews/04-schedule-repeat-infeasible.json"
+    },
+    {
+      "id": "GEO-QA-06",
+      "topic": "Повторные вылеты",
+      "status": "partially_resolved",
+      "start": 3035,
+      "end": 3160,
+      "answer": "Повторные вылеты допустимы; время обслуживания и число АКБ не заданы. Маршрут с недостаточным зарядом недопустим. Не доказано, что сложная модель зарядников обязательна или что одного вылета достаточно для всех тестов.",
+      "review": "04-schedule-repeat-infeasible",
+      "review_file": "../../../../output/geoscan-qna-2026-09-16-full/reviews/04-schedule-repeat-infeasible.json"
+    },
+    {
+      "id": "GEO-QA-07",
+      "topic": "Энергия",
+      "status": "oral_clarification",
+      "start": 3198,
+      "end": 3284,
+      "answer": "Линейной модели с запасом достаточно; подробную физику батареи не требуют. 20% — условный пример, не паспортная константа.",
+      "review": "05-energy-reserve",
+      "review_file": "../../../../output/geoscan-qna-2026-09-16-full/reviews/05-energy-reserve.json"
+    },
+    {
+      "id": "GEO-QA-08",
+      "topic": "Ветер",
+      "status": "later_answer_clarifies_earlier",
+      "start": 4025,
+      "end": 4217,
+      "answer": "Ветер нужен для допустимости полёта и направления галсов. Подробное влияние на расход батареи не требуется; для съёмки обсуждено допущение о постоянной путевой скорости. Раннее общее «не учитывать» в 54:45 нельзя трактовать как отмену ТЗ.",
+      "review": "09-wind-clarification",
+      "review_file": "../../../../output/geoscan-qna-2026-09-16-full/reviews/09-wind-clarification.json"
+    },
+    {
+      "id": "GEO-QA-09",
+      "topic": "Перекрытие",
+      "status": "example_not_universal_requirement",
+      "start": 2535,
+      "end": 2615,
+      "answer": "Для аэрофотосъёмки озвучены ориентиры 70% продольного/50% поперечного перекрытия с оговоркой говорящего. Настройки отдельные по видам работ; точных значений LiDAR и геофизики нет.",
+      "review": "03-overlap",
+      "review_file": "../../../../output/geoscan-qna-2026-09-16-full/reviews/03-overlap.json"
+    },
+    {
+      "id": "GEO-QA-10",
+      "topic": "Разные камеры",
+      "status": "oral_clarification",
+      "start": 2715,
+      "end": 2828,
+      "answer": "Разные модели камер одного типа могут снимать одну область. Сшивка изображений вне задачи; оптимальное разделение территории входит. Порог перекрытия стыков отдельно не установлен."
+    },
+    {
+      "id": "GEO-QA-11",
+      "topic": "Базы",
+      "status": "oral_clarification",
+      "start": 2829,
+      "end": 2934,
+      "answer": "Вместимость площадок считать неограниченной; старт и посадка могут различаться. Рекомендация лучшего расположения баз — дополнительное преимущество. Радиовидимость не включают."
+    },
+    {
+      "id": "GEO-QA-12",
+      "topic": "Упрощение самолётной модели",
+      "status": "oral_clarification",
+      "start": 3385,
+      "end": 3458,
+      "answer": "Допускаются защитные зоны маневрирования вместо точных разворотных петель; подробная катапульта/парашют не требуются. Это не разрешение не проверять защитные зоны.",
+      "review": "06-simplified-physics-4d",
+      "review_file": "../../../../output/geoscan-qna-2026-09-16-full/reviews/06-simplified-physics-4d.json"
+    },
+    {
+      "id": "GEO-QA-13",
+      "topic": "Воздушное пространство",
+      "status": "oral_clarification",
+      "start": 3458,
+      "end": 3537,
+      "answer": "Ограничения имеют горизонтальные границы, высоту и время действия. Систему высот и численные безопасные расстояния для тестов ещё нужно уточнить.",
+      "review": "06-simplified-physics-4d",
+      "review_file": "../../../../output/geoscan-qna-2026-09-16-full/reviews/06-simplified-physics-4d.json"
+    },
+    {
+      "id": "GEO-QA-14",
+      "topic": "Резервная посадка",
+      "status": "oral_clarification",
+      "start": 3540,
+      "end": 3663,
+      "answer": "Резерв не является обычной базой для основной работы. Из каждой точки маршрута должна быть достижима хотя бы одна из заданных площадок, основная либо резервная.",
+      "review": "07-landing-reachability",
+      "review_file": "../../../../output/geoscan-qna-2026-09-16-full/reviews/07-landing-reachability.json"
+    },
+    {
+      "id": "GEO-QA-15",
+      "topic": "Невыполнимость",
+      "status": "oral_clarification",
+      "start": 3670,
+      "end": 3778,
+      "answer": "Допустим отказ с объяснением; полезны рекомендации изменить площадки, аппараты или время. Частичный план не равен выполненному заданию.",
+      "review": "08-partial-plan",
+      "review_file": "../../../../output/geoscan-qna-2026-09-16-full/reviews/08-partial-plan.json"
+    },
+    {
+      "id": "GEO-QA-16",
+      "topic": "Внешние зоны",
+      "status": "oral_clarification",
+      "start": 4209,
+      "end": 4276,
+      "answer": "Можно подготовить зоны самим/считать их входными данными; интеграция с реальной системой разрешений не требуется."
+    },
+    {
+      "id": "GEO-QA-17",
+      "topic": "Пример данных",
+      "status": "promised_not_delivered_in_recording",
+      "start": 3885,
+      "end": 3997,
+      "answer": "Обещан минимальный пример препятствий/области. Сам факт обещания не означает, что файл предоставлен; удобного универсального стандарта нет."
+    },
+    {
+      "id": "GEO-QA-18",
+      "topic": "Светлое время",
+      "status": "oral_guidance",
+      "start": 4678,
+      "end": 4769,
+      "answer": "Для долгосрочного планирования выделены начало/конец светлого дня; подробный прогноз на месяц вперёд не предлагается как надёжная основа."
+    },
+    {
+      "id": "GEO-QA-19",
+      "topic": "Сервис без Docker и исходный код",
+      "status": "ambiguous_no_unconditional_waiver",
+      "start": 4771,
+      "end": 4805,
+      "answer": "Без исходного кода — отрицательный ответ. После обещания предоставить код ответ «посмотрим» не является однозначным разрешением сдачи без Docker. Сохраняем исходники и Docker Compose. Первичный ASR ошибается в отрицании реплики чата; повторный проход распознаёт «код они дадут».",
+      "review": "11-hosted-service-source",
+      "review_file": "../../../../output/geoscan-qna-2026-09-16-full/reviews/11-hosted-service-source.json"
+    }
+  ],
+  "open_questions": [
+    "Полные конфигурации БВС/сенсоров и параметры LiDAR/геофизики",
+    "Система высот и пороги безопасного разделения в тестах",
+    "Допустимость RGB/коптерного ограничения на 29 сентября",
+    "Обещанные пример входа и матрица оценки",
+    "Обязательность повторных вылетов на первой сдаче и численные параметры обслуживания"
+  ]
+}

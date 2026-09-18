@@ -1,0 +1,786 @@
+{
+  "generated_at": "2026-09-15T19:22:05.750127+00:00",
+  "source": "tmp/geoscan-resources/raw/geoscan-planner-401-manual.pdf",
+  "source_urls": [
+    "https://download.geoscan.ru/site-files/planner/GCS_2.8_401.pdf",
+    "https://download.geoscan.ru/site-files/planner/GCS_2.8_gemini.pdf"
+  ],
+  "source_sha256": "35d046ba46b7967451b8a0c0dfcdd8396854e17ecead0dba731e9d695f6a076a",
+  "pages": 127,
+  "markdown": "docs/geoscan-md/resources/geoscan-site/planner-copter-manual.md",
+  "markdown_sha256": "7886f609aed20620eb70c1a3e30ca4890c2b7a757d0cc02eda3d23334ca0227b",
+  "content_check": "all-127-native-page-bodies-preserved-exactly",
+  "plane_snapshot_unchanged": true,
+  "plane_sha256": "e2d4990824ae339a71e0bd380de281a94d9a148cbb59504040dd91135eecee2a",
+  "page_details": [
+    {
+      "page": 1,
+      "native_chars": 266,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 2,
+      "native_chars": 1967,
+      "images": 0,
+      "links": []
+    },
+    {
+      "page": 3,
+      "native_chars": 496,
+      "images": 0,
+      "links": []
+    },
+    {
+      "page": 4,
+      "native_chars": 2294,
+      "images": 0,
+      "links": []
+    },
+    {
+      "page": 5,
+      "native_chars": 2942,
+      "images": 0,
+      "links": []
+    },
+    {
+      "page": 6,
+      "native_chars": 656,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 7,
+      "native_chars": 1223,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 8,
+      "native_chars": 1032,
+      "images": 0,
+      "links": []
+    },
+    {
+      "page": 9,
+      "native_chars": 1035,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 10,
+      "native_chars": 434,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 11,
+      "native_chars": 1016,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 12,
+      "native_chars": 1421,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 13,
+      "native_chars": 1006,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 14,
+      "native_chars": 237,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 15,
+      "native_chars": 624,
+      "images": 3,
+      "links": []
+    },
+    {
+      "page": 16,
+      "native_chars": 1406,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 17,
+      "native_chars": 890,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 18,
+      "native_chars": 698,
+      "images": 2,
+      "links": [
+        "http://sasgis.org/",
+        "http://www.sasgis.org/forum/viewtopic.php?t=986"
+      ]
+    },
+    {
+      "page": 19,
+      "native_chars": 429,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 20,
+      "native_chars": 792,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 21,
+      "native_chars": 530,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 22,
+      "native_chars": 652,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 23,
+      "native_chars": 439,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 24,
+      "native_chars": 649,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 25,
+      "native_chars": 605,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 26,
+      "native_chars": 270,
+      "images": 3,
+      "links": []
+    },
+    {
+      "page": 27,
+      "native_chars": 223,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 28,
+      "native_chars": 528,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 29,
+      "native_chars": 195,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 30,
+      "native_chars": 989,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 31,
+      "native_chars": 991,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 32,
+      "native_chars": 1258,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 33,
+      "native_chars": 1193,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 34,
+      "native_chars": 996,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 35,
+      "native_chars": 462,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 36,
+      "native_chars": 286,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 37,
+      "native_chars": 750,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 38,
+      "native_chars": 1277,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 39,
+      "native_chars": 1795,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 40,
+      "native_chars": 1361,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 41,
+      "native_chars": 1465,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 42,
+      "native_chars": 727,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 43,
+      "native_chars": 838,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 44,
+      "native_chars": 410,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 45,
+      "native_chars": 1109,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 46,
+      "native_chars": 720,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 47,
+      "native_chars": 1310,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 48,
+      "native_chars": 798,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 49,
+      "native_chars": 938,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 50,
+      "native_chars": 1100,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 51,
+      "native_chars": 1615,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 52,
+      "native_chars": 791,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 53,
+      "native_chars": 1318,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 54,
+      "native_chars": 351,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 55,
+      "native_chars": 1054,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 56,
+      "native_chars": 500,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 57,
+      "native_chars": 383,
+      "images": 3,
+      "links": []
+    },
+    {
+      "page": 58,
+      "native_chars": 1120,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 59,
+      "native_chars": 144,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 60,
+      "native_chars": 1167,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 61,
+      "native_chars": 1334,
+      "images": 0,
+      "links": []
+    },
+    {
+      "page": 62,
+      "native_chars": 491,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 63,
+      "native_chars": 1326,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 64,
+      "native_chars": 849,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 65,
+      "native_chars": 246,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 66,
+      "native_chars": 319,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 67,
+      "native_chars": 962,
+      "images": 0,
+      "links": []
+    },
+    {
+      "page": 68,
+      "native_chars": 745,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 69,
+      "native_chars": 598,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 70,
+      "native_chars": 120,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 71,
+      "native_chars": 202,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 72,
+      "native_chars": 227,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 73,
+      "native_chars": 703,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 74,
+      "native_chars": 463,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 75,
+      "native_chars": 148,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 76,
+      "native_chars": 1155,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 77,
+      "native_chars": 1104,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 78,
+      "native_chars": 1231,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 79,
+      "native_chars": 1550,
+      "images": 0,
+      "links": []
+    },
+    {
+      "page": 80,
+      "native_chars": 1241,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 81,
+      "native_chars": 784,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 82,
+      "native_chars": 301,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 83,
+      "native_chars": 321,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 84,
+      "native_chars": 489,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 85,
+      "native_chars": 461,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 86,
+      "native_chars": 600,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 87,
+      "native_chars": 364,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 88,
+      "native_chars": 413,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 89,
+      "native_chars": 1179,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 90,
+      "native_chars": 665,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 91,
+      "native_chars": 878,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 92,
+      "native_chars": 593,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 93,
+      "native_chars": 568,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 94,
+      "native_chars": 1626,
+      "images": 0,
+      "links": []
+    },
+    {
+      "page": 95,
+      "native_chars": 736,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 96,
+      "native_chars": 537,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 97,
+      "native_chars": 856,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 98,
+      "native_chars": 356,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 99,
+      "native_chars": 217,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 100,
+      "native_chars": 377,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 101,
+      "native_chars": 406,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 102,
+      "native_chars": 489,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 103,
+      "native_chars": 218,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 104,
+      "native_chars": 431,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 105,
+      "native_chars": 625,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 106,
+      "native_chars": 484,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 107,
+      "native_chars": 445,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 108,
+      "native_chars": 1137,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 109,
+      "native_chars": 516,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 110,
+      "native_chars": 438,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 111,
+      "native_chars": 659,
+      "images": 0,
+      "links": []
+    },
+    {
+      "page": 112,
+      "native_chars": 1291,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 113,
+      "native_chars": 376,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 114,
+      "native_chars": 1380,
+      "images": 0,
+      "links": []
+    },
+    {
+      "page": 115,
+      "native_chars": 574,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 116,
+      "native_chars": 685,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 117,
+      "native_chars": 307,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 118,
+      "native_chars": 89,
+      "images": 2,
+      "links": []
+    },
+    {
+      "page": 119,
+      "native_chars": 908,
+      "images": 0,
+      "links": []
+    },
+    {
+      "page": 120,
+      "native_chars": 989,
+      "images": 1,
+      "links": []
+    },
+    {
+      "page": 121,
+      "native_chars": 450,
+      "images": 3,
+      "links": []
+    },
+    {
+      "page": 122,
+      "native_chars": 739,
+      "images": 0,
+      "links": []
+    },
+    {
+      "page": 123,
+      "native_chars": 1043,
+      "images": 0,
+      "links": []
+    },
+    {
+      "page": 124,
+      "native_chars": 1136,
+      "images": 0,
+      "links": []
+    },
+    {
+      "page": 125,
+      "native_chars": 1291,
+      "images": 0,
+      "links": []
+    },
+    {
+      "page": 126,
+      "native_chars": 1133,
+      "images": 0,
+      "links": []
+    },
+    {
+      "page": 127,
+      "native_chars": 1131,
+      "images": 0,
+      "links": []
+    }
+  ],
+  "limitations": [
+    "No full image OCR",
+    "Not a runtime verification"
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "type": "prime-fleet",
+  "schemaVersion": "1.0",
+  "vehicles": [
+    {
+      "id": "rgb-1",
+      "name": "Custom · rgb-1",
+      "model": "Custom",
+      "kind": "multirotor",
+      "enabled": true,
+      "airspeedMps": 8,
+      "maxWindMps": 10,
+      "batteryPct": 100,
+      "effectiveEnduranceMin": 28,
+      "climbMps": 3,
+      "descentMps": 1,
+      "turnSeconds": 4,
+      "start": [
+        30.30144043690435,
+        60.034100679636275
+      ],
+      "landing": [
+        30.30144043690435,
+        60.034100679636275
+      ],
+      "jobs": [
+        "RGB"
+      ],
+      "assumptions": [
+        "Числа скорости, ресурса и совместимости заданы для синтетического теста."
+      ],
+      "source": "Учебная конфигурация стенда; реальная совместимость нагрузки не подтверждена."
+    }
+  ],
+  "batteries": [
+    {
+      "id": "rgb-1-battery-1",
+      "vehicleId": "rgb-1",
+      "name": "АКБ 1 · rgb-1",
+      "initialPct": 100,
+      "readyAt": "2026-06-15T09:00:00.000Z",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
+    },
+    {
+      "id": "rgb-1-battery-2",
+      "vehicleId": "rgb-1",
+      "name": "АКБ 2 · rgb-1",
+      "initialPct": 100,
+      "readyAt": "2026-06-15T09:00:00.000Z",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
+    },
+    {
+      "id": "rgb-1-battery-3",
+      "vehicleId": "rgb-1",
+      "name": "АКБ 3 · rgb-1",
+      "initialPct": 100,
+      "readyAt": "2026-06-15T09:00:00.000Z",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
+    },
+    {
+      "id": "rgb-1-battery-4",
+      "vehicleId": "rgb-1",
+      "name": "АКБ 4 · rgb-1",
+      "initialPct": 100,
+      "readyAt": "2026-06-15T09:00:00.000Z",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
+    },
+    {
+      "id": "rgb-1-battery-5",
+      "vehicleId": "rgb-1",
+      "name": "АКБ 5 · rgb-1",
+      "initialPct": 100,
+      "readyAt": "2026-06-15T09:00:00.000Z",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
+    },
+    {
+      "id": "rgb-1-battery-6",
+      "vehicleId": "rgb-1",
+      "name": "АКБ 6 · rgb-1",
+      "initialPct": 100,
+      "readyAt": "2026-06-15T09:00:00.000Z",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
+    }
+  ]
+}

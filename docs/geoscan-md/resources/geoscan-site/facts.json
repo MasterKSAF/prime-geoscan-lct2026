@@ -1,0 +1,24 @@
+{
+  "reviewed_at": "2026-09-15",
+  "scope": "Documented claims and proposed implications, not runtime results",
+  "facts": [
+    {"id":"GS-F01","status":"documented","claim":"Planner FAQ states up to four simultaneously launched UAVs.","source_ids":["KB53"],"scope":"Described Planner configuration; not a solver or TZ fleet-size limit"},
+    {"id":"GS-F02","status":"documented","claim":"Planner FAQ limits support to Geoscan aircraft.","source_ids":["KB56"],"scope":"No assumed ArduPilot or MAVLink interoperability"},
+    {"id":"GS-F03","status":"documented","claim":"Planner release notes document mission export to KML.","source_ids":["KB64"],"scope":"Export existence does not prove full semantic round-trip"},
+    {"id":"GS-F04","status":"unknown","claim":"Current automatic mission execution and import path on 801 are not established by the stale Q4 2025 FAQ promise.","source_ids":["KB340","KB214","KB333"],"scope":"Must obtain target firmware and a working reference mission"},
+    {"id":"GS-F05","status":"documented","claim":"801 aircraft and remote firmware must be updated as a compatible pair.","source_ids":["KB211","KB335"],"scope":"No firmware update performed"},
+    {"id":"GS-F06","status":"documented","claim":"801 FAQ does not provide third-party basemap file support, unlike desktop Planner.","source_ids":["KB342","KB59"],"scope":"Version-specific documentation; current behavior untested"},
+    {"id":"GS-F07","status":"documented","claim":"Gemini firmware 10404 and 10438 are marked service-center-only updates.","source_ids":["KB206"],"scope":"Do not schedule self-service upgrade as a hackathon dependency"},
+    {"id":"GS-F08","status":"documented","claim":"Gemini speed in release 7070 is dynamic with wind, height and photo spacing, with a stated maximum of 15 m/s.","source_ids":["KB206"],"scope":"Not a guaranteed speed for every payload or flight"},
+    {"id":"GS-F09","status":"documented","claim":"Magnetic service describes 10 Hz observation records, while the sensor table separately states 1000 Hz.","source_ids":["WEB-MAGNETIC"],"scope":"Different sampling layers; do not substitute one for the other"},
+    {"id":"GS-F10","status":"documented","claim":"Magnetic service describes control measurements on at least 5 percent of survey routes.","source_ids":["WEB-MAGNETIC"],"scope":"Count of routes as worded on site; not automatically a TZ requirement"},
+    {"id":"GS-F11","status":"inference","claim":"A magnetic planning profile needs sensor altitude and payload constraints separate from aircraft center altitude.","source_ids":["PDF-COPTER","WEB-MAGNETIC"],"scope":"Payload length and dynamic tolerances remain unknown"},
+    {"id":"GS-F12","status":"documented","claim":"Copter Planner manual describes 5/3/0.5 m/s landing phases with thresholds 50 and 25 m.","source_ids":["PDF-COPTER"],"pages":[53,77],"scope":"Gemini/401 manual profile, not 801; barometric caveat applies"},
+    {"id":"GS-F13","status":"documented","claim":"Cloud inspection photo filtering does not account for occluding objects or depth maps.","source_ids":["KB377"],"scope":"Projected footprint is not verified line of sight"},
+    {"id":"GS-F14","status":"documented","claim":"Cloud viewer documentation excludes geoid height transformations and local DEM in comparison mode.","source_ids":["KB373"],"scope":"Not a reference height-validation engine"},
+    {"id":"GS-F15","status":"documented","claim":"Cloud documentation supports GeoJSON vectors and describes .3tz export of point/tiled data in EPSG:4978.","source_ids":["KB371","KB376"],"scope":"Keep geocentric coordinates distinct from EPSG:4326 longitude/latitude"},
+    {"id":"GS-F16","status":"unknown","claim":"The public cloud integration API contract is not established by API host settings in Metashape.","source_ids":["KB387","KB371"],"scope":"No unauthorised or speculative API integration"},
+    {"id":"GS-F17","status":"documented","claim":"801 logs from the remote and autopilot are separate exports.","source_ids":["KB349"],"scope":"Record provenance and clock alignment; no logs collected from hardware"},
+    {"id":"GS-F18","status":"inference","claim":"UI metrics and proof artifacts must be invalidated after geometry or profile edits, independently of visual LOD.","source_ids":["KB376","KB379"],"scope":"Proposed product behavior, not an implemented feature"}
+  ]
+}

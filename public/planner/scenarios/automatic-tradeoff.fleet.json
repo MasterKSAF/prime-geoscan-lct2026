@@ -1,0 +1,200 @@
+{
+  "type": "prime-fleet",
+  "schemaVersion": "1.0",
+  "vehicles": [
+    {
+      "id": "rgb-center",
+      "name": "RGB-A · центральная база",
+      "model": "Custom",
+      "kind": "multirotor",
+      "enabled": true,
+      "airspeedMps": 9,
+      "maxWindMps": 10,
+      "batteryPct": 100,
+      "effectiveEnduranceMin": 26,
+      "climbMps": 3,
+      "descentMps": 1,
+      "turnSeconds": 4,
+      "start": [
+        30.306301911456536,
+        60.03365101945441
+      ],
+      "landing": [
+        30.306301911456536,
+        60.03365101945441
+      ],
+      "jobs": [
+        "RGB",
+        "MS",
+        "IR"
+      ],
+      "assumptions": [
+        "Все три учебных мультиротора совместимы с RGB. Скорость, ресурс и доступность АКБ заданы оператором для стенда."
+      ],
+      "source": "Полностью синтетический профиль для демонстрации автоматического выбора, не паспорт реального БВС."
+    },
+    {
+      "id": "rgb-near",
+      "name": "RGB-B · ближняя база",
+      "model": "Custom",
+      "kind": "multirotor",
+      "enabled": true,
+      "airspeedMps": 6,
+      "maxWindMps": 10,
+      "batteryPct": 100,
+      "effectiveEnduranceMin": 30,
+      "climbMps": 3,
+      "descentMps": 1,
+      "turnSeconds": 4,
+      "start": [
+        30.30144043690435,
+        60.034100679636275
+      ],
+      "landing": [
+        30.30144043690435,
+        60.034100679636275
+      ],
+      "jobs": [
+        "RGB",
+        "MS",
+        "IR"
+      ],
+      "assumptions": [
+        "Все три учебных мультиротора совместимы с RGB. Скорость, ресурс и доступность АКБ заданы оператором для стенда."
+      ],
+      "source": "Полностью синтетический профиль для демонстрации автоматического выбора, не паспорт реального БВС."
+    },
+    {
+      "id": "rgb-fast",
+      "name": "RGB-C · быстрый, АКБ позже",
+      "model": "Custom",
+      "kind": "multirotor",
+      "enabled": true,
+      "airspeedMps": 12,
+      "maxWindMps": 10,
+      "batteryPct": 100,
+      "effectiveEnduranceMin": 22,
+      "climbMps": 3,
+      "descentMps": 1,
+      "turnSeconds": 4,
+      "start": [
+        30.311163386008722,
+        60.033201359272546
+      ],
+      "landing": [
+        30.311163386008722,
+        60.033201359272546
+      ],
+      "jobs": [
+        "RGB",
+        "MS",
+        "IR"
+      ],
+      "assumptions": [
+        "Все три учебных мультиротора совместимы с RGB. Скорость, ресурс и доступность АКБ заданы оператором для стенда."
+      ],
+      "source": "Полностью синтетический профиль для демонстрации автоматического выбора, не паспорт реального БВС."
+    }
+  ],
+  "batteries": [
+    {
+      "id": "rgb-center-battery-1",
+      "vehicleId": "rgb-center",
+      "name": "АКБ 1 · RGB-A · центральная база",
+      "initialPct": 100,
+      "readyAt": "2026-06-15T09:05:00.000Z",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Синтетическая доступность заряженного экземпляра АКБ; не измеренное время реальной подготовки."
+    },
+    {
+      "id": "rgb-center-battery-2",
+      "vehicleId": "rgb-center",
+      "name": "АКБ 2 · RGB-A · центральная база",
+      "initialPct": 100,
+      "readyAt": "2026-06-15T09:05:00.000Z",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Синтетическая доступность заряженного экземпляра АКБ; не измеренное время реальной подготовки."
+    },
+    {
+      "id": "rgb-center-battery-3",
+      "vehicleId": "rgb-center",
+      "name": "АКБ 3 · RGB-A · центральная база",
+      "initialPct": 100,
+      "readyAt": "2026-06-15T09:05:00.000Z",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Синтетическая доступность заряженного экземпляра АКБ; не измеренное время реальной подготовки."
+    },
+    {
+      "id": "rgb-near-battery-1",
+      "vehicleId": "rgb-near",
+      "name": "АКБ 1 · RGB-B · ближняя база",
+      "initialPct": 100,
+      "readyAt": "2026-06-15T09:00:00.000Z",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Синтетическая доступность заряженного экземпляра АКБ; не измеренное время реальной подготовки."
+    },
+    {
+      "id": "rgb-near-battery-2",
+      "vehicleId": "rgb-near",
+      "name": "АКБ 2 · RGB-B · ближняя база",
+      "initialPct": 100,
+      "readyAt": "2026-06-15T09:00:00.000Z",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Синтетическая доступность заряженного экземпляра АКБ; не измеренное время реальной подготовки."
+    },
+    {
+      "id": "rgb-near-battery-3",
+      "vehicleId": "rgb-near",
+      "name": "АКБ 3 · RGB-B · ближняя база",
+      "initialPct": 100,
+      "readyAt": "2026-06-15T09:00:00.000Z",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Синтетическая доступность заряженного экземпляра АКБ; не измеренное время реальной подготовки."
+    },
+    {
+      "id": "rgb-fast-battery-1",
+      "vehicleId": "rgb-fast",
+      "name": "АКБ 1 · RGB-C · быстрый, АКБ позже",
+      "initialPct": 100,
+      "readyAt": "2026-06-15T09:10:00.000Z",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Синтетическая доступность заряженного экземпляра АКБ; не измеренное время реальной подготовки."
+    },
+    {
+      "id": "rgb-fast-battery-2",
+      "vehicleId": "rgb-fast",
+      "name": "АКБ 2 · RGB-C · быстрый, АКБ позже",
+      "initialPct": 100,
+      "readyAt": "2026-06-15T09:10:00.000Z",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Синтетическая доступность заряженного экземпляра АКБ; не измеренное время реальной подготовки."
+    },
+    {
+      "id": "rgb-fast-battery-3",
+      "vehicleId": "rgb-fast",
+      "name": "АКБ 3 · RGB-C · быстрый, АКБ позже",
+      "initialPct": 100,
+      "readyAt": "2026-06-15T09:10:00.000Z",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Синтетическая доступность заряженного экземпляра АКБ; не измеренное время реальной подготовки."
+    }
+  ]
+}

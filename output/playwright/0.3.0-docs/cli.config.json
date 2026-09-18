@@ -1,0 +1,8 @@
+{
+  "allowUnrestrictedFileAccess": true,
+  "outputDir": "C:/Users/Misha/Documents/ChatGPT/LCT/output/playwright/0.3.0-docs",
+  "browser": {
+    "launchOptions": { "headless": true },
+    "contextOptions": { "viewport": { "width": 1440, "height": 1000 } }
+  }
+}

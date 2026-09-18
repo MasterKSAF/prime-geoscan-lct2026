@@ -1,0 +1,583 @@
+# PRIME · задача миссии, не команда реальному БВС
+batteries:
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-1-battery-1"
+    initialPct: 100
+    name: "Gemini · 01 · АКБ 1"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-1"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-1-battery-2"
+    initialPct: 100
+    name: "Gemini · 01 · АКБ 2"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-1"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-1-battery-3"
+    initialPct: 100
+    name: "Gemini · 01 · АКБ 3"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-1"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-1-battery-4"
+    initialPct: 100
+    name: "Gemini · 01 · АКБ 4"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-1"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-1-battery-5"
+    initialPct: 100
+    name: "Gemini · 01 · АКБ 5"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-1"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-1-battery-6"
+    initialPct: 100
+    name: "Gemini · 01 · АКБ 6"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-1"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-1-battery-7"
+    initialPct: 100
+    name: "Gemini · 01 · АКБ 7"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-1"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-1-battery-8"
+    initialPct: 100
+    name: "Gemini · 01 · АКБ 8"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-1"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-2-battery-1"
+    initialPct: 100
+    name: "Gemini · 02 · АКБ 1"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-2"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-2-battery-2"
+    initialPct: 100
+    name: "Gemini · 02 · АКБ 2"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-2"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-2-battery-3"
+    initialPct: 100
+    name: "Gemini · 02 · АКБ 3"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-2"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-2-battery-4"
+    initialPct: 100
+    name: "Gemini · 02 · АКБ 4"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-2"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-2-battery-5"
+    initialPct: 100
+    name: "Gemini · 02 · АКБ 5"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-2"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-2-battery-6"
+    initialPct: 100
+    name: "Gemini · 02 · АКБ 6"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-2"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-2-battery-7"
+    initialPct: 100
+    name: "Gemini · 02 · АКБ 7"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-2"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-2-battery-8"
+    initialPct: 100
+    name: "Gemini · 02 · АКБ 8"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-2"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-3-battery-1"
+    initialPct: 100
+    name: "Gemini · 03 · АКБ 1"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-3"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-3-battery-2"
+    initialPct: 100
+    name: "Gemini · 03 · АКБ 2"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-3"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-3-battery-3"
+    initialPct: 100
+    name: "Gemini · 03 · АКБ 3"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-3"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-3-battery-4"
+    initialPct: 100
+    name: "Gemini · 03 · АКБ 4"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-3"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-3-battery-5"
+    initialPct: 100
+    name: "Gemini · 03 · АКБ 5"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-3"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-3-battery-6"
+    initialPct: 100
+    name: "Gemini · 03 · АКБ 6"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-3"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-3-battery-7"
+    initialPct: 100
+    name: "Gemini · 03 · АКБ 7"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-3"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-3-battery-8"
+    initialPct: 100
+    name: "Gemini · 03 · АКБ 8"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-3"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-4-battery-1"
+    initialPct: 100
+    name: "Gemini · 04 · АКБ 1"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-4"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-4-battery-2"
+    initialPct: 100
+    name: "Gemini · 04 · АКБ 2"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-4"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-4-battery-3"
+    initialPct: 100
+    name: "Gemini · 04 · АКБ 3"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-4"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-4-battery-4"
+    initialPct: 100
+    name: "Gemini · 04 · АКБ 4"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-4"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-4-battery-5"
+    initialPct: 100
+    name: "Gemini · 04 · АКБ 5"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-4"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-4-battery-6"
+    initialPct: 100
+    name: "Gemini · 04 · АКБ 6"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-4"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-4-battery-7"
+    initialPct: 100
+    name: "Gemini · 04 · АКБ 7"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-4"
+  - commissionedAt: null
+    cycles: null
+    id: "gemini-4-battery-8"
+    initialPct: 100
+    name: "Gemini · 04 · АКБ 8"
+    readyAt: "2026-09-24T10:00:00+03:00"
+    rechargeSec: 4500
+    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено. Для стенда:
+      полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при
+      +25 °C, реальные условия не подтверждены."
+    vehicleId: "gemini-4"
+flightEnvelope:
+  maxAltitudeM: 500
+  minSurveyAltitudeM: 10
+  source: "Учебный диапазон сценария, не разрешение воздушного пространства."
+id: "demo-10km2"
+jobs:
+  - area:
+      coordinates:
+        - - - 30.3
+            - 60.035
+          - - 30.35693826804389
+            - 60.035
+          - - 30.35693826804389
+            - 60.063439006955406
+          - - 30.3
+            - 60.063439006955406
+          - - 30.3
+            - 60.035
+      type: "Polygon"
+    assignedVehicleIds: []
+    daylight: "topographicClearSky"
+    id: "rgb-01"
+    job:
+      altitudeM: 100
+      autoBearing: true
+      bearingDeg: 0
+      qualitySource: "Учебный RGB-профиль PF1B: 23,5 мм / 20 мм на 100 м; перекрытие 60% и шаг 15,6 м —
+        параметры сценария. Скорость затвора не подтверждена."
+      sideOverlap: 0.6
+      swathM: 117.5
+      triggerDistanceM: 15.6
+      type: "RGB"
+    name: "RGB · вся территория"
+    quality:
+      focalLengthMm: 20
+      forwardOverlap: 0.7
+      imageHeightPx: 4000
+      imageWidthPx: 6000
+      maximumBlurPx: 1
+      maximumGsdCm: 3
+      minimumIntervalSec: 1
+      mode: "camera"
+      sensorHeightMm: 15.6
+      sensorWidthMm: 23.5
+      shutterSec: 0.001
+      source: "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период —
+        учебные параметры."
+      status: "assumed"
+name: "Учебная съёмка · 10 км²"
+notes: "Учебный сценарий. Координаты реальные; область, базы, допуски, ресурсы и плоская поверхность
+  синтетические. 100 км² — нагрузочный вход: выполнимость и время расчёта не гарантируются."
+planning:
+  altitudePreference: "balanced"
+  maxComputeMs: 6000
+  maxSortiesPerVehicle: 12
+  preparationSec: 120
+  separationHorizontalM: 30
+  separationSource: "Учебные допуски, не подтверждённая норма жюри."
+  separationVerticalM: 15
+  serviceSec: 180
+  temporalBufferSec: 5
+  windModel: "constantGroundSpeed"
+restrictions: []
+scenario:
+  airspace:
+    coordinates:
+      - - - 30.292797815478245
+          - 60.031402718545095
+        - - 30.364140452565646
+          - 60.031402718545095
+        - - 30.364140452565646
+          - 60.0670362884103
+        - - 30.292797815478245
+          - 60.0670362884103
+        - - 30.292797815478245
+          - 60.031402718545095
+    type: "Polygon"
+  area:
+    coordinates:
+      - - - 30.3
+          - 60.035
+        - - 30.35693826804389
+          - 60.035
+        - - 30.35693826804389
+          - 60.063439006955406
+        - - 30.3
+          - 60.063439006955406
+        - - 30.3
+          - 60.035
+    type: "Polygon"
+  clearanceM: 15
+  exclusions: []
+  job:
+    altitudeM: 100
+    autoBearing: true
+    bearingDeg: 0
+    qualitySource: "Учебный RGB-профиль PF1B: 23,5 мм / 20 мм на 100 м; перекрытие 60% и шаг 15,6 м —
+      параметры сценария. Скорость затвора не подтверждена."
+    sideOverlap: 0.6
+    swathM: 117.5
+    triggerDistanceM: 15.6
+    type: "RGB"
+  name: "Учебная съёмка · 10 км²"
+  objective: "makespan"
+  reservePct: 25
+  reserveSites:
+    - - 30.307117283505487
+      - 60.033920815563526
+    - - 30.32135185051646
+      - 60.033920815563526
+    - - 30.33558641752743
+      - 60.033920815563526
+    - - 30.349820984538404
+      - 60.033920815563526
+  schemaVersion: "1.0"
+  terrain: "unknown"
+  vehicles:
+    - airspeedMps: 9
+      assumptions:
+        - "28 мин — расчётный бюджет учебной конфигурации, не измеренная выносливость."
+        - "Скорость, развороты, набор/снижение и частота кадров требуют калибровки."
+      batteryPct: 100
+      climbMps: 3
+      descentMps: 1
+      effectiveEnduranceMin: 28
+      enabled: true
+      id: "gemini-1"
+      jobs:
+        - "RGB"
+        - "MS"
+      kind: "multirotor"
+      landing:
+        - 30.307117283505487
+        - 60.033920815563526
+      maxWindMps: 10
+      model: "Gemini"
+      name: "Gemini · 01"
+      source: "https://download.geoscan.ru/site-files/gemini/Gemini_Specs_EN_RUS.pdf?v2"
+      start:
+        - 30.307117283505487
+        - 60.033920815563526
+      turnSeconds: 4
+    - airspeedMps: 9
+      assumptions:
+        - "28 мин — расчётный бюджет учебной конфигурации, не измеренная выносливость."
+        - "Скорость, развороты, набор/снижение и частота кадров требуют калибровки."
+      batteryPct: 100
+      climbMps: 3
+      descentMps: 1
+      effectiveEnduranceMin: 28
+      enabled: true
+      id: "gemini-2"
+      jobs:
+        - "RGB"
+        - "MS"
+      kind: "multirotor"
+      landing:
+        - 30.32135185051646
+        - 60.033920815563526
+      maxWindMps: 10
+      model: "Gemini"
+      name: "Gemini · 02"
+      source: "https://download.geoscan.ru/site-files/gemini/Gemini_Specs_EN_RUS.pdf?v2"
+      start:
+        - 30.32135185051646
+        - 60.033920815563526
+      turnSeconds: 4
+    - airspeedMps: 9
+      assumptions:
+        - "28 мин — расчётный бюджет учебной конфигурации, не измеренная выносливость."
+        - "Скорость, развороты, набор/снижение и частота кадров требуют калибровки."
+      batteryPct: 100
+      climbMps: 3
+      descentMps: 1
+      effectiveEnduranceMin: 28
+      enabled: true
+      id: "gemini-3"
+      jobs:
+        - "RGB"
+        - "MS"
+      kind: "multirotor"
+      landing:
+        - 30.33558641752743
+        - 60.033920815563526
+      maxWindMps: 10
+      model: "Gemini"
+      name: "Gemini · 03"
+      source: "https://download.geoscan.ru/site-files/gemini/Gemini_Specs_EN_RUS.pdf?v2"
+      start:
+        - 30.33558641752743
+        - 60.033920815563526
+      turnSeconds: 4
+    - airspeedMps: 9
+      assumptions:
+        - "28 мин — расчётный бюджет учебной конфигурации, не измеренная выносливость."
+        - "Скорость, развороты, набор/снижение и частота кадров требуют калибровки."
+      batteryPct: 100
+      climbMps: 3
+      descentMps: 1
+      effectiveEnduranceMin: 28
+      enabled: true
+      id: "gemini-4"
+      jobs:
+        - "RGB"
+        - "MS"
+      kind: "multirotor"
+      landing:
+        - 30.349820984538404
+        - 60.033920815563526
+      maxWindMps: 10
+      model: "Gemini"
+      name: "Gemini · 04"
+      source: "https://download.geoscan.ru/site-files/gemini/Gemini_Specs_EN_RUS.pdf?v2"
+      start:
+        - 30.349820984538404
+        - 60.033920815563526
+      turnSeconds: 4
+  wind:
+    fromDeg: 270
+    speedMps: 2
+schemaVersion: "2.0"
+terrainModel:
+  elevationM: 0
+  kind: "flat"
+  source: "Синтетическая горизонтальная поверхность; не реальный DEM участка."
+window:
+  end: "2026-09-24T18:00:00+03:00"
+  start: "2026-09-24T10:00:00+03:00"
+  timezone: "Europe/Moscow"

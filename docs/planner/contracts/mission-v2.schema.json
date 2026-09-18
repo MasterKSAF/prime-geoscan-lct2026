@@ -1,0 +1,1156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "2.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{1,60}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "scenario": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "type": "string",
+          "const": "1.0"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "area": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "Polygon"
+            },
+            "coordinates": {
+              "minItems": 1,
+              "maxItems": 5,
+              "type": "array",
+              "items": {
+                "minItems": 4,
+                "maxItems": 70,
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "prefixItems": [
+                    {
+                      "type": "number",
+                      "minimum": -180,
+                      "maximum": 180
+                    },
+                    {
+                      "type": "number",
+                      "minimum": -70,
+                      "maximum": 70
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "required": [
+            "type",
+            "coordinates"
+          ],
+          "additionalProperties": false
+        },
+        "airspace": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "Polygon"
+            },
+            "coordinates": {
+              "minItems": 1,
+              "maxItems": 5,
+              "type": "array",
+              "items": {
+                "minItems": 4,
+                "maxItems": 70,
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "prefixItems": [
+                    {
+                      "type": "number",
+                      "minimum": -180,
+                      "maximum": 180
+                    },
+                    {
+                      "type": "number",
+                      "minimum": -70,
+                      "maximum": 70
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "required": [
+            "type",
+            "coordinates"
+          ],
+          "additionalProperties": false
+        },
+        "exclusions": {
+          "maxItems": 5,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "Polygon"
+              },
+              "coordinates": {
+                "minItems": 1,
+                "maxItems": 5,
+                "type": "array",
+                "items": {
+                  "minItems": 4,
+                  "maxItems": 70,
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number",
+                        "minimum": -180,
+                        "maximum": 180
+                      },
+                      {
+                        "type": "number",
+                        "minimum": -70,
+                        "maximum": 70
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "type",
+              "coordinates"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "reserveSites": {
+          "maxItems": 10,
+          "type": "array",
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "number",
+                "minimum": -180,
+                "maximum": 180
+              },
+              {
+                "type": "number",
+                "minimum": -70,
+                "maximum": 70
+              }
+            ]
+          }
+        },
+        "job": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "RGB",
+                "MS",
+                "IR",
+                "LiDAR",
+                "Geophysics"
+              ]
+            },
+            "altitudeM": {
+              "type": "number",
+              "minimum": 10,
+              "maximum": 500
+            },
+            "swathM": {
+              "type": "number",
+              "minimum": 5,
+              "maximum": 500
+            },
+            "sideOverlap": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 0.95
+            },
+            "triggerDistanceM": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 200
+            },
+            "bearingDeg": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 179
+            },
+            "autoBearing": {
+              "type": "boolean"
+            },
+            "qualitySource": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 400
+            }
+          },
+          "required": [
+            "type",
+            "altitudeM",
+            "swathM",
+            "sideOverlap",
+            "triggerDistanceM",
+            "bearingDeg",
+            "autoBearing",
+            "qualitySource"
+          ],
+          "additionalProperties": false
+        },
+        "wind": {
+          "type": "object",
+          "properties": {
+            "speedMps": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 30
+            },
+            "fromDeg": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 359
+            }
+          },
+          "required": [
+            "speedMps",
+            "fromDeg"
+          ],
+          "additionalProperties": false
+        },
+        "reservePct": {
+          "type": "number",
+          "minimum": 10,
+          "maximum": 80
+        },
+        "clearanceM": {
+          "type": "number",
+          "minimum": 2,
+          "maximum": 100
+        },
+        "objective": {
+          "type": "string",
+          "enum": [
+            "makespan",
+            "flightTime"
+          ]
+        },
+        "terrain": {
+          "type": "string",
+          "const": "unknown"
+        },
+        "vehicles": {
+          "minItems": 1,
+          "maxItems": 10,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9_-]{1,30}$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 60
+              },
+              "model": {
+                "type": "string",
+                "enum": [
+                  "201",
+                  "801",
+                  "Gemini",
+                  "Custom"
+                ]
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "multirotor",
+                  "fixedWing"
+                ]
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "airspeedMps": {
+                "type": "number",
+                "minimum": 2,
+                "maximum": 40
+              },
+              "maxWindMps": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 25
+              },
+              "batteryPct": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "effectiveEnduranceMin": {
+                "type": "number",
+                "minimum": 1,
+                "maximum": 240
+              },
+              "climbMps": {
+                "type": "number",
+                "minimum": 0.5,
+                "maximum": 10
+              },
+              "descentMps": {
+                "type": "number",
+                "minimum": 0.3,
+                "maximum": 10
+              },
+              "turnSeconds": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 30
+              },
+              "start": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -70,
+                    "maximum": 70
+                  }
+                ]
+              },
+              "landing": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -70,
+                    "maximum": 70
+                  }
+                ]
+              },
+              "jobs": {
+                "minItems": 1,
+                "maxItems": 5,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "RGB",
+                    "MS",
+                    "IR",
+                    "LiDAR",
+                    "Geophysics"
+                  ]
+                }
+              },
+              "assumptions": {
+                "minItems": 1,
+                "maxItems": 10,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 400
+                }
+              },
+              "source": {
+                "type": "string",
+                "maxLength": 400
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "model",
+              "kind",
+              "enabled",
+              "airspeedMps",
+              "maxWindMps",
+              "batteryPct",
+              "effectiveEnduranceMin",
+              "climbMps",
+              "descentMps",
+              "turnSeconds",
+              "start",
+              "landing",
+              "jobs",
+              "assumptions",
+              "source"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "name",
+        "area",
+        "airspace",
+        "exclusions",
+        "reserveSites",
+        "job",
+        "wind",
+        "reservePct",
+        "clearanceM",
+        "objective",
+        "terrain",
+        "vehicles"
+      ],
+      "additionalProperties": false
+    },
+    "jobs": {
+      "minItems": 1,
+      "maxItems": 8,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]{1,60}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "area": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "Polygon"
+              },
+              "coordinates": {
+                "minItems": 1,
+                "maxItems": 5,
+                "type": "array",
+                "items": {
+                  "minItems": 4,
+                  "maxItems": 70,
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number",
+                        "minimum": -180,
+                        "maximum": 180
+                      },
+                      {
+                        "type": "number",
+                        "minimum": -70,
+                        "maximum": 70
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "type",
+              "coordinates"
+            ],
+            "additionalProperties": false
+          },
+          "job": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "RGB",
+                  "MS",
+                  "IR",
+                  "LiDAR",
+                  "Geophysics"
+                ]
+              },
+              "altitudeM": {
+                "type": "number",
+                "minimum": 10,
+                "maximum": 500
+              },
+              "swathM": {
+                "type": "number",
+                "minimum": 5,
+                "maximum": 500
+              },
+              "sideOverlap": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 0.95
+              },
+              "triggerDistanceM": {
+                "type": "number",
+                "minimum": 1,
+                "maximum": 200
+              },
+              "bearingDeg": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 179
+              },
+              "autoBearing": {
+                "type": "boolean"
+              },
+              "qualitySource": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 400
+              }
+            },
+            "required": [
+              "type",
+              "altitudeM",
+              "swathM",
+              "sideOverlap",
+              "triggerDistanceM",
+              "bearingDeg",
+              "autoBearing",
+              "qualitySource"
+            ],
+            "additionalProperties": false
+          },
+          "assignedVehicleIds": {
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]{1,60}$"
+            }
+          },
+          "quality": {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "manual",
+                  "camera",
+                  "lidar",
+                  "geophysics"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "documented",
+                  "assumed",
+                  "unknown"
+                ]
+              },
+              "source": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 500
+              },
+              "sensorWidthMm": {
+                "type": "number",
+                "minimum": 0.1,
+                "maximum": 100
+              },
+              "sensorHeightMm": {
+                "type": "number",
+                "minimum": 0.1,
+                "maximum": 100
+              },
+              "focalLengthMm": {
+                "type": "number",
+                "minimum": 0.1,
+                "maximum": 1000
+              },
+              "imageWidthPx": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              "imageHeightPx": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              "forwardOverlap": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 0.95
+              },
+              "minimumIntervalSec": {
+                "type": "number",
+                "minimum": 0.01,
+                "maximum": 60
+              },
+              "maximumGsdCm": {
+                "type": "number",
+                "minimum": 0.01,
+                "maximum": 1000
+              },
+              "shutterSec": {
+                "type": "number",
+                "minimum": 0.000001,
+                "maximum": 10
+              },
+              "maximumBlurPx": {
+                "type": "number",
+                "minimum": 0.01,
+                "maximum": 100
+              },
+              "fieldOfViewDeg": {
+                "type": "number",
+                "minimum": 1,
+                "maximum": 170
+              },
+              "pulseRateHz": {
+                "type": "number",
+                "minimum": 1,
+                "maximum": 2000000
+              },
+              "minimumDensityM2": {
+                "type": "number",
+                "minimum": 0.01,
+                "maximum": 10000
+              },
+              "sampleRateHz": {
+                "type": "number",
+                "minimum": 0.01,
+                "maximum": 10000
+              },
+              "maximumSampleSpacingM": {
+                "type": "number",
+                "minimum": 0.01,
+                "maximum": 1000
+              },
+              "sensorOffsetM": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              }
+            },
+            "required": [
+              "mode",
+              "status",
+              "source"
+            ],
+            "additionalProperties": false
+          },
+          "daylight": {
+            "type": "string",
+            "enum": [
+              "none",
+              "sunAboveHorizon",
+              "topographicClearSky"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "area",
+          "job",
+          "assignedVehicleIds",
+          "quality",
+          "daylight"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "window": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+        },
+        "timezone": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        }
+      },
+      "required": [
+        "start",
+        "end",
+        "timezone"
+      ],
+      "additionalProperties": false
+    },
+    "planning": {
+      "type": "object",
+      "properties": {
+        "preparationSec": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 7200
+        },
+        "serviceSec": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 14400
+        },
+        "separationHorizontalM": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 2000
+        },
+        "separationVerticalM": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 500
+        },
+        "temporalBufferSec": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 600
+        },
+        "separationSource": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "maxSortiesPerVehicle": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "maxComputeMs": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "altitudePreference": {
+          "type": "string",
+          "enum": [
+            "balanced",
+            "lower",
+            "higher"
+          ]
+        },
+        "windModel": {
+          "type": "string",
+          "enum": [
+            "constantAirspeed",
+            "constantGroundSpeed"
+          ]
+        }
+      },
+      "required": [
+        "preparationSec",
+        "serviceSec",
+        "separationHorizontalM",
+        "separationVerticalM",
+        "temporalBufferSec",
+        "separationSource",
+        "maxSortiesPerVehicle",
+        "maxComputeMs",
+        "altitudePreference",
+        "windModel"
+      ],
+      "additionalProperties": false
+    },
+    "batteries": {
+      "minItems": 1,
+      "maxItems": 100,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]{1,60}$"
+          },
+          "vehicleId": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]{1,60}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "initialPct": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "readyAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+          },
+          "rechargeSec": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 60,
+                "maximum": 86400
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "cycles": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "commissionedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "id",
+          "vehicleId",
+          "name",
+          "initialPct",
+          "readyAt",
+          "rechargeSec",
+          "cycles",
+          "commissionedAt",
+          "source"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "restrictions": {
+      "maxItems": 20,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]{1,60}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "noFlight",
+              "obstacle"
+            ]
+          },
+          "geometry": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "Polygon"
+              },
+              "coordinates": {
+                "minItems": 1,
+                "maxItems": 5,
+                "type": "array",
+                "items": {
+                  "minItems": 4,
+                  "maxItems": 70,
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number",
+                        "minimum": -180,
+                        "maximum": 180
+                      },
+                      {
+                        "type": "number",
+                        "minimum": -70,
+                        "maximum": 70
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "type",
+              "coordinates"
+            ],
+            "additionalProperties": false
+          },
+          "minAltitudeM": {
+            "type": "number",
+            "minimum": -500,
+            "maximum": 6000
+          },
+          "maxAltitudeM": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": -500,
+                "maximum": 6000
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "startAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "endAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "kind",
+          "geometry",
+          "minAltitudeM",
+          "maxAltitudeM",
+          "startAt",
+          "endAt",
+          "source"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "terrainModel": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "unknown"
+            },
+            "source": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            }
+          },
+          "required": [
+            "kind",
+            "source"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "flat"
+            },
+            "elevationM": {
+              "type": "number",
+              "minimum": -500,
+              "maximum": 6000
+            },
+            "source": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            }
+          },
+          "required": [
+            "kind",
+            "elevationM",
+            "source"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "flightEnvelope": {
+      "type": "object",
+      "properties": {
+        "minSurveyAltitudeM": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "maxAltitudeM": {
+          "type": "number",
+          "minimum": 10,
+          "maximum": 6000
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "minSurveyAltitudeM",
+        "maxAltitudeM",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "environment": {
+      "type": "object",
+      "properties": {
+        "cloudBaseM": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 20000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cloudClearanceM": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 6000
+        },
+        "visibilityM": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "minVisibilityM": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "cloudBaseM",
+        "cloudClearanceM",
+        "visibilityM",
+        "minVisibilityM",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 2000
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "name",
+    "scenario",
+    "jobs",
+    "window",
+    "planning",
+    "batteries",
+    "restrictions",
+    "terrainModel",
+    "flightEnvelope",
+    "notes"
+  ],
+  "additionalProperties": false
+}

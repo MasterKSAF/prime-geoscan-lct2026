@@ -1,0 +1,796 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-18",
+  "status": "private-repository-engineering-review-not-final-contest-submission",
+  "engine_version": "0.3.0",
+  "mission_schema_version": "2.0",
+  "flight_ready": false,
+  "full_specification_completed": false,
+  "release_id": null,
+  "repository_url": "https://github.com/MasterKSAF/prime-geoscan-lct2026",
+  "repository_visibility": "private",
+  "expert_package_index": "docs/planner/submission/README.md",
+  "repository_verification": "docs/planner/submission/REPOSITORY-CHECK-2026-09-18.md",
+  "public_demo_url": null,
+  "code_changed_by_plan_revision": true,
+  "code_change_scope": "Mission v2 contract, 2D workbench/wizard, safe import/export, IndexedDB library, multi-sortie scheduling, battery resource model, quality formulas, 4D/clearance/separation validation, evidence CLI and tests. Geoscan 201, real DEM and release acceptance remain incomplete.",
+  "status_document": "docs/planner/implementation-status.md",
+  "current_patch_report": "docs/planner/fixes-0.2.1.md",
+  "current_patch_evidence_directory": "output/mission-fixes-0.2.1",
+  "current_feature_report": "docs/planner/showcase-0.3.0.md",
+  "current_feature_evidence_directory": "output/mission-showcase-0.3.0",
+  "current_demo_guide": "docs/planner/demo-guide.html",
+  "current_scenario_catalog": "docs/planner/scenarios.md",
+  "current_summary": "output/mission-showcase-0.3.0/summary.json",
+  "verification_snapshot": {
+    "engine_version": "0.2.0",
+    "historical": true,
+    "superseded_by_patch_report": "docs/planner/fixes-0.2.1.md",
+    "test_command": "npm run test:planner",
+    "tests": {
+      "observed": 74,
+      "pass": 74,
+      "fail": 0,
+      "observation": "Full local and Docker-build command runs on 2026-09-17; pre-release snapshot",
+      "persisted_test_report": "output/mission-verification/unit-tests.xml"
+    },
+    "typecheck": {
+      "command": "npm run typecheck",
+      "observed_status": "pass"
+    },
+    "development_api": {
+      "status": "historical_dev_model_run_superseded_by_docker",
+      "report_path": "output/mission-verification/report.json",
+      "created_at": "2026-09-17T11:09:47.885Z",
+      "base_url": "http://127.0.0.1:3015",
+      "checks": 10,
+      "scenario_statuses": {
+        "1km2": [
+          "feasible_model",
+          "feasible_model"
+        ],
+        "10km2": [
+          "feasible_model",
+          "feasible_model"
+        ],
+        "100km2": [
+          "not_found",
+          "not_found"
+        ]
+      },
+      "scope": "Report is a measured local snapshot, not proof of successful 100 km2 planning or a fixed hardware performance guarantee."
+    },
+    "independent_pass": {
+      "status": "passes-declared-model",
+      "report_path": "output/mission-docker-verification/independent-check.json",
+      "created_at": "2026-09-17T11:29:40.232Z",
+      "checks": 42,
+      "pass": 36,
+      "unknown": 6,
+      "fail": 0,
+      "scope": "Separate validation pass of Docker API evidence with shared geometry library; not independent external certification."
+    },
+    "docker_v2": {
+      "status": "build_api_runtime_and_browser_core_verified_release_pending",
+      "output_directory": "output/mission-docker-verification",
+      "report_path": "output/mission-docker-verification/report.json",
+      "created_at": "2026-09-17T11:29:38.293Z",
+      "base_url": "http://127.0.0.1:3016",
+      "checks": 10,
+      "independent_check_path": "output/mission-docker-verification/independent-check.json",
+      "runtime_path": "output/mission-docker-verification/runtime.json",
+      "runtime_captured_at": "2026-09-17T11:29:39.078Z",
+      "image_id": "sha256:511e3e383cd4dd4783818da048fb67089588cb0585b8f24422ab3f32b197ea20",
+      "image_digest": null,
+      "image_digest_note": "Verified local Docker imageId; no registry manifest digest is asserted.",
+      "build_checks": {
+        "tests": 74,
+        "pass": 74,
+        "fail": 0,
+        "typecheck": "pass"
+      },
+      "runtime_health": "healthy",
+      "runtime_user": "node",
+      "limits": {
+        "cpus": 2,
+        "memory_bytes": 1073741824
+      },
+      "source_hashes_compared": 21,
+      "source_hash_mismatches": 0,
+      "scenarios": [
+        {
+          "area_km2": 1,
+          "computation_ms": 147,
+          "statuses": [
+            "feasible_model",
+            "feasible_model"
+          ],
+          "sorties": [
+            3,
+            3
+          ]
+        },
+        {
+          "area_km2": 10,
+          "computation_ms": 891,
+          "statuses": [
+            "feasible_model",
+            "feasible_model"
+          ],
+          "sorties": [
+            34,
+            34
+          ]
+        },
+        {
+          "area_km2": 100,
+          "computation_ms": 68,
+          "statuses": [
+            "not_found",
+            "not_found"
+          ],
+          "sorties": [
+            0,
+            0
+          ]
+        }
+      ],
+      "measurement_scope": "Single bounded local run on the recorded container; 100 km2 is a verified honest refusal, not a solved mission.",
+      "fresh_container_repeat": "passed_same_image_not_two_clean_builds",
+      "clean_release_runs": 0,
+      "repeat_report_path": "output/mission-docker-repeat/report.json",
+      "repeat_runtime_path": "output/mission-docker-repeat/runtime.json",
+      "reproducibility_path": "output/mission-docker-repeat/reproducibility.json",
+      "fresh_containers_verified": 2,
+      "fresh_container_comparison": {
+        "status": "pass",
+        "created_at": "2026-09-17T11:29:49.423Z",
+        "first_container": "d7ad3545b214cf9a833bbb343e90581b17ba46d005a2f9f495117ae0c27c9388",
+        "second_container": "1eca28102bc56c52d1263abd2c963be32d329dc58f7c03b8234af8f2a786c05e",
+        "image_id": "sha256:511e3e383cd4dd4783818da048fb67089588cb0585b8f24422ab3f32b197ea20",
+        "area_cases": 3,
+        "identical": [
+          {
+            "area_km2": 1,
+            "input_hash": "8656b1d9fe0b01b977a2c8b88e64ec6f0c8f19190a89ddc0c35c292b25490ae6",
+            "fields": [
+              "objectives",
+              "statuses",
+              "sorties",
+              "metrics",
+              "coverage",
+              "checks"
+            ]
+          },
+          {
+            "area_km2": 10,
+            "input_hash": "923257199f312c350734c6c2b1fd77a29058888eba8402643e9fcdd7f65c33b2",
+            "fields": [
+              "objectives",
+              "statuses",
+              "sorties",
+              "metrics",
+              "coverage",
+              "checks"
+            ]
+          },
+          {
+            "area_km2": 100,
+            "input_hash": "b7ea0d3654fc213f2f580abea2609d4c140eecb30a8c20e2c80c29eb62ed7cbc",
+            "fields": [
+              "objectives",
+              "statuses",
+              "sorties",
+              "metrics",
+              "coverage",
+              "checks"
+            ]
+          }
+        ]
+      },
+      "repeat_scenarios": [
+        {
+          "area_km2": 1,
+          "computation_ms": 198,
+          "statuses": [
+            "feasible_model",
+            "feasible_model"
+          ],
+          "sorties": [
+            3,
+            3
+          ]
+        },
+        {
+          "area_km2": 10,
+          "computation_ms": 873,
+          "statuses": [
+            "feasible_model",
+            "feasible_model"
+          ],
+          "sorties": [
+            34,
+            34
+          ]
+        },
+        {
+          "area_km2": 100,
+          "computation_ms": 44,
+          "statuses": [
+            "not_found",
+            "not_found"
+          ],
+          "sorties": [
+            0,
+            0
+          ]
+        }
+      ],
+      "repeat_runtime_captured_at": "2026-09-17T11:29:49.204Z"
+    },
+    "browser_v2": {
+      "status": "core_dev_and_docker_scenarios_verified_not_full_acceptance",
+      "dev_report_path": "output/playwright/mission-v2-ui-checks.md",
+      "docker_report_path": "output/playwright/mission-v2-docker-checks.md",
+      "docker_checks_path": "output/playwright/mission-v2-docker-checks.json",
+      "checked_at": "2026-09-17T11:32:37.493Z",
+      "image_id": "sha256:511e3e383cd4dd4783818da048fb67089588cb0585b8f24422ab3f32b197ea20",
+      "checks": 24,
+      "pass": 24,
+      "fail": 0,
+      "page_error_count": 0,
+      "downloaded_evidence_path": "output/playwright/mission-v2-docker-evidence.json",
+      "downloaded_evidence_check_path": "output/playwright/mission-v2-docker-evidence-report.json",
+      "downloaded_evidence_checks": {
+        "status": "passes-declared-model",
+        "checks": 43,
+        "pass": 37,
+        "unknown": 6,
+        "fail": 0,
+        "scope": "Actual browser download, including approval binding; model checks not flight certification."
+      },
+      "reproduction_script": "scripts/verify-mission-browser.js",
+      "trace_path": null,
+      "screenshot_paths": [
+        "output/playwright/mission-v2-docker-desktop.png",
+        "output/playwright/mission-v2-docker-simulation.png",
+        "output/playwright/mission-v2-docker-geometry-preview.png",
+        "output/playwright/mission-v2-docker-geometry-preview-mobile.png",
+        "output/playwright/mission-v2-docker-mobile.png"
+      ],
+      "scope": "Real HTTP solve, explicit approval, download, simulation, GeoJSON hole import/recalculation/stale, mobile layout and centered dialog. Does not cover every job combination, every playback position, full offline operation or a complete accessibility audit."
+    }
+  },
+  "items": [
+    {
+      "id": "S01",
+      "name": "Исходники веба, ядра и тестов",
+      "status": "implemented_model_not_release_ready",
+      "source_paths": [
+        "app/planner",
+        "app/api/planner",
+        "components/planner",
+        "lib/planner",
+        "tests/mission-buffer.test.ts",
+        "tests/mission-contract.test.ts",
+        "tests/mission-engine.test.ts",
+        "tests/mission-export.test.ts",
+        "tests/mission-io.test.ts",
+        "tests/mission-library.test.ts",
+        "tests/planner.test.ts",
+        "package.json",
+        "package-lock.json"
+      ],
+      "remaining": [
+        "Заморозить release ID и полный набор исходников/зависимостей.",
+        "201, DEM и подтверждённые комплектации не готовы.",
+        "Не переносить зелёные unit-тесты на весь объём ТЗ."
+      ],
+      "release_path": null,
+      "sha256": null
+    },
+    {
+      "id": "S02",
+      "name": "Docker и запуск",
+      "status": "current_docker_build_api_browser_and_fresh_container_repeat_verified",
+      "source_paths": [
+        "Dockerfile.planner",
+        "compose.planner.yaml",
+        "docs/planner/README.md",
+        "scripts/verify-missions.ts",
+        "output/mission-docker-verification/report.json",
+        "output/mission-docker-verification/runtime.json",
+        "output/mission-verification/unit-tests.xml",
+        "scripts/capture-mission-runtime.ts",
+        "scripts/compare-mission-runs.ts",
+        "output/mission-docker-repeat/runtime.json",
+        "output/mission-docker-repeat/reproducibility.json",
+        "docs/planner/implementation-2026-09-17-qa.md"
+      ],
+      "remaining": [
+        "Текущая модельная приёмка не равна двум независимым чистым build/run release.",
+        "Для полной сдачи нужны замороженный release и отдельный полный offline-сценарий."
+      ],
+      "release_path": null,
+      "sha256": null
+    },
+    {
+      "id": "S03",
+      "name": "Концепция, архитектура и алгоритм",
+      "status": "documented_with_open_scope",
+      "source_paths": [
+        "docs/planner/README.md",
+        "docs/planner/api-v2.md",
+        "docs/planner/implementation-prompt.md",
+        "docs/planner/stage1-master-plan.md",
+        "docs/planner/mission-workflow-spec.md",
+        "lib/planner/mission-engine.ts",
+        "lib/planner/mission-validation.ts",
+        "lib/planner/quality.ts",
+        "lib/planner/geometry.ts",
+        "docs/planner/implementation-2026-09-17-qa.md"
+      ],
+      "remaining": [
+        "Согласовать обязательные упрощения и оставшийся охват с экспертами.",
+        "Зафиксировать финальное описание используемого алгоритма и точные эталоны."
+      ],
+      "release_path": null,
+      "sha256": null
+    },
+    {
+      "id": "S04",
+      "name": "Схемы, API и примеры",
+      "status": "implemented_v2_contract",
+      "source_paths": [
+        "lib/planner/mission-schema.ts",
+        "lib/planner/schema.ts",
+        "docs/planner/api-v2.md",
+        "docs/planner/contracts/mission-v2.schema.json",
+        "docs/planner/contracts/example-1km2.json",
+        "docs/planner/contracts/example-1km2.yaml",
+        "docs/planner/contracts/example-1km2.md",
+        "docs/planner/contracts/example-10km2.json",
+        "docs/planner/contracts/example-10km2.yaml",
+        "docs/planner/contracts/example-100km2.json",
+        "docs/planner/contracts/example-100km2.yaml",
+        "scripts/export-mission-contract.ts"
+      ],
+      "remaining": [
+        "Сопоставить с фактическим входом экспертов после его получения.",
+        "Формального OpenAPI-документа нет; имеется JSON Schema и текстовое описание API."
+      ],
+      "release_path": null,
+      "sha256": null
+    },
+    {
+      "id": "S05",
+      "name": "Руководство, ограничения и профили",
+      "status": "documented_and_core_user_workflow_verified",
+      "source_paths": [
+        "docs/planner/README.md",
+        "docs/planner/implementation-status.md",
+        "docs/planner/standards-profiles-and-missions.md",
+        "docs/planner/mission-workflow-spec.md",
+        "docs/planner/expert-request.md",
+        "lib/planner/quality.ts",
+        "lib/planner/mission-demo.ts",
+        "output/playwright/mission-v2-ui-checks.md",
+        "docs/planner/implementation-2026-09-17-qa.md",
+        "output/playwright/mission-v2-docker-checks.md"
+      ],
+      "remaining": [
+        "Полный охват всех комбинаций работ, доступности и восстановления в браузере ещё не принят.",
+        "Учебные параметры, паспортные источники и реальные подтверждённые комплектации не смешивать."
+      ],
+      "release_path": null,
+      "sha256": null
+    },
+    {
+      "id": "S06",
+      "name": "Доказательства E01–E16 и benchmark",
+      "status": "current_model_api_browser_and_repeat_verified_release_evidence_partial",
+      "source_paths": [
+        "docs/planner/implementation-status.md",
+        "scripts/verify-missions.ts",
+        "scripts/verify-mission-evidence.ts",
+        "output/mission-verification/report.json",
+        "output/mission-verification/independent-check.json",
+        "output/mission-verification/evidence-1km2.json",
+        "output/mission-verification/mission-1km2.geojson",
+        "output/mission-verification/mission-1km2.kml",
+        "output/mission-verification/result-1km2.json",
+        "output/mission-verification/result-10km2.json",
+        "output/mission-verification/result-100km2.json",
+        "output/mission-verification/unit-tests.xml",
+        "output/mission-docker-verification/report.json",
+        "output/mission-docker-verification/runtime.json",
+        "output/mission-docker-verification/independent-check.json",
+        "output/mission-docker-verification/evidence-1km2.json",
+        "output/mission-docker-verification/mission-1km2.geojson",
+        "output/mission-docker-verification/mission-1km2.kml",
+        "output/mission-docker-verification/result-1km2.json",
+        "output/mission-docker-verification/result-10km2.json",
+        "output/mission-docker-verification/result-100km2.json",
+        "output/playwright/mission-v2-ui-checks.md",
+        "scripts/capture-mission-runtime.ts",
+        "scripts/compare-mission-runs.ts",
+        "scripts/verify-mission-browser.js",
+        "docs/planner/implementation-2026-09-17-qa.md",
+        "output/mission-docker-repeat/report.json",
+        "output/mission-docker-repeat/runtime.json",
+        "output/mission-docker-repeat/reproducibility.json",
+        "output/playwright/mission-v2-docker-checks.md",
+        "output/playwright/mission-v2-docker-checks.json",
+        "output/playwright/mission-v2-docker-evidence.json",
+        "output/playwright/mission-v2-docker-evidence-report.json",
+        "output/playwright/mission-v2-docker-desktop.png",
+        "output/playwright/mission-v2-docker-simulation.png",
+        "output/playwright/mission-v2-docker-geometry-preview.png",
+        "output/playwright/mission-v2-docker-geometry-preview-mobile.png",
+        "output/playwright/mission-v2-docker-mobile.png"
+      ],
+      "remaining": [
+        "Закрепить release-run и файлы для каждой строки E01–E16.",
+        "Измерить фиксированный корпус и пиковую память; два повтора не являются полным benchmark.",
+        "100 км² возвращает not_found; три точных малых эталона и внешнее воспроизведение не готовы."
+      ],
+      "release_path": null,
+      "sha256": null
+    },
+    {
+      "id": "S07",
+      "name": "Два чистых запуска версии сдачи",
+      "status": "not_run_for_release",
+      "source_paths": [
+        "Dockerfile.planner",
+        "compose.planner.yaml",
+        "docs/planner/README.md",
+        "scripts/verify-missions.ts",
+        "scripts/verify-mission-evidence.ts",
+        "scripts/capture-mission-runtime.ts",
+        "scripts/compare-mission-runs.ts",
+        "output/mission-docker-repeat/report.json",
+        "output/mission-docker-repeat/runtime.json",
+        "output/mission-docker-repeat/reproducibility.json"
+      ],
+      "remaining": [
+        "Два свежих контейнера одного образа проверены с идентичными модельными результатами; это НЕ две независимые чистые сборки.",
+        "Заморозить release, выполнить два независимых чистых build/run, сохранить среду, digests, входы и результаты."
+      ],
+      "release_path": null,
+      "sha256": null,
+      "partial_verification": {
+        "fresh_containers": 2,
+        "same_image": "sha256:511e3e383cd4dd4783818da048fb67089588cb0585b8f24422ab3f32b197ea20",
+        "status": "pass",
+        "report": "output/mission-docker-repeat/reproducibility.json",
+        "clean_release_builds_verified": 0
+      }
+    },
+    {
+      "id": "S08",
+      "name": "Презентация, PDF и демо-видео",
+      "status": "template_available_not_final",
+      "source_paths": [
+        "docs/geoscan-md/lct2026-presentation-template.md"
+      ],
+      "remaining": [
+        "Заполнить финальный шаблон; цифры и скринкаст должны происходить из одного проверенного release.",
+        "Репетиция защиты и видео новой версии не подтверждены."
+      ],
+      "release_path": null,
+      "sha256": null
+    },
+    {
+      "id": "S09",
+      "name": "Лицензии, атрибуция и секреты",
+      "status": "release_audit_not_run",
+      "source_paths": [
+        "package.json",
+        "package-lock.json",
+        "components/planner/mission-map.tsx",
+        "docs/planner/README.md"
+      ],
+      "remaining": [
+        "Провести отдельный аудит лицензий и redistribution, атрибуции, исходников и секретов.",
+        "Приватные записи, чужие установщики и неподтверждённые изображения исключить из публикации."
+      ],
+      "release_path": null,
+      "sha256": null
+    },
+    {
+      "id": "S10",
+      "name": "Репозиторий, архив, права жюри и сдача",
+      "status": "awaiting_delivery_decision_and_release",
+      "source_paths": [
+        "docs/planner/submission-manifest.json"
+      ],
+      "remaining": [
+        "Согласовать место и режим публикации.",
+        "Сформировать чистый архив/репозиторий, проверить доступ жюри и сохранить фактическое подтверждение сдачи."
+      ],
+      "release_path": null,
+      "sha256": null
+    }
+  ],
+  "evidence_ids": [
+    "E01",
+    "E02",
+    "E03",
+    "E04",
+    "E05",
+    "E06",
+    "E07",
+    "E08",
+    "E09",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+  ],
+  "evidence_matrix": [
+    {
+      "id": "E01",
+      "status": "implemented_tested_bounded_v2",
+      "source_paths": [
+        "tests/mission-contract.test.ts",
+        "tests/mission-io.test.ts",
+        "tests/mission-library.test.ts",
+        "output/mission-verification/report.json",
+        "output/mission-docker-verification/report.json"
+      ],
+      "remaining": [
+        "Подтвердить фактический вход экспертов; расширять корпус без молчаливого изменения контракта."
+      ],
+      "release_run_id": null,
+      "release_evidence_path": null
+    },
+    {
+      "id": "E02",
+      "status": "partial",
+      "source_paths": [
+        "tests/mission-engine.test.ts",
+        "output/mission-verification/result-1km2.json",
+        "output/mission-verification/result-10km2.json"
+      ],
+      "remaining": [
+        "Три малых точных/ручных эталона; независимая проверка baseline."
+      ],
+      "release_run_id": null,
+      "release_evidence_path": null
+    },
+    {
+      "id": "E03",
+      "status": "partial",
+      "source_paths": [
+        "tests/mission-engine.test.ts",
+        "tests/mission-buffer.test.ts"
+      ],
+      "remaining": [
+        "DEM/NoData/реальные системы высот."
+      ],
+      "release_run_id": null,
+      "release_evidence_path": null
+    },
+    {
+      "id": "E04",
+      "status": "tested_declared_linear_model",
+      "source_paths": [
+        "tests/mission-engine.test.ts",
+        "lib/planner/mission-validation.ts"
+      ],
+      "remaining": [
+        "Подтверждение физических допусков и навигационной модели."
+      ],
+      "release_run_id": null,
+      "release_evidence_path": null
+    },
+    {
+      "id": "E05",
+      "status": "partial",
+      "source_paths": [
+        "lib/planner/mission-validation.ts",
+        "output/mission-verification/independent-check.json"
+      ],
+      "remaining": [
+        "Независимые короткие пути к альтернативным посадкам; модель отказов."
+      ],
+      "release_run_id": null,
+      "release_evidence_path": null
+    },
+    {
+      "id": "E06",
+      "status": "tested_declared_linear_resource_model",
+      "source_paths": [
+        "tests/mission-engine.test.ts",
+        "tests/planner.test.ts"
+      ],
+      "remaining": [
+        "Калибровка реальной доступной ёмкости и динамики."
+      ],
+      "release_run_id": null,
+      "release_evidence_path": null
+    },
+    {
+      "id": "E07",
+      "status": "tested_constant_wind_model",
+      "source_paths": [
+        "tests/planner.test.ts",
+        "tests/mission-engine.test.ts"
+      ],
+      "remaining": [
+        "Меняющийся ветер/погодные данные и самолётные заходы не реализованы."
+      ],
+      "release_run_id": null,
+      "release_evidence_path": null
+    },
+    {
+      "id": "E08",
+      "status": "partial",
+      "source_paths": [
+        "tests/mission-contract.test.ts",
+        "lib/planner/quality.ts"
+      ],
+      "remaining": [
+        "Реальные фотоотпечатки/стыки/триггеры и эталон удаления кадров."
+      ],
+      "release_run_id": null,
+      "release_evidence_path": null
+    },
+    {
+      "id": "E09",
+      "status": "partial",
+      "source_paths": [
+        "tests/mission-contract.test.ts",
+        "tests/mission-engine.test.ts"
+      ],
+      "remaining": [
+        "Геоскан 201, подтверждённые сенсорные комплектации, сквозные примеры всех пяти работ."
+      ],
+      "release_run_id": null,
+      "release_evidence_path": null
+    },
+    {
+      "id": "E10",
+      "status": "tested_declared_resource_schedule_model",
+      "source_paths": [
+        "tests/mission-engine.test.ts"
+      ],
+      "remaining": [
+        "Реальные свойства баз и зарядной инфраструктуры требуют источников."
+      ],
+      "release_run_id": null,
+      "release_evidence_path": null
+    },
+    {
+      "id": "E11",
+      "status": "partial",
+      "source_paths": [
+        "tests/mission-io.test.ts",
+        "tests/mission-export.test.ts",
+        "tests/mission-library.test.ts"
+      ],
+      "remaining": [
+        "Round-trip целевой внешней программой; исполнимость автопилотом не подтверждена."
+      ],
+      "release_run_id": null,
+      "release_evidence_path": null
+    },
+    {
+      "id": "E12",
+      "status": "core_dev_and_docker_browser_scenarios_verified_full_scope_partial",
+      "source_paths": [
+        "components/planner/mission-workbench.tsx",
+        "components/planner/mission-wizard.tsx",
+        "components/planner/mission-map.tsx",
+        "tests/mission-library.test.ts",
+        "output/playwright/mission-v2-ui-checks.md",
+        "output/mission-docker-verification/report.json",
+        "output/mission-docker-verification/runtime.json",
+        "output/playwright/mission-v2-docker-checks.md",
+        "output/playwright/mission-v2-docker-checks.json",
+        "output/playwright/mission-v2-docker-evidence-report.json",
+        "scripts/verify-mission-browser.js"
+      ],
+      "remaining": [
+        "Все комбинации работ, browser restore/конфликт вкладок, клавиатурная доступность, полностью отключённая сеть и крайние позиции перемотки."
+      ],
+      "release_run_id": null,
+      "release_evidence_path": null
+    },
+    {
+      "id": "E13",
+      "status": "same_image_fresh_containers_reproduced_clean_release_builds_not_verified",
+      "source_paths": [
+        "Dockerfile.planner",
+        "compose.planner.yaml",
+        "scripts/verify-missions.ts",
+        "output/mission-docker-verification/report.json",
+        "output/mission-docker-verification/runtime.json",
+        "output/mission-verification/unit-tests.xml",
+        "output/mission-docker-repeat/report.json",
+        "output/mission-docker-repeat/runtime.json",
+        "output/mission-docker-repeat/reproducibility.json",
+        "scripts/capture-mission-runtime.ts",
+        "scripts/compare-mission-runs.ts"
+      ],
+      "remaining": [
+        "Два независимых чистых build/run замороженного release и полный offline-сценарий после подготовки."
+      ],
+      "release_run_id": null,
+      "release_evidence_path": null
+    },
+    {
+      "id": "E14",
+      "status": "partial",
+      "source_paths": [
+        "output/mission-verification/report.json",
+        "scripts/verify-missions.ts",
+        "output/mission-docker-verification/report.json",
+        "output/mission-docker-repeat/report.json",
+        "output/mission-docker-repeat/reproducibility.json"
+      ],
+      "remaining": [
+        "Фиксированный корпус, cold/warm, пиковая память, одинаковый бюджет/качество, 2/4/8/10 БВС."
+      ],
+      "release_run_id": null,
+      "release_evidence_path": null
+    },
+    {
+      "id": "E15",
+      "status": "partial",
+      "source_paths": [
+        "tests/mission-engine.test.ts",
+        "output/mission-verification/result-100km2.json"
+      ],
+      "remaining": [
+        "Проверяемые рекомендации исправления с перерасчётом; общей неразрешимости решатель не доказывает."
+      ],
+      "release_run_id": null,
+      "release_evidence_path": null
+    },
+    {
+      "id": "E16",
+      "status": "not_verified_for_release",
+      "source_paths": [
+        "docs/planner/submission-manifest.json"
+      ],
+      "remaining": [
+        "Чистый комплект, права/лицензии/секреты, итоговые слайды/видео, репетиция и факт сдачи."
+      ],
+      "release_run_id": null,
+      "release_evidence_path": null
+    }
+  ],
+  "planned_artifact_locations": [],
+  "release_gates": [
+    "No claim of full specification completion while mandatory airframe/terrain/profile scope is unresolved.",
+    "All E01–E16 evidence states must remain honest; model unknowns and failed scenarios are preserved.",
+    "Two clean runs, UI trace, licenses/secrets review and delivery permission precede publication.",
+    "Hash the actual frozen release and artifacts; do not populate hashes from guessed or stale values."
+  ],
+  "excluded_by_default": [
+    "private meeting recordings",
+    "third-party program installers",
+    "credentials and tokens",
+    "unrelated hackathon tracks",
+    "third-party datasets or imagery without redistribution permission"
+  ],
+  "artifact_locations": [
+    {
+      "path": "output/mission-docker-verification",
+      "status": "historical_v0.2.0_model_api_runtime_evidence"
+    },
+    {
+      "path": "output/mission-docker-repeat",
+      "status": "fresh_container_reproduction_same_image"
+    },
+    {
+      "path": "output/playwright/mission-v2-docker-checks.md",
+      "status": "core_browser_scenarios_verified_not_full_release_acceptance"
+    }
+  ]
+}

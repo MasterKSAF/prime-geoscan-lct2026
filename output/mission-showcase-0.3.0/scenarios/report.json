@@ -1,0 +1,3618 @@
+{
+  "createdAt": "2026-09-17T19:06:50.375Z",
+  "base": "http://127.0.0.1:3016",
+  "engineVersion": "0.3.0",
+  "flightReady": false,
+  "retries": 0,
+  "plannedScenarios": 9,
+  "postRequests": 9,
+  "status": "pass",
+  "scenarios": [
+    {
+      "id": "automatic-tradeoff",
+      "title": "Автовыбор БВС: время, налёт и баланс",
+      "expected": "feasible_model",
+      "status": "pass",
+      "inputHash": "c7b8df260509051e0fefccfc56b47450866e67ce9606812d550471a1854c81f3",
+      "httpMs": 128.26570000000004,
+      "computationMs": 88,
+      "candidates": [
+        {
+          "label": "legacy-1",
+          "candidateId": "makespan",
+          "objective": "makespan",
+          "status": "feasible_model",
+          "verificationStatus": "passes-declared-model",
+          "metrics": {
+            "makespanSec": 1404.9177560422577,
+            "flightTimeSec": 1804.633243752292,
+            "distanceM": 11638.552730640527,
+            "sortieCount": 2,
+            "vehicleCount": 2,
+            "coveragePct": 99.9999999936793,
+            "grossCoveragePct": 99.9999999936793,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 29.171938715239904
+          },
+          "vehicles": [
+            "rgb-center",
+            "rgb-near"
+          ],
+          "bearings": [
+            {
+              "jobId": "rgb-01",
+              "bearingDeg": 0
+            }
+          ],
+          "independentChecks": 47,
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_rgb-01_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            },
+            {
+              "id": "BASELINE_EXPORT",
+              "status": "unknown",
+              "title": "Повторная проверка baseline",
+              "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+            }
+          ]
+        },
+        {
+          "label": "legacy-2",
+          "candidateId": "flightTime",
+          "objective": "flightTime",
+          "status": "feasible_model",
+          "verificationStatus": "passes-declared-model",
+          "metrics": {
+            "makespanSec": 2061.4971030547304,
+            "flightTimeSec": 1281.4971030547304,
+            "distanceM": 11457.965236656768,
+            "sortieCount": 2,
+            "vehicleCount": 1,
+            "coveragePct": 99.9999999936793,
+            "grossCoveragePct": 99.9999999936793,
+            "batteryChanges": 1,
+            "minimumRemainingPct": 32.226678429561076
+          },
+          "vehicles": [
+            "rgb-fast"
+          ],
+          "bearings": [
+            {
+              "jobId": "rgb-01",
+              "bearingDeg": 0
+            }
+          ],
+          "independentChecks": 47,
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_rgb-01_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            },
+            {
+              "id": "BASELINE_EXPORT",
+              "status": "unknown",
+              "title": "Повторная проверка baseline",
+              "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+            }
+          ]
+        },
+        {
+          "label": "balanced",
+          "candidateId": "balanced",
+          "objective": "makespan",
+          "status": "feasible_model",
+          "verificationStatus": "passes-declared-model",
+          "metrics": {
+            "makespanSec": 1580.5146091298625,
+            "flightTimeSec": 1418.536807330946,
+            "distanceM": 11418.308498764847,
+            "sortieCount": 2,
+            "vehicleCount": 2,
+            "coveragePct": 100,
+            "grossCoveragePct": 100,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 25.718590217434652
+          },
+          "vehicles": [
+            "rgb-fast",
+            "rgb-near"
+          ],
+          "bearings": [
+            {
+              "jobId": "rgb-01",
+              "bearingDeg": 90
+            }
+          ],
+          "independentChecks": 46,
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_rgb-01_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            }
+          ]
+        }
+      ],
+      "recommendation": {
+        "policy": "balanced-normalized-v1",
+        "weights": {
+          "makespan": 0.5,
+          "flightTime": 0.5
+        },
+        "score": 0.2638866177317116,
+        "normalized": {
+          "makespan": 0.265815221831477,
+          "flightTime": 0.2619580136319463
+        },
+        "ranges": {
+          "makespanSec": {
+            "min": 1404.9177560422577,
+            "max": 2065.515188641248
+          },
+          "flightTimeSec": {
+            "min": 1281.4971030547304,
+            "max": 1804.633243752292
+          }
+        },
+        "poolSize": 6,
+        "distinctPlanCount": 5,
+        "samePlan": false,
+        "samePlanAs": [],
+        "explanation": "Компромисс 50/50 среди найденных полных вариантов без проваленных модельных проверок: 0,5 × (T − min T)/(max T − min T) + 0,5 × (F − min F)/(max F − min F), меньше лучше. T — время завершения, F — суммарный налёт; при нулевом диапазоне компонент равен 0. При равной оценке выбраны больший остаток ресурса, затем меньше вылетов, затем детерминированный ключ плана. Налёт — ресурсный proxy, не физический износ оборудования. Глобальная оптимальность не доказана.",
+        "resourceProxy": "flightTimeSec"
+      },
+      "checks": [
+        {
+          "id": "ENGINE_VERSION",
+          "status": "pass",
+          "title": "ENGINE_VERSION",
+          "detail": "Required 0.3.0."
+        },
+        {
+          "id": "INPUT_HASH",
+          "status": "pass",
+          "title": "INPUT_HASH",
+          "detail": "Submitted and returned documents have the same canonical hash."
+        },
+        {
+          "id": "LEGACY_CANDIDATES",
+          "status": "pass",
+          "title": "LEGACY_CANDIDATES",
+          "detail": "Exactly two legacy candidates in objective order."
+        },
+        {
+          "id": "RECOMMENDATION_GATE",
+          "status": "pass",
+          "title": "RECOMMENDATION_GATE",
+          "detail": "Positive examples require a recommendation; rejected examples must not receive one."
+        },
+        {
+          "id": "legacy-1_MODEL_ONLY",
+          "status": "pass",
+          "title": "legacy-1_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "legacy-1_EXPECTATION",
+          "status": "pass",
+          "title": "legacy-1_EXPECTATION",
+          "detail": "Full feasible plan passes evidence verification."
+        },
+        {
+          "id": "legacy-1_COMPATIBILITY",
+          "status": "pass",
+          "title": "legacy-1_COMPATIBILITY",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_SEPARATION",
+          "status": "pass",
+          "title": "legacy-1_SEPARATION",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_BATTERIES",
+          "status": "pass",
+          "title": "legacy-1_BATTERIES",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_COVERAGE",
+          "status": "pass",
+          "title": "legacy-1_COVERAGE",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_METRICS",
+          "status": "pass",
+          "title": "legacy-1_METRICS",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_RESERVE",
+          "status": "pass",
+          "title": "legacy-1_RESERVE",
+          "detail": "Reserve is not traded against cost."
+        },
+        {
+          "id": "legacy-2_MODEL_ONLY",
+          "status": "pass",
+          "title": "legacy-2_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "legacy-2_EXPECTATION",
+          "status": "pass",
+          "title": "legacy-2_EXPECTATION",
+          "detail": "Full feasible plan passes evidence verification."
+        },
+        {
+          "id": "legacy-2_COMPATIBILITY",
+          "status": "pass",
+          "title": "legacy-2_COMPATIBILITY",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_SEPARATION",
+          "status": "pass",
+          "title": "legacy-2_SEPARATION",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_BATTERIES",
+          "status": "pass",
+          "title": "legacy-2_BATTERIES",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_COVERAGE",
+          "status": "pass",
+          "title": "legacy-2_COVERAGE",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_METRICS",
+          "status": "pass",
+          "title": "legacy-2_METRICS",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_RESERVE",
+          "status": "pass",
+          "title": "legacy-2_RESERVE",
+          "detail": "Reserve is not traded against cost."
+        },
+        {
+          "id": "balanced_MODEL_ONLY",
+          "status": "pass",
+          "title": "balanced_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "balanced_EXPECTATION",
+          "status": "pass",
+          "title": "balanced_EXPECTATION",
+          "detail": "Full feasible plan passes evidence verification."
+        },
+        {
+          "id": "balanced_COMPATIBILITY",
+          "status": "pass",
+          "title": "balanced_COMPATIBILITY",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_SEPARATION",
+          "status": "pass",
+          "title": "balanced_SEPARATION",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_BATTERIES",
+          "status": "pass",
+          "title": "balanced_BATTERIES",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_COVERAGE",
+          "status": "pass",
+          "title": "balanced_COVERAGE",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_METRICS",
+          "status": "pass",
+          "title": "balanced_METRICS",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_RESERVE",
+          "status": "pass",
+          "title": "balanced_RESERVE",
+          "detail": "Reserve is not traded against cost."
+        },
+        {
+          "id": "BALANCED_FORMULA",
+          "status": "pass",
+          "title": "BALANCED_FORMULA",
+          "detail": "Recompute 50/50 score from disclosed pool ranges; this does not certify global optimality."
+        },
+        {
+          "id": "BALANCED_EXPORT_ASSUMPTIONS",
+          "status": "pass",
+          "title": "BALANCED_EXPORT_ASSUMPTIONS",
+          "detail": "Independent balanced export retains formula, normalization and resource-proxy meaning."
+        },
+        {
+          "id": "SAME_PLAN_HONESTY",
+          "status": "pass",
+          "title": "SAME_PLAN_HONESTY",
+          "detail": "Route identity is recomputed, not inferred from objective labels."
+        },
+        {
+          "id": "AUTOMATIC_ASSIGNMENT",
+          "status": "pass",
+          "title": "AUTOMATIC_ASSIGNMENT",
+          "detail": "Vehicles are selected by the solver."
+        },
+        {
+          "id": "THREE_DISTINCT_PLANS",
+          "status": "pass",
+          "title": "THREE_DISTINCT_PLANS",
+          "detail": "All three physical plans differ."
+        },
+        {
+          "id": "STRICT_INTERIOR_TRADEOFF",
+          "status": "pass",
+          "title": "STRICT_INTERIOR_TRADEOFF",
+          "detail": "Balanced is strictly between both extremes in makespan and total flight time."
+        }
+      ]
+    },
+    {
+      "id": "mixed-fleet",
+      "title": "Три работы и смешанный флот",
+      "expected": "feasible_model",
+      "status": "pass",
+      "inputHash": "79e673c716ce6521f267e23ef8d475249906d6479f59cffc4ec2764786ba77eb",
+      "httpMs": 140.98000000000013,
+      "computationMs": 96,
+      "candidates": [
+        {
+          "label": "legacy-1",
+          "candidateId": "makespan",
+          "objective": "makespan",
+          "status": "feasible_model",
+          "verificationStatus": "passes-declared-model",
+          "metrics": {
+            "makespanSec": 650.7314050945695,
+            "flightTimeSec": 1133.8276653539356,
+            "distanceM": 4429.937492960843,
+            "sortieCount": 3,
+            "vehicleCount": 3,
+            "coveragePct": 99.99999999912212,
+            "grossCoveragePct": 99.99999999912212,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 74.15404977691368
+          },
+          "vehicles": [
+            "rgb-1",
+            "ms-1",
+            "ir-1"
+          ],
+          "bearings": [
+            {
+              "jobId": "job-rgb",
+              "bearingDeg": 0
+            },
+            {
+              "jobId": "job-ms",
+              "bearingDeg": 0
+            },
+            {
+              "jobId": "job-ir",
+              "bearingDeg": 0
+            }
+          ],
+          "independentChecks": 57,
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_job-rgb_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "EXPORTED_QUALITY_job-ms_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "Геометрия Pollux по буклету Gemini; период/перекрытия/GSD — параметры учебного задания."
+            },
+            {
+              "id": "EXPORTED_QUALITY_job-ir_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "Учебная ИК-камера: геометрия/период условные, реальная метрическая съёмка 801 не подтверждена."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            },
+            {
+              "id": "BASELINE_EXPORT",
+              "status": "unknown",
+              "title": "Повторная проверка baseline",
+              "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+            }
+          ]
+        },
+        {
+          "label": "legacy-2",
+          "candidateId": "flightTime",
+          "objective": "flightTime",
+          "status": "feasible_model",
+          "verificationStatus": "passes-declared-model",
+          "metrics": {
+            "makespanSec": 650.7314050945695,
+            "flightTimeSec": 1133.8276653539356,
+            "distanceM": 4429.937492960843,
+            "sortieCount": 3,
+            "vehicleCount": 3,
+            "coveragePct": 99.99999999912212,
+            "grossCoveragePct": 99.99999999912212,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 74.15404977691368
+          },
+          "vehicles": [
+            "rgb-1",
+            "ms-1",
+            "ir-1"
+          ],
+          "bearings": [
+            {
+              "jobId": "job-rgb",
+              "bearingDeg": 0
+            },
+            {
+              "jobId": "job-ms",
+              "bearingDeg": 0
+            },
+            {
+              "jobId": "job-ir",
+              "bearingDeg": 0
+            }
+          ],
+          "independentChecks": 57,
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_job-rgb_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "EXPORTED_QUALITY_job-ms_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "Геометрия Pollux по буклету Gemini; период/перекрытия/GSD — параметры учебного задания."
+            },
+            {
+              "id": "EXPORTED_QUALITY_job-ir_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "Учебная ИК-камера: геометрия/период условные, реальная метрическая съёмка 801 не подтверждена."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            },
+            {
+              "id": "BASELINE_EXPORT",
+              "status": "unknown",
+              "title": "Повторная проверка baseline",
+              "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+            }
+          ]
+        },
+        {
+          "label": "balanced",
+          "candidateId": "balanced",
+          "objective": "makespan",
+          "status": "feasible_model",
+          "verificationStatus": "passes-declared-model",
+          "metrics": {
+            "makespanSec": 650.7314050945695,
+            "flightTimeSec": 1133.8276653539356,
+            "distanceM": 4429.937492960843,
+            "sortieCount": 3,
+            "vehicleCount": 3,
+            "coveragePct": 99.99999999912212,
+            "grossCoveragePct": 99.99999999912212,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 74.15404977691368
+          },
+          "vehicles": [
+            "rgb-1",
+            "ms-1",
+            "ir-1"
+          ],
+          "bearings": [
+            {
+              "jobId": "job-rgb",
+              "bearingDeg": 0
+            },
+            {
+              "jobId": "job-ms",
+              "bearingDeg": 0
+            },
+            {
+              "jobId": "job-ir",
+              "bearingDeg": 0
+            }
+          ],
+          "independentChecks": 57,
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_job-rgb_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "EXPORTED_QUALITY_job-ms_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "Геометрия Pollux по буклету Gemini; период/перекрытия/GSD — параметры учебного задания."
+            },
+            {
+              "id": "EXPORTED_QUALITY_job-ir_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "Учебная ИК-камера: геометрия/период условные, реальная метрическая съёмка 801 не подтверждена."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            },
+            {
+              "id": "BASELINE_EXPORT",
+              "status": "unknown",
+              "title": "Повторная проверка baseline",
+              "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+            }
+          ]
+        }
+      ],
+      "recommendation": {
+        "policy": "balanced-normalized-v1",
+        "weights": {
+          "makespan": 0.5,
+          "flightTime": 0.5
+        },
+        "score": 0,
+        "normalized": {
+          "makespan": 0,
+          "flightTime": 0
+        },
+        "ranges": {
+          "makespanSec": {
+            "min": 650.7314050945695,
+            "max": 1201.8276653539356
+          },
+          "flightTimeSec": {
+            "min": 1133.8276653539356,
+            "max": 1206.2642212559836
+          }
+        },
+        "poolSize": 6,
+        "distinctPlanCount": 3,
+        "samePlan": true,
+        "samePlanAs": [
+          "makespan",
+          "flightTime"
+        ],
+        "explanation": "Компромисс 50/50 среди найденных полных вариантов без проваленных модельных проверок: 0,5 × (T − min T)/(max T − min T) + 0,5 × (F − min F)/(max F − min F), меньше лучше. T — время завершения, F — суммарный налёт; при нулевом диапазоне компонент равен 0. При равной оценке выбраны больший остаток ресурса, затем меньше вылетов, затем детерминированный ключ плана. Налёт — ресурсный proxy, не физический износ оборудования. Глобальная оптимальность не доказана.",
+        "resourceProxy": "flightTimeSec"
+      },
+      "checks": [
+        {
+          "id": "ENGINE_VERSION",
+          "status": "pass",
+          "title": "ENGINE_VERSION",
+          "detail": "Required 0.3.0."
+        },
+        {
+          "id": "INPUT_HASH",
+          "status": "pass",
+          "title": "INPUT_HASH",
+          "detail": "Submitted and returned documents have the same canonical hash."
+        },
+        {
+          "id": "LEGACY_CANDIDATES",
+          "status": "pass",
+          "title": "LEGACY_CANDIDATES",
+          "detail": "Exactly two legacy candidates in objective order."
+        },
+        {
+          "id": "RECOMMENDATION_GATE",
+          "status": "pass",
+          "title": "RECOMMENDATION_GATE",
+          "detail": "Positive examples require a recommendation; rejected examples must not receive one."
+        },
+        {
+          "id": "legacy-1_MODEL_ONLY",
+          "status": "pass",
+          "title": "legacy-1_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "legacy-1_EXPECTATION",
+          "status": "pass",
+          "title": "legacy-1_EXPECTATION",
+          "detail": "Full feasible plan passes evidence verification."
+        },
+        {
+          "id": "legacy-1_COMPATIBILITY",
+          "status": "pass",
+          "title": "legacy-1_COMPATIBILITY",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_SEPARATION",
+          "status": "pass",
+          "title": "legacy-1_SEPARATION",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_WINDOW",
+          "status": "pass",
+          "title": "legacy-1_WINDOW",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_COVERAGE",
+          "status": "pass",
+          "title": "legacy-1_COVERAGE",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_RESERVE",
+          "status": "pass",
+          "title": "legacy-1_RESERVE",
+          "detail": "Reserve is not traded against cost."
+        },
+        {
+          "id": "legacy-2_MODEL_ONLY",
+          "status": "pass",
+          "title": "legacy-2_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "legacy-2_EXPECTATION",
+          "status": "pass",
+          "title": "legacy-2_EXPECTATION",
+          "detail": "Full feasible plan passes evidence verification."
+        },
+        {
+          "id": "legacy-2_COMPATIBILITY",
+          "status": "pass",
+          "title": "legacy-2_COMPATIBILITY",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_SEPARATION",
+          "status": "pass",
+          "title": "legacy-2_SEPARATION",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_WINDOW",
+          "status": "pass",
+          "title": "legacy-2_WINDOW",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_COVERAGE",
+          "status": "pass",
+          "title": "legacy-2_COVERAGE",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_RESERVE",
+          "status": "pass",
+          "title": "legacy-2_RESERVE",
+          "detail": "Reserve is not traded against cost."
+        },
+        {
+          "id": "balanced_MODEL_ONLY",
+          "status": "pass",
+          "title": "balanced_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "balanced_EXPECTATION",
+          "status": "pass",
+          "title": "balanced_EXPECTATION",
+          "detail": "Full feasible plan passes evidence verification."
+        },
+        {
+          "id": "balanced_COMPATIBILITY",
+          "status": "pass",
+          "title": "balanced_COMPATIBILITY",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_SEPARATION",
+          "status": "pass",
+          "title": "balanced_SEPARATION",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_WINDOW",
+          "status": "pass",
+          "title": "balanced_WINDOW",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_COVERAGE",
+          "status": "pass",
+          "title": "balanced_COVERAGE",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_RESERVE",
+          "status": "pass",
+          "title": "balanced_RESERVE",
+          "detail": "Reserve is not traded against cost."
+        },
+        {
+          "id": "BALANCED_FORMULA",
+          "status": "pass",
+          "title": "BALANCED_FORMULA",
+          "detail": "Recompute 50/50 score from disclosed pool ranges; this does not certify global optimality."
+        },
+        {
+          "id": "BALANCED_EXPORT_ASSUMPTIONS",
+          "status": "pass",
+          "title": "BALANCED_EXPORT_ASSUMPTIONS",
+          "detail": "Independent balanced export retains formula, normalization and resource-proxy meaning."
+        },
+        {
+          "id": "SAME_PLAN_HONESTY",
+          "status": "pass",
+          "title": "SAME_PLAN_HONESTY",
+          "detail": "Route identity is recomputed, not inferred from objective labels."
+        }
+      ]
+    },
+    {
+      "id": "lidar-geophysics",
+      "title": "LiDAR и геофизический подвес",
+      "expected": "feasible_model",
+      "status": "pass",
+      "inputHash": "0269a755b5475a222bb7d573f80a93e3b636bea5c395f7ba37f55db3b54b2cfd",
+      "httpMs": 81.75369999999998,
+      "computationMs": 51,
+      "candidates": [
+        {
+          "label": "legacy-1",
+          "candidateId": "makespan",
+          "objective": "makespan",
+          "status": "feasible_model",
+          "verificationStatus": "passes-declared-model",
+          "metrics": {
+            "makespanSec": 478.8078006692024,
+            "flightTimeSec": 771.246984504412,
+            "distanceM": 3185.693608030225,
+            "sortieCount": 2,
+            "vehicleCount": 2,
+            "coveragePct": 100,
+            "grossCoveragePct": 100,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 75.07096424588082
+          },
+          "vehicles": [
+            "lidar-1",
+            "geo-1"
+          ],
+          "bearings": [
+            {
+              "jobId": "lidar",
+              "bearingDeg": 0
+            },
+            {
+              "jobId": "geophysics",
+              "bearingDeg": 0
+            }
+          ],
+          "independentChecks": 46,
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_lidar_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "Учебный LiDAR: совместимость с реальным БВС не подтверждена."
+            },
+            {
+              "id": "EXPORTED_QUALITY_geophysics_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "Учебный геофизический датчик, не паспортный профиль Геоскана."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            },
+            {
+              "id": "BASELINE_EXPORT",
+              "status": "unknown",
+              "title": "Повторная проверка baseline",
+              "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+            }
+          ]
+        },
+        {
+          "label": "legacy-2",
+          "candidateId": "flightTime",
+          "objective": "flightTime",
+          "status": "feasible_model",
+          "verificationStatus": "passes-declared-model",
+          "metrics": {
+            "makespanSec": 478.8078006692024,
+            "flightTimeSec": 771.246984504412,
+            "distanceM": 3185.693608030225,
+            "sortieCount": 2,
+            "vehicleCount": 2,
+            "coveragePct": 100,
+            "grossCoveragePct": 100,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 75.07096424588082
+          },
+          "vehicles": [
+            "lidar-1",
+            "geo-1"
+          ],
+          "bearings": [
+            {
+              "jobId": "lidar",
+              "bearingDeg": 0
+            },
+            {
+              "jobId": "geophysics",
+              "bearingDeg": 0
+            }
+          ],
+          "independentChecks": 46,
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_lidar_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "Учебный LiDAR: совместимость с реальным БВС не подтверждена."
+            },
+            {
+              "id": "EXPORTED_QUALITY_geophysics_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "Учебный геофизический датчик, не паспортный профиль Геоскана."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            },
+            {
+              "id": "BASELINE_EXPORT",
+              "status": "unknown",
+              "title": "Повторная проверка baseline",
+              "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+            }
+          ]
+        },
+        {
+          "label": "balanced",
+          "candidateId": "balanced",
+          "objective": "makespan",
+          "status": "feasible_model",
+          "verificationStatus": "passes-declared-model",
+          "metrics": {
+            "makespanSec": 478.8078006692024,
+            "flightTimeSec": 771.246984504412,
+            "distanceM": 3185.693608030225,
+            "sortieCount": 2,
+            "vehicleCount": 2,
+            "coveragePct": 100,
+            "grossCoveragePct": 100,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 75.07096424588082
+          },
+          "vehicles": [
+            "lidar-1",
+            "geo-1"
+          ],
+          "bearings": [
+            {
+              "jobId": "lidar",
+              "bearingDeg": 0
+            },
+            {
+              "jobId": "geophysics",
+              "bearingDeg": 0
+            }
+          ],
+          "independentChecks": 46,
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_lidar_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "Учебный LiDAR: совместимость с реальным БВС не подтверждена."
+            },
+            {
+              "id": "EXPORTED_QUALITY_geophysics_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "Учебный геофизический датчик, не паспортный профиль Геоскана."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            },
+            {
+              "id": "BASELINE_EXPORT",
+              "status": "unknown",
+              "title": "Повторная проверка baseline",
+              "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+            }
+          ]
+        }
+      ],
+      "recommendation": {
+        "policy": "balanced-normalized-v1",
+        "weights": {
+          "makespan": 0.5,
+          "flightTime": 0.5
+        },
+        "score": 0,
+        "normalized": {
+          "makespan": 0,
+          "flightTime": 0
+        },
+        "ranges": {
+          "makespanSec": {
+            "min": 478.8078006692024,
+            "max": 835.246984504412
+          },
+          "flightTimeSec": {
+            "min": 771.246984504412,
+            "max": 779.4320900900254
+          }
+        },
+        "poolSize": 6,
+        "distinctPlanCount": 3,
+        "samePlan": true,
+        "samePlanAs": [
+          "makespan",
+          "flightTime"
+        ],
+        "explanation": "Компромисс 50/50 среди найденных полных вариантов без проваленных модельных проверок: 0,5 × (T − min T)/(max T − min T) + 0,5 × (F − min F)/(max F − min F), меньше лучше. T — время завершения, F — суммарный налёт; при нулевом диапазоне компонент равен 0. При равной оценке выбраны больший остаток ресурса, затем меньше вылетов, затем детерминированный ключ плана. Налёт — ресурсный proxy, не физический износ оборудования. Глобальная оптимальность не доказана.",
+        "resourceProxy": "flightTimeSec"
+      },
+      "checks": [
+        {
+          "id": "ENGINE_VERSION",
+          "status": "pass",
+          "title": "ENGINE_VERSION",
+          "detail": "Required 0.3.0."
+        },
+        {
+          "id": "INPUT_HASH",
+          "status": "pass",
+          "title": "INPUT_HASH",
+          "detail": "Submitted and returned documents have the same canonical hash."
+        },
+        {
+          "id": "LEGACY_CANDIDATES",
+          "status": "pass",
+          "title": "LEGACY_CANDIDATES",
+          "detail": "Exactly two legacy candidates in objective order."
+        },
+        {
+          "id": "RECOMMENDATION_GATE",
+          "status": "pass",
+          "title": "RECOMMENDATION_GATE",
+          "detail": "Positive examples require a recommendation; rejected examples must not receive one."
+        },
+        {
+          "id": "legacy-1_MODEL_ONLY",
+          "status": "pass",
+          "title": "legacy-1_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "legacy-1_EXPECTATION",
+          "status": "pass",
+          "title": "legacy-1_EXPECTATION",
+          "detail": "Full feasible plan passes evidence verification."
+        },
+        {
+          "id": "legacy-1_COMPATIBILITY",
+          "status": "pass",
+          "title": "legacy-1_COMPATIBILITY",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_FLIGHT_ENVELOPE",
+          "status": "pass",
+          "title": "legacy-1_FLIGHT_ENVELOPE",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_SEPARATION",
+          "status": "pass",
+          "title": "legacy-1_SEPARATION",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_COVERAGE",
+          "status": "pass",
+          "title": "legacy-1_COVERAGE",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_RESERVE",
+          "status": "pass",
+          "title": "legacy-1_RESERVE",
+          "detail": "Reserve is not traded against cost."
+        },
+        {
+          "id": "legacy-2_MODEL_ONLY",
+          "status": "pass",
+          "title": "legacy-2_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "legacy-2_EXPECTATION",
+          "status": "pass",
+          "title": "legacy-2_EXPECTATION",
+          "detail": "Full feasible plan passes evidence verification."
+        },
+        {
+          "id": "legacy-2_COMPATIBILITY",
+          "status": "pass",
+          "title": "legacy-2_COMPATIBILITY",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_FLIGHT_ENVELOPE",
+          "status": "pass",
+          "title": "legacy-2_FLIGHT_ENVELOPE",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_SEPARATION",
+          "status": "pass",
+          "title": "legacy-2_SEPARATION",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_COVERAGE",
+          "status": "pass",
+          "title": "legacy-2_COVERAGE",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_RESERVE",
+          "status": "pass",
+          "title": "legacy-2_RESERVE",
+          "detail": "Reserve is not traded against cost."
+        },
+        {
+          "id": "balanced_MODEL_ONLY",
+          "status": "pass",
+          "title": "balanced_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "balanced_EXPECTATION",
+          "status": "pass",
+          "title": "balanced_EXPECTATION",
+          "detail": "Full feasible plan passes evidence verification."
+        },
+        {
+          "id": "balanced_COMPATIBILITY",
+          "status": "pass",
+          "title": "balanced_COMPATIBILITY",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_FLIGHT_ENVELOPE",
+          "status": "pass",
+          "title": "balanced_FLIGHT_ENVELOPE",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_SEPARATION",
+          "status": "pass",
+          "title": "balanced_SEPARATION",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_COVERAGE",
+          "status": "pass",
+          "title": "balanced_COVERAGE",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_RESERVE",
+          "status": "pass",
+          "title": "balanced_RESERVE",
+          "detail": "Reserve is not traded against cost."
+        },
+        {
+          "id": "BALANCED_FORMULA",
+          "status": "pass",
+          "title": "BALANCED_FORMULA",
+          "detail": "Recompute 50/50 score from disclosed pool ranges; this does not certify global optimality."
+        },
+        {
+          "id": "BALANCED_EXPORT_ASSUMPTIONS",
+          "status": "pass",
+          "title": "BALANCED_EXPORT_ASSUMPTIONS",
+          "detail": "Independent balanced export retains formula, normalization and resource-proxy meaning."
+        },
+        {
+          "id": "SAME_PLAN_HONESTY",
+          "status": "pass",
+          "title": "SAME_PLAN_HONESTY",
+          "detail": "Route identity is recomputed, not inferred from objective labels."
+        }
+      ]
+    },
+    {
+      "id": "repeat-sorties",
+      "title": "Повторные вылеты и смена АКБ",
+      "expected": "feasible_model",
+      "status": "pass",
+      "inputHash": "f4eb0458f634c17c29550b1c536946c4c2aff9d87221c47705f20a968a7c11f3",
+      "httpMs": 82.09559999999988,
+      "computationMs": 47,
+      "candidates": [
+        {
+          "label": "legacy-1",
+          "candidateId": "makespan",
+          "objective": "makespan",
+          "status": "feasible_model",
+          "verificationStatus": "passes-declared-model",
+          "metrics": {
+            "makespanSec": 2330.831024862813,
+            "flightTimeSec": 1730.831024862813,
+            "distanceM": 9163.981532235835,
+            "sortieCount": 4,
+            "vehicleCount": 1,
+            "coveragePct": 99.99999999462742,
+            "grossCoveragePct": 99.99999999462742,
+            "batteryChanges": 3,
+            "minimumRemainingPct": 32.37088312616167
+          },
+          "vehicles": [
+            "rgb-1"
+          ],
+          "bearings": [
+            {
+              "jobId": "rgb",
+              "bearingDeg": 0
+            }
+          ],
+          "independentChecks": 49,
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_rgb_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            },
+            {
+              "id": "BASELINE_EXPORT",
+              "status": "unknown",
+              "title": "Повторная проверка baseline",
+              "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+            }
+          ]
+        },
+        {
+          "label": "legacy-2",
+          "candidateId": "flightTime",
+          "objective": "flightTime",
+          "status": "feasible_model",
+          "verificationStatus": "passes-declared-model",
+          "metrics": {
+            "makespanSec": 2330.831024862813,
+            "flightTimeSec": 1730.831024862813,
+            "distanceM": 9163.981532235835,
+            "sortieCount": 4,
+            "vehicleCount": 1,
+            "coveragePct": 99.99999999462742,
+            "grossCoveragePct": 99.99999999462742,
+            "batteryChanges": 3,
+            "minimumRemainingPct": 32.37088312616167
+          },
+          "vehicles": [
+            "rgb-1"
+          ],
+          "bearings": [
+            {
+              "jobId": "rgb",
+              "bearingDeg": 0
+            }
+          ],
+          "independentChecks": 49,
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_rgb_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            },
+            {
+              "id": "BASELINE_EXPORT",
+              "status": "unknown",
+              "title": "Повторная проверка baseline",
+              "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+            }
+          ]
+        },
+        {
+          "label": "balanced",
+          "candidateId": "balanced",
+          "objective": "makespan",
+          "status": "feasible_model",
+          "verificationStatus": "passes-declared-model",
+          "metrics": {
+            "makespanSec": 2330.831024862813,
+            "flightTimeSec": 1730.831024862813,
+            "distanceM": 9163.981532235835,
+            "sortieCount": 4,
+            "vehicleCount": 1,
+            "coveragePct": 99.99999999462742,
+            "grossCoveragePct": 99.99999999462742,
+            "batteryChanges": 3,
+            "minimumRemainingPct": 32.37088312616167
+          },
+          "vehicles": [
+            "rgb-1"
+          ],
+          "bearings": [
+            {
+              "jobId": "rgb",
+              "bearingDeg": 0
+            }
+          ],
+          "independentChecks": 49,
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_rgb_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            },
+            {
+              "id": "BASELINE_EXPORT",
+              "status": "unknown",
+              "title": "Повторная проверка baseline",
+              "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+            }
+          ]
+        }
+      ],
+      "recommendation": {
+        "policy": "balanced-normalized-v1",
+        "weights": {
+          "makespan": 0.5,
+          "flightTime": 0.5
+        },
+        "score": 0,
+        "normalized": {
+          "makespan": 0,
+          "flightTime": 0
+        },
+        "ranges": {
+          "makespanSec": {
+            "min": 2330.831024862813,
+            "max": 2488.369132457395
+          },
+          "flightTimeSec": {
+            "min": 1730.831024862813,
+            "max": 1888.3691324573952
+          }
+        },
+        "poolSize": 6,
+        "distinctPlanCount": 2,
+        "samePlan": true,
+        "samePlanAs": [
+          "makespan",
+          "flightTime"
+        ],
+        "explanation": "Компромисс 50/50 среди найденных полных вариантов без проваленных модельных проверок: 0,5 × (T − min T)/(max T − min T) + 0,5 × (F − min F)/(max F − min F), меньше лучше. T — время завершения, F — суммарный налёт; при нулевом диапазоне компонент равен 0. При равной оценке выбраны больший остаток ресурса, затем меньше вылетов, затем детерминированный ключ плана. Налёт — ресурсный proxy, не физический износ оборудования. Глобальная оптимальность не доказана.",
+        "resourceProxy": "flightTimeSec"
+      },
+      "checks": [
+        {
+          "id": "ENGINE_VERSION",
+          "status": "pass",
+          "title": "ENGINE_VERSION",
+          "detail": "Required 0.3.0."
+        },
+        {
+          "id": "INPUT_HASH",
+          "status": "pass",
+          "title": "INPUT_HASH",
+          "detail": "Submitted and returned documents have the same canonical hash."
+        },
+        {
+          "id": "LEGACY_CANDIDATES",
+          "status": "pass",
+          "title": "LEGACY_CANDIDATES",
+          "detail": "Exactly two legacy candidates in objective order."
+        },
+        {
+          "id": "RECOMMENDATION_GATE",
+          "status": "pass",
+          "title": "RECOMMENDATION_GATE",
+          "detail": "Positive examples require a recommendation; rejected examples must not receive one."
+        },
+        {
+          "id": "legacy-1_MODEL_ONLY",
+          "status": "pass",
+          "title": "legacy-1_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "legacy-1_EXPECTATION",
+          "status": "pass",
+          "title": "legacy-1_EXPECTATION",
+          "detail": "Full feasible plan passes evidence verification."
+        },
+        {
+          "id": "legacy-1_ENERGY",
+          "status": "pass",
+          "title": "legacy-1_ENERGY",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_BATTERIES",
+          "status": "pass",
+          "title": "legacy-1_BATTERIES",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_WINDOW",
+          "status": "pass",
+          "title": "legacy-1_WINDOW",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_EVENT_JOURNAL",
+          "status": "pass",
+          "title": "legacy-1_EVENT_JOURNAL",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_RESERVE",
+          "status": "pass",
+          "title": "legacy-1_RESERVE",
+          "detail": "Reserve is not traded against cost."
+        },
+        {
+          "id": "legacy-2_MODEL_ONLY",
+          "status": "pass",
+          "title": "legacy-2_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "legacy-2_EXPECTATION",
+          "status": "pass",
+          "title": "legacy-2_EXPECTATION",
+          "detail": "Full feasible plan passes evidence verification."
+        },
+        {
+          "id": "legacy-2_ENERGY",
+          "status": "pass",
+          "title": "legacy-2_ENERGY",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_BATTERIES",
+          "status": "pass",
+          "title": "legacy-2_BATTERIES",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_WINDOW",
+          "status": "pass",
+          "title": "legacy-2_WINDOW",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_EVENT_JOURNAL",
+          "status": "pass",
+          "title": "legacy-2_EVENT_JOURNAL",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_RESERVE",
+          "status": "pass",
+          "title": "legacy-2_RESERVE",
+          "detail": "Reserve is not traded against cost."
+        },
+        {
+          "id": "balanced_MODEL_ONLY",
+          "status": "pass",
+          "title": "balanced_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "balanced_EXPECTATION",
+          "status": "pass",
+          "title": "balanced_EXPECTATION",
+          "detail": "Full feasible plan passes evidence verification."
+        },
+        {
+          "id": "balanced_ENERGY",
+          "status": "pass",
+          "title": "balanced_ENERGY",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_BATTERIES",
+          "status": "pass",
+          "title": "balanced_BATTERIES",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_WINDOW",
+          "status": "pass",
+          "title": "balanced_WINDOW",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_EVENT_JOURNAL",
+          "status": "pass",
+          "title": "balanced_EVENT_JOURNAL",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_RESERVE",
+          "status": "pass",
+          "title": "balanced_RESERVE",
+          "detail": "Reserve is not traded against cost."
+        },
+        {
+          "id": "BALANCED_FORMULA",
+          "status": "pass",
+          "title": "BALANCED_FORMULA",
+          "detail": "Recompute 50/50 score from disclosed pool ranges; this does not certify global optimality."
+        },
+        {
+          "id": "BALANCED_EXPORT_ASSUMPTIONS",
+          "status": "pass",
+          "title": "BALANCED_EXPORT_ASSUMPTIONS",
+          "detail": "Independent balanced export retains formula, normalization and resource-proxy meaning."
+        },
+        {
+          "id": "SAME_PLAN_HONESTY",
+          "status": "pass",
+          "title": "SAME_PLAN_HONESTY",
+          "detail": "Route identity is recomputed, not inferred from objective labels."
+        }
+      ]
+    },
+    {
+      "id": "timed-airspace",
+      "title": "Ожидание временного запрета",
+      "expected": "feasible_model",
+      "status": "pass",
+      "inputHash": "c8a4478ceae6b550072ff4758375b7f29b836100952c6563a777f69cefe4facb",
+      "httpMs": 67.82190000000014,
+      "computationMs": 40,
+      "candidates": [
+        {
+          "label": "legacy-1",
+          "candidateId": "makespan",
+          "objective": "makespan",
+          "status": "feasible_model",
+          "verificationStatus": "passes-declared-model",
+          "metrics": {
+            "makespanSec": 1334.8576542906947,
+            "flightTimeSec": 432.8476542906946,
+            "distanceM": 2236.1145676588903,
+            "sortieCount": 1,
+            "vehicleCount": 1,
+            "coveragePct": 99.99999999565911,
+            "grossCoveragePct": 99.99999999565911,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 74.23525867317294
+          },
+          "vehicles": [
+            "rgb-1"
+          ],
+          "bearings": [
+            {
+              "jobId": "rgb",
+              "bearingDeg": 90
+            }
+          ],
+          "independentChecks": 43,
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_rgb_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            },
+            {
+              "id": "BASELINE_EXPORT",
+              "status": "unknown",
+              "title": "Повторная проверка baseline",
+              "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+            }
+          ]
+        },
+        {
+          "label": "legacy-2",
+          "candidateId": "flightTime",
+          "objective": "flightTime",
+          "status": "feasible_model",
+          "verificationStatus": "passes-declared-model",
+          "metrics": {
+            "makespanSec": 1334.8576542906947,
+            "flightTimeSec": 432.8476542906946,
+            "distanceM": 2236.1145676588903,
+            "sortieCount": 1,
+            "vehicleCount": 1,
+            "coveragePct": 99.99999999565911,
+            "grossCoveragePct": 99.99999999565911,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 74.23525867317294
+          },
+          "vehicles": [
+            "rgb-1"
+          ],
+          "bearings": [
+            {
+              "jobId": "rgb",
+              "bearingDeg": 90
+            }
+          ],
+          "independentChecks": 43,
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_rgb_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            },
+            {
+              "id": "BASELINE_EXPORT",
+              "status": "unknown",
+              "title": "Повторная проверка baseline",
+              "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+            }
+          ]
+        },
+        {
+          "label": "balanced",
+          "candidateId": "balanced",
+          "objective": "makespan",
+          "status": "feasible_model",
+          "verificationStatus": "passes-declared-model",
+          "metrics": {
+            "makespanSec": 1334.8576542906947,
+            "flightTimeSec": 432.8476542906946,
+            "distanceM": 2236.1145676588903,
+            "sortieCount": 1,
+            "vehicleCount": 1,
+            "coveragePct": 99.99999999565911,
+            "grossCoveragePct": 99.99999999565911,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 74.23525867317294
+          },
+          "vehicles": [
+            "rgb-1"
+          ],
+          "bearings": [
+            {
+              "jobId": "rgb",
+              "bearingDeg": 90
+            }
+          ],
+          "independentChecks": 43,
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_rgb_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            },
+            {
+              "id": "BASELINE_EXPORT",
+              "status": "unknown",
+              "title": "Повторная проверка baseline",
+              "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+            }
+          ]
+        }
+      ],
+      "recommendation": {
+        "policy": "balanced-normalized-v1",
+        "weights": {
+          "makespan": 0.5,
+          "flightTime": 0.5
+        },
+        "score": 0,
+        "normalized": {
+          "makespan": 0,
+          "flightTime": 0
+        },
+        "ranges": {
+          "makespanSec": {
+            "min": 1334.8576542906947,
+            "max": 1349.5480118157025
+          },
+          "flightTimeSec": {
+            "min": 432.8476542906946,
+            "max": 447.5380118157026
+          }
+        },
+        "poolSize": 6,
+        "distinctPlanCount": 2,
+        "samePlan": true,
+        "samePlanAs": [
+          "makespan",
+          "flightTime"
+        ],
+        "explanation": "Компромисс 50/50 среди найденных полных вариантов без проваленных модельных проверок: 0,5 × (T − min T)/(max T − min T) + 0,5 × (F − min F)/(max F − min F), меньше лучше. T — время завершения, F — суммарный налёт; при нулевом диапазоне компонент равен 0. При равной оценке выбраны больший остаток ресурса, затем меньше вылетов, затем детерминированный ключ плана. Налёт — ресурсный proxy, не физический износ оборудования. Глобальная оптимальность не доказана.",
+        "resourceProxy": "flightTimeSec"
+      },
+      "checks": [
+        {
+          "id": "ENGINE_VERSION",
+          "status": "pass",
+          "title": "ENGINE_VERSION",
+          "detail": "Required 0.3.0."
+        },
+        {
+          "id": "INPUT_HASH",
+          "status": "pass",
+          "title": "INPUT_HASH",
+          "detail": "Submitted and returned documents have the same canonical hash."
+        },
+        {
+          "id": "LEGACY_CANDIDATES",
+          "status": "pass",
+          "title": "LEGACY_CANDIDATES",
+          "detail": "Exactly two legacy candidates in objective order."
+        },
+        {
+          "id": "RECOMMENDATION_GATE",
+          "status": "pass",
+          "title": "RECOMMENDATION_GATE",
+          "detail": "Positive examples require a recommendation; rejected examples must not receive one."
+        },
+        {
+          "id": "legacy-1_MODEL_ONLY",
+          "status": "pass",
+          "title": "legacy-1_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "legacy-1_EXPECTATION",
+          "status": "pass",
+          "title": "legacy-1_EXPECTATION",
+          "detail": "Full feasible plan passes evidence verification."
+        },
+        {
+          "id": "legacy-1_FOUR_DIMENSIONAL",
+          "status": "pass",
+          "title": "legacy-1_FOUR_DIMENSIONAL",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_WINDOW",
+          "status": "pass",
+          "title": "legacy-1_WINDOW",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_REQUESTED_AREA",
+          "status": "pass",
+          "title": "legacy-1_REQUESTED_AREA",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_RESERVE",
+          "status": "pass",
+          "title": "legacy-1_RESERVE",
+          "detail": "Reserve is not traded against cost."
+        },
+        {
+          "id": "legacy-2_MODEL_ONLY",
+          "status": "pass",
+          "title": "legacy-2_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "legacy-2_EXPECTATION",
+          "status": "pass",
+          "title": "legacy-2_EXPECTATION",
+          "detail": "Full feasible plan passes evidence verification."
+        },
+        {
+          "id": "legacy-2_FOUR_DIMENSIONAL",
+          "status": "pass",
+          "title": "legacy-2_FOUR_DIMENSIONAL",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_WINDOW",
+          "status": "pass",
+          "title": "legacy-2_WINDOW",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_REQUESTED_AREA",
+          "status": "pass",
+          "title": "legacy-2_REQUESTED_AREA",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_RESERVE",
+          "status": "pass",
+          "title": "legacy-2_RESERVE",
+          "detail": "Reserve is not traded against cost."
+        },
+        {
+          "id": "balanced_MODEL_ONLY",
+          "status": "pass",
+          "title": "balanced_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "balanced_EXPECTATION",
+          "status": "pass",
+          "title": "balanced_EXPECTATION",
+          "detail": "Full feasible plan passes evidence verification."
+        },
+        {
+          "id": "balanced_FOUR_DIMENSIONAL",
+          "status": "pass",
+          "title": "balanced_FOUR_DIMENSIONAL",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_WINDOW",
+          "status": "pass",
+          "title": "balanced_WINDOW",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_REQUESTED_AREA",
+          "status": "pass",
+          "title": "balanced_REQUESTED_AREA",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_RESERVE",
+          "status": "pass",
+          "title": "balanced_RESERVE",
+          "detail": "Reserve is not traded against cost."
+        },
+        {
+          "id": "BALANCED_FORMULA",
+          "status": "pass",
+          "title": "BALANCED_FORMULA",
+          "detail": "Recompute 50/50 score from disclosed pool ranges; this does not certify global optimality."
+        },
+        {
+          "id": "BALANCED_EXPORT_ASSUMPTIONS",
+          "status": "pass",
+          "title": "BALANCED_EXPORT_ASSUMPTIONS",
+          "detail": "Independent balanced export retains formula, normalization and resource-proxy meaning."
+        },
+        {
+          "id": "SAME_PLAN_HONESTY",
+          "status": "pass",
+          "title": "SAME_PLAN_HONESTY",
+          "detail": "Route identity is recomputed, not inferred from objective labels."
+        }
+      ]
+    },
+    {
+      "id": "height-obstacle",
+      "title": "Высотное препятствие под маршрутом",
+      "expected": "feasible_model",
+      "status": "pass",
+      "inputHash": "29577954dbfd0584b79fc3861dcedd4bd2b930d435ab8507d7db56db74f913b5",
+      "httpMs": 92.40390000000002,
+      "computationMs": 56,
+      "candidates": [
+        {
+          "label": "legacy-1",
+          "candidateId": "makespan",
+          "objective": "makespan",
+          "status": "feasible_model",
+          "verificationStatus": "passes-declared-model",
+          "metrics": {
+            "makespanSec": 574.7175441662408,
+            "flightTimeSec": 514.7175441662408,
+            "distanceM": 2859.0736866632597,
+            "sortieCount": 1,
+            "vehicleCount": 1,
+            "coveragePct": 99.99999999565912,
+            "grossCoveragePct": 99.99999999565912,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 69.36205094248567
+          },
+          "vehicles": [
+            "rgb-1"
+          ],
+          "bearings": [
+            {
+              "jobId": "rgb",
+              "bearingDeg": 90
+            }
+          ],
+          "independentChecks": 43,
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_rgb_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            },
+            {
+              "id": "BASELINE_EXPORT",
+              "status": "unknown",
+              "title": "Повторная проверка baseline",
+              "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+            }
+          ]
+        },
+        {
+          "label": "legacy-2",
+          "candidateId": "flightTime",
+          "objective": "flightTime",
+          "status": "feasible_model",
+          "verificationStatus": "passes-declared-model",
+          "metrics": {
+            "makespanSec": 574.7175441662408,
+            "flightTimeSec": 514.7175441662408,
+            "distanceM": 2859.0736866632597,
+            "sortieCount": 1,
+            "vehicleCount": 1,
+            "coveragePct": 99.99999999565912,
+            "grossCoveragePct": 99.99999999565912,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 69.36205094248567
+          },
+          "vehicles": [
+            "rgb-1"
+          ],
+          "bearings": [
+            {
+              "jobId": "rgb",
+              "bearingDeg": 90
+            }
+          ],
+          "independentChecks": 43,
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_rgb_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            },
+            {
+              "id": "BASELINE_EXPORT",
+              "status": "unknown",
+              "title": "Повторная проверка baseline",
+              "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+            }
+          ]
+        },
+        {
+          "label": "balanced",
+          "candidateId": "balanced",
+          "objective": "makespan",
+          "status": "feasible_model",
+          "verificationStatus": "passes-declared-model",
+          "metrics": {
+            "makespanSec": 574.7175441662408,
+            "flightTimeSec": 514.7175441662408,
+            "distanceM": 2859.0736866632597,
+            "sortieCount": 1,
+            "vehicleCount": 1,
+            "coveragePct": 99.99999999565912,
+            "grossCoveragePct": 99.99999999565912,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 69.36205094248567
+          },
+          "vehicles": [
+            "rgb-1"
+          ],
+          "bearings": [
+            {
+              "jobId": "rgb",
+              "bearingDeg": 90
+            }
+          ],
+          "independentChecks": 43,
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_rgb_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            },
+            {
+              "id": "BASELINE_EXPORT",
+              "status": "unknown",
+              "title": "Повторная проверка baseline",
+              "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+            }
+          ]
+        }
+      ],
+      "recommendation": {
+        "policy": "balanced-normalized-v1",
+        "weights": {
+          "makespan": 0.5,
+          "flightTime": 0.5
+        },
+        "score": 0,
+        "normalized": {
+          "makespan": 0,
+          "flightTime": 0
+        },
+        "ranges": {
+          "makespanSec": {
+            "min": 574.7175441662408,
+            "max": 610.238725130606
+          },
+          "flightTimeSec": {
+            "min": 514.7175441662408,
+            "max": 550.238725130606
+          }
+        },
+        "poolSize": 6,
+        "distinctPlanCount": 2,
+        "samePlan": true,
+        "samePlanAs": [
+          "makespan",
+          "flightTime"
+        ],
+        "explanation": "Компромисс 50/50 среди найденных полных вариантов без проваленных модельных проверок: 0,5 × (T − min T)/(max T − min T) + 0,5 × (F − min F)/(max F − min F), меньше лучше. T — время завершения, F — суммарный налёт; при нулевом диапазоне компонент равен 0. При равной оценке выбраны больший остаток ресурса, затем меньше вылетов, затем детерминированный ключ плана. Налёт — ресурсный proxy, не физический износ оборудования. Глобальная оптимальность не доказана.",
+        "resourceProxy": "flightTimeSec"
+      },
+      "checks": [
+        {
+          "id": "ENGINE_VERSION",
+          "status": "pass",
+          "title": "ENGINE_VERSION",
+          "detail": "Required 0.3.0."
+        },
+        {
+          "id": "INPUT_HASH",
+          "status": "pass",
+          "title": "INPUT_HASH",
+          "detail": "Submitted and returned documents have the same canonical hash."
+        },
+        {
+          "id": "LEGACY_CANDIDATES",
+          "status": "pass",
+          "title": "LEGACY_CANDIDATES",
+          "detail": "Exactly two legacy candidates in objective order."
+        },
+        {
+          "id": "RECOMMENDATION_GATE",
+          "status": "pass",
+          "title": "RECOMMENDATION_GATE",
+          "detail": "Positive examples require a recommendation; rejected examples must not receive one."
+        },
+        {
+          "id": "legacy-1_MODEL_ONLY",
+          "status": "pass",
+          "title": "legacy-1_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "legacy-1_EXPECTATION",
+          "status": "pass",
+          "title": "legacy-1_EXPECTATION",
+          "detail": "Full feasible plan passes evidence verification."
+        },
+        {
+          "id": "legacy-1_GEOMETRY",
+          "status": "pass",
+          "title": "legacy-1_GEOMETRY",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_FOUR_DIMENSIONAL",
+          "status": "pass",
+          "title": "legacy-1_FOUR_DIMENSIONAL",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_PHASES",
+          "status": "pass",
+          "title": "legacy-1_PHASES",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_RESERVE_LANDING",
+          "status": "pass",
+          "title": "legacy-1_RESERVE_LANDING",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_RESERVE",
+          "status": "pass",
+          "title": "legacy-1_RESERVE",
+          "detail": "Reserve is not traded against cost."
+        },
+        {
+          "id": "legacy-2_MODEL_ONLY",
+          "status": "pass",
+          "title": "legacy-2_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "legacy-2_EXPECTATION",
+          "status": "pass",
+          "title": "legacy-2_EXPECTATION",
+          "detail": "Full feasible plan passes evidence verification."
+        },
+        {
+          "id": "legacy-2_GEOMETRY",
+          "status": "pass",
+          "title": "legacy-2_GEOMETRY",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_FOUR_DIMENSIONAL",
+          "status": "pass",
+          "title": "legacy-2_FOUR_DIMENSIONAL",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_PHASES",
+          "status": "pass",
+          "title": "legacy-2_PHASES",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_RESERVE_LANDING",
+          "status": "pass",
+          "title": "legacy-2_RESERVE_LANDING",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_RESERVE",
+          "status": "pass",
+          "title": "legacy-2_RESERVE",
+          "detail": "Reserve is not traded against cost."
+        },
+        {
+          "id": "balanced_MODEL_ONLY",
+          "status": "pass",
+          "title": "balanced_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "balanced_EXPECTATION",
+          "status": "pass",
+          "title": "balanced_EXPECTATION",
+          "detail": "Full feasible plan passes evidence verification."
+        },
+        {
+          "id": "balanced_GEOMETRY",
+          "status": "pass",
+          "title": "balanced_GEOMETRY",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_FOUR_DIMENSIONAL",
+          "status": "pass",
+          "title": "balanced_FOUR_DIMENSIONAL",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_PHASES",
+          "status": "pass",
+          "title": "balanced_PHASES",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_RESERVE_LANDING",
+          "status": "pass",
+          "title": "balanced_RESERVE_LANDING",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_RESERVE",
+          "status": "pass",
+          "title": "balanced_RESERVE",
+          "detail": "Reserve is not traded against cost."
+        },
+        {
+          "id": "BALANCED_FORMULA",
+          "status": "pass",
+          "title": "BALANCED_FORMULA",
+          "detail": "Recompute 50/50 score from disclosed pool ranges; this does not certify global optimality."
+        },
+        {
+          "id": "BALANCED_EXPORT_ASSUMPTIONS",
+          "status": "pass",
+          "title": "BALANCED_EXPORT_ASSUMPTIONS",
+          "detail": "Independent balanced export retains formula, normalization and resource-proxy meaning."
+        },
+        {
+          "id": "SAME_PLAN_HONESTY",
+          "status": "pass",
+          "title": "SAME_PLAN_HONESTY",
+          "detail": "Route identity is recomputed, not inferred from objective labels."
+        }
+      ]
+    },
+    {
+      "id": "area-with-hole",
+      "title": "Участок с внутренним отверстием",
+      "expected": "feasible_model",
+      "status": "pass",
+      "inputHash": "6c9a8378faff08cfa1c71bbbe401fa040f1f4c144f670cdcc4a05e975363b007",
+      "httpMs": 126.96529999999984,
+      "computationMs": 93,
+      "candidates": [
+        {
+          "label": "legacy-1",
+          "candidateId": "makespan",
+          "objective": "makespan",
+          "status": "feasible_model",
+          "verificationStatus": "passes-declared-model",
+          "metrics": {
+            "makespanSec": 853.5947476476991,
+            "flightTimeSec": 793.5947476476991,
+            "distanceM": 4898.091314514926,
+            "sortieCount": 1,
+            "vehicleCount": 1,
+            "coveragePct": 99.99999999801015,
+            "grossCoveragePct": 99.99999999801015,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 52.762217401922676
+          },
+          "vehicles": [
+            "rgb-1"
+          ],
+          "bearings": [
+            {
+              "jobId": "rgb",
+              "bearingDeg": 0
+            }
+          ],
+          "independentChecks": 43,
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_rgb_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            },
+            {
+              "id": "BASELINE_EXPORT",
+              "status": "unknown",
+              "title": "Повторная проверка baseline",
+              "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+            }
+          ]
+        },
+        {
+          "label": "legacy-2",
+          "candidateId": "flightTime",
+          "objective": "flightTime",
+          "status": "feasible_model",
+          "verificationStatus": "passes-declared-model",
+          "metrics": {
+            "makespanSec": 853.5947476476991,
+            "flightTimeSec": 793.5947476476991,
+            "distanceM": 4898.091314514926,
+            "sortieCount": 1,
+            "vehicleCount": 1,
+            "coveragePct": 99.99999999801015,
+            "grossCoveragePct": 99.99999999801015,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 52.762217401922676
+          },
+          "vehicles": [
+            "rgb-1"
+          ],
+          "bearings": [
+            {
+              "jobId": "rgb",
+              "bearingDeg": 0
+            }
+          ],
+          "independentChecks": 43,
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_rgb_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            },
+            {
+              "id": "BASELINE_EXPORT",
+              "status": "unknown",
+              "title": "Повторная проверка baseline",
+              "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+            }
+          ]
+        },
+        {
+          "label": "balanced",
+          "candidateId": "balanced",
+          "objective": "makespan",
+          "status": "feasible_model",
+          "verificationStatus": "passes-declared-model",
+          "metrics": {
+            "makespanSec": 853.5947476476991,
+            "flightTimeSec": 793.5947476476991,
+            "distanceM": 4898.091314514926,
+            "sortieCount": 1,
+            "vehicleCount": 1,
+            "coveragePct": 99.99999999801015,
+            "grossCoveragePct": 99.99999999801015,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 52.762217401922676
+          },
+          "vehicles": [
+            "rgb-1"
+          ],
+          "bearings": [
+            {
+              "jobId": "rgb",
+              "bearingDeg": 0
+            }
+          ],
+          "independentChecks": 43,
+          "failures": [],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_rgb_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            },
+            {
+              "id": "BASELINE_EXPORT",
+              "status": "unknown",
+              "title": "Повторная проверка baseline",
+              "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+            }
+          ]
+        }
+      ],
+      "recommendation": {
+        "policy": "balanced-normalized-v1",
+        "weights": {
+          "makespan": 0.5,
+          "flightTime": 0.5
+        },
+        "score": 0,
+        "normalized": {
+          "makespan": 0,
+          "flightTime": 0
+        },
+        "ranges": {
+          "makespanSec": {
+            "min": 853.5947476476991,
+            "max": 896.662615664744
+          },
+          "flightTimeSec": {
+            "min": 793.5947476476991,
+            "max": 836.662615664744
+          }
+        },
+        "poolSize": 6,
+        "distinctPlanCount": 2,
+        "samePlan": true,
+        "samePlanAs": [
+          "makespan",
+          "flightTime"
+        ],
+        "explanation": "Компромисс 50/50 среди найденных полных вариантов без проваленных модельных проверок: 0,5 × (T − min T)/(max T − min T) + 0,5 × (F − min F)/(max F − min F), меньше лучше. T — время завершения, F — суммарный налёт; при нулевом диапазоне компонент равен 0. При равной оценке выбраны больший остаток ресурса, затем меньше вылетов, затем детерминированный ключ плана. Налёт — ресурсный proxy, не физический износ оборудования. Глобальная оптимальность не доказана.",
+        "resourceProxy": "flightTimeSec"
+      },
+      "checks": [
+        {
+          "id": "ENGINE_VERSION",
+          "status": "pass",
+          "title": "ENGINE_VERSION",
+          "detail": "Required 0.3.0."
+        },
+        {
+          "id": "INPUT_HASH",
+          "status": "pass",
+          "title": "INPUT_HASH",
+          "detail": "Submitted and returned documents have the same canonical hash."
+        },
+        {
+          "id": "LEGACY_CANDIDATES",
+          "status": "pass",
+          "title": "LEGACY_CANDIDATES",
+          "detail": "Exactly two legacy candidates in objective order."
+        },
+        {
+          "id": "RECOMMENDATION_GATE",
+          "status": "pass",
+          "title": "RECOMMENDATION_GATE",
+          "detail": "Positive examples require a recommendation; rejected examples must not receive one."
+        },
+        {
+          "id": "legacy-1_MODEL_ONLY",
+          "status": "pass",
+          "title": "legacy-1_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "legacy-1_EXPECTATION",
+          "status": "pass",
+          "title": "legacy-1_EXPECTATION",
+          "detail": "Full feasible plan passes evidence verification."
+        },
+        {
+          "id": "legacy-1_GEOMETRY",
+          "status": "pass",
+          "title": "legacy-1_GEOMETRY",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_STRIPS",
+          "status": "pass",
+          "title": "legacy-1_STRIPS",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_REQUESTED_AREA",
+          "status": "pass",
+          "title": "legacy-1_REQUESTED_AREA",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_COVERAGE",
+          "status": "pass",
+          "title": "legacy-1_COVERAGE",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-1_RESERVE",
+          "status": "pass",
+          "title": "legacy-1_RESERVE",
+          "detail": "Reserve is not traded against cost."
+        },
+        {
+          "id": "legacy-2_MODEL_ONLY",
+          "status": "pass",
+          "title": "legacy-2_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "legacy-2_EXPECTATION",
+          "status": "pass",
+          "title": "legacy-2_EXPECTATION",
+          "detail": "Full feasible plan passes evidence verification."
+        },
+        {
+          "id": "legacy-2_GEOMETRY",
+          "status": "pass",
+          "title": "legacy-2_GEOMETRY",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_STRIPS",
+          "status": "pass",
+          "title": "legacy-2_STRIPS",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_REQUESTED_AREA",
+          "status": "pass",
+          "title": "legacy-2_REQUESTED_AREA",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_COVERAGE",
+          "status": "pass",
+          "title": "legacy-2_COVERAGE",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "legacy-2_RESERVE",
+          "status": "pass",
+          "title": "legacy-2_RESERVE",
+          "detail": "Reserve is not traded against cost."
+        },
+        {
+          "id": "balanced_MODEL_ONLY",
+          "status": "pass",
+          "title": "balanced_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "balanced_EXPECTATION",
+          "status": "pass",
+          "title": "balanced_EXPECTATION",
+          "detail": "Full feasible plan passes evidence verification."
+        },
+        {
+          "id": "balanced_GEOMETRY",
+          "status": "pass",
+          "title": "balanced_GEOMETRY",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_STRIPS",
+          "status": "pass",
+          "title": "balanced_STRIPS",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_REQUESTED_AREA",
+          "status": "pass",
+          "title": "balanced_REQUESTED_AREA",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_COVERAGE",
+          "status": "pass",
+          "title": "balanced_COVERAGE",
+          "detail": "Declared showcase check passes on exported evidence."
+        },
+        {
+          "id": "balanced_RESERVE",
+          "status": "pass",
+          "title": "balanced_RESERVE",
+          "detail": "Reserve is not traded against cost."
+        },
+        {
+          "id": "BALANCED_FORMULA",
+          "status": "pass",
+          "title": "BALANCED_FORMULA",
+          "detail": "Recompute 50/50 score from disclosed pool ranges; this does not certify global optimality."
+        },
+        {
+          "id": "BALANCED_EXPORT_ASSUMPTIONS",
+          "status": "pass",
+          "title": "BALANCED_EXPORT_ASSUMPTIONS",
+          "detail": "Independent balanced export retains formula, normalization and resource-proxy meaning."
+        },
+        {
+          "id": "SAME_PLAN_HONESTY",
+          "status": "pass",
+          "title": "SAME_PLAN_HONESTY",
+          "detail": "Route identity is recomputed, not inferred from objective labels."
+        }
+      ]
+    },
+    {
+      "id": "wind-limit",
+      "title": "Отказ: ветер выше предела",
+      "expected": "rejected",
+      "status": "pass",
+      "inputHash": "b5357dbe6957a3390193bb1d8e7078242ae132682573d4b0841bb8a2c23316b2",
+      "httpMs": 26.748399999999947,
+      "computationMs": 4,
+      "candidates": [
+        {
+          "label": "legacy-1",
+          "candidateId": "makespan",
+          "objective": "makespan",
+          "status": "unsupported",
+          "verificationStatus": "rejected",
+          "metrics": {
+            "makespanSec": 0,
+            "flightTimeSec": 0,
+            "distanceM": 0,
+            "sortieCount": 0,
+            "vehicleCount": 0,
+            "coveragePct": 0,
+            "grossCoveragePct": 0,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 0
+          },
+          "vehicles": [],
+          "bearings": [
+            {
+              "jobId": "rgb",
+              "bearingDeg": 0
+            }
+          ],
+          "independentChecks": 40,
+          "failures": [
+            {
+              "id": "STRIPS",
+              "status": "fail",
+              "title": "Все рабочие полосы назначены",
+              "detail": "Сверены идентификаторы и геометрия каждой исходной полосы, пропуски и повторы запрещены."
+            },
+            {
+              "id": "COVERAGE",
+              "status": "fail",
+              "title": "Повторная проверка покрытия",
+              "detail": "Геометрические полосы заново пересечены с исходной и доступной областями каждой работы."
+            },
+            {
+              "id": "SAVED_CHECKS",
+              "status": "fail",
+              "title": "Сохранённые проверки подтверждены заново",
+              "detail": "Сопоставлены все ID, статусы и пояснения обеих копий проверок с текущим проверяющим проходом. Неизвестное нельзя заменить положительным утверждением; старые пакеты требуют повторного расчёта текущей версией."
+            },
+            {
+              "id": "CLAIMED_SUCCESS",
+              "status": "fail",
+              "title": "CLAIMED_SUCCESS",
+              "detail": "Для положительного отчёта требуется полный допустимый модельный план."
+            }
+          ],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_rgb_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            }
+          ]
+        },
+        {
+          "label": "legacy-2",
+          "candidateId": "flightTime",
+          "objective": "flightTime",
+          "status": "unsupported",
+          "verificationStatus": "rejected",
+          "metrics": {
+            "makespanSec": 0,
+            "flightTimeSec": 0,
+            "distanceM": 0,
+            "sortieCount": 0,
+            "vehicleCount": 0,
+            "coveragePct": 0,
+            "grossCoveragePct": 0,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 0
+          },
+          "vehicles": [],
+          "bearings": [
+            {
+              "jobId": "rgb",
+              "bearingDeg": 0
+            }
+          ],
+          "independentChecks": 40,
+          "failures": [
+            {
+              "id": "STRIPS",
+              "status": "fail",
+              "title": "Все рабочие полосы назначены",
+              "detail": "Сверены идентификаторы и геометрия каждой исходной полосы, пропуски и повторы запрещены."
+            },
+            {
+              "id": "COVERAGE",
+              "status": "fail",
+              "title": "Повторная проверка покрытия",
+              "detail": "Геометрические полосы заново пересечены с исходной и доступной областями каждой работы."
+            },
+            {
+              "id": "SAVED_CHECKS",
+              "status": "fail",
+              "title": "Сохранённые проверки подтверждены заново",
+              "detail": "Сопоставлены все ID, статусы и пояснения обеих копий проверок с текущим проверяющим проходом. Неизвестное нельзя заменить положительным утверждением; старые пакеты требуют повторного расчёта текущей версией."
+            },
+            {
+              "id": "CLAIMED_SUCCESS",
+              "status": "fail",
+              "title": "CLAIMED_SUCCESS",
+              "detail": "Для положительного отчёта требуется полный допустимый модельный план."
+            }
+          ],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_rgb_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            }
+          ]
+        }
+      ],
+      "recommendation": null,
+      "checks": [
+        {
+          "id": "ENGINE_VERSION",
+          "status": "pass",
+          "title": "ENGINE_VERSION",
+          "detail": "Required 0.3.0."
+        },
+        {
+          "id": "INPUT_HASH",
+          "status": "pass",
+          "title": "INPUT_HASH",
+          "detail": "Submitted and returned documents have the same canonical hash."
+        },
+        {
+          "id": "LEGACY_CANDIDATES",
+          "status": "pass",
+          "title": "LEGACY_CANDIDATES",
+          "detail": "Exactly two legacy candidates in objective order."
+        },
+        {
+          "id": "RECOMMENDATION_GATE",
+          "status": "pass",
+          "title": "RECOMMENDATION_GATE",
+          "detail": "Positive examples require a recommendation; rejected examples must not receive one."
+        },
+        {
+          "id": "legacy-1_MODEL_ONLY",
+          "status": "pass",
+          "title": "legacy-1_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "legacy-1_EXPECTATION",
+          "status": "pass",
+          "title": "legacy-1_EXPECTATION",
+          "detail": "Saved and independently checked rejection; not a successful flight plan."
+        },
+        {
+          "id": "legacy-2_MODEL_ONLY",
+          "status": "pass",
+          "title": "legacy-2_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "legacy-2_EXPECTATION",
+          "status": "pass",
+          "title": "legacy-2_EXPECTATION",
+          "detail": "Saved and independently checked rejection; not a successful flight plan."
+        }
+      ]
+    },
+    {
+      "id": "insufficient-energy",
+      "title": "Отказ: недостаточный ресурс",
+      "expected": "rejected",
+      "status": "pass",
+      "inputHash": "88cbc4230e9c58219967c1df96d93b328375850e493f0c5379b37433c74d9939",
+      "httpMs": 34.86779999999999,
+      "computationMs": 8,
+      "candidates": [
+        {
+          "label": "legacy-1",
+          "candidateId": "makespan",
+          "objective": "makespan",
+          "status": "not_found",
+          "verificationStatus": "rejected",
+          "metrics": {
+            "makespanSec": 0,
+            "flightTimeSec": 0,
+            "distanceM": 0,
+            "sortieCount": 0,
+            "vehicleCount": 0,
+            "coveragePct": 0,
+            "grossCoveragePct": 0,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 0
+          },
+          "vehicles": [],
+          "bearings": [
+            {
+              "jobId": "rgb",
+              "bearingDeg": 0
+            }
+          ],
+          "independentChecks": 40,
+          "failures": [
+            {
+              "id": "STRIPS",
+              "status": "fail",
+              "title": "Все рабочие полосы назначены",
+              "detail": "Сверены идентификаторы и геометрия каждой исходной полосы, пропуски и повторы запрещены."
+            },
+            {
+              "id": "COVERAGE",
+              "status": "fail",
+              "title": "Повторная проверка покрытия",
+              "detail": "Геометрические полосы заново пересечены с исходной и доступной областями каждой работы."
+            },
+            {
+              "id": "CLAIMED_SUCCESS",
+              "status": "fail",
+              "title": "CLAIMED_SUCCESS",
+              "detail": "Для положительного отчёта требуется полный допустимый модельный план."
+            }
+          ],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_rgb_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            }
+          ]
+        },
+        {
+          "label": "legacy-2",
+          "candidateId": "flightTime",
+          "objective": "flightTime",
+          "status": "not_found",
+          "verificationStatus": "rejected",
+          "metrics": {
+            "makespanSec": 0,
+            "flightTimeSec": 0,
+            "distanceM": 0,
+            "sortieCount": 0,
+            "vehicleCount": 0,
+            "coveragePct": 0,
+            "grossCoveragePct": 0,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 0
+          },
+          "vehicles": [],
+          "bearings": [
+            {
+              "jobId": "rgb",
+              "bearingDeg": 0
+            }
+          ],
+          "independentChecks": 40,
+          "failures": [
+            {
+              "id": "STRIPS",
+              "status": "fail",
+              "title": "Все рабочие полосы назначены",
+              "detail": "Сверены идентификаторы и геометрия каждой исходной полосы, пропуски и повторы запрещены."
+            },
+            {
+              "id": "COVERAGE",
+              "status": "fail",
+              "title": "Повторная проверка покрытия",
+              "detail": "Геометрические полосы заново пересечены с исходной и доступной областями каждой работы."
+            },
+            {
+              "id": "CLAIMED_SUCCESS",
+              "status": "fail",
+              "title": "CLAIMED_SUCCESS",
+              "detail": "Для положительного отчёта требуется полный допустимый модельный план."
+            }
+          ],
+          "unknowns": [
+            {
+              "id": "ALTERNATE_ESCAPE",
+              "status": "unknown",
+              "title": "Альтернативный аварийный уход",
+              "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+            },
+            {
+              "id": "CALIBRATION",
+              "status": "unknown",
+              "title": "Реальная динамика и энергия",
+              "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+            },
+            {
+              "id": "IMAGE_FOOTPRINTS",
+              "status": "unknown",
+              "title": "Реальные фотоотпечатки",
+              "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+            },
+            {
+              "id": "AIRSPACE_PERMISSION",
+              "status": "unknown",
+              "title": "Допуск к реальному полёту",
+              "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+            },
+            {
+              "id": "EXPORTED_QUALITY_rgb_SOURCE",
+              "status": "unknown",
+              "title": "Источник параметров сенсора",
+              "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+            },
+            {
+              "id": "TRACE_SEARCH_PROVENANCE",
+              "status": "unknown",
+              "title": "Происхождение диагностической трассы поиска",
+              "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+            }
+          ]
+        }
+      ],
+      "recommendation": null,
+      "checks": [
+        {
+          "id": "ENGINE_VERSION",
+          "status": "pass",
+          "title": "ENGINE_VERSION",
+          "detail": "Required 0.3.0."
+        },
+        {
+          "id": "INPUT_HASH",
+          "status": "pass",
+          "title": "INPUT_HASH",
+          "detail": "Submitted and returned documents have the same canonical hash."
+        },
+        {
+          "id": "LEGACY_CANDIDATES",
+          "status": "pass",
+          "title": "LEGACY_CANDIDATES",
+          "detail": "Exactly two legacy candidates in objective order."
+        },
+        {
+          "id": "RECOMMENDATION_GATE",
+          "status": "pass",
+          "title": "RECOMMENDATION_GATE",
+          "detail": "Positive examples require a recommendation; rejected examples must not receive one."
+        },
+        {
+          "id": "legacy-1_MODEL_ONLY",
+          "status": "pass",
+          "title": "legacy-1_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "legacy-1_EXPECTATION",
+          "status": "pass",
+          "title": "legacy-1_EXPECTATION",
+          "detail": "Saved and independently checked rejection; not a successful flight plan."
+        },
+        {
+          "id": "legacy-2_MODEL_ONLY",
+          "status": "pass",
+          "title": "legacy-2_MODEL_ONLY",
+          "detail": "Unapproved model evidence only."
+        },
+        {
+          "id": "legacy-2_EXPECTATION",
+          "status": "pass",
+          "title": "legacy-2_EXPECTATION",
+          "detail": "Saved and independently checked rejection; not a successful flight plan."
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "limitations": [
+    "Synthetic examples and declared model only; not official benchmark, real-flight clearance or telemetry.",
+    "Independent pass shares geometry/validation libraries with the solver; not independent certification.",
+    "Bounded search is hardware/time dependent; full pool and global optimality are not independently proven.",
+    "One sequential request per scenario; no retries, stress, oversized-body or runtime-stability proof."
+  ]
+}

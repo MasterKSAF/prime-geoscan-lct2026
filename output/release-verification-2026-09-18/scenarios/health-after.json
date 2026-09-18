@@ -1,0 +1,5 @@
+{
+  "checkedAt": "2026-09-18T10:37:47.002Z",
+  "status": 200,
+  "body": "{\"status\":\"ok\",\"engineVersion\":\"0.1.0\",\"missionEngineVersion\":\"0.3.0\",\"missionSchemaVersion\":\"2.0\",\"mode\":\"engineering-preview\",\"flightReady\":false}"
+}

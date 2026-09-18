@@ -1,0 +1,7 @@
+{
+  "type": "prime-restrictions",
+  "schemaVersion": "1.0",
+  "altitudeReference": "mission-reference",
+  "source": "Ограничения миссии area-with-hole. Высоты в общем локальном уровне миссии; не WGS84/AMSL и не DEM.",
+  "restrictions": []
+}

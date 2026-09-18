@@ -1,0 +1,230 @@
+.ms-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: #47728a;
+  margin-bottom: 8px;
+}
+.ms-brief h3 {
+  margin: 0 0 10px;
+  font-size: 21px;
+}
+.ms-brief > p {
+  font-size: 13px;
+  line-height: 1.65;
+  color: #435c6d;
+  white-space: pre-line;
+}
+.ms-facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 18px 0;
+}
+.ms-facts > div {
+  border: 1px solid #d9e6ed;
+  background: #f4f9fc;
+  padding: 13px;
+  border-radius: 8px;
+}
+.ms-facts dt {
+  font-size: 11px;
+  color: #577385;
+  margin-bottom: 7px;
+}
+.ms-facts dd {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+.ms-facts small {
+  font-size: 11px;
+  color: #617d8e;
+  display: block;
+  margin-top: 6px;
+}
+.ms-table-scroll {
+  overflow: auto;
+  margin: 15px 0;
+}
+.ms-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+  text-align: left;
+}
+.ms-table th {
+  background: #edf5f9;
+  color: #416175;
+  font-size: 11px;
+}
+.ms-table th,
+.ms-table td {
+  padding: 11px;
+  border-bottom: 1px solid #dce7ee;
+  vertical-align: top;
+}
+.ms-table small {
+  display: block;
+  color: #617b8d;
+  margin-top: 4px;
+}
+.ms-table tr.ms-selected {
+  background: #eaf6ff;
+}
+.ms-gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 18px;
+}
+.ms-scenario {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #d2e2eb;
+  border-radius: 10px;
+  padding: 17px;
+  background: linear-gradient(135deg, #f7fbfe, #fff);
+}
+.ms-scenario-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+.ms-scenario-top > span {
+  font-size: 23px;
+  font-weight: 700;
+  color: #94b4c7;
+}
+.ms-scenario-top small {
+  font-size: 10px;
+  border-radius: 20px;
+  padding: 4px 8px;
+}
+.ms-ok {
+  background: #e3f4ec;
+  color: #23644b;
+}
+.ms-negative {
+  background: #fff0de;
+  color: #8d5a23;
+}
+.ms-scenario h3 {
+  font-size: 16px;
+  margin: 12px 0 7px;
+}
+.ms-scenario p {
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0;
+  color: #466174;
+}
+.ms-scenario ul {
+  padding-left: 18px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #446478;
+}
+.ms-scenario details {
+  font-size: 11px;
+  color: #446478;
+  margin-bottom: 16px;
+}
+.ms-scenario-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+}
+.ms-scenario-actions .mw-button {
+  font-size: 11px;
+}
+.ms-mission-id {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  color: #43677e;
+  background: #eef6fb;
+  border: 1px solid #d7e6f0;
+  padding: 3px 7px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-top: 8px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.mw-titlebar h1,
+.ms-brief h3,
+.ms-table td {
+  overflow-wrap: anywhere;
+}
+.ms-file-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 10px 0 16px;
+}
+.ms-notice {
+  background: #eef7fc;
+  border-left: 3px solid #2b82ab;
+  padding: 12px 14px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #315c75;
+  margin: 12px 0;
+}
+.ms-modal-wide {
+  max-width: 1000px;
+}
+.ms-metric-bar {
+  height: 5px;
+  background: #e7eef3;
+  border-radius: 4px;
+  margin: 5px 0 0;
+  min-width: 70px;
+}
+.ms-metric-bar span {
+  height: 100%;
+  background: #408cb6;
+  display: block;
+  border-radius: 4px;
+}
+.ms-mode-tag {
+  font-size: 10px;
+  color: #246242;
+  background: #eaf6ee;
+  padding: 3px 6px;
+  border-radius: 4px;
+  margin-left: 7px;
+}
+.mw-modal.ms-modal-wide {
+  width: min(1000px, calc(100vw - 32px));
+  max-width: 1000px;
+}
+@media (max-width: 740px) {
+  .mw-header-actions {
+    flex-wrap: wrap;
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+@media (max-width: 640px) {
+  .ms-gallery,
+  .ms-facts {
+    grid-template-columns: 1fr;
+  }
+  .ms-scenario {
+    padding: 14px;
+  }
+  .ms-table th,
+  .ms-table td {
+    padding: 8px;
+  }
+  .ms-file-actions .mw-button {
+    flex: 1;
+  }
+  .ms-brief h3 {
+    font-size: 18px;
+  }
+}

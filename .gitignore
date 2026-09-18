@@ -1,0 +1,94 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/.vinext/
+/out/
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local environment
+.env*
+
+# deployment and generated files
+.vercel
+next-env.d.ts
+/dist/
+/.wrangler/
+/outputs/
+/work/
+
+# Reproducible local dataset cache; keep scripts and reports in the repository.
+/data/vehicle-crops-v1/
+
+# ML environment and generated model artifacts
+/.venv-reid-cpu/
+**/__pycache__/
+/training/runs/
+/training/weights/
+/training/prepared/
+/output/reid-validation/
+/output/colab-kit/
+/.venv-reid/
+/output/windows-kit/
+/output/windows-results/
+/output/windows-setup/
+
+# Local tooling, captured sessions and temporary downloads are not deliverables.
+/tmp/
+/.playwright-cli/
+*.tsbuildinfo
+*.local
+*.key
+*.pfx
+*.p12
+*.session
+*.session-journal
+
+# Other hackathon tracks share this workspace but are not part of PRIME.
+/vehicle/
+/training/
+/notebooks/
+/data/
+/lct-2026-rating.html
+
+# Preserve only explicitly selected, reviewed verification snapshots in Git.
+/output/*
+!/output/mission-showcase-0.3.0/
+!/output/mission-showcase-0.3.0-unit-tests.xml
+!/output/mission-showcase-0.3.0-acceptance.xml
+!/output/release-verification-2026-09-18/
+/output/release-verification-2026-09-18/*.zip
+/output/release-verification-2026-09-18/*-cli.log
+!/output/playwright/
+/output/playwright/*
+!/output/playwright/0.3.0-core/
+!/output/playwright/0.3.0-showcase/
+!/output/playwright/0.3.0-docs/
+
+# Raw meeting media and Telegram monitoring state remain local.
+/docs/planner/meetings/*.mp3
+/docs/planner/meetings/*.mp4
+/docs/planner/meetings/*.webm
+/docs/planner/meetings/*monitor-state*
+/docs/planner/meetings/**/media/
+/.venv*/

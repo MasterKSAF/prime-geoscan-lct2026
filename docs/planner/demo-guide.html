@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Прайм Planner 0.3.0: сценарий показа за шесть минут, девять учебных миссий, форматы обмена и границы модели.">
+  <title>Прайм Planner 0.3.0 · шпаргалка демонстрации</title>
+  <style>
+    :root { color-scheme: light; --ink: #182d42; --muted: #516476; --line: #d9e2ea; --blue: #145b99; --paper: #fff; --wash: #f3f6fa; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--wash); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    a { color: var(--blue); text-underline-offset: 3px; }
+    a:focus-visible, button:focus-visible { outline: 3px solid #e7a92a; outline-offset: 4px; }
+    header { background: #152f48; color: #fff; padding: 38px max(24px, calc((100% - 1100px) / 2)); }
+    header p { max-width: 860px; color: #d8e5f0; }
+    .eyebrow { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: #a9cce9; }
+    h1 { font-size: clamp(28px, 4vw, 42px); line-height: 1.15; margin: 12px 0; }
+    h2 { font-size: 25px; line-height: 1.25; margin: 0 0 18px; }
+    h3 { font-size: 18px; margin: 0 0 5px; }
+    p { margin: 10px 0; }
+    main { max-width: 1150px; margin: auto; padding: 28px 24px 48px; }
+    nav { display: flex; flex-wrap: wrap; gap: 12px 22px; margin-bottom: 26px; }
+    nav a { font-weight: 600; }
+    section { scroll-margin-top: 20px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; margin: 20px 0; padding: 27px; }
+    .intro { margin-top: 0; }
+    .note { border-left: 4px solid #d9a130; background: #fffaec; padding: 12px 16px; margin-top: 18px; }
+    .muted, small { color: var(--muted); }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin: 18px 0 0; }
+    button, .button { border: 1px solid #bed3e4; border-radius: 7px; background: #fff; color: #174a74; padding: 10px 14px; cursor: pointer; font: inherit; text-decoration: none; }
+    .button { background: #e5f1fb; }
+    .run { list-style: none; padding: 0; margin: 0; }
+    .run li { display: grid; grid-template-columns: 108px 1fr; gap: 20px; padding: 17px 0; border-top: 1px solid var(--line); }
+    .run li:first-child { border-top: 0; padding-top: 0; }
+    .time { color: var(--blue); font-variant-numeric: tabular-nums; font-weight: 700; }
+    .run p { margin: 3px 0; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 26px; }
+    .grid article { border-top: 2px solid #d6e7f6; padding-top: 12px; }
+    .table-wrap { overflow-x: auto; }
+    .table-wrap:focus-visible { outline: 3px solid #e7a92a; outline-offset: 3px; }
+    .table-hint { display: none; color: var(--muted); font-size: 13px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 630px; }
+    th { text-align: left; background: #eef4f9; color: #234967; }
+    td, th { padding: 12px 13px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    td:first-child { font-weight: 600; }
+    .scenario-id { display: block; font: 12px/1.5 ui-monospace, Consolas, monospace; color: var(--muted); font-weight: 400; overflow-wrap: anywhere; }
+    code { font: .88em ui-monospace, Consolas, monospace; overflow-wrap: anywhere; }
+    pre { padding: 14px; background: #edf3f8; white-space: pre-wrap; overflow-wrap: anywhere; border-radius: 7px; }
+    ul { padding-left: 22px; }
+    li { margin: 8px 0; }
+    footer { max-width: 1100px; margin: auto; padding: 0 24px 30px; font-size: 13px; color: var(--muted); }
+    @media (max-width: 650px) { main { padding: 16px 12px; } section { padding: 19px; } .grid { grid-template-columns: 1fr; } .run li { grid-template-columns: 1fr; gap: 4px; } nav { gap: 9px 15px; } .table-hint { display: block; } }
+    @media print {
+      @page { size: A4; margin: 14mm; }
+      body { background: #fff; font-size: 10pt; line-height: 1.4; }
+      header { padding: 0 0 14px; background: #fff; color: #182d42; border-bottom: 2px solid #182d42; }
+      header p, .eyebrow { color: #516476; } h1 { font-size: 25pt; } h2 { font-size: 16pt; } h3 { font-size: 12pt; }
+      main { max-width: none; padding: 0; } nav, .actions, .table-hint { display: none; }
+      section { border: 0; border-radius: 0; padding: 16px 0; margin: 0; }
+      h2, h3 { break-after: avoid; } article, .run li { break-inside: avoid; }
+      .table-wrap { overflow: visible; } table { min-width: 0; font-size: 9pt; } td, th { padding: 7px; } tr { break-inside: avoid; }
+      .note { background: #fff; border: 1px solid #c8b982; } .grid { gap: 12px 20px; }
+      footer { padding: 15px 0 0; } a { color: inherit; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="eyebrow">Версия 0.3.0 · полная миссия 2.0 · показ за 6 минут</div>
+    <h1>Прайм Planner<br>Шпаргалка демонстрации</h1>
+    <p>Задание → варианты → проверки → подтверждение → симуляция → экспорт.</p>
+    <p>Девять синтетических сценариев показывают работу модели и причины отказа. Это собственные проверочные примеры, не официальные эталоны Геоскана и не реальные разрешённые полётные задания.</p>
+    <div class="actions">
+      <a class="button" href="http://127.0.0.1:3016/planner">Открыть локальный стенд</a>
+      <button type="button" onclick="window.print()">Печать / сохранить PDF</button>
+    </div>
+  </header>
+  <main>
+    <nav aria-label="Разделы шпаргалки">
+      <a href="#run">План показа</a><a href="#features">Возможности</a><a href="#scenarios">9 сценариев</a><a href="#compare">Варианты</a><a href="#files">Форматы</a><a href="#limits">Доказательства и границы</a>
+    </nav>
+    <section class="intro" aria-labelledby="prepare-title">
+      <h2 id="prepare-title">Перед показом</h2>
+      <p>Откройте <code>http://127.0.0.1:3016/planner</code>. При необходимости запустите из корня проекта:</p>
+      <pre><code>docker compose -f compose.planner.yaml up --build -d</code></pre>
+      <p>Отключите подложку, если нужны только локальные данные без запросов тайлов. Подготовьте свободный ID копии, например <code>demo-session-27</code>. Основной пример — «Автовыбор БВС: время, налёт и баланс».</p>
+      <p class="note">Минуты и статусы берутся из живого расчёта. Совпадение вариантов или отсутствие полного плана в бюджете нужно показать с фактическим объяснением.</p>
+    </section>
+    <section id="run" aria-labelledby="run-title">
+      <h2 id="run-title">Показ за 6 минут</h2>
+      <ol class="run">
+        <li><div class="time">0:00–0:40</div><div><h3>Открыть задание и паспорт</h3><p>«Сценарии» → «Автовыбор БВС: время, налёт и баланс» → предпросмотр → «Заменить текущее задание» → «Паспорт миссии».</p><p class="muted">Показать номер, описание, окно, работы и ресурсы. Три совместимых БВС отличаются базой, скоростью и готовностью АКБ; назначение автоматическое.</p></div></li>
+        <li><div class="time">0:40–1:15</div><div><h3>Сохранить отдельную миссию</h3><p>«Сохранить как» → новый ID и имя → «Создать новую миссию».</p><p class="muted">Все параметры переходят в отдельную запись. Исходная запись сохраняется; прежнее подтверждение не переносится.</p></div></li>
+        <li><div class="time">1:15–2:05</div><div><h3>Показать ресурсы и ограничения</h3><p>«Редактировать миссию» из паспорта → «Ресурсы»: параметры БВС, АКБ и группы назначений. Затем «Правила» и «Слои карты».</p><p class="muted">Custom, базы, совместимость, ресурс; для 4D — контур, высоты, период действия. Для основного расчёта оставить подготовленные параметры.</p></div></li>
+        <li><div class="time">2:05–3:20</div><div><h3>Сравнить реальные варианты</h3><p>«Рассчитать варианты» → «Сравнить и объяснить варианты».</p><p class="muted">«Раньше закончить», «Меньше летать», доступный «Баланс»: последняя посадка, суммарный налёт, назначения, вылеты, замены АКБ и остаток.</p></div></li>
+        <li><div class="time">3:20–4:10</div><div><h3>Проверить и проиграть</h3><p>Прочитать проверки и допущения, подтвердить выбранный план. Запустить симуляцию, показать паузу, скорость и конец ползунка.</p><p class="muted">Карта, события, заряд и экспорт используют одни вылеты. Правка входа или смена варианта сбрасывает подтверждение.</p></div></li>
+        <li><div class="time">4:10–5:10</div><div><h3>Показать ожидание и отказ</h3><p>Рассчитать «Ожидание временного запрета», затем «Отказ: ветер выше предела».</p><p class="muted">В первом примере старт ждёт открытия зоны. Во втором объяснить причину отказа и недоступное подтверждение.</p></div></li>
+        <li><div class="time">5:10–6:00</div><div><h3>Вернуться к сохранённому входу и выгрузить</h3><p>Через «Библиотеку» открыть основной пример, при необходимости пересчитать. Показать JSON/YAML задания, индивидуальную выдачу и «Доказательства».</p><p class="muted">Полный вход загружается обратно; пакет относится к конкретному расчёту и проверяется отдельной командой.</p></div></li>
+      </ol>
+      <p class="note">Для короткого показа пропустить расчёт временной зоны. Для семиминутного — дополнительно раскрыть «Повторные вылеты и смена АКБ». Все девять примеров за один проход показывать не требуется.</p>
+    </section>
+    <section id="features" aria-labelledby="features-title">
+      <h2 id="features-title">Что раскрыть по вопросу</h2>
+      <div class="grid">
+        <article><h3>Паспорт и «Сохранить как»</h3><p>Описание, окно, работы, ресурсы, условия и ограничения. Паспорт ведёт к редактированию и описанию MD. Новый ID создаёт отдельную запись, сохраняя полный вход.</p></article>
+        <article><h3>Редактор БВС</h3><p>Имя, воздушная скорость, допустимый ветер, ресурс, подъём, снижение, манёвр, базы, совместимость, источник и допущения. Custom задаётся явно; Геоскан 201 остаётся самолётом.</p></article>
+        <article><h3>АКБ и назначения</h3><p>Заряд, готовность, перезарядка, циклы, дата ввода и источник. Для каждой работы выбирается группа аппаратов. Пустая группа означает автоматический выбор доступных совместимых БВС.</p></article>
+        <article><h3>Удаление аппарата</h3><p>После подтверждения удаляются БВС, его АКБ и ссылки в назначениях. Остаются минимум один БВС и одна АКБ. Если ручная группа опустела, назначение становится автоматическим.</p></article>
+        <article><h3>Импорт и экспорт флота</h3><p>JSON <code>prime-fleet</code> 1.0 с предпросмотром. Импорт добавляет весь набор. Коллизия ID, превышение лимита или несохраняемый результат отменяет операцию целиком.</p></article>
+        <article><h3>Слои и 4D-объёмы</h3><p>GeoJSON/KML передаёт координаты. JSON <code>prime-restrictions</code> 1.0 сохраняет высоты, время и источник. Объёмы добавляются после подтверждения; коллизии ID отклоняются.</p></article>
+      </div>
+      <p class="note">До 8 работ, 10 БВС, 100 АКБ и 20 дополнительных объёмов. Файлы миссии, флота и объёмов — до 200 КиБ каждый. Галерея даёт полные входы и отдельные примеры участков, объёмов и флота. Для повторного добавления нужны уникальные ID.</p>
+    </section>
+    <section id="scenarios" aria-labelledby="scenarios-title">
+      <h2 id="scenarios-title">Матрица девяти сценариев</h2>
+      <p class="muted">Это ожидаемое поведение подготовленных входов. Итог текущего прогона определяется реальным расчётом.</p>
+      <p class="table-hint">Прокрутите таблицу вправо, чтобы увидеть все столбцы.</p>
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Таблица сценариев"><table>
+        <thead><tr><th scope="col">Сценарий</th><th scope="col">Что наблюдать</th></tr></thead>
+        <tbody>
+          <tr><td>01. Автовыбор БВС: время, налёт и баланс<span class="scenario-id">automatic-tradeoff</span></td><td>Один RGB-участок, три профиля, пустые назначения. Сравнить выбор аппаратов и три представления результата.</td></tr>
+          <tr><td>02. Три работы и смешанный флот<span class="scenario-id">mixed-fleet</span></td><td>RGB, MS и IR; разные скорости, совместимость и более поздняя готовность ИК-батарей.</td></tr>
+          <tr><td>03. LiDAR и геофизический подвес<span class="scenario-id">lidar-geophysics</span></td><td>Правила плотности и шага измерений, учебный подвес 10 м, проверка высот.</td></tr>
+          <tr><td>04. Повторные вылеты и смена АКБ<span class="scenario-id">repeat-sorties</span></td><td>Один БВС с ресурсом 12 минут; несколько вылетов, замены батарей и обслуживание.</td></tr>
+          <tr><td>05. Ожидание временного запрета<span class="scenario-id">timed-airspace</span></td><td>Запрет до 200 м на первые 15 минут; ожидание открытия без сокращения задания.</td></tr>
+          <tr><td>06. Высотное препятствие под маршрутом<span class="scenario-id">height-obstacle</span></td><td>Препятствие 40 м и переход на заданной высоте 100 м; вертикальный зазор.</td></tr>
+          <tr><td>07. Участок с внутренним отверстием<span class="scenario-id">area-with-hole</span></td><td>Сохранение исходного Polygon с отверстием и полноты назначенных полос.</td></tr>
+          <tr><td>08. Отказ: ветер выше предела<span class="scenario-id">wind-limit</span></td><td>Ветер 20 м/с при пределе профиля 10 м/с; полный допустимый план не ожидается.</td></tr>
+          <tr><td>09. Отказ: недостаточный ресурс<span class="scenario-id">insufficient-energy</span></td><td>Заряд 26% при резерве 25%; полноценный вылет не ожидается.</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+    <section id="compare" aria-labelledby="compare-title">
+      <h2 id="compare-title">Как объяснить три варианта</h2>
+      <p><strong>«Раньше закончить»</strong> уменьшает время от начала окна до последней посадки. Ожидания и обслуживание между вылетами входят в расписание.</p>
+      <p><strong>«Меньше летать»</strong> уменьшает сумму длительностей всех вылетов. Параллельные полёты складываются; суммарный налёт может отличаться от времени завершения.</p>
+      <p><strong>«Баланс»</strong> использует равные веса этих показателей, нормализованных по найденному допустимому набору. Это выбор существующего проверенного кандидата. Он может совпасть с основным вариантом; если полного допустимого плана нет, баланс не предлагается.</p>
+      <p class="note">Налёт характеризует использование ресурса, но не измеряет физический износ. Глобальная оптимальность не доказана. Выгрузка и обработка данных после последней посадки не моделируются.</p>
+    </section>
+    <section id="files" aria-labelledby="files-title">
+      <h2 id="files-title">Входные и выходные форматы</h2>
+      <p class="table-hint">Прокрутите таблицу вправо, чтобы увидеть все столбцы.</p>
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Таблица форматов"><table>
+        <thead><tr><th scope="col">Формат</th><th scope="col">Для чего</th><th scope="col">Обратная загрузка</th></tr></thead>
+        <tbody>
+          <tr><td>Полная миссия JSON / YAML 2.0</td><td>Работы, геометрия, окно, флот, АКБ и ограничения</td><td>Да, через «Импорт» и предпросмотр</td></tr>
+          <tr><td>Описание MD</td><td>Читаемый паспорт задания</td><td>Нет; это описание, не вход</td></tr>
+          <tr><td>GeoJSON / KML на входе</td><td>Участки, границы, запреты, точки баз</td><td>Координатный слой с выбранной ролью, не полная миссия</td></tr>
+          <tr><td>Флот JSON<br><code>prime-fleet</code> 1.0</td><td>Профили БВС и отдельные АКБ</td><td>«Ресурсы» → «Импорт флота»</td></tr>
+          <tr><td>Объёмы JSON<br><code>prime-restrictions</code> 1.0</td><td>Контуры, высоты, периоды, источники</td><td>«Слои карты» → «Загрузить объёмы JSON»</td></tr>
+          <tr><td>GeoJSON / KML плана, «План JSON»</td><td>Вылеты группы или выбранного БВС</td><td>Не заменяет полный вход; совместимость с автопилотом не проверена</td></tr>
+          <tr><td>«Доказательства» JSON</td><td>Вход, результат, проверки, события, хеши и подтверждение</td><td>Для отдельного проверяющего инструмента</td></tr>
+        </tbody>
+      </table></div>
+      <p>GeoJSON/KML не загружает DEM. Картинка карты без координат не становится геоданными. Высотный объём препятствия не является цифровой моделью рельефа. KML плана прижат к земле; высоты передаются отдельными атрибутами.</p>
+    </section>
+    <section id="limits" aria-labelledby="limits-title">
+      <h2 id="limits-title">Доказательства и границы модели</h2>
+      <p><a href="showcase-0.3.0.md">Отчёт версии 0.3.0</a> · <a href="../../output/mission-showcase-0.3.0/summary.json">Машиночитаемый свод</a>. Пакеты проверки находятся в <code>output/mission-showcase-0.3.0/</code>. Число пройденных тестов и итоги следует брать из файлов фактического прогона.</p>
+      <pre><code>npm run verify:evidence -- &lt;путь-к-пакету.json&gt; &lt;путь-к-отчёту.json&gt;</code></pre>
+      <ul>
+        <li>Ветер, облачность и видимость задаёт оператор; значения постоянны. Прогнозов и реальной телеметрии нет.</li>
+        <li>Облака и траектории используют общий локальный уровень высот. Преобразования к реальным AGL/AMSL нет; рельеф неизвестный либо явно плоский.</li>
+        <li>Заданная высота проверяется. Автоматического поиска лучшей высоты нет.</li>
+        <li>Энергия описывается линейной моделью. Качество реальных снимков и измерений не подтверждается; самолётные фазы 201 не валидированы.</li>
+        <li>Нет службы разрешений, управления реальным БВС, моделирования отказов и гарантии найти решение для любого входа. Неизвестные проверки остаются видимыми.</li>
+      </ul>
+      <p class="note">Библиотека привязана к браузеру и адресу. Другой порт — другое хранилище; очистка данных может удалить записи. Для переноса сохраняйте полную миссию JSON/YAML и резервную копию библиотеки.</p>
+    </section>
+  </main>
+  <footer>Прайм Planner · ядро 0.3.0 · автономная шпаргалка без внешних ресурсов. <a href="demo-guide.md">Markdown-версия</a> · <a href="README.md">Документация проекта</a></footer>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "web_pages": 50,
+  "knowledge_base_articles": 48,
+  "unique_new_pdf_pages": 127,
+  "facts": 18,
+  "local_links_checked": 20,
+  "source_index_sha256": "47c313e7f7a597a06fcc204687f6696a12283cb821ca214e0bbf34df8ca7be69",
+  "markdown_sha256": {
+    "airframes-and-operations.md": "68e8938c344ffa619e3414062d391d12c44c7045a7df1f52f3c7c8623d513a81",
+    "cloud-and-quality.md": "b7f02e980e67cac63b2c58f2ddd5c2d406f7c0e759dc0aba80351572b7eb229e",
+    "implementation-addendum.md": "e3e84b2635b1d211beb1e23f3ce0aa8339a9590f7ab824d850e5b54c59ff7a8d",
+    "planner-copter-manual.md": "7886f609aed20620eb70c1a3e30ca4890c2b7a757d0cc02eda3d23334ca0227b",
+    "planner-copter-review.md": "e6c4ee951a455bedf1b22ff099eb6642a8bd58940f6a27975f93f4f527795214",
+    "planner-faq-and-releases.md": "f204b1d76e050781b1702d59822ccde68647c6f954a31af64905278580ab16bd",
+    "README.md": "401e4a36d0042c0832f0f0bb9c6dbdac5efed4e7f05d1fad2da15f13baecd07a"
+  },
+  "scope": "Source references, local integrity, full native PDF transfer; not product runtime or full visual verification",
+  "errors": []
+}

@@ -1,0 +1,1263 @@
+{
+  "reviewed_at": "2026-09-15",
+  "web_content_pages": 50,
+  "knowledge_base_articles": 48,
+  "web": [
+    {
+      "id": "WEB-PLANNER",
+      "title": "официальная страница",
+      "url": "https://www.geoscan.ru/ru/software/geoscan_planner",
+      "review_file": "planner-faq-and-releases.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB60",
+      "title": "исправление критических уязвимостей",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/60/cat/8/v-kakie-sroki-razrabotchiki-ustranjajut-vijavlennie-kriticheskie-ujazvimosti-po",
+      "review_file": "planner-faq-and-releases.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB56",
+      "title": "сторонние аппараты",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/56/cat/8/mozno-li-rabotat-v-geoscan-planner-s-bvs-drugih-proizvoditelej",
+      "review_file": "planner-faq-and-releases.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB57",
+      "title": "сохранение заданий",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/57/cat/8/kak-sohranit-poletnie-zadanija",
+      "review_file": "planner-faq-and-releases.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB58",
+      "title": "офлайн-карты",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/58/cat/8/mozno-li-zakeshirovat-karti-gde-hranitsja-kesh-nuzno-li-ego-chistit",
+      "review_file": "planner-faq-and-releases.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB59",
+      "title": "пользовательский рельеф",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/59/cat/8/kak-zagruzat-polzovatelskij-relef",
+      "review_file": "planner-faq-and-releases.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB54",
+      "title": "соединение с БВС",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/54/cat/8/kak-podkljuchitsja-k-bvs",
+      "review_file": "planner-faq-and-releases.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB55",
+      "title": "привязка фотографий",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/55/cat/8/kak-privjazat-pasporta-k-otsnjatim-fotografijam",
+      "review_file": "planner-faq-and-releases.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB52",
+      "title": "официальные дистрибутивы",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/52/cat/8/gde-mozno-skachat-aktualnuju-versiju-po-geoscan-planner-28",
+      "review_file": "planner-faq-and-releases.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB53",
+      "title": "число одновременно запускаемых аппаратов",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/53/cat/8/skolko-bvs-odnovremenno-mozno-zapustit-v-polet",
+      "review_file": "planner-faq-and-releases.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB51",
+      "title": "руководства по моделям",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/51/cat/8/gde-mozno-skachat-rukovodstva-polzovatelja-geoscan-planner-28-dlja-raznih-tipov-bvs",
+      "review_file": "planner-faq-and-releases.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB64",
+      "title": "журнал релизов",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/64/cat/10/poslednie-relizi-i-vnesennie-izmenenija",
+      "review_file": "planner-faq-and-releases.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB63",
+      "title": "проект для передачи и анализа",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/63/cat/9/eksport-proekta-iz-geoscan-planner",
+      "review_file": "planner-faq-and-releases.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB62",
+      "title": "логи канала связи",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/62/cat/9/logi-mdmdisp",
+      "review_file": "planner-faq-and-releases.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB61",
+      "title": "эксплуатация батарей",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/61/cat/9/pravila-ekspluatacii-akkumuljatornih-batarej-dlja-kompleksov-geoskan",
+      "review_file": "planner-faq-and-releases.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB211",
+      "title": "обновление комплекса 801",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/211/cat/177/obnovlenie-geoskan-801",
+      "review_file": "airframes-and-operations.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB214",
+      "title": "автопилот 801",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/214/cat/177/istorija-izmenenij-v-proshivke-avtopilota-geoskan-801",
+      "review_file": "airframes-and-operations.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB333",
+      "title": "ПДУ 801",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/333/cat/177/istorija-izmenenij-v-proshivke-pdu-geoskan-801",
+      "review_file": "airframes-and-operations.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB349",
+      "title": "два разных источника логов 801",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/349/cat/177/logi-avtopilota-i-pdu-geoskan-801",
+      "review_file": "airframes-and-operations.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB353",
+      "title": "сопряжение",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/353/cat/177/soprjazenie-pdu-s-bvs",
+      "review_file": "airframes-and-operations.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB355",
+      "title": "Небосвод на 801",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/355/cat/177/podkljuchenie-k-nebosvodu",
+      "review_file": "airframes-and-operations.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB357",
+      "title": "альтернативная запись microSD",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/357/cat/177/sozdanie-zagruzochnoj-microsd-karti-dlja-obnovlenija-avtopilota",
+      "review_file": "airframes-and-operations.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB339",
+      "title": "нет дальности и уровня связи",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/339/cat/179/v-telemetrii-otsutstvuet-informacija-ob-udalenii-bvs-ot-pdu-uroven-signala",
+      "review_file": "airframes-and-operations.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB342",
+      "title": "собственная подложка 801",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/342/cat/179/kak-zagruzit-svoju-kartograficheskuju-podlozku",
+      "review_file": "airframes-and-operations.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB350",
+      "title": "FAQ о логах",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/350/cat/179/kak-skachat-logi-avtopilota-i-pdu",
+      "review_file": "airframes-and-operations.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB340",
+      "title": "автоматический полёт: открытый риск",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/340/cat/179/knopki-aerofotosyemka-i-videonabljudenie-v-pulte-neaktivni",
+      "review_file": "airframes-and-operations.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB337",
+      "title": "переключатель SDR",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/337/cat/179/ne-aktivna-opcija-vkljuchenija-vikljuchenija-sdr",
+      "review_file": "airframes-and-operations.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB354",
+      "title": "нет соединения",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/354/cat/179/ne-poluchaetsja-podkljuchit-pdu-i-bvs",
+      "review_file": "airframes-and-operations.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB358",
+      "title": "ошибка записи microSD",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/358/cat/179/ne-poluchaetsja-sozdat-zagruzochnuju-microsd-kartu-dlja-obnovlenija-avtopilota",
+      "review_file": "airframes-and-operations.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB336",
+      "title": "дата и время",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/336/cat/179/ne-udaetsja-nastroit-datu-vremja-na-pulte",
+      "review_file": "airframes-and-operations.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB335",
+      "title": "совместимость версий и помехи сопряжению",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/335/cat/179/ne-udaetsja-podkljuchitsja-k-bvs-s-pomoschju-pulta",
+      "review_file": "airframes-and-operations.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB338",
+      "title": "настройки модемов",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/338/cat/179/nedostupni-nastrojki-modemov-v-nastrojkah",
+      "review_file": "airframes-and-operations.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB341",
+      "title": "нет видео",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/341/cat/179/otsutstvuet-izobrazenie-s-kameri-vidimogo-spektra-i-ili-teplovizora",
+      "review_file": "airframes-and-operations.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB204",
+      "title": "зарядное устройство Gemini",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/204/cat/178/obnovlenie-zarjadnogo-ustrojstva-geoskan-gemini",
+      "review_file": "airframes-and-operations.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB206",
+      "title": "версии Gemini",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/206/cat/178/istorija-izmenenij-v-proshivke-gemini",
+      "review_file": "airframes-and-operations.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "WEB-MAGNETIC",
+      "title": "услуга магнитной съёмки",
+      "url": "https://www.geoscan.ru/ru/services/aeromagnetic_survey",
+      "review_file": "airframes-and-operations.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB368",
+      "title": "базовый процесс Облака",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/368/cat/181/kratkoe-rukovodstvo-po-rabote-v-geoskan-oblako",
+      "review_file": "cloud-and-quality.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB387",
+      "title": "связка Metashape и Облака",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/387/cat/181/zagruzka-proekta-agisoft-metashape-v-geoskan-oblako",
+      "review_file": "cloud-and-quality.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB378",
+      "title": "презентационные туры",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/378/cat/181/kak-sozdavat-i-prosmatrivat-virtualnie-turi",
+      "review_file": "cloud-and-quality.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB379",
+      "title": "производительность и ошибки визуализации",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/379/cat/181/chasto-voznikajuschie-problemi-i-ih-reshenija",
+      "review_file": "cloud-and-quality.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB377",
+      "title": "инспекция и отчёт",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/377/cat/181/kak-provodit-obsledovanie-obyektov-sozdavat-annotacii-i-sostavit-otchet",
+      "review_file": "cloud-and-quality.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB376",
+      "title": "слои, измерения, профили",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/376/cat/181/kak-rabotat-s-vektornimi-slojami-i-provodit-izmerenija",
+      "review_file": "cloud-and-quality.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB375",
+      "title": "настройки визуализации",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/375/cat/181/kak-nastroit-vizualizaciju-geoprostranstvennih-dannih",
+      "review_file": "cloud-and-quality.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB373",
+      "title": "веб-просмотрщик",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/373/cat/181/kak-rabotat-s-veb-prosmotrschikom",
+      "review_file": "cloud-and-quality.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB374",
+      "title": "общий доступ",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/374/cat/181/kak-podelitsja-svoimi-proektami",
+      "review_file": "cloud-and-quality.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB370",
+      "title": "роли и доступ команды",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/370/cat/181/kak-upravljat-komandoj",
+      "review_file": "cloud-and-quality.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB371",
+      "title": "организация и форматы данных",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/371/cat/181/kak-upravljat-svoimi-dannimi",
+      "review_file": "cloud-and-quality.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB114",
+      "title": "низковысотная/наземная съёмка",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/114/cat/19/soveti-po-syemke-s-nebolshoj-visoti-i-s-zemli",
+      "review_file": "cloud-and-quality.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB113",
+      "title": "аэрофотосъёмка разных территорий",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/113/cat/19/soveti-po-aerofotosyemke-s-bpla-samoletnogo-tipa",
+      "review_file": "cloud-and-quality.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    },
+    {
+      "id": "KB112",
+      "title": "общие требования к фотографиям",
+      "url": "https://geoscan.helpdeskeddy.com/ru/knowledge_base/art/112/cat/19/obschie-pravila-i-soveti-dlja-syemki",
+      "review_file": "cloud-and-quality.md",
+      "reviewed_at": "2026-09-15",
+      "status": "full-visible-text-reviewed",
+      "local_representation": "structured-paraphrase-not-verbatim-snapshot"
+    }
+  ],
+  "pdf": [
+    {
+      "id": "PDF-COPTER",
+      "review_file": "planner-copter-review.md",
+      "status": "all-native-text-pages-reviewed",
+      "visually_reviewed_pages": [
+        39,
+        40,
+        45,
+        53,
+        91,
+        123
+      ],
+      "generated_at": "2026-09-15T19:22:05.750127+00:00",
+      "source": "tmp/geoscan-resources/raw/geoscan-planner-401-manual.pdf",
+      "source_urls": [
+        "https://download.geoscan.ru/site-files/planner/GCS_2.8_401.pdf",
+        "https://download.geoscan.ru/site-files/planner/GCS_2.8_gemini.pdf"
+      ],
+      "source_sha256": "35d046ba46b7967451b8a0c0dfcdd8396854e17ecead0dba731e9d695f6a076a",
+      "pages": 127,
+      "markdown": "docs/geoscan-md/resources/geoscan-site/planner-copter-manual.md",
+      "markdown_sha256": "7886f609aed20620eb70c1a3e30ca4890c2b7a757d0cc02eda3d23334ca0227b",
+      "content_check": "all-127-native-page-bodies-preserved-exactly",
+      "plane_snapshot_unchanged": true,
+      "plane_sha256": "e2d4990824ae339a71e0bd380de281a94d9a148cbb59504040dd91135eecee2a",
+      "page_details": [
+        {
+          "page": 1,
+          "native_chars": 266,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 2,
+          "native_chars": 1967,
+          "images": 0,
+          "links": []
+        },
+        {
+          "page": 3,
+          "native_chars": 496,
+          "images": 0,
+          "links": []
+        },
+        {
+          "page": 4,
+          "native_chars": 2294,
+          "images": 0,
+          "links": []
+        },
+        {
+          "page": 5,
+          "native_chars": 2942,
+          "images": 0,
+          "links": []
+        },
+        {
+          "page": 6,
+          "native_chars": 656,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 7,
+          "native_chars": 1223,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 8,
+          "native_chars": 1032,
+          "images": 0,
+          "links": []
+        },
+        {
+          "page": 9,
+          "native_chars": 1035,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 10,
+          "native_chars": 434,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 11,
+          "native_chars": 1016,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 12,
+          "native_chars": 1421,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 13,
+          "native_chars": 1006,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 14,
+          "native_chars": 237,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 15,
+          "native_chars": 624,
+          "images": 3,
+          "links": []
+        },
+        {
+          "page": 16,
+          "native_chars": 1406,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 17,
+          "native_chars": 890,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 18,
+          "native_chars": 698,
+          "images": 2,
+          "links": [
+            "http://sasgis.org/",
+            "http://www.sasgis.org/forum/viewtopic.php?t=986"
+          ]
+        },
+        {
+          "page": 19,
+          "native_chars": 429,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 20,
+          "native_chars": 792,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 21,
+          "native_chars": 530,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 22,
+          "native_chars": 652,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 23,
+          "native_chars": 439,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 24,
+          "native_chars": 649,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 25,
+          "native_chars": 605,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 26,
+          "native_chars": 270,
+          "images": 3,
+          "links": []
+        },
+        {
+          "page": 27,
+          "native_chars": 223,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 28,
+          "native_chars": 528,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 29,
+          "native_chars": 195,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 30,
+          "native_chars": 989,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 31,
+          "native_chars": 991,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 32,
+          "native_chars": 1258,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 33,
+          "native_chars": 1193,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 34,
+          "native_chars": 996,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 35,
+          "native_chars": 462,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 36,
+          "native_chars": 286,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 37,
+          "native_chars": 750,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 38,
+          "native_chars": 1277,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 39,
+          "native_chars": 1795,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 40,
+          "native_chars": 1361,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 41,
+          "native_chars": 1465,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 42,
+          "native_chars": 727,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 43,
+          "native_chars": 838,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 44,
+          "native_chars": 410,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 45,
+          "native_chars": 1109,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 46,
+          "native_chars": 720,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 47,
+          "native_chars": 1310,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 48,
+          "native_chars": 798,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 49,
+          "native_chars": 938,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 50,
+          "native_chars": 1100,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 51,
+          "native_chars": 1615,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 52,
+          "native_chars": 791,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 53,
+          "native_chars": 1318,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 54,
+          "native_chars": 351,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 55,
+          "native_chars": 1054,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 56,
+          "native_chars": 500,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 57,
+          "native_chars": 383,
+          "images": 3,
+          "links": []
+        },
+        {
+          "page": 58,
+          "native_chars": 1120,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 59,
+          "native_chars": 144,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 60,
+          "native_chars": 1167,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 61,
+          "native_chars": 1334,
+          "images": 0,
+          "links": []
+        },
+        {
+          "page": 62,
+          "native_chars": 491,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 63,
+          "native_chars": 1326,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 64,
+          "native_chars": 849,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 65,
+          "native_chars": 246,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 66,
+          "native_chars": 319,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 67,
+          "native_chars": 962,
+          "images": 0,
+          "links": []
+        },
+        {
+          "page": 68,
+          "native_chars": 745,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 69,
+          "native_chars": 598,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 70,
+          "native_chars": 120,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 71,
+          "native_chars": 202,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 72,
+          "native_chars": 227,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 73,
+          "native_chars": 703,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 74,
+          "native_chars": 463,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 75,
+          "native_chars": 148,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 76,
+          "native_chars": 1155,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 77,
+          "native_chars": 1104,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 78,
+          "native_chars": 1231,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 79,
+          "native_chars": 1550,
+          "images": 0,
+          "links": []
+        },
+        {
+          "page": 80,
+          "native_chars": 1241,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 81,
+          "native_chars": 784,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 82,
+          "native_chars": 301,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 83,
+          "native_chars": 321,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 84,
+          "native_chars": 489,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 85,
+          "native_chars": 461,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 86,
+          "native_chars": 600,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 87,
+          "native_chars": 364,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 88,
+          "native_chars": 413,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 89,
+          "native_chars": 1179,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 90,
+          "native_chars": 665,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 91,
+          "native_chars": 878,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 92,
+          "native_chars": 593,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 93,
+          "native_chars": 568,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 94,
+          "native_chars": 1626,
+          "images": 0,
+          "links": []
+        },
+        {
+          "page": 95,
+          "native_chars": 736,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 96,
+          "native_chars": 537,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 97,
+          "native_chars": 856,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 98,
+          "native_chars": 356,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 99,
+          "native_chars": 217,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 100,
+          "native_chars": 377,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 101,
+          "native_chars": 406,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 102,
+          "native_chars": 489,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 103,
+          "native_chars": 218,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 104,
+          "native_chars": 431,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 105,
+          "native_chars": 625,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 106,
+          "native_chars": 484,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 107,
+          "native_chars": 445,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 108,
+          "native_chars": 1137,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 109,
+          "native_chars": 516,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 110,
+          "native_chars": 438,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 111,
+          "native_chars": 659,
+          "images": 0,
+          "links": []
+        },
+        {
+          "page": 112,
+          "native_chars": 1291,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 113,
+          "native_chars": 376,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 114,
+          "native_chars": 1380,
+          "images": 0,
+          "links": []
+        },
+        {
+          "page": 115,
+          "native_chars": 574,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 116,
+          "native_chars": 685,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 117,
+          "native_chars": 307,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 118,
+          "native_chars": 89,
+          "images": 2,
+          "links": []
+        },
+        {
+          "page": 119,
+          "native_chars": 908,
+          "images": 0,
+          "links": []
+        },
+        {
+          "page": 120,
+          "native_chars": 989,
+          "images": 1,
+          "links": []
+        },
+        {
+          "page": 121,
+          "native_chars": 450,
+          "images": 3,
+          "links": []
+        },
+        {
+          "page": 122,
+          "native_chars": 739,
+          "images": 0,
+          "links": []
+        },
+        {
+          "page": 123,
+          "native_chars": 1043,
+          "images": 0,
+          "links": []
+        },
+        {
+          "page": 124,
+          "native_chars": 1136,
+          "images": 0,
+          "links": []
+        },
+        {
+          "page": 125,
+          "native_chars": 1291,
+          "images": 0,
+          "links": []
+        },
+        {
+          "page": 126,
+          "native_chars": 1133,
+          "images": 0,
+          "links": []
+        },
+        {
+          "page": 127,
+          "native_chars": 1131,
+          "images": 0,
+          "links": []
+        }
+      ],
+      "limitations": [
+        "No full image OCR",
+        "Not a runtime verification"
+      ]
+    }
+  ],
+  "excluded": [
+    "Corporate news and unrelated sections",
+    "Full video/image review",
+    "Cloud legal/account pages",
+    "Blocked 401 Geophysics detail page"
+  ],
+  "runtime_verifications": 0
+}

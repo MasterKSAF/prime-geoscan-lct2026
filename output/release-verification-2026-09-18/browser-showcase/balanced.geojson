@@ -1,0 +1,3653 @@
+{
+  "type": "FeatureCollection",
+  "properties": {
+    "schemaVersion": "2.0",
+    "missionId": "qa-copy-1789728022518",
+    "inputHash": "5c5d9d9280fc0c6e9580acfee6bb65b2f4c52ffa30c69bb9fd22c13c74878baa",
+    "candidateId": "balanced",
+    "engineVersion": "0.3.0",
+    "status": "feasible_model",
+    "flightReady": false,
+    "window": {
+      "start": "2026-06-15T09:00:00Z",
+      "end": "2026-06-15T15:00:00Z",
+      "timezone": "Europe/Moscow"
+    },
+    "jobs": [
+      {
+        "id": "rgb-01",
+        "name": "RGB · автоматический выбор совместимого БВС",
+        "area": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                30.3,
+                60.035
+              ],
+              [
+                30.312603822913072,
+                60.035
+              ],
+              [
+                30.312603822913072,
+                60.04039592218234
+              ],
+              [
+                30.3,
+                60.04039592218234
+              ],
+              [
+                30.3,
+                60.035
+              ]
+            ]
+          ]
+        },
+        "job": {
+          "type": "RGB",
+          "altitudeM": 100,
+          "swathM": 117.5,
+          "sideOverlap": 0.6,
+          "triggerDistanceM": 15.6,
+          "bearingDeg": 0,
+          "autoBearing": true,
+          "qualitySource": "Учебный RGB-профиль PF1B: 23,5 мм / 20 мм на 100 м; перекрытие 60% и шаг 15,6 м — параметры сценария. Скорость затвора не подтверждена."
+        },
+        "assignedVehicleIds": [],
+        "quality": {
+          "mode": "camera",
+          "status": "assumed",
+          "source": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры.",
+          "sensorWidthMm": 23.5,
+          "sensorHeightMm": 15.6,
+          "focalLengthMm": 20,
+          "imageWidthPx": 6000,
+          "imageHeightPx": 4000,
+          "forwardOverlap": 0.7,
+          "minimumIntervalSec": 1,
+          "maximumGsdCm": 3,
+          "shutterSec": 0.001,
+          "maximumBlurPx": 1
+        },
+        "daylight": "none",
+        "effectiveJob": {
+          "type": "RGB",
+          "altitudeM": 100,
+          "swathM": 117.5,
+          "sideOverlap": 0.6,
+          "triggerDistanceM": 23.400000000000002,
+          "bearingDeg": 90,
+          "autoBearing": true,
+          "qualitySource": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+        },
+        "note": "Параметры качества и источники заданы в миссии; совместимость с конкретной полезной нагрузкой требует подтверждения."
+      }
+    ],
+    "units": {
+      "coordinates": "longitude_latitude_degrees",
+      "altitude": "m",
+      "speed": "m/s",
+      "relativeTime": "s"
+    },
+    "altitudeDatum": "above_declared_local_flat_surface",
+    "terrainModel": {
+      "kind": "flat",
+      "elevationM": 0,
+      "source": "Синтетическая горизонтальная поверхность; не реальный DEM участка."
+    },
+    "environment": {
+      "cloudBaseM": 250,
+      "cloudClearanceM": 50,
+      "visibilityM": 5000,
+      "minVisibilityM": 1000,
+      "source": "Синтетические постоянные условия; облака относительно общей модельной плоскости старта, не прогноз."
+    },
+    "checksScope": "complete_candidate_before_vehicle_filter",
+    "checks": [
+      {
+        "id": "sortie-1:QUALITY_rgb-01_CADENCE",
+        "status": "pass",
+        "title": "Интервал кадров",
+        "detail": "1.950 с; камера требует ≥1 с."
+      },
+      {
+        "id": "sortie-1:QUALITY_rgb-01_BLUR",
+        "status": "pass",
+        "title": "Смаз в поступательной модели",
+        "detail": "0.613 пикселя; предел 1."
+      },
+      {
+        "id": "sortie-2:QUALITY_rgb-01_CADENCE",
+        "status": "pass",
+        "title": "Интервал кадров",
+        "detail": "3.900 с; камера требует ≥1 с."
+      },
+      {
+        "id": "sortie-2:QUALITY_rgb-01_BLUR",
+        "status": "pass",
+        "title": "Смаз в поступательной модели",
+        "detail": "0.306 пикселя; предел 1."
+      },
+      {
+        "id": "GEOMETRY",
+        "status": "pass",
+        "title": "Границы и статические запреты",
+        "detail": "Каждый отрезок проверен целиком, включая пересечения с границами, переходы и возврат."
+      },
+      {
+        "id": "STRIPS",
+        "status": "pass",
+        "title": "Все рабочие полосы назначены",
+        "detail": "Сверены идентификаторы и геометрия каждой исходной полосы, пропуски и повторы запрещены."
+      },
+      {
+        "id": "REQUESTED_AREA",
+        "status": "pass",
+        "title": "Исходная область не сокращена скрыто",
+        "detail": "Запреты и границы не могут незаметно убрать часть задания. Численный допуск — только 0,1 м², отдельно от порога геометрического покрытия 99%. Потери: rgb-01: 0.000 м²."
+      },
+      {
+        "id": "PHASES",
+        "status": "pass",
+        "title": "Обязательные манёвры и порядок фаз",
+        "detail": "Каждой рабочей полосе предшествует манёвр с turnSeconds профиля; промежуточные вершины перехода/возврата не могут терять поворот. Возврат допускается только после последней рабочей полосы."
+      },
+      {
+        "id": "TIME",
+        "status": "pass",
+        "title": "Время и скорости",
+        "detail": "Независимо пересчитаны длительности, ветер, геометрическая длина и фактическая требуемая воздушная скорость."
+      },
+      {
+        "id": "ENERGY",
+        "status": "pass",
+        "title": "Линейный баланс ресурса",
+        "detail": "Ни одна фаза не теряет расход; после посадки ≥25% в принятой модели."
+      },
+      {
+        "id": "ENDPOINTS",
+        "status": "pass",
+        "title": "Непрерывность траекторий",
+        "detail": "Взлёт, посадка, позиции и высоты непрерывны; повторный вылет начинается в месте предыдущей посадки."
+      },
+      {
+        "id": "WINDOW",
+        "status": "pass",
+        "title": "Календарь и обслуживание",
+        "detail": "Подготовка, общее окно, занятость БВС, обслуживание и предел вылетов проверены."
+      },
+      {
+        "id": "BATTERIES",
+        "status": "pass",
+        "title": "Экземпляры батарей",
+        "detail": "Проверены ID, исходный заряд, доступность и последовательная модельная зарядка; заряд не восстанавливается без события."
+      },
+      {
+        "id": "COMPATIBILITY",
+        "status": "pass",
+        "title": "Совместимость и пределы профиля",
+        "detail": "Выбранные БВС, назначение, работа, ветер и ограничения скорости согласованы."
+      },
+      {
+        "id": "FLIGHT_ENVELOPE",
+        "status": "pass",
+        "title": "Заданный высотный диапазон",
+        "detail": "Ограничение съёмочной высоты отдельно от взлёта/посадки; абсолютный потолок всех фаз."
+      },
+      {
+        "id": "FOUR_DIMENSIONAL",
+        "status": "pass",
+        "title": "Четырёхмерные ограничения",
+        "detail": "Сегменты пересечены с полигоном, интервалом высоты и активным временем; неизвестный верх закрывает весь столб."
+      },
+      {
+        "id": "SEPARATION",
+        "status": "pass",
+        "title": "Непрерывное разнесение",
+        "detail": "Аналитический минимум расстояния между линейными сегментами с учётом вертикального объёма БВС–геофизический подвес, не проверка по кадрам. Параметры: Учебные защитные расстояния и интервалы; не утверждённый норматив. Временная неопределённость консервативно расширяет защитные расстояния и интервалы. Колебания подвеса не моделируются."
+      },
+      {
+        "id": "DAYLIGHT",
+        "status": "pass",
+        "title": "Условия освещения",
+        "detail": "Проверены только работы с включённым правилом; Солнце вычислено по UTC и координатам, шаг≤60 с и запас0,5°; облачное исключение не применяется."
+      },
+      {
+        "id": "CLOUD_CEILING",
+        "status": "pass",
+        "title": "Нижняя граница облаков и запас",
+        "detail": "Потолок 200 м = нижняя граница 250 м − запас 50 м; максимальная заданная/маршрутная высота 100 м. Высоты относительно единого базового уровня старта/модельной плоскости, не реальная AGL. Постоянные условия на всё окно, источник: Синтетические постоянные условия; облака относительно общей модельной плоскости старта, не прогноз."
+      },
+      {
+        "id": "VISIBILITY",
+        "status": "pass",
+        "title": "Заданный минимум видимости",
+        "detail": "Заданная видимость 5000 м, требуемый минимум 1000 м. Это не проверка фактического обзора или качества съёмки. Постоянные условия на всё окно, источник: Синтетические постоянные условия; облака относительно общей модельной плоскости старта, не прогноз."
+      },
+      {
+        "id": "RESERVE_LANDING",
+        "status": "pass",
+        "title": "Достижимая посадка из каждой точки",
+        "detail": "Консервативный сертификат: остаток того же проверенного непрерывного маршрута является допустимым путём к назначенной посадке и заканчивается с требуемым резервом. Это не кратчайший аварийный уход."
+      },
+      {
+        "id": "ALTERNATE_ESCAPE",
+        "status": "unknown",
+        "title": "Альтернативный аварийный уход",
+        "detail": "Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются."
+      },
+      {
+        "id": "TERRAIN",
+        "status": "pass",
+        "title": "Поверхность в расчётной модели",
+        "detail": "Единая горизонтальная плоскость 0 м; высоты траекторий относительно неё. Источник: Синтетическая горизонтальная поверхность; не реальный DEM участка. Это не проверка реального рельефа."
+      },
+      {
+        "id": "CALIBRATION",
+        "status": "unknown",
+        "title": "Реальная динамика и энергия",
+        "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+      },
+      {
+        "id": "IMAGE_FOOTPRINTS",
+        "status": "unknown",
+        "title": "Реальные фотоотпечатки",
+        "detail": "Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос."
+      },
+      {
+        "id": "AIRSPACE_PERMISSION",
+        "status": "unknown",
+        "title": "Допуск к реальному полёту",
+        "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+      },
+      {
+        "id": "rgb-01:QUALITY_rgb-01_SOURCE",
+        "status": "unknown",
+        "title": "Источник параметров сенсора",
+        "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+      },
+      {
+        "id": "rgb-01:QUALITY_rgb-01_TYPE",
+        "status": "pass",
+        "title": "Тип сенсора",
+        "detail": "Камерная модель применима к RGB/MS/ИК, не к лазерным или геофизическим измерениям."
+      },
+      {
+        "id": "rgb-01:QUALITY_rgb-01_FIELDS",
+        "status": "pass",
+        "title": "Параметры камеры",
+        "detail": "Нужны размеры сенсора, объектив, разрешение, перекрытие, период и целевой GSD."
+      },
+      {
+        "id": "rgb-01:QUALITY_rgb-01_GSD",
+        "status": "pass",
+        "title": "Детализация в модели",
+        "detail": "1.958 см/пиксель; требование ≤3 см."
+      },
+      {
+        "id": "rgb-01:QUALITY_rgb-01_STRIP",
+        "status": "pass",
+        "title": "Размеры покрытия",
+        "detail": "Отпечаток и шаг кадров должны быть в поддерживаемом диапазоне ядра."
+      },
+      {
+        "id": "COVERAGE_rgb-01",
+        "status": "pass",
+        "title": "Геометрическое покрытие работы",
+        "detail": "100.000% доступной области; 100.000% исходной. Исключённая запретами часть не засчитана как выполненная."
+      }
+    ],
+    "warning": "Модельное задание для анализа; не проверенная команда реальному БВС."
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.311163386008722,
+            60.033201359272546
+          ],
+          [
+            30.311163386008722,
+            60.033201359272546
+          ],
+          [
+            30.31260382291338,
+            60.04018838671379
+          ],
+          [
+            30.31260382291338,
+            60.04018838671379
+          ],
+          [
+            30.29999999999969,
+            60.04018838671379
+          ],
+          [
+            30.29999999999969,
+            60.039773315776685
+          ],
+          [
+            30.29999999999969,
+            60.039773315776685
+          ],
+          [
+            30.31260382291338,
+            60.039773315776685
+          ],
+          [
+            30.31260382291338,
+            60.03935824483958
+          ],
+          [
+            30.31260382291338,
+            60.03935824483958
+          ],
+          [
+            30.29999999999969,
+            60.03935824483958
+          ],
+          [
+            30.29999999999969,
+            60.03894317390248
+          ],
+          [
+            30.29999999999969,
+            60.03894317390248
+          ],
+          [
+            30.31260382291338,
+            60.03894317390248
+          ],
+          [
+            30.31260382291338,
+            60.03852810296537
+          ],
+          [
+            30.31260382291338,
+            60.03852810296537
+          ],
+          [
+            30.29999999999969,
+            60.03852810296537
+          ],
+          [
+            30.29999999999969,
+            60.03811303202827
+          ],
+          [
+            30.29999999999969,
+            60.03811303202827
+          ],
+          [
+            30.31260382291338,
+            60.03811303202827
+          ],
+          [
+            30.31260382291338,
+            60.03769796109117
+          ],
+          [
+            30.31260382291338,
+            60.03769796109117
+          ],
+          [
+            30.29999999999969,
+            60.03769796109117
+          ],
+          [
+            30.29999999999969,
+            60.03728289015407
+          ],
+          [
+            30.29999999999969,
+            60.03728289015407
+          ],
+          [
+            30.31260382291338,
+            60.03728289015407
+          ],
+          [
+            30.31260382291338,
+            60.036867819216965
+          ],
+          [
+            30.31260382291338,
+            60.036867819216965
+          ],
+          [
+            30.29999999999969,
+            60.036867819216965
+          ],
+          [
+            30.29999999999969,
+            60.03645274827986
+          ],
+          [
+            30.29999999999969,
+            60.03645274827986
+          ],
+          [
+            30.31260382291338,
+            60.03645274827986
+          ],
+          [
+            30.31260382291338,
+            60.036037677342755
+          ],
+          [
+            30.31260382291338,
+            60.036037677342755
+          ],
+          [
+            30.29999999999969,
+            60.036037677342755
+          ],
+          [
+            30.311163386008722,
+            60.033201359272546
+          ],
+          [
+            30.311163386008722,
+            60.033201359272546
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "sortie",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "startTime": "2026-06-15T09:10:00.000Z",
+        "endTime": "2026-06-15T09:26:20.514Z",
+        "startSec": 600,
+        "endSec": 1580.5146091298625,
+        "flightTimeSec": 980.5146091298625,
+        "remainingPct": 25.718590217434652
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.311163386008722,
+            60.033201359272546
+          ],
+          [
+            30.311163386008722,
+            60.033201359272546
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 1,
+        "from": [
+          30.311163386008722,
+          60.033201359272546
+        ],
+        "to": [
+          30.311163386008722,
+          60.033201359272546
+        ],
+        "phase": "takeoff",
+        "altitudeFromM": 0,
+        "altitudeToM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "distanceM": 0,
+        "startSec": 600,
+        "endSec": 633.3333333333334,
+        "batteryFromPct": 100,
+        "batteryToPct": 97.47474747474747,
+        "startTime": "2026-06-15T09:10:00.000Z",
+        "endTime": "2026-06-15T09:10:33.333Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.311163386008722,
+          60.033201359272546
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 1,
+        "phase": "takeoff",
+        "altitudeM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "time": "2026-06-15T09:10:33.333Z",
+        "timeSec": 633.3333333333334,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.311163386008722,
+            60.033201359272546
+          ],
+          [
+            30.31260382291338,
+            60.04018838671379
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 2,
+        "from": [
+          30.311163386008722,
+          60.033201359272546
+        ],
+        "to": [
+          30.31260382291338,
+          60.04018838671379
+        ],
+        "phase": "transit",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 781.0310284862031,
+        "startSec": 633.3333333333334,
+        "endSec": 698.4192523738502,
+        "batteryFromPct": 97.47474747474747,
+        "batteryToPct": 92.54399603228407,
+        "startTime": "2026-06-15T09:10:33.333Z",
+        "endTime": "2026-06-15T09:11:38.419Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.31260382291338,
+          60.04018838671379
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 2,
+        "phase": "transit",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:11:38.419Z",
+        "timeSec": 698.4192523738502,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.31260382291338,
+            60.04018838671379
+          ],
+          [
+            30.31260382291338,
+            60.04018838671379
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 3,
+        "from": [
+          30.31260382291338,
+          60.04018838671379
+        ],
+        "to": [
+          30.31260382291338,
+          60.04018838671379
+        ],
+        "phase": "turn",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "distanceM": 0,
+        "startSec": 698.4192523738502,
+        "endSec": 702.4192523738502,
+        "batteryFromPct": 92.54399603228407,
+        "batteryToPct": 92.24096572925377,
+        "startTime": "2026-06-15T09:11:38.419Z",
+        "endTime": "2026-06-15T09:11:42.419Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.31260382291338,
+          60.04018838671379
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 3,
+        "phase": "turn",
+        "altitudeM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "time": "2026-06-15T09:11:42.419Z",
+        "timeSec": 702.4192523738502,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.31260382291338,
+            60.04018838671379
+          ],
+          [
+            30.29999999999969,
+            60.04018838671379
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 4,
+        "from": [
+          30.31260382291338,
+          60.04018838671379
+        ],
+        "to": [
+          30.29999999999969,
+          60.04018838671379
+        ],
+        "phase": "survey",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 700.0000000344116,
+        "startSec": 702.4192523738502,
+        "endSec": 760.7525857100512,
+        "batteryFromPct": 92.24096572925377,
+        "batteryToPct": 87.82177380984461,
+        "stripId": 0,
+        "startTime": "2026-06-15T09:11:42.419Z",
+        "endTime": "2026-06-15T09:12:40.752Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.29999999999969,
+          60.04018838671379
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 4,
+        "phase": "survey",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:12:40.752Z",
+        "timeSec": 760.7525857100512,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.29999999999969,
+            60.04018838671379
+          ],
+          [
+            30.29999999999969,
+            60.039773315776685
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 5,
+        "from": [
+          30.29999999999969,
+          60.04018838671379
+        ],
+        "to": [
+          30.29999999999969,
+          60.039773315776685
+        ],
+        "phase": "transit",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 46.15384615382493,
+        "startSec": 760.7525857100512,
+        "endSec": 764.5987395562033,
+        "batteryFromPct": 87.8217738098446,
+        "batteryToPct": 87.53039851846944,
+        "startTime": "2026-06-15T09:12:40.752Z",
+        "endTime": "2026-06-15T09:12:44.598Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.29999999999969,
+          60.039773315776685
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 5,
+        "phase": "transit",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:12:44.598Z",
+        "timeSec": 764.5987395562033,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.29999999999969,
+            60.039773315776685
+          ],
+          [
+            30.29999999999969,
+            60.039773315776685
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 6,
+        "from": [
+          30.29999999999969,
+          60.039773315776685
+        ],
+        "to": [
+          30.29999999999969,
+          60.039773315776685
+        ],
+        "phase": "turn",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "distanceM": 0,
+        "startSec": 764.5987395562033,
+        "endSec": 768.5987395562033,
+        "batteryFromPct": 87.53039851846944,
+        "batteryToPct": 87.22736821543914,
+        "startTime": "2026-06-15T09:12:44.598Z",
+        "endTime": "2026-06-15T09:12:48.598Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.29999999999969,
+          60.039773315776685
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 6,
+        "phase": "turn",
+        "altitudeM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "time": "2026-06-15T09:12:48.598Z",
+        "timeSec": 768.5987395562033,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.29999999999969,
+            60.039773315776685
+          ],
+          [
+            30.31260382291338,
+            60.039773315776685
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 7,
+        "from": [
+          30.29999999999969,
+          60.039773315776685
+        ],
+        "to": [
+          30.31260382291338,
+          60.039773315776685
+        ],
+        "phase": "survey",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 700.0000000344116,
+        "startSec": 768.5987395562033,
+        "endSec": 826.9320728924043,
+        "batteryFromPct": 87.22736821543914,
+        "batteryToPct": 82.80817629602998,
+        "stripId": 1,
+        "startTime": "2026-06-15T09:12:48.598Z",
+        "endTime": "2026-06-15T09:13:46.932Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.31260382291338,
+          60.039773315776685
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 7,
+        "phase": "survey",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:13:46.932Z",
+        "timeSec": 826.9320728924043,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.31260382291338,
+            60.039773315776685
+          ],
+          [
+            30.31260382291338,
+            60.03935824483958
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 8,
+        "from": [
+          30.31260382291338,
+          60.039773315776685
+        ],
+        "to": [
+          30.31260382291338,
+          60.03935824483958
+        ],
+        "phase": "transit",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 46.15384615382487,
+        "startSec": 826.9320728924043,
+        "endSec": 830.7782267385564,
+        "batteryFromPct": 82.80817629602998,
+        "batteryToPct": 82.51680100465482,
+        "startTime": "2026-06-15T09:13:46.932Z",
+        "endTime": "2026-06-15T09:13:50.778Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.31260382291338,
+          60.03935824483958
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 8,
+        "phase": "transit",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:13:50.778Z",
+        "timeSec": 830.7782267385564,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.31260382291338,
+            60.03935824483958
+          ],
+          [
+            30.31260382291338,
+            60.03935824483958
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 9,
+        "from": [
+          30.31260382291338,
+          60.03935824483958
+        ],
+        "to": [
+          30.31260382291338,
+          60.03935824483958
+        ],
+        "phase": "turn",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "distanceM": 0,
+        "startSec": 830.7782267385564,
+        "endSec": 834.7782267385564,
+        "batteryFromPct": 82.51680100465482,
+        "batteryToPct": 82.21377070162453,
+        "startTime": "2026-06-15T09:13:50.778Z",
+        "endTime": "2026-06-15T09:13:54.778Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.31260382291338,
+          60.03935824483958
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 9,
+        "phase": "turn",
+        "altitudeM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "time": "2026-06-15T09:13:54.778Z",
+        "timeSec": 834.7782267385564,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.31260382291338,
+            60.03935824483958
+          ],
+          [
+            30.29999999999969,
+            60.03935824483958
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 10,
+        "from": [
+          30.31260382291338,
+          60.03935824483958
+        ],
+        "to": [
+          30.29999999999969,
+          60.03935824483958
+        ],
+        "phase": "survey",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 700.0000000344116,
+        "startSec": 834.7782267385564,
+        "endSec": 893.1115600747573,
+        "batteryFromPct": 82.21377070162451,
+        "batteryToPct": 77.79457878221535,
+        "stripId": 2,
+        "startTime": "2026-06-15T09:13:54.778Z",
+        "endTime": "2026-06-15T09:14:53.111Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.29999999999969,
+          60.03935824483958
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 10,
+        "phase": "survey",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:14:53.111Z",
+        "timeSec": 893.1115600747573,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.29999999999969,
+            60.03935824483958
+          ],
+          [
+            30.29999999999969,
+            60.03894317390248
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 11,
+        "from": [
+          30.29999999999969,
+          60.03935824483958
+        ],
+        "to": [
+          30.29999999999969,
+          60.03894317390248
+        ],
+        "phase": "transit",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 46.15384615382493,
+        "startSec": 893.1115600747573,
+        "endSec": 896.9577139209094,
+        "batteryFromPct": 77.79457878221535,
+        "batteryToPct": 77.50320349084019,
+        "startTime": "2026-06-15T09:14:53.111Z",
+        "endTime": "2026-06-15T09:14:56.957Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.29999999999969,
+          60.03894317390248
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 11,
+        "phase": "transit",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:14:56.957Z",
+        "timeSec": 896.9577139209094,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.29999999999969,
+            60.03894317390248
+          ],
+          [
+            30.29999999999969,
+            60.03894317390248
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 12,
+        "from": [
+          30.29999999999969,
+          60.03894317390248
+        ],
+        "to": [
+          30.29999999999969,
+          60.03894317390248
+        ],
+        "phase": "turn",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "distanceM": 0,
+        "startSec": 896.9577139209094,
+        "endSec": 900.9577139209094,
+        "batteryFromPct": 77.50320349084019,
+        "batteryToPct": 77.2001731878099,
+        "startTime": "2026-06-15T09:14:56.957Z",
+        "endTime": "2026-06-15T09:15:00.957Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.29999999999969,
+          60.03894317390248
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 12,
+        "phase": "turn",
+        "altitudeM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "time": "2026-06-15T09:15:00.957Z",
+        "timeSec": 900.9577139209094,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.29999999999969,
+            60.03894317390248
+          ],
+          [
+            30.31260382291338,
+            60.03894317390248
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 13,
+        "from": [
+          30.29999999999969,
+          60.03894317390248
+        ],
+        "to": [
+          30.31260382291338,
+          60.03894317390248
+        ],
+        "phase": "survey",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 700.0000000344116,
+        "startSec": 900.9577139209094,
+        "endSec": 959.2910472571104,
+        "batteryFromPct": 77.2001731878099,
+        "batteryToPct": 72.78098126840074,
+        "stripId": 3,
+        "startTime": "2026-06-15T09:15:00.957Z",
+        "endTime": "2026-06-15T09:15:59.291Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.31260382291338,
+          60.03894317390248
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 13,
+        "phase": "survey",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:15:59.291Z",
+        "timeSec": 959.2910472571104,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.31260382291338,
+            60.03894317390248
+          ],
+          [
+            30.31260382291338,
+            60.03852810296537
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 14,
+        "from": [
+          30.31260382291338,
+          60.03894317390248
+        ],
+        "to": [
+          30.31260382291338,
+          60.03852810296537
+        ],
+        "phase": "transit",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 46.15384615382493,
+        "startSec": 959.2910472571104,
+        "endSec": 963.1372011032624,
+        "batteryFromPct": 72.78098126840072,
+        "batteryToPct": 72.48960597702556,
+        "startTime": "2026-06-15T09:15:59.291Z",
+        "endTime": "2026-06-15T09:16:03.137Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.31260382291338,
+          60.03852810296537
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 14,
+        "phase": "transit",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:16:03.137Z",
+        "timeSec": 963.1372011032624,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.31260382291338,
+            60.03852810296537
+          ],
+          [
+            30.31260382291338,
+            60.03852810296537
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 15,
+        "from": [
+          30.31260382291338,
+          60.03852810296537
+        ],
+        "to": [
+          30.31260382291338,
+          60.03852810296537
+        ],
+        "phase": "turn",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "distanceM": 0,
+        "startSec": 963.1372011032624,
+        "endSec": 967.1372011032624,
+        "batteryFromPct": 72.48960597702558,
+        "batteryToPct": 72.18657567399528,
+        "startTime": "2026-06-15T09:16:03.137Z",
+        "endTime": "2026-06-15T09:16:07.137Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.31260382291338,
+          60.03852810296537
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 15,
+        "phase": "turn",
+        "altitudeM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "time": "2026-06-15T09:16:07.137Z",
+        "timeSec": 967.1372011032624,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.31260382291338,
+            60.03852810296537
+          ],
+          [
+            30.29999999999969,
+            60.03852810296537
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 16,
+        "from": [
+          30.31260382291338,
+          60.03852810296537
+        ],
+        "to": [
+          30.29999999999969,
+          60.03852810296537
+        ],
+        "phase": "survey",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 700.0000000344116,
+        "startSec": 967.1372011032624,
+        "endSec": 1025.4705344394633,
+        "batteryFromPct": 72.18657567399526,
+        "batteryToPct": 67.7673837545861,
+        "stripId": 4,
+        "startTime": "2026-06-15T09:16:07.137Z",
+        "endTime": "2026-06-15T09:17:05.470Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.29999999999969,
+          60.03852810296537
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 16,
+        "phase": "survey",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:17:05.470Z",
+        "timeSec": 1025.4705344394633,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.29999999999969,
+            60.03852810296537
+          ],
+          [
+            30.29999999999969,
+            60.03811303202827
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 17,
+        "from": [
+          30.29999999999969,
+          60.03852810296537
+        ],
+        "to": [
+          30.29999999999969,
+          60.03811303202827
+        ],
+        "phase": "transit",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 46.153846153824986,
+        "startSec": 1025.4705344394633,
+        "endSec": 1029.3166882856156,
+        "batteryFromPct": 67.7673837545861,
+        "batteryToPct": 67.47600846321095,
+        "startTime": "2026-06-15T09:17:05.470Z",
+        "endTime": "2026-06-15T09:17:09.316Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.29999999999969,
+          60.03811303202827
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 17,
+        "phase": "transit",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:17:09.316Z",
+        "timeSec": 1029.3166882856156,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.29999999999969,
+            60.03811303202827
+          ],
+          [
+            30.29999999999969,
+            60.03811303202827
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 18,
+        "from": [
+          30.29999999999969,
+          60.03811303202827
+        ],
+        "to": [
+          30.29999999999969,
+          60.03811303202827
+        ],
+        "phase": "turn",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "distanceM": 0,
+        "startSec": 1029.3166882856156,
+        "endSec": 1033.3166882856156,
+        "batteryFromPct": 67.47600846321095,
+        "batteryToPct": 67.17297816018065,
+        "startTime": "2026-06-15T09:17:09.316Z",
+        "endTime": "2026-06-15T09:17:13.316Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.29999999999969,
+          60.03811303202827
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 18,
+        "phase": "turn",
+        "altitudeM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "time": "2026-06-15T09:17:13.316Z",
+        "timeSec": 1033.3166882856156,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.29999999999969,
+            60.03811303202827
+          ],
+          [
+            30.31260382291338,
+            60.03811303202827
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 19,
+        "from": [
+          30.29999999999969,
+          60.03811303202827
+        ],
+        "to": [
+          30.31260382291338,
+          60.03811303202827
+        ],
+        "phase": "survey",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 700.0000000344116,
+        "startSec": 1033.3166882856156,
+        "endSec": 1091.6500216218164,
+        "batteryFromPct": 67.17297816018065,
+        "batteryToPct": 62.75378624077148,
+        "stripId": 5,
+        "startTime": "2026-06-15T09:17:13.316Z",
+        "endTime": "2026-06-15T09:18:11.650Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.31260382291338,
+          60.03811303202827
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 19,
+        "phase": "survey",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:18:11.650Z",
+        "timeSec": 1091.6500216218164,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.31260382291338,
+            60.03811303202827
+          ],
+          [
+            30.31260382291338,
+            60.03769796109117
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 20,
+        "from": [
+          30.31260382291338,
+          60.03811303202827
+        ],
+        "to": [
+          30.31260382291338,
+          60.03769796109117
+        ],
+        "phase": "transit",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 46.15384615382493,
+        "startSec": 1091.6500216218164,
+        "endSec": 1095.4961754679684,
+        "batteryFromPct": 62.75378624077148,
+        "batteryToPct": 62.46241094939632,
+        "startTime": "2026-06-15T09:18:11.650Z",
+        "endTime": "2026-06-15T09:18:15.496Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.31260382291338,
+          60.03769796109117
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 20,
+        "phase": "transit",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:18:15.496Z",
+        "timeSec": 1095.4961754679684,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.31260382291338,
+            60.03769796109117
+          ],
+          [
+            30.31260382291338,
+            60.03769796109117
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 21,
+        "from": [
+          30.31260382291338,
+          60.03769796109117
+        ],
+        "to": [
+          30.31260382291338,
+          60.03769796109117
+        ],
+        "phase": "turn",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "distanceM": 0,
+        "startSec": 1095.4961754679684,
+        "endSec": 1099.4961754679684,
+        "batteryFromPct": 62.46241094939632,
+        "batteryToPct": 62.15938064636602,
+        "startTime": "2026-06-15T09:18:15.496Z",
+        "endTime": "2026-06-15T09:18:19.496Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.31260382291338,
+          60.03769796109117
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 21,
+        "phase": "turn",
+        "altitudeM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "time": "2026-06-15T09:18:19.496Z",
+        "timeSec": 1099.4961754679684,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.31260382291338,
+            60.03769796109117
+          ],
+          [
+            30.29999999999969,
+            60.03769796109117
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 22,
+        "from": [
+          30.31260382291338,
+          60.03769796109117
+        ],
+        "to": [
+          30.29999999999969,
+          60.03769796109117
+        ],
+        "phase": "survey",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 700.0000000344116,
+        "startSec": 1099.4961754679684,
+        "endSec": 1157.8295088041696,
+        "batteryFromPct": 62.15938064636602,
+        "batteryToPct": 57.74018872695685,
+        "stripId": 6,
+        "startTime": "2026-06-15T09:18:19.496Z",
+        "endTime": "2026-06-15T09:19:17.829Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.29999999999969,
+          60.03769796109117
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 22,
+        "phase": "survey",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:19:17.829Z",
+        "timeSec": 1157.8295088041696,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.29999999999969,
+            60.03769796109117
+          ],
+          [
+            30.29999999999969,
+            60.03728289015407
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 23,
+        "from": [
+          30.29999999999969,
+          60.03769796109117
+        ],
+        "to": [
+          30.29999999999969,
+          60.03728289015407
+        ],
+        "phase": "transit",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 46.153846153824986,
+        "startSec": 1157.8295088041696,
+        "endSec": 1161.6756626503216,
+        "batteryFromPct": 57.74018872695685,
+        "batteryToPct": 57.44881343558169,
+        "startTime": "2026-06-15T09:19:17.829Z",
+        "endTime": "2026-06-15T09:19:21.675Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.29999999999969,
+          60.03728289015407
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 23,
+        "phase": "transit",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:19:21.675Z",
+        "timeSec": 1161.6756626503216,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.29999999999969,
+            60.03728289015407
+          ],
+          [
+            30.29999999999969,
+            60.03728289015407
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 24,
+        "from": [
+          30.29999999999969,
+          60.03728289015407
+        ],
+        "to": [
+          30.29999999999969,
+          60.03728289015407
+        ],
+        "phase": "turn",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "distanceM": 0,
+        "startSec": 1161.6756626503216,
+        "endSec": 1165.6756626503216,
+        "batteryFromPct": 57.44881343558169,
+        "batteryToPct": 57.14578313255139,
+        "startTime": "2026-06-15T09:19:21.675Z",
+        "endTime": "2026-06-15T09:19:25.675Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.29999999999969,
+          60.03728289015407
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 24,
+        "phase": "turn",
+        "altitudeM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "time": "2026-06-15T09:19:25.675Z",
+        "timeSec": 1165.6756626503216,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.29999999999969,
+            60.03728289015407
+          ],
+          [
+            30.31260382291338,
+            60.03728289015407
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 25,
+        "from": [
+          30.29999999999969,
+          60.03728289015407
+        ],
+        "to": [
+          30.31260382291338,
+          60.03728289015407
+        ],
+        "phase": "survey",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 700.0000000344116,
+        "startSec": 1165.6756626503216,
+        "endSec": 1224.0089959865227,
+        "batteryFromPct": 57.14578313255139,
+        "batteryToPct": 52.72659121314222,
+        "stripId": 7,
+        "startTime": "2026-06-15T09:19:25.675Z",
+        "endTime": "2026-06-15T09:20:24.008Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.31260382291338,
+          60.03728289015407
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 25,
+        "phase": "survey",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:20:24.008Z",
+        "timeSec": 1224.0089959865227,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.31260382291338,
+            60.03728289015407
+          ],
+          [
+            30.31260382291338,
+            60.036867819216965
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 26,
+        "from": [
+          30.31260382291338,
+          60.03728289015407
+        ],
+        "to": [
+          30.31260382291338,
+          60.036867819216965
+        ],
+        "phase": "transit",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 46.15384615382487,
+        "startSec": 1224.0089959865227,
+        "endSec": 1227.8551498326747,
+        "batteryFromPct": 52.72659121314222,
+        "batteryToPct": 52.43521592176707,
+        "startTime": "2026-06-15T09:20:24.008Z",
+        "endTime": "2026-06-15T09:20:27.855Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.31260382291338,
+          60.036867819216965
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 26,
+        "phase": "transit",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:20:27.855Z",
+        "timeSec": 1227.8551498326747,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.31260382291338,
+            60.036867819216965
+          ],
+          [
+            30.31260382291338,
+            60.036867819216965
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 27,
+        "from": [
+          30.31260382291338,
+          60.036867819216965
+        ],
+        "to": [
+          30.31260382291338,
+          60.036867819216965
+        ],
+        "phase": "turn",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "distanceM": 0,
+        "startSec": 1227.8551498326747,
+        "endSec": 1231.8551498326747,
+        "batteryFromPct": 52.43521592176707,
+        "batteryToPct": 52.13218561873676,
+        "startTime": "2026-06-15T09:20:27.855Z",
+        "endTime": "2026-06-15T09:20:31.855Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.31260382291338,
+          60.036867819216965
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 27,
+        "phase": "turn",
+        "altitudeM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "time": "2026-06-15T09:20:31.855Z",
+        "timeSec": 1231.8551498326747,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.31260382291338,
+            60.036867819216965
+          ],
+          [
+            30.29999999999969,
+            60.036867819216965
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 28,
+        "from": [
+          30.31260382291338,
+          60.036867819216965
+        ],
+        "to": [
+          30.29999999999969,
+          60.036867819216965
+        ],
+        "phase": "survey",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 700.0000000344116,
+        "startSec": 1231.8551498326747,
+        "endSec": 1290.1884831688758,
+        "batteryFromPct": 52.132185618736756,
+        "batteryToPct": 47.71299369932759,
+        "stripId": 8,
+        "startTime": "2026-06-15T09:20:31.855Z",
+        "endTime": "2026-06-15T09:21:30.188Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.29999999999969,
+          60.036867819216965
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 28,
+        "phase": "survey",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:21:30.188Z",
+        "timeSec": 1290.1884831688758,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.29999999999969,
+            60.036867819216965
+          ],
+          [
+            30.29999999999969,
+            60.03645274827986
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 29,
+        "from": [
+          30.29999999999969,
+          60.036867819216965
+        ],
+        "to": [
+          30.29999999999969,
+          60.03645274827986
+        ],
+        "phase": "transit",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 46.153846153824986,
+        "startSec": 1290.1884831688758,
+        "endSec": 1294.0346370150278,
+        "batteryFromPct": 47.71299369932759,
+        "batteryToPct": 47.42161840795243,
+        "startTime": "2026-06-15T09:21:30.188Z",
+        "endTime": "2026-06-15T09:21:34.034Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.29999999999969,
+          60.03645274827986
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 29,
+        "phase": "transit",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:21:34.034Z",
+        "timeSec": 1294.0346370150278,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.29999999999969,
+            60.03645274827986
+          ],
+          [
+            30.29999999999969,
+            60.03645274827986
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 30,
+        "from": [
+          30.29999999999969,
+          60.03645274827986
+        ],
+        "to": [
+          30.29999999999969,
+          60.03645274827986
+        ],
+        "phase": "turn",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "distanceM": 0,
+        "startSec": 1294.0346370150278,
+        "endSec": 1298.0346370150278,
+        "batteryFromPct": 47.42161840795244,
+        "batteryToPct": 47.11858810492213,
+        "startTime": "2026-06-15T09:21:34.034Z",
+        "endTime": "2026-06-15T09:21:38.034Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.29999999999969,
+          60.03645274827986
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 30,
+        "phase": "turn",
+        "altitudeM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "time": "2026-06-15T09:21:38.034Z",
+        "timeSec": 1298.0346370150278,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.29999999999969,
+            60.03645274827986
+          ],
+          [
+            30.31260382291338,
+            60.03645274827986
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 31,
+        "from": [
+          30.29999999999969,
+          60.03645274827986
+        ],
+        "to": [
+          30.31260382291338,
+          60.03645274827986
+        ],
+        "phase": "survey",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 700.0000000344116,
+        "startSec": 1298.0346370150278,
+        "endSec": 1356.367970351229,
+        "batteryFromPct": 47.11858810492213,
+        "batteryToPct": 42.69939618551297,
+        "stripId": 9,
+        "startTime": "2026-06-15T09:21:38.034Z",
+        "endTime": "2026-06-15T09:22:36.367Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.31260382291338,
+          60.03645274827986
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 31,
+        "phase": "survey",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:22:36.367Z",
+        "timeSec": 1356.367970351229,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.31260382291338,
+            60.03645274827986
+          ],
+          [
+            30.31260382291338,
+            60.036037677342755
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 32,
+        "from": [
+          30.31260382291338,
+          60.03645274827986
+        ],
+        "to": [
+          30.31260382291338,
+          60.036037677342755
+        ],
+        "phase": "transit",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 46.153846153824944,
+        "startSec": 1356.367970351229,
+        "endSec": 1360.214124197381,
+        "batteryFromPct": 42.69939618551296,
+        "batteryToPct": 42.4080208941378,
+        "startTime": "2026-06-15T09:22:36.367Z",
+        "endTime": "2026-06-15T09:22:40.214Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.31260382291338,
+          60.036037677342755
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 32,
+        "phase": "transit",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:22:40.214Z",
+        "timeSec": 1360.214124197381,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.31260382291338,
+            60.036037677342755
+          ],
+          [
+            30.31260382291338,
+            60.036037677342755
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 33,
+        "from": [
+          30.31260382291338,
+          60.036037677342755
+        ],
+        "to": [
+          30.31260382291338,
+          60.036037677342755
+        ],
+        "phase": "turn",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "distanceM": 0,
+        "startSec": 1360.214124197381,
+        "endSec": 1364.214124197381,
+        "batteryFromPct": 42.4080208941378,
+        "batteryToPct": 42.104990591107494,
+        "startTime": "2026-06-15T09:22:40.214Z",
+        "endTime": "2026-06-15T09:22:44.214Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.31260382291338,
+          60.036037677342755
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 33,
+        "phase": "turn",
+        "altitudeM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "time": "2026-06-15T09:22:44.214Z",
+        "timeSec": 1364.214124197381,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.31260382291338,
+            60.036037677342755
+          ],
+          [
+            30.29999999999969,
+            60.036037677342755
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 34,
+        "from": [
+          30.31260382291338,
+          60.036037677342755
+        ],
+        "to": [
+          30.29999999999969,
+          60.036037677342755
+        ],
+        "phase": "survey",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 700.0000000344116,
+        "startSec": 1364.214124197381,
+        "endSec": 1422.547457533582,
+        "batteryFromPct": 42.104990591107494,
+        "batteryToPct": 37.68579867169833,
+        "stripId": 10,
+        "startTime": "2026-06-15T09:22:44.214Z",
+        "endTime": "2026-06-15T09:23:42.547Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.29999999999969,
+          60.036037677342755
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 34,
+        "phase": "survey",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:23:42.547Z",
+        "timeSec": 1422.547457533582,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.29999999999969,
+            60.036037677342755
+          ],
+          [
+            30.311163386008722,
+            60.033201359272546
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 35,
+        "from": [
+          30.29999999999969,
+          60.036037677342755
+        ],
+        "to": [
+          30.311163386008722,
+          60.033201359272546
+        ],
+        "phase": "return",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "distanceM": 695.6058191553662,
+        "startSec": 1422.547457533582,
+        "endSec": 1480.5146091298625,
+        "batteryFromPct": 37.685798671698336,
+        "batteryToPct": 33.29434779319224,
+        "startTime": "2026-06-15T09:23:42.547Z",
+        "endTime": "2026-06-15T09:24:40.514Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.311163386008722,
+          60.033201359272546
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 35,
+        "phase": "return",
+        "altitudeM": 100,
+        "airspeedMps": 12,
+        "groundSpeedMps": 12,
+        "time": "2026-06-15T09:24:40.514Z",
+        "timeSec": 1480.5146091298625,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.311163386008722,
+            60.033201359272546
+          ],
+          [
+            30.311163386008722,
+            60.033201359272546
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "batteryId": "rgb-fast-battery-1",
+        "sequence": 36,
+        "from": [
+          30.311163386008722,
+          60.033201359272546
+        ],
+        "to": [
+          30.311163386008722,
+          60.033201359272546
+        ],
+        "phase": "landing",
+        "altitudeFromM": 100,
+        "altitudeToM": 0,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "distanceM": 0,
+        "startSec": 1480.5146091298625,
+        "endSec": 1580.5146091298625,
+        "batteryFromPct": 33.29434779319223,
+        "batteryToPct": 25.718590217434652,
+        "startTime": "2026-06-15T09:24:40.514Z",
+        "endTime": "2026-06-15T09:26:20.514Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.311163386008722,
+          60.033201359272546
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-1",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-fast",
+        "sequence": 36,
+        "phase": "landing",
+        "altitudeM": 0,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "time": "2026-06-15T09:26:20.514Z",
+        "timeSec": 1580.5146091298625,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.30144043690435,
+            60.034100679636275
+          ],
+          [
+            30.30144043690435,
+            60.034100679636275
+          ],
+          [
+            30.29999999999969,
+            60.03562260640565
+          ],
+          [
+            30.29999999999969,
+            60.03562260640565
+          ],
+          [
+            30.31260382291338,
+            60.03562260640565
+          ],
+          [
+            30.31260382291338,
+            60.03520753546855
+          ],
+          [
+            30.31260382291338,
+            60.03520753546855
+          ],
+          [
+            30.29999999999969,
+            60.03520753546855
+          ],
+          [
+            30.30144043690435,
+            60.034100679636275
+          ],
+          [
+            30.30144043690435,
+            60.034100679636275
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "sortie",
+        "sortieId": "sortie-2",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-near",
+        "batteryId": "rgb-near-battery-1",
+        "startTime": "2026-06-15T09:01:00.000Z",
+        "endTime": "2026-06-15T09:08:18.022Z",
+        "startSec": 60,
+        "endSec": 498.02219820108354,
+        "flightTimeSec": 438.02219820108354,
+        "remainingPct": 75.66543343327314
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.30144043690435,
+            60.034100679636275
+          ],
+          [
+            30.30144043690435,
+            60.034100679636275
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-2",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-near",
+        "batteryId": "rgb-near-battery-1",
+        "sequence": 1,
+        "from": [
+          30.30144043690435,
+          60.034100679636275
+        ],
+        "to": [
+          30.30144043690435,
+          60.034100679636275
+        ],
+        "phase": "takeoff",
+        "altitudeFromM": 0,
+        "altitudeToM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "distanceM": 0,
+        "startSec": 60,
+        "endSec": 93.33333333333334,
+        "batteryFromPct": 100,
+        "batteryToPct": 98.14814814814815,
+        "startTime": "2026-06-15T09:01:00.000Z",
+        "endTime": "2026-06-15T09:01:33.333Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.30144043690435,
+          60.034100679636275
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-2",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-near",
+        "sequence": 1,
+        "phase": "takeoff",
+        "altitudeM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "time": "2026-06-15T09:01:33.333Z",
+        "timeSec": 93.33333333333334,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.30144043690435,
+            60.034100679636275
+          ],
+          [
+            30.29999999999969,
+            60.03562260640565
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-2",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-near",
+        "batteryId": "rgb-near-battery-1",
+        "sequence": 2,
+        "from": [
+          30.30144043690435,
+          60.034100679636275
+        ],
+        "to": [
+          30.29999999999969,
+          60.03562260640565
+        ],
+        "phase": "transit",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 6,
+        "groundSpeedMps": 6,
+        "distanceM": 187.18721445938263,
+        "startSec": 93.33333333333334,
+        "endSec": 124.5312024098971,
+        "batteryFromPct": 98.14814814814815,
+        "batteryToPct": 96.41493319945016,
+        "startTime": "2026-06-15T09:01:33.333Z",
+        "endTime": "2026-06-15T09:02:04.531Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.29999999999969,
+          60.03562260640565
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-2",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-near",
+        "sequence": 2,
+        "phase": "transit",
+        "altitudeM": 100,
+        "airspeedMps": 6,
+        "groundSpeedMps": 6,
+        "time": "2026-06-15T09:02:04.531Z",
+        "timeSec": 124.5312024098971,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.29999999999969,
+            60.03562260640565
+          ],
+          [
+            30.29999999999969,
+            60.03562260640565
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-2",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-near",
+        "batteryId": "rgb-near-battery-1",
+        "sequence": 3,
+        "from": [
+          30.29999999999969,
+          60.03562260640565
+        ],
+        "to": [
+          30.29999999999969,
+          60.03562260640565
+        ],
+        "phase": "turn",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "distanceM": 0,
+        "startSec": 124.5312024098971,
+        "endSec": 128.5312024098971,
+        "batteryFromPct": 96.41493319945016,
+        "batteryToPct": 96.19271097722793,
+        "startTime": "2026-06-15T09:02:04.531Z",
+        "endTime": "2026-06-15T09:02:08.531Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.29999999999969,
+          60.03562260640565
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-2",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-near",
+        "sequence": 3,
+        "phase": "turn",
+        "altitudeM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "time": "2026-06-15T09:02:08.531Z",
+        "timeSec": 128.5312024098971,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.29999999999969,
+            60.03562260640565
+          ],
+          [
+            30.31260382291338,
+            60.03562260640565
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-2",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-near",
+        "batteryId": "rgb-near-battery-1",
+        "sequence": 4,
+        "from": [
+          30.29999999999969,
+          60.03562260640565
+        ],
+        "to": [
+          30.31260382291338,
+          60.03562260640565
+        ],
+        "phase": "survey",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 6,
+        "groundSpeedMps": 6,
+        "distanceM": 700.0000000344116,
+        "startSec": 128.5312024098971,
+        "endSec": 245.19786908229906,
+        "batteryFromPct": 96.19271097722793,
+        "batteryToPct": 89.71122949542783,
+        "stripId": 11,
+        "startTime": "2026-06-15T09:02:08.531Z",
+        "endTime": "2026-06-15T09:04:05.197Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.31260382291338,
+          60.03562260640565
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-2",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-near",
+        "sequence": 4,
+        "phase": "survey",
+        "altitudeM": 100,
+        "airspeedMps": 6,
+        "groundSpeedMps": 6,
+        "time": "2026-06-15T09:04:05.197Z",
+        "timeSec": 245.19786908229906,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.31260382291338,
+            60.03562260640565
+          ],
+          [
+            30.31260382291338,
+            60.03520753546855
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-2",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-near",
+        "batteryId": "rgb-near-battery-1",
+        "sequence": 5,
+        "from": [
+          30.31260382291338,
+          60.03562260640565
+        ],
+        "to": [
+          30.31260382291338,
+          60.03520753546855
+        ],
+        "phase": "transit",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 6,
+        "groundSpeedMps": 6,
+        "distanceM": 46.15384615382493,
+        "startSec": 245.19786908229906,
+        "endSec": 252.89017677460322,
+        "batteryFromPct": 89.71122949542783,
+        "batteryToPct": 89.2838790680776,
+        "startTime": "2026-06-15T09:04:05.197Z",
+        "endTime": "2026-06-15T09:04:12.890Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.31260382291338,
+          60.03520753546855
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-2",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-near",
+        "sequence": 5,
+        "phase": "transit",
+        "altitudeM": 100,
+        "airspeedMps": 6,
+        "groundSpeedMps": 6,
+        "time": "2026-06-15T09:04:12.890Z",
+        "timeSec": 252.89017677460322,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.31260382291338,
+            60.03520753546855
+          ],
+          [
+            30.31260382291338,
+            60.03520753546855
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-2",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-near",
+        "batteryId": "rgb-near-battery-1",
+        "sequence": 6,
+        "from": [
+          30.31260382291338,
+          60.03520753546855
+        ],
+        "to": [
+          30.31260382291338,
+          60.03520753546855
+        ],
+        "phase": "turn",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "distanceM": 0,
+        "startSec": 252.89017677460322,
+        "endSec": 256.8901767746032,
+        "batteryFromPct": 89.2838790680776,
+        "batteryToPct": 89.06165684585537,
+        "startTime": "2026-06-15T09:04:12.890Z",
+        "endTime": "2026-06-15T09:04:16.890Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.31260382291338,
+          60.03520753546855
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-2",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-near",
+        "sequence": 6,
+        "phase": "turn",
+        "altitudeM": 100,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "time": "2026-06-15T09:04:16.890Z",
+        "timeSec": 256.8901767746032,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.31260382291338,
+            60.03520753546855
+          ],
+          [
+            30.29999999999969,
+            60.03520753546855
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-2",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-near",
+        "batteryId": "rgb-near-battery-1",
+        "sequence": 7,
+        "from": [
+          30.31260382291338,
+          60.03520753546855
+        ],
+        "to": [
+          30.29999999999969,
+          60.03520753546855
+        ],
+        "phase": "survey",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 6,
+        "groundSpeedMps": 6,
+        "distanceM": 700.0000000344116,
+        "startSec": 256.8901767746032,
+        "endSec": 373.5568434470052,
+        "batteryFromPct": 89.06165684585538,
+        "batteryToPct": 82.58017536405528,
+        "stripId": 12,
+        "startTime": "2026-06-15T09:04:16.890Z",
+        "endTime": "2026-06-15T09:06:13.556Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.29999999999969,
+          60.03520753546855
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-2",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-near",
+        "sequence": 7,
+        "phase": "survey",
+        "altitudeM": 100,
+        "airspeedMps": 6,
+        "groundSpeedMps": 6,
+        "time": "2026-06-15T09:06:13.556Z",
+        "timeSec": 373.5568434470052,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.29999999999969,
+            60.03520753546855
+          ],
+          [
+            30.30144043690435,
+            60.034100679636275
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-2",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-near",
+        "batteryId": "rgb-near-battery-1",
+        "sequence": 8,
+        "from": [
+          30.29999999999969,
+          60.03520753546855
+        ],
+        "to": [
+          30.30144043690435,
+          60.034100679636275
+        ],
+        "phase": "return",
+        "altitudeFromM": 100,
+        "altitudeToM": 100,
+        "airspeedMps": 6,
+        "groundSpeedMps": 6,
+        "distanceM": 146.79212852447023,
+        "startSec": 373.5568434470052,
+        "endSec": 398.02219820108354,
+        "batteryFromPct": 82.58017536405526,
+        "batteryToPct": 81.2209889888287,
+        "startTime": "2026-06-15T09:06:13.556Z",
+        "endTime": "2026-06-15T09:06:38.022Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.30144043690435,
+          60.034100679636275
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-2",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-near",
+        "sequence": 8,
+        "phase": "return",
+        "altitudeM": 100,
+        "airspeedMps": 6,
+        "groundSpeedMps": 6,
+        "time": "2026-06-15T09:06:38.022Z",
+        "timeSec": 398.02219820108354,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.30144043690435,
+            60.034100679636275
+          ],
+          [
+            30.30144043690435,
+            60.034100679636275
+          ]
+        ]
+      },
+      "properties": {
+        "kind": "segment",
+        "sortieId": "sortie-2",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-near",
+        "batteryId": "rgb-near-battery-1",
+        "sequence": 9,
+        "from": [
+          30.30144043690435,
+          60.034100679636275
+        ],
+        "to": [
+          30.30144043690435,
+          60.034100679636275
+        ],
+        "phase": "landing",
+        "altitudeFromM": 100,
+        "altitudeToM": 0,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "distanceM": 0,
+        "startSec": 398.02219820108354,
+        "endSec": 498.02219820108354,
+        "batteryFromPct": 81.2209889888287,
+        "batteryToPct": 75.66543343327314,
+        "startTime": "2026-06-15T09:06:38.022Z",
+        "endTime": "2026-06-15T09:08:18.022Z",
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.30144043690435,
+          60.034100679636275
+        ]
+      },
+      "properties": {
+        "kind": "waypoint",
+        "sortieId": "sortie-2",
+        "jobId": "rgb-01",
+        "vehicleId": "rgb-near",
+        "sequence": 9,
+        "phase": "landing",
+        "altitudeM": 0,
+        "airspeedMps": 0,
+        "groundSpeedMps": 0,
+        "time": "2026-06-15T09:08:18.022Z",
+        "timeSec": 498.02219820108354,
+        "altitudeDatum": "above_declared_local_flat_surface"
+      }
+    }
+  ]
+}

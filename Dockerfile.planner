@@ -1,0 +1,25 @@
+# Reproducible local stand; not a hardened public production deployment.
+FROM node:24.14.1-bookworm-slim@sha256:b506e7321f176aae77317f99d67a24b272c1f09f1d10f1761f2773447d8da26c
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY tsconfig.json next.config.ts vite.config.ts ./
+COPY .openai/hosting.json .openai/hosting.json
+COPY app ./app
+COPY components ./components
+COPY lib ./lib
+COPY hooks ./hooks
+COPY public ./public
+COPY tests ./tests
+COPY scripts/verify-mission-evidence.ts ./scripts/verify-mission-evidence.ts
+COPY scripts/create-geometry-overflow-fixtures.ts ./scripts/create-geometry-overflow-fixtures.ts
+RUN npm run typecheck && npm run test:planner && npm run build
+RUN mkdir -p /app/.wrangler /app/dist/server/.wrangler /app/node_modules/.mf \
+    && chown node:node /app \
+    && chown -R node:node /app/.wrangler /app/dist/server/.wrangler /app/node_modules/.mf
+USER node
+ENV WRANGLER_SEND_METRICS=false
+ENV WRANGLER_WRITE_LOGS=false
+EXPOSE 3000
+HEALTHCHECK --interval=30s --timeout=5s --start-period=40s CMD node -e "fetch('http://127.0.0.1:3000/api/planner/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+CMD ["./node_modules/.bin/wrangler", "dev", "--config", "dist/server/wrangler.json", "--ip", "0.0.0.0", "--port", "3000", "--local"]

@@ -1,0 +1,106 @@
+{
+  "createdAt": "2026-09-17T19:11:29.725Z",
+  "engineVersion": "0.3.0",
+  "status": "passed-described-engineering-corpus",
+  "flightReady": false,
+  "fullSpecificationCompleted": false,
+  "officialScore": null,
+  "unit": {
+    "tests": 160,
+    "pass": 160,
+    "fail": 0,
+    "skipped": 0,
+    "report": "output/mission-showcase-0.3.0-unit-tests.xml"
+  },
+  "acceptance": {
+    "tests": 8,
+    "pass": 8,
+    "fail": 0,
+    "skipped": 0,
+    "report": "output/mission-showcase-0.3.0-acceptance.xml"
+  },
+  "api": {
+    "checks": 10,
+    "report": "output/mission-showcase-0.3.0/api/report.json"
+  },
+  "scenarios": {
+    "count": 9,
+    "positive": 7,
+    "expectedRejections": 2,
+    "positiveEvidenceBundles": 21,
+    "rejectedEvidenceBundles": 4,
+    "report": "output/mission-showcase-0.3.0/scenarios/report.json"
+  },
+  "browser": {
+    "core": {
+      "checks": 24,
+      "report": "output/playwright/0.3.0-core/results.json"
+    },
+    "features": {
+      "groups": 11,
+      "checks": 59,
+      "report": "output/playwright/0.3.0-showcase/browser-report.json"
+    },
+    "pageErrors": 0
+  },
+  "downloadedEvidence": {
+    "core": {
+      "checks": 48,
+      "pass": 41,
+      "fail": 0,
+      "unknown": 7,
+      "report": "output/mission-showcase-0.3.0/browser-core-evidence-check.json"
+    },
+    "balanced": {
+      "checks": 47,
+      "pass": 41,
+      "fail": 0,
+      "unknown": 6,
+      "report": "output/mission-showcase-0.3.0/browser-balanced-evidence-check.json"
+    }
+  },
+  "runtime": {
+    "imageId": "sha256:98136b5ba4f0f70bf5f04608e91a52e69f83fa6bf1c041dbb779d1b24c893c91",
+    "containerId": "0b7be0fad158598fbaf46d5573ba19b59ec12744545cec597934dc574f58636c",
+    "health": "healthy",
+    "cpus": 2,
+    "memoryBytes": 1073741824,
+    "user": "node",
+    "sourceFilesCompared": 31,
+    "sourceMismatches": 0,
+    "report": "output/mission-showcase-0.3.0/api/runtime.json"
+  },
+  "artifactHashes": {
+    "output/mission-showcase-0.3.0-unit-tests.xml": "152507f78dfc45c78e8c46fe30f58032d2f878544ac666ecc373b9c2de757c15",
+    "output/mission-showcase-0.3.0-acceptance.xml": "2c64b66fd7a2700343cdd03fe0f74b5e0712eefb01461a6d270cf73fa7928148",
+    "output/mission-showcase-0.3.0/api/report.json": "735785cafc7d26384202d5aa52b346c225cb3d09b13655a2ba0cbb658ea62dd2",
+    "output/mission-showcase-0.3.0/api/runtime.json": "d0cb9c1122ce5879ee7b29383897ca213bad8fb394e4664c3ed7682a29813b1b",
+    "output/mission-showcase-0.3.0/scenarios/report.json": "d7d57538c9cea88ea536ba584baf10d459acb22627d69629a86a8214e39deb29",
+    "output/playwright/0.3.0-core/results.json": "eda4d46016357d5c9363f8730b7a50bdce7d43f622a7fd1df5e70ce2c826557f",
+    "output/playwright/0.3.0-showcase/browser-report.json": "9bb5bcfe98ff50bf60bdb091068ab8e770b7cbb182da0d4c44e211e2f94c2627",
+    "output/mission-showcase-0.3.0/browser-core-evidence-check.json": "6e7fd63ecd99d6ca175b08c507b1d2192bbfe6fe43ebdc7cd4f9887d6db5779e",
+    "output/mission-showcase-0.3.0/browser-balanced-evidence-check.json": "7f99ca022fd271c3c79f3ca5156c04fe30efb2ebe66a0bfefa9901ad5bcd9417",
+    "docs/planner/demo-guide.md": "909f4c812117bf426eb69836ac532da46f8f9e82fd430eb1e70c448d8d0d65d8",
+    "docs/planner/demo-guide.html": "1576795fe724f31979a74f3690d16f9e281bce9d25feaac64b05016a52d9733d",
+    "docs/planner/showcase-0.3.0.md": "a61c4be0d26bff0a5f5a2a4af543c2e5bdc29f17b99b0a5a20804c983ffdc4dd",
+    "docs/planner/scenarios.md": "9133f22a219a9488687844fedae211e6ef2a09f6881466c15f1a09d2d6b8d0b7",
+    "docs/planner/api-v2.md": "51871b2200e059aca7572e6996e751710b32f1a5443f7b26bcb597b7fcab1078",
+    "docs/planner/contracts/mission-v2.schema.json": "479fe227dc345ebd88d312a871736a9057db30767d180c7d6be7429457847699",
+    "output/playwright/0.3.0-docs/results.json": "e4de6b07545a0524807b886e8a0d3f49ba48d38f67136b636c3409146c70b0bc"
+  },
+  "documents": {
+    "report": "output/playwright/0.3.0-docs/results.json",
+    "pass": true,
+    "viewports": 2
+  },
+  "limitations": [
+    "Synthetic acceptance examples, not an official jury rubric or proof of 100 points.",
+    "Only declared local linear flight/resource and safety models; no real flight clearance or telemetry.",
+    "No validated fixed-wing Geoscan 201, DEM/real AGL/AMSL, automatic forecast, calibrated wear or arbitrary optimal-height search.",
+    "100 km² load example remains not_found; bounded search does not prove infeasibility or global optimality.",
+    "Unknown evidence checks are retained. Revalidation shares geometry with the solver; not external certification.",
+    "Targeted changed-code lint passed; unrelated legacy workspace/planner test lint issues were not changed.",
+    "Wrangler transport risk for interrupted/slow request bodies remains; no public deployment.",
+    "No commit, push, final submission archive, presentation or public release has been made."
+  ]
+}
