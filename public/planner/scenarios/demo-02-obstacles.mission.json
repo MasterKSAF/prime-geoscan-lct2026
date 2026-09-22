@@ -1,0 +1,367 @@
+{
+  "batteries": [
+    {
+      "commissionedAt": null,
+      "cycles": null,
+      "id": "demo-rgb-battery-1",
+      "initialPct": 100,
+      "name": "АКБ 1 · demo-rgb",
+      "readyAt": "2026-06-15T09:00:00.000Z",
+      "rechargeSec": null,
+      "source": "Текущая батарея учебного БВС. Замена не прогнозируется; повторные вылеты используют остаток.",
+      "vehicleId": "demo-rgb"
+    },
+    {
+      "commissionedAt": null,
+      "cycles": null,
+      "id": "demo-ms-battery-1",
+      "initialPct": 100,
+      "name": "АКБ 1 · demo-ms",
+      "readyAt": "2026-06-15T09:00:00.000Z",
+      "rechargeSec": null,
+      "source": "Текущая батарея учебного БВС. Замена не прогнозируется; повторные вылеты используют остаток.",
+      "vehicleId": "demo-ms"
+    }
+  ],
+  "flightEnvelope": {
+    "maxAltitudeM": 500,
+    "minSurveyAltitudeM": 10,
+    "source": "Учебный диапазон сценария, не разрешение воздушного пространства."
+  },
+  "id": "demo-02-obstacles",
+  "jobs": [
+    {
+      "area": {
+        "coordinates": [
+          [
+            [
+              30.307202184521756,
+              60.03544966018186
+            ],
+            [
+              30.312243713686986,
+              60.03544966018186
+            ],
+            [
+              30.312243713686986,
+              60.03742816498205
+            ],
+            [
+              30.307202184521756,
+              60.03742816498205
+            ],
+            [
+              30.307202184521756,
+              60.03544966018186
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      },
+      "assignedVehicleIds": [
+        "demo-rgb"
+      ],
+      "daylight": "none",
+      "id": "demo-rgb-work",
+      "job": {
+        "altitudeM": 100,
+        "autoBearing": true,
+        "bearingDeg": 0,
+        "qualitySource": "Учебный RGB-профиль PF1B: 23,5 мм / 20 мм на 100 м; перекрытие 60% и шаг 15,6 м — параметры сценария. Скорость затвора не подтверждена.",
+        "sideOverlap": 0.6,
+        "swathM": 117.5,
+        "triggerDistanceM": 15.6,
+        "type": "RGB"
+      },
+      "name": "Фотосъёмка участка",
+      "quality": {
+        "focalLengthMm": 20,
+        "forwardOverlap": 0.7,
+        "imageHeightPx": 4000,
+        "imageWidthPx": 6000,
+        "maximumBlurPx": 1,
+        "maximumGsdCm": 3,
+        "minimumIntervalSec": 1,
+        "mode": "camera",
+        "sensorHeightMm": 15.6,
+        "sensorWidthMm": 23.5,
+        "shutterSec": 0.001,
+        "source": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры.",
+        "status": "assumed"
+      }
+    },
+    {
+      "area": {
+        "coordinates": [
+          [
+            [
+              30.307202184521756,
+              60.03544966018186
+            ],
+            [
+              30.312243713686986,
+              60.03544966018186
+            ],
+            [
+              30.312243713686986,
+              60.03742816498205
+            ],
+            [
+              30.307202184521756,
+              60.03742816498205
+            ],
+            [
+              30.307202184521756,
+              60.03544966018186
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      },
+      "assignedVehicleIds": [
+        "demo-ms"
+      ],
+      "daylight": "none",
+      "id": "demo-ms-work",
+      "job": {
+        "altitudeM": 100,
+        "autoBearing": true,
+        "bearingDeg": 0,
+        "qualitySource": "Учебный RGB-профиль PF1B: 23,5 мм / 20 мм на 100 м; перекрытие 60% и шаг 15,6 м — параметры сценария. Скорость затвора не подтверждена.",
+        "sideOverlap": 0.6,
+        "swathM": 117.5,
+        "triggerDistanceM": 15.6,
+        "type": "MS"
+      },
+      "name": "Мультиспектральная съёмка участка",
+      "quality": {
+        "focalLengthMm": 8,
+        "forwardOverlap": 0.7,
+        "imageHeightPx": 1080,
+        "imageWidthPx": 1440,
+        "maximumBlurPx": 1,
+        "maximumGsdCm": 6,
+        "minimumIntervalSec": 1,
+        "mode": "camera",
+        "sensorHeightMm": 3.726,
+        "sensorWidthMm": 4.968,
+        "shutterSec": 0.001,
+        "source": "Геометрия Pollux по буклету Gemini; период/перекрытия/GSD — параметры учебного задания.",
+        "status": "assumed"
+      }
+    }
+  ],
+  "name": "Демо 2 · Обход и согласованная съёмка",
+  "notes": "Синтетический приёмочный пример, не официальный эталон Геоскана и не разрешение реального полёта. Две камеры снимают один участок: RGB и MS — разные работы. Переходы от баз должны обойти препятствие сбоку, не поверх него: рабочая высота 100 м, препятствие 160 м. Реальные пределы 35 минут, расстояния 30/20 м и 2 с — учебные допущения. Приёмочный тест отдельно проверяет конфликт при искусственном совмещении стартов.",
+  "planning": {
+    "altitudePreference": "balanced",
+    "batteryPolicy": "installed-current-v1",
+    "maxComputeMs": 5000,
+    "maxSortiesPerVehicle": 12,
+    "preparationSec": 60,
+    "safetyPolicy": "continuous-occupancy-v1",
+    "separationHorizontalM": 30,
+    "separationSource": "Учебные защитные интервалы 30/20 м и 2 с; не утверждённый норматив.",
+    "separationVerticalM": 20,
+    "serviceSec": 180,
+    "temporalBufferSec": 2,
+    "windModel": "constantGroundSpeed"
+  },
+  "restrictions": [
+    {
+      "endAt": null,
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              30.30270081919566,
+              60.033201359272546
+            ],
+            [
+              30.304501365326097,
+              60.033201359272546
+            ],
+            [
+              30.304501365326097,
+              60.039046941636755
+            ],
+            [
+              30.30270081919566,
+              60.039046941636755
+            ],
+            [
+              30.30270081919566,
+              60.033201359272546
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      },
+      "id": "demo-tall-building",
+      "kind": "obstacle",
+      "maxAltitudeM": 160,
+      "minAltitudeM": 0,
+      "name": "Препятствие 160 м · прямой путь закрыт",
+      "source": "Синтетическое высокое препятствие; высоты от общей плоской поверхности. Коридоры обхода заданы воздушной областью.",
+      "startAt": null
+    }
+  ],
+  "scenario": {
+    "airspace": {
+      "coordinates": [
+        [
+          [
+            30.293698088543465,
+            60.031402718545095
+          ],
+          [
+            30.321606553565264,
+            60.031402718545095
+          ],
+          [
+            30.321606553565264,
+            60.04444286381911
+          ],
+          [
+            30.293698088543465,
+            60.04444286381911
+          ],
+          [
+            30.293698088543465,
+            60.031402718545095
+          ]
+        ]
+      ],
+      "type": "Polygon"
+    },
+    "area": {
+      "coordinates": [
+        [
+          [
+            30.307202184521756,
+            60.03544966018186
+          ],
+          [
+            30.312243713686986,
+            60.03544966018186
+          ],
+          [
+            30.312243713686986,
+            60.03742816498205
+          ],
+          [
+            30.307202184521756,
+            60.03742816498205
+          ],
+          [
+            30.307202184521756,
+            60.03544966018186
+          ]
+        ]
+      ],
+      "type": "Polygon"
+    },
+    "clearanceM": 5,
+    "exclusions": [],
+    "job": {
+      "altitudeM": 100,
+      "autoBearing": true,
+      "bearingDeg": 0,
+      "qualitySource": "Учебный RGB-профиль PF1B: 23,5 мм / 20 мм на 100 м; перекрытие 60% и шаг 15,6 м — параметры сценария. Скорость затвора не подтверждена.",
+      "sideOverlap": 0.6,
+      "swathM": 117.5,
+      "triggerDistanceM": 15.6,
+      "type": "RGB"
+    },
+    "name": "Демо 2 · Обход и согласованная съёмка",
+    "objective": "makespan",
+    "reservePct": 25,
+    "reserveSites": [
+      [
+        30.3,
+        60.034100679636275
+      ],
+      [
+        30.3,
+        60.0385972814549
+      ]
+    ],
+    "schemaVersion": "1.0",
+    "terrain": "unknown",
+    "vehicles": [
+      {
+        "airspeedMps": 8,
+        "assumptions": [
+          "Числа скорости, ресурса и совместимости заданы для синтетического теста."
+        ],
+        "batteryPct": 100,
+        "climbMps": 3,
+        "descentMps": 1,
+        "effectiveEnduranceMin": 35,
+        "enabled": true,
+        "id": "demo-rgb",
+        "jobs": [
+          "RGB"
+        ],
+        "kind": "multirotor",
+        "landing": [
+          30.3,
+          60.034100679636275
+        ],
+        "maxWindMps": 10,
+        "model": "Gemini",
+        "name": "БВС 01 · фотокамера",
+        "source": "Учебная конфигурация стенда; реальная совместимость нагрузки не подтверждена.",
+        "start": [
+          30.3,
+          60.034100679636275
+        ],
+        "turnSeconds": 4
+      },
+      {
+        "airspeedMps": 6,
+        "assumptions": [
+          "Числа скорости, ресурса и совместимости заданы для синтетического теста."
+        ],
+        "batteryPct": 100,
+        "climbMps": 3,
+        "descentMps": 1,
+        "effectiveEnduranceMin": 35,
+        "enabled": true,
+        "id": "demo-ms",
+        "jobs": [
+          "MS"
+        ],
+        "kind": "multirotor",
+        "landing": [
+          30.3,
+          60.0385972814549
+        ],
+        "maxWindMps": 10,
+        "model": "Gemini",
+        "name": "БВС 02 · мультиспектр",
+        "source": "Учебная конфигурация стенда; реальная совместимость нагрузки не подтверждена.",
+        "start": [
+          30.3,
+          60.0385972814549
+        ],
+        "turnSeconds": 4
+      }
+    ],
+    "wind": {
+      "fromDeg": 270,
+      "speedMps": 2
+    }
+  },
+  "schemaVersion": "2.0",
+  "terrainModel": {
+    "elevationM": 0,
+    "kind": "flat",
+    "source": "Синтетическая горизонтальная поверхность; не реальный DEM участка."
+  },
+  "window": {
+    "end": "2026-06-15T15:00:00Z",
+    "start": "2026-06-15T09:00:00Z",
+    "timezone": "Europe/Moscow"
+  }
+}

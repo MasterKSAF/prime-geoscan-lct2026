@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-22T07:21:52.849Z",
+  "status": "pass",
+  "selectedFiles": 1652,
+  "textFiles": 1570,
+  "bytes": 236702394,
+  "patterns": [
+    "github-token",
+    "openai-key",
+    "aws-access-key",
+    "private-key"
+  ],
+  "findings": [],
+  "largest": [
+    {
+      "file": "docs/references/lct2026-presentation-template.pptx",
+      "bytes": 33766454
+    },
+    {
+      "file": "docs/planner/submission/evidence/benchmark/report.json",
+      "bytes": 11333544
+    },
+    {
+      "file": "docs/planner/submission/presentation/prime-geoscan-lct2026.pptx",
+      "bytes": 11108392
+    },
+    {
+      "file": "docs/planner/submission/presentation/index.html",
+      "bytes": 5199497
+    },
+    {
+      "file": "docs/geoscan-track5-master-plan.html",
+      "bytes": 3229553
+    },
+    {
+      "file": "docs/geoscan-md/resources/download-manifest.json",
+      "bytes": 2699676
+    },
+    {
+      "file": "output/mission-showcase-0.3.0/api/result-10km2.json",
+      "bytes": 1980782
+    },
+    {
+      "file": "output/release-verification-2026-09-18/api/result-10km2.json",
+      "bytes": 1980778
+    }
+  ],
+  "claimBoundary": "Heuristic scan of selected paths, not a comprehensive secret scanner, malware scan or penetration test. No matched content emitted."
+}

@@ -32,7 +32,7 @@ export function buildMissionEvents(
       vehicleId: sortie.vehicleId,
       sortieId: sortie.id,
       batteryId: sortie.batteryId,
-      detail: `Установлена ${sortie.batteryId}; заряд ${sortie.segments[0].batteryFromPct.toFixed(1)}%.`,
+      detail: `${d.planning.batteryPolicy ? 'Текущая батарея' : 'Установлена'} ${sortie.batteryId}; заряд ${sortie.segments[0].batteryFromPct.toFixed(1)}%.`,
     });
     events.push({
       timeSec: sortie.startSec,
@@ -106,7 +106,7 @@ export function buildMissionEvents(
         sortieId: last.id,
         batteryId: last.batteryId,
         detail:
-          'Последний назначенный вылет завершён; модельные данные доставлены в точку посадки.',
+          'Последний назначенный модельный вылет завершён. Получение и копирование реальных материалов съёмки не подтверждено.',
       });
   }
   events.sort(

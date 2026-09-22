@@ -71,62 +71,7 @@
       "rechargeSec": null,
       "cycles": null,
       "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "lidar-1-battery-2",
-      "vehicleId": "lidar-1",
-      "name": "АКБ 2 · lidar-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "lidar-1-battery-3",
-      "vehicleId": "lidar-1",
-      "name": "АКБ 3 · lidar-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "lidar-1-battery-4",
-      "vehicleId": "lidar-1",
-      "name": "АКБ 4 · lidar-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "lidar-1-battery-5",
-      "vehicleId": "lidar-1",
-      "name": "АКБ 5 · lidar-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "lidar-1-battery-6",
-      "vehicleId": "lidar-1",
-      "name": "АКБ 6 · lidar-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
+      "source": "Текущая батарея учебного БВС. Замена не прогнозируется; повторные вылеты используют остаток."
     },
     {
       "id": "geo-1-battery-1",
@@ -137,62 +82,7 @@
       "rechargeSec": null,
       "cycles": null,
       "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "geo-1-battery-2",
-      "vehicleId": "geo-1",
-      "name": "АКБ 2 · geo-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "geo-1-battery-3",
-      "vehicleId": "geo-1",
-      "name": "АКБ 3 · geo-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "geo-1-battery-4",
-      "vehicleId": "geo-1",
-      "name": "АКБ 4 · geo-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "geo-1-battery-5",
-      "vehicleId": "geo-1",
-      "name": "АКБ 5 · geo-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "geo-1-battery-6",
-      "vehicleId": "geo-1",
-      "name": "АКБ 6 · geo-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
+      "source": "Текущая батарея учебного БВС. Замена не прогнозируется; повторные вылеты используют остаток."
     }
   ]
 }

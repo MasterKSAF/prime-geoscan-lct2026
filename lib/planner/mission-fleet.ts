@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { demoScenario } from './demo.ts';
+import { createCatalogueVehicleProfile } from './mission-vehicle-catalog.ts';
 import {
   missionDocumentSchema,
   parseMissionDocument,
@@ -15,7 +15,7 @@ import {
 } from './mission-io.ts';
 
 export const MAX_FLEET_FILE_BYTES = 200 * 1024;
-export const MAX_FLEET_VEHICLES = 10;
+export const MAX_FLEET_VEHICLES = 20;
 export const MAX_FLEET_BATTERIES = 100;
 const fleetSchema = z
   .object({
@@ -23,6 +23,7 @@ const fleetSchema = z
     schemaVersion: z.literal('1.0'),
     vehicles: scenarioSchema.shape.vehicles,
     batteries: z.array(missionDocumentSchema.shape.batteries.element).max(100),
+    bases: missionDocumentSchema.shape.bases,
   })
   .strict();
 export type MissionFleet = z.infer<typeof fleetSchema>;
@@ -57,6 +58,7 @@ export function serializeMissionFleet(document: MissionDocument): string {
     schemaVersion: '1.0',
     vehicles: document.scenario.vehicles,
     batteries: document.batteries,
+    ...(document.bases ? { bases: document.bases } : {}),
   });
   const compact = JSON.stringify(fleet);
   checkTextSize(compact, MAX_FLEET_FILE_BYTES);
@@ -77,7 +79,7 @@ export function importMissionFleet(
     document.scenario.vehicles.length + fleet.vehicles.length >
     MAX_FLEET_VEHICLES
   )
-    throw new Error('В миссии допускается не более 10 БВС.');
+    throw new Error('В миссии допускается не более 20 БВС.');
   if (document.batteries.length + fleet.batteries.length > MAX_FLEET_BATTERIES)
     throw new Error('В миссии допускается не более 100 АКБ.');
   for (const vehicle of fleet.vehicles)
@@ -101,6 +103,65 @@ export function importMissionFleet(
   // The bundle may fit by itself while the resulting mission cannot be saved.
   checkTextSize(canonicalMissionJson(merged));
   return merged;
+}
+
+/** Explicit merge preview. Existing aircraft are updated only with operator consent. */
+export function fleetImportDiff(d: MissionDocument, f: MissionFleet) {
+  return f.vehicles.map((v) => {
+    const old = d.scenario.vehicles.find((x) => x.id === v.id);
+    const before = {
+      vehicle: old,
+      batteries: d.batteries.filter((b) => b.vehicleId === v.id),
+    };
+    const after = {
+      vehicle: v,
+      batteries: f.batteries.filter((b) => b.vehicleId === v.id),
+    };
+    return {
+      id: v.id,
+      name: v.name,
+      kind: !old
+        ? ('add' as const)
+        : JSON.stringify(before) === JSON.stringify(after)
+          ? ('same' as const)
+          : ('update' as const),
+    };
+  });
+}
+export function mergeMissionFleet(
+  d: MissionDocument,
+  f: MissionFleet,
+  allowUpdates: boolean,
+) {
+  const fleet = parseFleet(f);
+  if (
+    !allowUpdates &&
+    fleetImportDiff(d, fleet).some((x) => x.kind === 'update')
+  )
+    throw new Error('Конфликт ID: подтвердите обновление существующих БВС.');
+  const ids = new Set(fleet.vehicles.map((v) => v.id));
+  const bases = new Map((d.bases ?? []).map((b) => [b.id, b]));
+  for (const base of fleet.bases ?? []) {
+    const old = bases.get(base.id);
+    if (old && JSON.stringify(old) !== JSON.stringify(base) && !allowUpdates)
+      throw new Error('Конфликт ID базы: ' + base.id);
+    bases.set(base.id, base);
+  }
+  return parseMissionDocument({
+    ...d,
+    scenario: {
+      ...d.scenario,
+      vehicles: [
+        ...d.scenario.vehicles.filter((v) => !ids.has(v.id)),
+        ...fleet.vehicles,
+      ],
+    },
+    batteries: [
+      ...d.batteries.filter((b) => !ids.has(b.vehicleId)),
+      ...fleet.batteries,
+    ],
+    ...(bases.size ? { bases: [...bases.values()] } : {}),
+  });
 }
 
 export function removeMissionVehicle(
@@ -144,6 +205,13 @@ export function addMissionBattery(
 ): MissionDocument {
   const vehicle = document.scenario.vehicles.find((v) => v.id === vehicleId);
   if (!vehicle) throw new Error('БВС не найден.');
+  if (
+    document.planning.batteryPolicy &&
+    document.batteries.some((b) => b.vehicleId === vehicleId)
+  )
+    throw new Error(
+      'У БВС уже есть текущая батарея. Замену передайте через состояние парка.',
+    );
   if (document.batteries.length >= MAX_FLEET_BATTERIES)
     throw new Error('В миссии допускается не более 100 АКБ.');
   return {
@@ -160,13 +228,13 @@ export function addMissionBattery(
           0,
           100,
         ),
-        initialPct: 100,
+        initialPct: vehicle.batteryPct,
         readyAt: document.window.start,
         rechargeSec: null,
         cycles: null,
         commissionedAt: null,
         source:
-          'Добавлена оператором: начальный заряд — допущение; ресурс и перезарядка неизвестны.',
+          'Текущая батарея: исходный заряд — данные оператора; будущая замена не прогнозируется.',
       },
     ],
   };
@@ -175,13 +243,11 @@ export function addMissionBattery(
 export function addMissionVehicle(
   document: MissionDocument,
   model: Vehicle['model'],
+  configurationId?: string,
 ): MissionDocument {
   if (document.scenario.vehicles.length >= MAX_FLEET_VEHICLES)
-    throw new Error('В миссии допускается не более 10 БВС.');
-  const template = demoScenario().vehicles.find(
-    (v) => v.model === (model === 'Custom' ? 'Gemini' : model),
-  );
-  if (!template) throw new Error('Неизвестный профиль БВС.');
+    throw new Error('В миссии допускается не более 20 БВС.');
+  const template = createCatalogueVehicleProfile(model, configurationId);
   const vehicle: Vehicle = {
     ...structuredClone(template),
     id: uniqueId(
@@ -197,14 +263,6 @@ export function addMissionVehicle(
     start: [...document.scenario.vehicles[0].start],
     landing: [...document.scenario.vehicles[0].landing],
   };
-  if (model === 'Custom') {
-    vehicle.jobs = ['RGB'];
-    vehicle.assumptions = [
-      'Стартовые параметры — учебные допущения. Оператор должен задать ограничения своей комплектации.',
-    ];
-    vehicle.source =
-      'Профиль оператора: параметры и совместимость требуют подтверждения.';
-  }
   return addMissionBattery(
     {
       ...document,

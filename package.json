@@ -17,6 +17,8 @@
     "verify:planner": "node --experimental-transform-types scripts/verify_planner.ts",
     "verify:missions": "node --experimental-transform-types scripts/verify-missions.ts",
     "verify:evidence": "node --experimental-transform-types scripts/verify-mission-evidence.ts",
+    "benchmark:missions": "node --experimental-transform-types scripts/benchmark-missions.ts",
+    "verify:benchmark": "node --experimental-transform-types scripts/benchmark-missions.ts --verify",
     "export:mission-contract": "node --experimental-transform-types scripts/export-mission-contract.ts"
   },
   "dependencies": {

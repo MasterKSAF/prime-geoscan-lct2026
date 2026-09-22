@@ -144,6 +144,15 @@ export async function POST(request: Request) {
         { status: 413, headers },
       );
     }
+    if (!input.planning.safetyPolicy)
+      return Response.json(
+        {
+          code: 'SAFETY_POLICY',
+          error:
+            'Откройте задание в редакторе и пересчитайте: нужен профиль безопасности continuous-occupancy-v1. Старые результаты доступны только как архив.',
+        },
+        { status: 422, headers },
+      );
     const result = await solveMissionDocument(input);
     return Response.json(result, { headers });
   } catch (error) {

@@ -1,0 +1,227 @@
+/* Compact mission overview. Safety notices remain outside collapsed details. */
+.mission-workbench .mh-home {
+  min-width: 0;
+}
+.mission-workbench .mh-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 14px;
+}
+.mission-workbench .mh-tabs > button {
+  display: inline-flex;
+  gap: 9px;
+  align-items: center;
+  padding: 11px 16px;
+  border: 1px solid var(--mw-line);
+  border-radius: 10px;
+  background: var(--mw-surface);
+  color: var(--mw-muted);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.mission-workbench .mh-tabs > button[aria-selected='true'] {
+  background: var(--mw-ink);
+  color: var(--mw-surface);
+  border-color: var(--mw-ink);
+}
+.mission-workbench .mh-tabs > button:focus-visible {
+  outline: 3px solid var(--mw-accent);
+  outline-offset: 2px;
+}
+.mission-workbench .mh-count {
+  font-size: 11px;
+  opacity: 0.8;
+  min-width: 18px;
+  text-align: center;
+}
+.mission-workbench .mh-panel {
+  border: 1px solid var(--mw-line);
+  border-radius: 14px;
+  background: var(--mw-surface);
+  padding: 18px;
+  min-width: 0;
+}
+.mission-workbench .mh-panel[hidden] {
+  display: none;
+}
+.mission-workbench .mh-current {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 14px;
+  border-left: 3px solid var(--mw-accent);
+  border-radius: 7px;
+  background: var(--mw-pale);
+}
+.mission-workbench .mh-current > div {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  min-width: 0;
+}
+.mission-workbench .mh-current strong {
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+.mission-workbench .mh-current-label,
+.mission-workbench .mh-work-summary {
+  font-size: 12px;
+  color: var(--mw-muted);
+}
+.mission-workbench .mh-work-summary {
+  flex-basis: 100%;
+}
+.mission-workbench .mh-list-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 22px 0 8px;
+}
+.mission-workbench .mh-list-heading h2 {
+  margin: 0;
+  font-size: 16px;
+}
+.mission-workbench .mh-empty {
+  color: var(--mw-muted);
+  font-size: 13px;
+  padding: 14px 0;
+  margin: 0;
+}
+.mission-workbench .mh-saved-list {
+  display: grid;
+}
+.mission-workbench .mh-saved-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 0;
+  border-top: 1px solid var(--mw-line);
+}
+.mission-workbench .mh-saved-row > div {
+  min-width: 0;
+}
+.mission-workbench .mh-saved-row h3 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+.mission-workbench .mh-saved-row span {
+  color: var(--mw-muted);
+  font-size: 12px;
+}
+.mission-workbench .mh-attention {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.mission-workbench .mh-attention-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 13px 15px;
+  border: 1px solid var(--mw-line);
+  border-left: 3px solid #b4862b;
+  border-radius: 8px;
+  background: var(--mw-pale);
+  font-size: 13px;
+}
+.mission-workbench .mh-attention-row > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.mission-workbench .mh-attention-row p {
+  margin: 5px 0 0;
+}
+.mission-workbench .mh-attention-row ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+}
+.mission-workbench .mo-compact .mo-header {
+  align-items: center;
+  margin-bottom: 12px;
+}
+.mission-workbench .mo-compact .mo-header h2 {
+  font-size: 16px;
+  margin: 0;
+}
+.mission-workbench .mo-compact .mo-list {
+  gap: 10px;
+}
+.mission-workbench .mo-compact .mo-run {
+  border: 1px solid var(--mw-line);
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: none;
+}
+.mission-workbench .mo-compact .mo-run h3 {
+  font-size: 16px;
+  margin: 0;
+}
+.mission-workbench .mo-compact .mo-run-top {
+  align-items: center;
+}
+.mission-workbench .mo-compact .mo-progress {
+  margin: 10px 0;
+  max-width: 520px;
+}
+.mission-workbench .mo-compact .mo-progress label {
+  justify-content: flex-start;
+  gap: 10px;
+}
+.mission-workbench .mo-compact .mo-progress progress {
+  height: 5px;
+  margin-top: 6px;
+}
+.mission-workbench .mo-compact .mo-primary-actions {
+  margin: 10px 0;
+}
+.mission-workbench .mo-compact .mo-row-more {
+  font-size: 12px;
+  margin-top: 9px;
+}
+.mission-workbench .mo-compact .mo-row-more > summary {
+  cursor: pointer;
+  color: var(--mw-muted);
+  width: fit-content;
+  padding: 5px 0;
+}
+.mission-workbench .mo-compact .mo-row-more[open] {
+  border-top: 1px solid var(--mw-line);
+  padding-top: 6px;
+}
+.mission-workbench .mo-compact .mo-local-note {
+  margin-bottom: 0;
+}
+@media (max-width: 700px) {
+  .mission-workbench .mh-panel {
+    padding: 12px;
+  }
+  .mission-workbench .mh-current,
+  .mission-workbench .mh-attention-row,
+  .mission-workbench .mh-saved-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .mission-workbench .mh-list-heading {
+    flex-wrap: wrap;
+  }
+  .mission-workbench .mh-tabs > button {
+    flex: 1 1 auto;
+    justify-content: center;
+    padding: 10px 9px;
+  }
+  .mission-workbench .mh-home .mw-button {
+    white-space: normal;
+    max-width: 100%;
+  }
+}

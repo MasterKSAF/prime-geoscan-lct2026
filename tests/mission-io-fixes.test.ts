@@ -317,12 +317,19 @@ void test('IO-03: API matches MIME exactly, keeps v2-only and distinct schema/mi
 
 void test('IO-03: valid API JSON still solves after rejected requests', async () => {
   const document = demoMission(1);
+  document.planning.safetyPolicy = 'continuous-occupancy-v1';
   document.planning.maxComputeMs = 100;
   const response = await post(JSON.stringify(document));
   assert.equal(response.status, 200);
   const result = (await response.json()) as MissionResult;
   assert.deepEqual(result.document, document);
   assert.equal(result.candidates.length, 2);
+});
+
+void test('API requires the current safety policy without silently rewriting historical input', async () => {
+  const response = await post(JSON.stringify(demoMission(1)));
+  assert.equal(response.status, 422);
+  assert.equal(await errorCode(response), 'SAFETY_POLICY');
 });
 
 function streamingRequest(

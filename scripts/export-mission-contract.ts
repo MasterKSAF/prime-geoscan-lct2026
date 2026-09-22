@@ -2,6 +2,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { z } from 'zod';
 import { missionDocumentSchema } from '../lib/planner/mission-schema.ts';
 import { demoMission } from '../lib/planner/mission-demo.ts';
+import { installedBatteryDocument } from '../lib/planner/mission-fleet-state.ts';
 import {
   serializeMissionYaml,
   missionSummaryMarkdown,
@@ -13,7 +14,7 @@ await writeFile(
   JSON.stringify(z.toJSONSchema(missionDocumentSchema), null, 2),
 );
 for (const area of [1, 10, 100] as const) {
-  const mission = demoMission(area);
+  const mission = installedBatteryDocument(demoMission(area));
   await writeFile(
     `${directory}/example-${area}km2.json`,
     JSON.stringify(mission, null, 2),

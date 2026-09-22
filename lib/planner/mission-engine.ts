@@ -11,7 +11,10 @@ import type {
   ScheduledSortie,
 } from './mission-schema.ts';
 import { buildMissionEvents } from './mission-events.ts';
+import { weatherEnvelope, missionWeatherChecks } from './mission-weather.ts';
 import { buildMissionRecommendation } from './mission-comparison.ts';
+import { vehiclePlanningEligibility } from './fixed-wing-profile.ts';
+import { buildFixedWingSortie } from './fixed-wing-mission.ts';
 import type {
   Scenario,
   Vehicle,
@@ -38,6 +41,7 @@ import {
   validateMissionCandidate,
   segmentSunlight,
   missionEnvironmentChecks,
+  groundSeparationConflicts,
 } from './mission-validation.ts';
 import type { CompiledRestriction } from './mission-validation.ts';
 
@@ -70,6 +74,21 @@ type VehicleState = {
   chargerReadySec: number;
 };
 type Budget = { deadline: number; candidates: number; exhausted: boolean };
+type SearchStrategy = {
+  name: string;
+  reverseStrips?: boolean;
+  constrainedJobsFirst?: boolean;
+  reverseJobs?: boolean;
+  repair?: boolean;
+  maximumPacksOnly?: boolean;
+  wholeJobsOnly?: boolean;
+  assignments?: Record<string, string>;
+  jobOrder?: string[];
+};
+const GREEDY_STRATEGY: SearchStrategy = {
+  name: 'parallel-maximum-prefix-v1',
+  maximumPacksOnly: true,
+};
 const overBudget = (budget: Budget) => {
   if (performance.now() >= budget.deadline) budget.exhausted = true;
   return budget.exhausted;
@@ -106,17 +125,34 @@ export function missionJobContext(
         ...permanent.map((r) => r.geometry),
       ],
     },
-    geometry = prepareGeometry(scenario),
+    geometry = prepareGeometry(
+      scenario,
+      d.planning.safetyPolicy ? d.scenario.clearanceM : 0,
+      d.planning.safetyPolicy ? d.scenario.area.coordinates[0][0] : undefined,
+    ),
     strips = generateStrips(
       geometry,
       scenario.job.swathM * (1 - scenario.job.sideOverlap),
       scenario.job.bearingDeg,
-    );
+    ),
+    // Visibility routing otherwise follows the exact closed restriction
+    // boundary, which the independent 4D validator correctly treats as a touch.
+    // Pad only routing obstacles, not the requested/covered area or acceptance
+    // clearance. This is a numerical planning guard, never a weaker safety rule.
+    routingGeometry = scenario.exclusions.length
+      ? prepareGeometry(
+          { ...scenario, clearanceM: scenario.clearanceM + 0.25 },
+          d.planning.safetyPolicy ? d.scenario.clearanceM : 0,
+          d.planning.safetyPolicy
+            ? d.scenario.area.coordinates[0][0]
+            : undefined,
+        )
+      : geometry;
   return {
     job,
     scenario,
     geometry,
-    route: router(geometry),
+    route: router(routingGeometry),
     strips,
     checks: quality.checks,
     assumptions: quality.assumptions,
@@ -151,7 +187,16 @@ export function missionLegSpeed(
       ((b[0] - a[0]) / len) * requested - wind[0],
       ((b[1] - a[1]) / len) * requested - wind[1],
     ),
-    limit = ['Gemini', '801'].includes(v.model) ? 15 : v.airspeedMps;
+    passportLimit = ['Gemini', '801'].includes(v.model)
+      ? 15
+      : v.model === '201'
+        ? 130 / 3.6
+        : Infinity,
+    limit = Math.min(
+      passportLimit,
+      v.maxAirspeedMps ??
+        (Number.isFinite(passportLimit) ? passportLimit : v.airspeedMps),
+    );
   if (needed > limit + EPS)
     throw new Error(
       'Невозможно удержать заданную путевую скорость съёмки в пределах воздушной скорости профиля.',
@@ -167,6 +212,8 @@ function buildSortie(
   strips: Strip[],
   id: string,
 ): ScheduledSortie | null {
+  if (state.vehicle.kind === 'fixedWing')
+    return buildFixedWingSortie(d, context, state, battery, strips, id);
   const { scenario: s, geometry: g, route } = context,
     v = state.vehicle,
     segments: Segment[] = [];
@@ -229,16 +276,40 @@ function buildSortie(
       return null;
     add(pos, pos, 'takeoff', s.job.altitudeM / v.climbMps, 0, s.job.altitudeM);
     for (const strip of strips) {
-      const forward = route(pos, strip.a),
-        reverse = route(pos, strip.b);
-      if (!forward && !reverse) return null;
-      const length = (path: Point[] | null) =>
-          path
-            ? path.slice(1).reduce((n, p, i) => n + distance(path[i], p), 0)
-            : Infinity,
-        swap = length(reverse) + EPS < length(forward),
-        a = swap ? strip.b : strip.a,
-        b = swap ? strip.a : strip.b;
+      // Nearest endpoint alone can select an impossible headwind survey. Try
+      // both directions without changing the requested speed or aircraft limit.
+      const options = [
+        { a: strip.a, b: strip.b },
+        { a: strip.b, b: strip.a },
+      ]
+        .flatMap(({ a, b }) => {
+          try {
+            const path = route(pos, a);
+            if (!path) return [];
+            const speed = missionLegSpeed(a, b, v, s, d, true);
+            const quality = qualityForJob(context.job, {
+              ...v,
+              airspeedMps: speed.ground,
+            });
+            if (quality.checks.some((check) => check.status === 'fail'))
+              return [];
+            const seconds = path
+              .slice(1)
+              .reduce(
+                (sum, p, i) =>
+                  sum +
+                  distance(path[i], p) /
+                    missionLegSpeed(path[i], p, v, s, d, false).ground,
+                0,
+              );
+            return [{ a, b, seconds: seconds + distance(a, b) / speed.ground }];
+          } catch {
+            return [];
+          }
+        })
+        .sort((a, b) => a.seconds - b.seconds);
+      if (!options.length) return null;
+      const { a, b } = options[0];
       move(a, 'transit');
       if (v.turnSeconds > 0)
         add(pos, pos, 'turn', v.turnSeconds, s.job.altitudeM, s.job.altitudeM);
@@ -340,7 +411,7 @@ function findStart(
   )
     return null;
   const startMs = Date.parse(d.window.start),
-    endSec = (Date.parse(d.window.end) - startMs) / 1000,
+    endSec = (Date.parse(context.job.window?.end ?? d.window.end) - startMs) / 1000,
     restrictions = context.restrictions,
     minimumSun =
       context.job.daylight === 'none'
@@ -348,7 +419,7 @@ function findStart(
         : context.job.daylight === 'topographicClearSky'
           ? 15
           : 0;
-  let at = Math.max(d.planning.preparationSec, earliest);
+  let at = Math.max(d.planning.preparationSec, earliest, (Date.parse(context.job.window?.start ?? d.window.start) - startMs) / 1000);
   // Whole-minute candidate scan is a bounded heuristic, not a proof of no solution.
   for (
     let iteration = 0;
@@ -579,7 +650,9 @@ function candidateFromSorties(
           .concat([
             'Линейный расход ресурса по времени полёта; ток, температура, здоровье батареи и мощность нагрузки не калиброваны.',
             `Разнесение ${d.planning.separationHorizontalM}/${d.planning.separationVerticalM} м и временной запас ${d.planning.temporalBufferSec} с: ${d.planning.separationSource}`,
-            'При заданной перезарядке: один последовательный модельный зарядник на БВС, батарея доступна только после полного указанного времени; реальная инфраструктура не подтверждена.',
+            d.planning.batteryPolicy
+              ? 'Одна текущая батарея БВС: повторные вылеты на остатке, без прогнозирования замены или восстановления заряда. Наземное обслуживание — проверка перед вылетом, не замена.'
+              : 'При заданной перезарядке: один последовательный модельный зарядник на БВС, батарея доступна только после полного указанного времени; реальная инфраструктура не подтверждена.',
             d.planning.windModel === 'constantGroundSpeed'
               ? 'При съёмке параметр скорости БВС — целевая путевая скорость, на переходах — воздушная. Требуемая воздушная скорость проверяется по пределу профиля.'
               : 'Воздушная скорость постоянна; путевая скорость зависит от направления относительно ветра.',
@@ -605,6 +678,7 @@ function schedule(
   budget: Budget,
   inputHash: string,
   createdAt: string,
+  strategy: SearchStrategy = { name: 'adaptive-packs-repair-v2', repair: true },
 ): MissionCandidate {
   const sorties: ScheduledSortie[] = [],
     contexts: JobContext[] = [],
@@ -621,7 +695,27 @@ function schedule(
     })),
     fleet = d.scenario.vehicles.filter((v) => v.enabled);
   let notFound = false;
-  for (const job of d.jobs) {
+  const jobs = [...d.jobs];
+  if (strategy.jobOrder)
+    jobs.sort(
+      (a, b) =>
+        strategy.jobOrder!.indexOf(a.id) - strategy.jobOrder!.indexOf(b.id),
+    );
+  if (strategy.constrainedJobsFirst) {
+    const eligibleCount = (job: MissionJob) =>
+      fleet.filter(
+        (v) =>
+          v.jobs.includes(job.job.type) &&
+          (!strategy.assignments || strategy.assignments[job.id] === v.id) &&
+          (!job.assignedVehicleIds.length ||
+            job.assignedVehicleIds.includes(v.id)) &&
+          vehiclePlanningEligibility(v).supported,
+      ).length;
+    jobs.sort((a, b) => eligibleCount(a) - eligibleCount(b));
+  }
+  if (strategy.reverseJobs) jobs.reverse();
+  trace.push({ event: 'SEARCH_STRATEGY', detail: strategy.name });
+  for (const job of jobs) {
     if (overBudget(budget)) {
       notFound = true;
       break;
@@ -637,29 +731,43 @@ function schedule(
       continue;
     }
     const eligible = fleet.filter(
-        (v) =>
-          v.jobs.includes(job.job.type) &&
-          (!job.assignedVehicleIds.length ||
-            job.assignedVehicleIds.includes(v.id)),
-      ),
-      unsupportedWing = eligible.filter(
-        (v) => v.kind === 'fixedWing' || v.model === '201',
-      );
-    if (unsupportedWing.length)
-      unsupported.push(
-        `${job.name}: модель 201/самолёт требует валидированных разворотов, катапульты и посадки; не заменена квадрокоптером.`,
-      );
-    const usable = eligible.filter(
       (v) =>
-        v.kind === 'multirotor' &&
-        v.model !== '201' &&
+        v.jobs.includes(job.job.type) &&
+        (!strategy.assignments || strategy.assignments[job.id] === v.id) &&
+        (!job.assignedVehicleIds.length ||
+          job.assignedVehicleIds.includes(v.id)),
+    );
+    // An unsupported aircraft in the registry is not evidence that the whole
+    // job is unsupported: other compatible aircraft can still complete it.
+    // The excluded aircraft remains in the physical ground-occupancy checks.
+    for (const vehicle of eligible) {
+      const capability = vehiclePlanningEligibility(vehicle);
+      if (!capability.supported)
+        trace.push({
+          event: 'VEHICLE_EXCLUDED',
+          detail: `${job.id}: ${vehicle.id} — ${capability.reasons.join(' ')}`,
+        });
+    }
+    const supported = eligible.filter(
+      (v) => vehiclePlanningEligibility(v).supported,
+    );
+    const usable = supported.filter(
+      (v) =>
         d.scenario.wind.speedMps <= v.maxWindMps &&
-        (!['Gemini', '801'].includes(v.model) ||
-          (v.airspeedMps <= 15 && v.maxWindMps <= 10)),
+        (!d.weather ||
+          weatherEnvelope(d.weather.snapshot).gustMps <= v.maxWindMps),
     );
     if (!usable.length) {
+      if (d.weather && supported.length) {
+        notFound = true;
+        trace.push({
+          event: 'NO_ASSIGNMENT',
+          detail: `${job.name}: прогнозный ветер или порывы исключают все поддерживаемые БВС; см. FORECAST_WIND_LIMIT.`,
+        });
+        continue;
+      }
       unsupported.push(
-        `${job.name}: нет включённой совместимой и поддержанной конфигурации в пределах ветра/скорости.`,
+        `${job.name}: нет включённой совместимой и поддержанной конфигурации в пределах ветра/скорости.${supported.length ? '' : ` ${eligible.flatMap((v) => vehiclePlanningEligibility(v).reasons).join(' ')}`}`,
       );
       continue;
     }
@@ -682,7 +790,14 @@ function schedule(
       d,
       [],
       [context.scenario.job.altitudeM],
-    ).filter((check) => check.status === 'fail');
+    )
+      .concat(
+        missionWeatherChecks(
+          d,
+          usable.map((v) => v.id),
+        ),
+      )
+      .filter((check) => check.status === 'fail');
     if (weatherFailures.length) {
       notFound = true;
       trace.push({
@@ -713,18 +828,31 @@ function schedule(
       };
     });
     let remaining = context.strips.slice();
+    if (strategy.reverseStrips) remaining.reverse();
+    type Choice = {
+      sortie: ScheduledSortie;
+      state: VehicleState;
+      battery: BatteryState;
+      count: number;
+      score: number;
+    };
+    type Decision = {
+      choices: Choice[];
+      remaining: Strip[];
+      states: VehicleState[];
+      batteries: BatteryState[];
+      sortieCount: number;
+      traceCount: number;
+    };
+    const decisions: Decision[] = [];
+    let repairs = 0;
     while (remaining.length) {
       if (overBudget(budget)) {
         notFound = true;
         break;
       }
-      let best: {
-        sortie: ScheduledSortie;
-        state: VehicleState;
-        battery: BatteryState;
-        count: number;
-        score: number;
-      } | null = null;
+      let best: Choice | null = null;
+      const choices: Choice[] = [];
       for (const state of states) {
         if (state.count >= d.planning.maxSortiesPerVehicle) continue;
         for (const battery of batteries.filter(
@@ -732,8 +860,7 @@ function schedule(
             b.vehicleId === state.vehicle.id && b.pct > d.scenario.reservePct,
         )) {
           if (overBudget(budget)) break;
-          let packed: ScheduledSortie | null = null,
-            count = 0;
+          const packs: { flight: ScheduledSortie; count: number }[] = [];
           for (let n = 1; n <= remaining.length; n++) {
             if (overBudget(budget)) break;
             const flight = buildSortie(
@@ -746,34 +873,104 @@ function schedule(
             );
             budget.candidates++;
             if (!flight) break;
-            packed = flight;
-            count = n;
+            packs.push({ flight, count: n });
           }
-          if (!packed) continue;
-          const earliest = Math.max(
-              state.readySec,
-              battery.readySec,
-              serial
-                ? Math.max(0, ...sorties.map((s) => s.endSec)) +
-                    d.planning.temporalBufferSec * 2
-                : 0,
-            ),
-            placed = findStart(d, context, packed, earliest, sorties, budget);
-          if (!placed) continue;
-          const score =
-            objective === 'makespan'
-              ? placed.endSec / count
-              : placed.durationSec / count;
-          if (
-            !best ||
-            score < best.score - EPS ||
-            (Math.abs(score - best.score) < EPS &&
-              placed.endSec < best.sortie.endSec)
-          )
-            best = { sortie: placed, state, battery, count, score };
+          if (!packs.length) continue;
+          if (strategy.wholeJobsOnly && packs.length !== remaining.length)
+            continue;
+          // Maximum, half, quarter and one-strip packs give the scheduler a
+          // chance to fit a time window, preserve scarce energy and parallelize.
+          const wanted = strategy.maximumPacksOnly
+            ? [packs.length]
+            : [
+                ...new Set([
+                  packs.length,
+                  Math.ceil(packs.length / 2),
+                  Math.ceil(packs.length / 4),
+                  1,
+                ]),
+              ];
+          for (const count of wanted) {
+            const packed = packs[count - 1].flight;
+            const earliest = Math.max(
+                state.readySec,
+                battery.readySec,
+                serial
+                  ? Math.max(0, ...sorties.map((s) => s.endSec)) +
+                      d.planning.temporalBufferSec * 2
+                  : 0,
+              ),
+              placed = findStart(d, context, packed, earliest, sorties, budget);
+            if (!placed) continue;
+            if (
+              d.planning.safetyPolicy &&
+              groundSeparationConflicts(d, [...sorties, placed]).length
+            ) {
+              if (
+                !trace.some(
+                  (x) =>
+                    x.event === 'GROUND_REJECT' &&
+                    x.detail.startsWith(`${state.vehicle.id}:`),
+                )
+              )
+                trace.push({
+                  event: 'GROUND_REJECT',
+                  detail: `${state.vehicle.id}: вариант отклонён из-за занятой площадки или опасного сближения со стоящим БВС. Автоматическое перемещение на земле не моделируется.`,
+                });
+              continue;
+            }
+            const score =
+              objective === 'makespan'
+                ? placed.endSec / count
+                : placed.durationSec / count;
+            choices.push({ sortie: placed, state, battery, count, score });
+            if (
+              !best ||
+              score < best.score - EPS ||
+              (Math.abs(score - best.score) < EPS &&
+                placed.endSec < best.sortie.endSec)
+            )
+              best = { sortie: placed, state, battery, count, score };
+          }
           if (serial && best) break;
         }
         if (serial && best) break;
+      }
+      if (best && strategy.repair) {
+        choices.sort(
+          (a, b) => a.score - b.score || a.sortie.endSec - b.sortie.endSec,
+        );
+        best = choices.shift()!;
+        decisions.push({
+          choices: choices.slice(0, 5),
+          remaining: remaining.slice(),
+          states: structuredClone(states),
+          batteries: structuredClone(batteries),
+          sortieCount: sorties.length,
+          traceCount: trace.length,
+        });
+      }
+      if (!best && strategy.repair && repairs < 24) {
+        while (decisions.length && !best) {
+          const decision = decisions.at(-1)!;
+          if (!decision.choices.length) {
+            decisions.pop();
+            continue;
+          }
+          best = decision.choices.shift()!;
+          for (let index = 0; index < states.length; index++)
+            Object.assign(states[index], decision.states[index]);
+          for (let index = 0; index < batteries.length; index++)
+            Object.assign(batteries[index], decision.batteries[index]);
+          sorties.length = decision.sortieCount;
+          trace.length = decision.traceCount;
+          remaining = decision.remaining.slice();
+          repairs++;
+          trace.push({
+            event: 'SEARCH_REPAIR',
+            detail: `${job.id}: откат назначения, попытка ${repairs}/24; другой БВС или размер пакета, без изменения входных ограничений.`,
+          });
+        }
       }
       if (!best) {
         notFound = true;
@@ -834,6 +1031,185 @@ function schedule(
   return candidate;
 }
 
+/** Reproducible comparison route, not a claimed optimum. The objective gets
+ * the same half of the requested CPU budget as in solveMissionDocument. */
+export async function solveMissionSerialBaseline(
+  input: unknown,
+  objective: Scenario['objective'],
+): Promise<MissionCandidate> {
+  if (objective !== 'makespan' && objective !== 'flightTime')
+    throw new Error('Неизвестный критерий сравнения.');
+  const started = performance.now(),
+    d = parseMissionDocument(input),
+    inputHash = await sha256(d),
+    createdAt = new Date().toISOString(),
+    budgetMs = d.planning.maxComputeMs / 2,
+    budget: Budget = {
+      deadline: started + budgetMs,
+      candidates: 0,
+      exhausted: false,
+    },
+    candidate = schedule(
+      d,
+      objective,
+      true,
+      false,
+      budget,
+      inputHash,
+      createdAt,
+      GREEDY_STRATEGY,
+    );
+  candidate.plan.computationMs = performance.now() - started;
+  candidate.trace.push({
+    event: 'BASELINE_PROTOCOL',
+    detail: `serial-one-sortie-at-a-time-v1: первая допустимая конфигурация в исходном порядке парка, один вылет одновременно; бюджет ${budgetMs} мс, ${budget.candidates} попыток. Вход, ограничения, ресурс и проверка совпадают с основным расчётом; глобальная оптимальность не заявляется.`,
+  });
+  return candidate;
+}
+
+/** Parallel reference: maximum prefix, original job/strip order, no repairs or
+ * restarts. Uses the same full safety validator and unchanged input budget. */
+export async function solveMissionParallelBaseline(
+  input: unknown,
+  objective: Scenario['objective'],
+): Promise<MissionCandidate> {
+  if (objective !== 'makespan' && objective !== 'flightTime')
+    throw new Error('Неизвестный критерий сравнения.');
+  const started = performance.now(),
+    d = parseMissionDocument(input),
+    inputHash = await sha256(d),
+    budgetMs = d.planning.maxComputeMs / 2,
+    budget: Budget = {
+      deadline: started + budgetMs,
+      candidates: 0,
+      exhausted: false,
+    },
+    candidate = schedule(
+      d,
+      objective,
+      false,
+      false,
+      budget,
+      inputHash,
+      new Date().toISOString(),
+      GREEDY_STRATEGY,
+    );
+  candidate.plan.computationMs = performance.now() - started;
+  candidate.trace.push({
+    event: 'PARALLEL_BASELINE_PROTOCOL',
+    detail: `parallel-maximum-prefix-v1: исходный порядок работ/полос, максимальный допустимый пакет, жадное назначение по ${objective}; одновременные вылеты разрешены и проверяются. Без откатов/смены направления полос. Бюджет ${budgetMs} мс; ${budget.candidates} попыток. Это контрольный алгоритм, не глобальный оптимум.`,
+  });
+  return candidate;
+}
+
+/** Exhaustive only within a deliberately small, finite family: at most three
+ * jobs/aircraft and eight strips per job; one whole-job sortie, declared bearing
+ * and deterministic route/earliest-placement procedure. Not a global route or
+ * continuous-time optimum. `exhaustive` is false if the shared budget runs out. */
+export async function solveMissionSmallAssignmentOracle(
+  input: unknown,
+  objective: Scenario['objective'],
+) {
+  if (objective !== 'makespan' && objective !== 'flightTime')
+    throw new Error('Неизвестный критерий сравнения.');
+  const started = performance.now(),
+    d = parseMissionDocument(input),
+    fleet = d.scenario.vehicles.filter((v) => v.enabled),
+    contexts = d.jobs.map((job) => missionJobContext(d, job));
+  if (
+    d.jobs.length > 3 ||
+    fleet.length > 3 ||
+    contexts.some((c) => c.strips.length > 8)
+  )
+    throw new Error(
+      'Малый эталон ограничен тремя работами/БВС и восемью полосами на работу.',
+    );
+  const assignments = d.jobs.map((job) =>
+    fleet
+      .filter(
+        (v) =>
+          v.jobs.includes(job.job.type) &&
+          vehiclePlanningEligibility(v).supported &&
+          (!job.assignedVehicleIds.length ||
+            job.assignedVehicleIds.includes(v.id)),
+      )
+      .map((v) => v.id),
+  );
+  const maps: Record<string, string>[] = [];
+  const enumerate = (index: number, choice: Record<string, string>) => {
+    if (index === d.jobs.length) {
+      maps.push({ ...choice });
+      return;
+    }
+    for (const vehicleId of assignments[index]) {
+      choice[d.jobs[index].id] = vehicleId;
+      enumerate(index + 1, choice);
+    }
+  };
+  enumerate(0, Object.create(null) as Record<string, string>);
+  const permutations = (ids: string[]): string[][] =>
+    ids.length < 2
+      ? [ids]
+      : ids.flatMap((id, i) =>
+          permutations(ids.filter((_, j) => j !== i)).map((rest) => [
+            id,
+            ...rest,
+          ]),
+        );
+  const orders = permutations(d.jobs.map((j) => j.id)),
+    inputHash = await sha256(d),
+    createdAt = new Date().toISOString(),
+    budget: Budget = {
+      deadline: started + d.planning.maxComputeMs,
+      candidates: 0,
+      exhausted: false,
+    },
+    metric = objective === 'makespan' ? 'makespanSec' : 'flightTimeSec';
+  let candidate: MissionCandidate | null = null,
+    examined = 0;
+  for (const assignment of maps) {
+    for (const order of orders) {
+      if (overBudget(budget)) break;
+      const proposed = schedule(
+        d,
+        objective,
+        false,
+        false,
+        budget,
+        inputHash,
+        createdAt,
+        {
+          name: 'small-whole-job-assignment-oracle-v1',
+          maximumPacksOnly: true,
+          wholeJobsOnly: true,
+          assignments: assignment,
+          jobOrder: order,
+        },
+      );
+      examined++;
+      if (
+        proposed.status === 'feasible_model' &&
+        (!candidate ||
+          proposed.metrics[metric] < candidate.metrics[metric] - EPS)
+      )
+        candidate = proposed;
+    }
+    if (budget.exhausted) break;
+  }
+  return {
+    protocol: 'small-whole-job-assignment-oracle-v1' as const,
+    family:
+      'Все совместимые назначения и порядки работ; один вылет на работу, исходное направление полос, детерминированный маршрут и первый допустимый старт. Не глобальный оптимум маршрутов/времени.',
+    inputHash,
+    objective,
+    examined,
+    familySize: maps.length * orders.length,
+    exhaustive: !budget.exhausted && examined === maps.length * orders.length,
+    candidate,
+    computationMs: performance.now() - started,
+  };
+}
+
 export async function solveMissionDocument(
   input: unknown,
 ): Promise<MissionResult> {
@@ -859,6 +1235,7 @@ export async function solveMissionDocument(
         budget,
         inputHash,
         createdAt,
+        GREEDY_STRATEGY,
       );
     if (planned.status === 'feasible_model') pool.push(planned);
     let best = planned;
@@ -873,6 +1250,7 @@ export async function solveMissionDocument(
         budget,
         inputHash,
         createdAt,
+        GREEDY_STRATEGY,
       );
       if (baseline.status === 'feasible_model') pool.push(baseline);
       if (
@@ -882,21 +1260,81 @@ export async function solveMissionDocument(
       )
         best = baseline;
     }
-    if (!overBudget(budget) && d.jobs.some((j) => j.job.autoBearing)) {
+    const strategies: { strategy: SearchStrategy; perpendicular: boolean }[] = [
+      {
+        strategy: { name: 'adaptive-packs-repair-v2', repair: true },
+        perpendicular: false,
+      },
+      ...(d.jobs.some((j) => j.job.autoBearing)
+        ? [
+            {
+              strategy: { name: 'perpendicular-adaptive-v2', repair: true },
+              perpendicular: true,
+            },
+          ]
+        : []),
+      {
+        strategy: {
+          name: 'reverse-strips-v2',
+          reverseStrips: true,
+          repair: true,
+        },
+        perpendicular: false,
+      },
+      ...(d.jobs.length > 1
+        ? [
+            {
+              strategy: {
+                name: 'scarce-capability-first-v2',
+                constrainedJobsFirst: true,
+                repair: true,
+              },
+              perpendicular: false,
+            },
+            {
+              strategy: {
+                name: 'reverse-job-order-v2',
+                reverseJobs: true,
+                repair: true,
+              },
+              perpendicular: false,
+            },
+          ]
+        : []),
+    ];
+    for (const trial of strategies) {
+      if (overBudget(budget)) break;
+      // A difficult branch cannot consume every subsequent restart: remaining
+      // time is apportioned. The parent objective budget is never multiplied.
+      const trialBudget: Budget = {
+        deadline: Math.min(
+          budget.deadline,
+          performance.now() +
+            Math.max(10, (budget.deadline - performance.now()) / 2),
+        ),
+        candidates: 0,
+        exhausted: false,
+      };
       const alternative = schedule(
         d,
         objective,
         false,
-        true,
-        budget,
+        trial.perpendicular,
+        trialBudget,
         inputHash,
         createdAt,
+        trial.strategy,
       );
+      budget.candidates += trialBudget.candidates;
       if (alternative.status === 'feasible_model') pool.push(alternative);
       if (
-        alternative.status === 'feasible_model' &&
-        (best.status !== 'feasible_model' ||
-          alternative.metrics[metric] < best.metrics[metric] - EPS)
+        (alternative.status === 'feasible_model' &&
+          (best.status !== 'feasible_model' ||
+            alternative.metrics[metric] < best.metrics[metric] - EPS)) ||
+        (best.status !== 'feasible_model' &&
+          alternative.status !== 'feasible_model' &&
+          alternative.metrics.grossCoveragePct >
+            best.metrics.grossCoveragePct + EPS)
       )
         best = alternative;
     }

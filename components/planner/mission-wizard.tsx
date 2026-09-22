@@ -1,9 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import {
-  ArrowLeft,
-  ArrowRight,
   Camera,
   Check,
   Layers,
@@ -16,9 +14,18 @@ import {
   Upload,
 } from 'lucide-react';
 import type { MissionDocument, MissionJob } from '@/lib/planner/mission-schema';
-import { createDemoQuality } from '@/lib/planner/mission-demo';
+import {
+  appendMissionWork,
+  removeMissionWorks,
+  workLabels,
+} from '@/lib/planner/mission-editing';
+import { Checkbox } from '@/components/ui/checkbox';
 import MissionFleetEditor from './mission-fleet-editor';
 import { qualityForJob } from '@/lib/planner/quality';
+import { vehiclePlanningEligibility } from '@/lib/planner/fixed-wing-profile';
+import { vehicleModelLabel } from '@/lib/planner/mission-vehicle-label';
+import MissionWind from './mission-wind';
+import { InfoHint } from './mission-help';
 
 export const jobNames: Record<MissionJob['job']['type'], string> = {
   RGB: 'RGB · фотографии',
@@ -27,18 +34,16 @@ export const jobNames: Record<MissionJob['job']['type'], string> = {
   LiDAR: 'LiDAR · лазерные точки',
   Geophysics: 'Геофизические измерения',
 };
-const steps = [
-  'Работы',
-  'Территория',
-  'Срок',
-  'Ресурсы',
-  'Правила',
-  'Приоритет',
-  'Проверка',
-];
+const editorGroups = [
+  { title: 'Миссия', step: 0 },
+  { title: 'Условия', step: 2 },
+  { title: 'Парк', step: 3 },
+] as const;
 type Props = {
+  section?: 'quality' | 'conditions';
   document: MissionDocument;
   onChange: (document: MissionDocument) => void;
+  onNotice?: (message: string) => void;
   selectedJob: number;
   onSelectJob: (index: number) => void;
   onDraw: (
@@ -48,6 +53,9 @@ type Props = {
   onExample: (area: 1 | 10 | 100) => void;
   onDone: () => void;
   onSave: () => void;
+  territoryEditor?: ReactNode;
+  onTerritoryEditing?: (value: boolean) => void;
+  territoryIncomplete?: boolean;
 };
 function NumberField({
   label,
@@ -92,15 +100,38 @@ function NumberField({
 export default function MissionWizard({
   document: d,
   onChange,
+  onNotice,
   selectedJob,
   onSelectJob,
   onDraw,
   onImportGeometry,
   onExample,
-  onDone,
-  onSave,
+  territoryEditor,
+  onTerritoryEditing,
+  territoryIncomplete = false,
+  section,
 }: Props) {
-  const [step, setStep] = useState(0);
+  const [requestedStep, updateStep] = useState(territoryIncomplete ? 1 : 0);
+  const bodyRef = useRef<HTMLDivElement>(null);
+  const step =
+    section === 'quality'
+      ? 4
+      : section === 'conditions'
+        ? 2
+        : territoryIncomplete
+          ? 1
+          : requestedStep;
+  const group = step <= 1 ? 0 : step;
+  useEffect(() => {
+    onTerritoryEditing?.(step === 1);
+    bodyRef.current?.scrollTo({ top: 0 });
+  }, [step, onTerritoryEditing]);
+  const setStep = (value: number) => {
+    if (territoryIncomplete && value !== 1) return;
+    updateStep(value);
+    onTerritoryEditing?.(value === 1);
+  };
+  const workControlId = useId();
   const job = d.jobs[selectedJob] ?? d.jobs[0];
   const derivedJob = qualityForJob(job).job;
   const patch = (value: Partial<MissionDocument>) =>
@@ -122,52 +153,107 @@ export default function MissionWizard({
         r.id === id ? { ...r, ...value } : r,
       ),
     });
-  function changeType(type: MissionJob['job']['type']) {
-    if (type === job.job.type) return;
-    // A sensor change never inherits an unrelated camera's certified-looking numbers.
-    const quality = createDemoQuality(type);
-    patchJob({
-      job: { ...job.job, type, qualitySource: quality.source },
-      quality,
-      daylight: type === 'RGB' ? 'topographicClearSky' : 'none',
-      assignedVehicleIds: [],
-    });
+  function selectType(type: MissionJob['job']['type'], checked: boolean) {
+    if (territoryIncomplete) return;
+    if (checked) {
+      if (d.jobs.some((j) => j.job.type === type)) return;
+      onChange(
+        appendMissionWork(d, job.id, type, `job-${crypto.randomUUID()}`),
+      );
+      onSelectJob(d.jobs.length);
+    } else {
+      const removed = d.jobs.filter((j) => j.job.type === type);
+      if (removed.length === d.jobs.length) return;
+      if (
+        !window.confirm(
+          `Убрать «${workLabels[type]}» из миссии? Работы: ${removed.map((j) => j.name).join(', ')}. Их участки и настройки будут удалены из текущей миссии.`,
+        )
+      )
+        return;
+      const next = removeMissionWorks(
+        d,
+        removed.map((j) => j.id),
+      );
+      onChange(next);
+      onSelectJob(
+        Math.max(
+          0,
+          next.jobs.findIndex((j) => j.id === job.id),
+        ),
+      );
+    }
   }
   function addJob() {
+    if (territoryIncomplete) return;
     const clone: MissionJob = {
       ...structuredClone(job),
-      id: `job-${Date.now()}`,
-      name: `Работа ${d.jobs.length + 1}`,
+      id: `job-${crypto.randomUUID()}`,
+      name: `${workLabels[job.job.type]} · участок ${d.jobs.length + 1}`,
       assignedVehicleIds: [],
     };
     patch({ jobs: [...d.jobs, clone] });
     onSelectJob(d.jobs.length);
   }
   return (
-    <div className="mw-wizard">
-      <nav className="mw-wizard-nav" aria-label="Шаги создания миссии">
-        {steps.map((title, index) => (
+    <div className="mw-wizard mw-simple-editor">
+      <nav
+        className="mw-wizard-nav"
+        aria-label="Разделы редактора"
+        hidden={!!section}
+      >
+        {editorGroups.map(({ title, step: targetStep }) => (
           <button
             key={title}
             type="button"
-            aria-label={`${index + 1}. ${title}`}
-            aria-current={step === index ? 'step' : undefined}
+            aria-label={title}
+            disabled={territoryIncomplete && targetStep !== 0}
+            aria-current={group === targetStep ? 'step' : undefined}
             title={title}
-            onClick={() => setStep(index)}
+            onClick={() => setStep(territoryIncomplete ? 1 : targetStep)}
           >
-            {index + 1}
+            {title}
           </button>
         ))}
       </nav>
-      <div className="mw-wizard-body">
-        <span className="mw-section-label">ШАГ {step + 1} ИЗ 7</span>
+      <div className="mw-wizard-body" ref={bodyRef}>
+        {group === 0 && (
+          <div className="mw-editor-local-nav" aria-label="Состав миссии">
+            <button
+              type="button"
+              aria-pressed={step === 0}
+              disabled={territoryIncomplete}
+              onClick={() => setStep(0)}
+            >
+              Работы
+            </button>
+            <button
+              type="button"
+              aria-pressed={step === 1}
+              onClick={() => setStep(1)}
+            >
+              Территория
+            </button>
+          </div>
+        )}
+        {!section && step > 0 && step !== 3 && d.jobs.length > 1 && (
+          <label className="mw-field mw-active-work">
+            Настройки работы
+            <select
+              value={job.id}
+              onChange={(e) =>
+                onSelectJob(d.jobs.findIndex((j) => j.id === e.target.value))
+              }
+            >
+              {d.jobs.map((j) => (
+                <option key={j.id} value={j.id}>
+                  {j.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
         {step === 0 && (
           <>
-            <h3>Что нужно получить?</h3>
-            <p>
-              Выберите работу. Система сама распределит её между совместимыми
-              БВС.
-            </p>
             <label className="mw-field">
               Название миссии
               <input
@@ -181,153 +267,203 @@ export default function MissionWizard({
                 }
               />
             </label>
-            <label className="mw-field">
-              Работа
-              <select
-                value={job.id}
-                onChange={(e) =>
-                  onSelectJob(d.jobs.findIndex((j) => j.id === e.target.value))
-                }
-              >
-                {d.jobs.map((j) => (
-                  <option key={j.id} value={j.id}>
-                    {j.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="mw-field">
-              Название работы
-              <input
-                value={job.name}
-                maxLength={100}
-                onChange={(e) => patchJob({ name: e.target.value })}
-              />
-            </label>
-            {Object.entries(jobNames).map(([type, label], i) => {
-              const Icon = [Camera, Layers, Thermometer, ScanLine, Radar][i];
-              return (
-                <button
-                  className={`mw-choice ${job.job.type === type ? 'active' : ''}`}
-                  key={type}
-                  onClick={() => changeType(type as MissionJob['job']['type'])}
-                  aria-pressed={job.job.type === type}
-                >
-                  <Icon size={17} />
-                  <span>
-                    <strong>{label}</strong>
-                    <small>
-                      {
-                        [
-                          'Снимки для карты и измерений',
-                          'Различия растительности в спектральных каналах',
-                          'Распределение температур на участке',
-                          'Плотность облака точек и шаг проходов',
-                          'Линии измерений поля и шаг отсчётов',
-                        ][i]
+            <fieldset className="mw-work-checklist" aria-label="Виды работ">
+              {Object.entries(workLabels).map(([type, label], i) => {
+                const Icon = [Camera, Layers, Thermometer, ScanLine, Radar][i];
+                const typed = type as MissionJob['job']['type'];
+                const count = d.jobs.filter((j) => j.job.type === type).length;
+                return (
+                  <label
+                    className={`mw-work-option ${count ? 'active' : ''}`}
+                    key={type}
+                    htmlFor={`${workControlId}-${type}`}
+                  >
+                    <Icon size={20} />
+                    <span>
+                      <strong>{label}</strong>
+                      <small>
+                        {
+                          [
+                            'Цветные фотографии · RGB',
+                            'Спектральные каналы · MS',
+                            'Температура поверхности · ИК',
+                            'Облако точек · LiDAR',
+                            'Измерения физических полей',
+                          ][i]
+                        }
+                        {count > 1 ? ` · ${count} участка` : ''}
+                      </small>
+                    </span>
+                    <Checkbox
+                      id={`${workControlId}-${type}`}
+                      aria-label={label}
+                      title={
+                        count === d.jobs.length
+                          ? 'Оставьте хотя бы один вид работ. Сначала добавьте другой.'
+                          : label
                       }
-                    </small>
-                  </span>
-                </button>
-              );
-            })}
-            <div className="mw-actions">
-              <button
-                className="mw-button small"
-                disabled={d.jobs.length >= 8}
-                onClick={addJob}
-              >
-                <Plus size={13} />
-                Добавить работу
-              </button>
-              {d.jobs.length > 1 && (
-                <button
-                  className="mw-button small danger"
-                  onClick={() => {
-                    patch({ jobs: d.jobs.filter((j) => j.id !== job.id) });
-                    onSelectJob(0);
-                  }}
+                      checked={count > 0}
+                      disabled={
+                        count === d.jobs.length ||
+                        (!count && d.jobs.length >= 8)
+                      }
+                      onCheckedChange={(checked) =>
+                        selectType(typed, !!checked)
+                      }
+                    />
+                  </label>
+                );
+              })}
+            </fieldset>
+            <details className="mw-details mw-work-details">
+              <summary>
+                Участки и названия работ · {d.jobs.length}{' '}
+                <InfoHint label="Участки для разных работ">
+                  Новый вид получает копию выбранного участка. Изменить границы
+                  можно в «Территория».
+                </InfoHint>
+              </summary>
+              <label className="mw-field">
+                Выбранная работа
+                <select
+                  value={job.id}
+                  onChange={(e) =>
+                    onSelectJob(
+                      d.jobs.findIndex((j) => j.id === e.target.value),
+                    )
+                  }
                 >
-                  <Trash2 size={13} />
-                  Удалить
+                  {d.jobs.map((j) => (
+                    <option key={j.id} value={j.id}>
+                      {j.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="mw-field">
+                Название участка / работы
+                <input
+                  value={job.name}
+                  maxLength={100}
+                  onChange={(e) => patchJob({ name: e.target.value })}
+                />
+              </label>
+              <div className="mw-actions">
+                <button
+                  className="mw-button small mw-action-add"
+                  disabled={d.jobs.length >= 8}
+                  onClick={addJob}
+                >
+                  <Plus size={13} />
+                  Ещё участок этого типа
                 </button>
-              )}
-            </div>
-            <p className="mw-caption" style={{ marginTop: 12 }}>
-              Тип работы не подтверждает наличие сенсора у БВС. Недостающие
-              параметры будут отмечены в проверках.
-            </p>
+                {d.jobs.length > 1 && (
+                  <button
+                    className="mw-button small danger mw-action-remove"
+                    onClick={() => {
+                      if (
+                        !window.confirm(
+                          `Удалить работу «${job.name}» и её участок?`,
+                        )
+                      )
+                        return;
+                      onChange(removeMissionWorks(d, [job.id]));
+                      onSelectJob(0);
+                    }}
+                  >
+                    <Trash2 size={13} />
+                    Удалить эту работу
+                  </button>
+                )}
+              </div>
+            </details>
           </>
         )}
         {step === 1 && (
           <>
-            <h3>Где выполнить работу?</h3>
-            <p>
-              Синяя область — работы. Зелёная граница — допустимый объём
-              полётов, а не официальное разрешение.
-            </p>
-            <label className="mw-field">
-              Редактируемая работа
-              <select
-                value={job.id}
-                onChange={(e) =>
-                  onSelectJob(d.jobs.findIndex((j) => j.id === e.target.value))
-                }
-              >
-                {d.jobs.map((j) => (
-                  <option key={j.id} value={j.id}>
-                    {j.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <div className="mw-actions">
-              <button className="mw-button" onClick={() => onDraw('area')}>
-                <MapPin size={15} />
-                Нарисовать область
-              </button>
-              <button className="mw-button" onClick={onImportGeometry}>
-                <Upload size={15} />
-                GeoJSON / KML
-              </button>
-              <button
-                className="mw-button small"
-                onClick={() => onDraw('airspace')}
-              >
-                Граница полётов
-              </button>
-            </div>
-            <p className="mw-caption" style={{ marginTop: 12 }}>
-              {job.area.coordinates.length - 1} отверстий;{' '}
-              {job.area.coordinates[0].length - 1} вершин внешней границы. При
-              перерисовке геометрия выбранной работы заменяется.
-            </p>
+            {territoryEditor ?? (
+              <>
+                <h3>
+                  Где выполнить работу?{' '}
+                  <InfoHint label="Область работ и граница полётов">
+                    Синяя область — работы. Зелёная граница — допустимый объём
+                    полётов, а не официальное разрешение. При перерисовке
+                    геометрия выбранной работы заменяется.
+                  </InfoHint>
+                </h3>
+                {d.jobs.length === 1 && (
+                  <label className="mw-field">
+                    Редактируемая работа
+                    <select
+                      value={job.id}
+                      onChange={(e) =>
+                        onSelectJob(
+                          d.jobs.findIndex((j) => j.id === e.target.value),
+                        )
+                      }
+                    >
+                      {d.jobs.map((j) => (
+                        <option key={j.id} value={j.id}>
+                          {j.name}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                )}
+                <div className="mw-actions">
+                  <button className="mw-button" onClick={() => onDraw('area')}>
+                    <MapPin size={15} />
+                    Нарисовать область
+                  </button>
+                  <button className="mw-button" onClick={onImportGeometry}>
+                    <Upload size={15} />
+                    GeoJSON / KML
+                  </button>
+                  <button
+                    className="mw-button small"
+                    onClick={() => onDraw('airspace')}
+                  >
+                    Граница полётов
+                  </button>
+                </div>
+                <p className="mw-caption" style={{ marginTop: 12 }}>
+                  {job.area.coordinates.length - 1} отверстий;{' '}
+                  {job.area.coordinates[0].length - 1} вершин внешней границы.
+                </p>
+              </>
+            )}
             <hr className="mw-separator" />
-            <div className="mw-section-label">Контрольные сценарии</div>
-            <div className="mw-actions">
-              {([1, 10, 100] as const).map((n) => (
-                <button
-                  key={n}
-                  className="mw-button"
-                  onClick={() => onExample(n)}
-                >
-                  {n} км²
-                </button>
-              ))}
-            </div>
-            <p className="mw-caption" style={{ marginTop: 10 }}>
-              Откроется предпросмотр нового задания. 100 км² — нагрузочная
-              проверка, не обещание полного покрытия текущим парком.
-            </p>
+            <details>
+              <summary>
+                Учебные участки · размер в км²{' '}
+                <InfoHint label="Что загружают учебные участки">
+                  Откроется предпросмотр новой миссии. 100 км² — нагрузочная
+                  проверка, не обещание полного покрытия текущим парком.
+                </InfoHint>
+              </summary>
+              <div className="mw-actions">
+                {([1, 10, 100] as const).map((n) => (
+                  <button
+                    key={n}
+                    className="mw-button"
+                    onClick={() => onExample(n)}
+                  >
+                    {n} км²
+                  </button>
+                ))}
+              </div>
+            </details>
           </>
         )}
         {step === 2 && (
           <>
-            <h3>Когда можно работать?</h3>
-            <p>
-              Расчёт и симуляция используют эти даты. Реальных команд на вылет
-              нет.
-            </p>
+            <h3>
+              Время работы{' '}
+              <InfoHint label="Даты и время расчёта">
+                Расчёт и симуляция используют эти даты. Формат ISO 8601: дата T
+                время + смещение от UTC. Реальных команд на вылет нет.
+              </InfoHint>
+            </h3>
             <label className="mw-field">
               Начало окна
               <input
@@ -337,7 +473,6 @@ export default function MissionWizard({
                 }
                 placeholder="2026-09-24T10:00:00+03:00"
               />
-              <small>ISO 8601: дата T время + смещение от UTC</small>
             </label>
             <label className="mw-field">
               Конец окна
@@ -349,74 +484,139 @@ export default function MissionWizard({
                 placeholder="2026-09-24T18:00:00+03:00"
               />
             </label>
-            <label className="mw-field">
-              Часовой пояс
-              <input
-                value={d.window.timezone}
-                onChange={(e) =>
-                  patch({ window: { ...d.window, timezone: e.target.value } })
-                }
-                placeholder="Europe/Moscow"
-              />
-              <small>
-                Смещение в дате определяет момент; пояс — отображение
-                расписания.
-              </small>
-            </label>
-            <label className="mw-field">
-              Освещённость для «{job.name}»
-              <select
-                value={job.daylight}
-                onChange={(e) =>
-                  patchJob({
-                    daylight: e.target.value as MissionJob['daylight'],
-                  })
-                }
-              >
-                <option value="none">Нет дополнительного правила</option>
-                <option value="sunAboveHorizon">Солнце над горизонтом</option>
-                <option value="topographicClearSky">
-                  Топографическая RGB: Солнце ≥15°
-                </option>
-              </select>
-            </label>
-            <p className="mw-caption">
-              Правило 15° относится к ясной погоде и топографической
-              аэрофотосъёмке. Не является общим запретом ночных работ или
-              разрешением полёта.
-            </p>
+            <details className="mw-details mw-editor-detail">
+              <summary>
+                Часовой пояс и освещённость{' '}
+                <InfoHint label="Часовой пояс и правила освещённости">
+                  Смещение в дате определяет момент; пояс — отображение
+                  расписания. Правило 15° относится к ясной погоде и
+                  топографической аэрофотосъёмке. Не является общим запретом
+                  ночных работ или разрешением полёта.
+                </InfoHint>
+              </summary>
+              <label className="mw-field">
+                Часовой пояс
+                <input
+                  value={d.window.timezone}
+                  onChange={(e) =>
+                    patch({ window: { ...d.window, timezone: e.target.value } })
+                  }
+                  placeholder="Europe/Moscow"
+                />
+              </label>
+              <label className="mw-field">
+                Освещённость для «{job.name}»
+                <select
+                  value={job.daylight}
+                  onChange={(e) =>
+                    patchJob({
+                      daylight: e.target.value as MissionJob['daylight'],
+                    })
+                  }
+                >
+                  <option value="none">Нет дополнительного правила</option>
+                  <option value="sunAboveHorizon">Солнце над горизонтом</option>
+                  <option value="topographicClearSky">
+                    Топографическая RGB: Солнце ≥15°
+                  </option>
+                </select>
+              </label>
+            </details>
           </>
         )}
         {step === 3 && (
           <>
-            <MissionFleetEditor document={d} onChange={onChange} />
-            <div className="mw-field-row">
-              <NumberField
-                label="Подготовка"
-                unit="мин"
-                max={120}
-                value={d.planning.preparationSec / 60}
-                onChange={(n) => patchPlanning({ preparationSec: n * 60 })}
-              />
-              <NumberField
-                label="Обслуживание"
-                unit="мин"
-                min={1 / 60}
-                max={240}
-                step={0.5}
-                value={d.planning.serviceSec / 60}
-                onChange={(n) => patchPlanning({ serviceSec: n * 60 })}
-              />
+            <div className="mw-editor-fleet-overview">
+              <strong>
+                {
+                  d.scenario.vehicles.filter((vehicle) => vehicle.enabled)
+                    .length
+                }
+                {' из '}
+                {d.scenario.vehicles.length} БВС включены в подбор{' '}
+                <InfoHint label="Что означает состав парка в редакторе?">
+                  Это входные профили, не подтверждение готовности к вылету.
+                  Расчёт проверит совместимость работ, ветер, энергию,
+                  ограничения маршрута и разделение БВС. Актуальное состояние
+                  зарегистрированных аппаратов проверяется отдельно.
+                </InfoHint>
+              </strong>
+              <span>
+                {d.jobs.every((work) => work.assignedVehicleIds.length === 0)
+                  ? 'Состав группы выбирает алгоритм'
+                  : 'Есть ручные назначения'}
+              </span>
             </div>
+            <ul className="mw-editor-fleet-list" aria-label="БВС для расчёта">
+              {d.scenario.vehicles.map((vehicle) => {
+                const eligibility = vehiclePlanningEligibility(vehicle);
+                return (
+                  <li key={vehicle.id}>
+                    <span>
+                      <strong>{vehicle.name}</strong>
+                      <small>
+                        {vehicleModelLabel(vehicle)} ·{' '}
+                        {vehicle.jobs.join(' / ')}
+                      </small>
+                      {!eligibility.supported && (
+                        <small
+                          className="mw-editor-unsupported"
+                          title={eligibility.reasons.join(' ')}
+                        >
+                          {eligibility.model === 'unsupported-fixed-wing'
+                            ? 'Самолётные полёты не поддержаны'
+                            : 'Профиль не поддержан: превышены допустимые параметры'}
+                        </small>
+                      )}
+                    </span>
+                    <span>
+                      {vehicle.enabled
+                        ? `Заряд ${d.batteries.find((battery) => battery.vehicleId === vehicle.id)?.initialPct ?? vehicle.batteryPct}%`
+                        : 'Выключен'}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+            <details className="mw-details mw-editor-detail">
+              <summary>Добавить БВС · Gemini, 801, 201 / изменить парк</summary>
+              <MissionFleetEditor
+                document={d}
+                onChange={onChange}
+                onNotice={onNotice}
+              />
+            </details>
+            <details className="mw-details mw-editor-detail">
+              <summary>Подготовка и повторный вылет</summary>
+              <div className="mw-field-row">
+                <NumberField
+                  label="Подготовка"
+                  unit="мин"
+                  max={120}
+                  value={d.planning.preparationSec / 60}
+                  onChange={(n) => patchPlanning({ preparationSec: n * 60 })}
+                />
+                <NumberField
+                  label="Проверка перед повторным вылетом"
+                  unit="мин"
+                  min={1 / 60}
+                  max={240}
+                  step={0.5}
+                  value={d.planning.serviceSec / 60}
+                  onChange={(n) => patchPlanning({ serviceSec: n * 60 })}
+                />
+              </div>
+            </details>
           </>
         )}
-        {step === 4 && (
+        {step === 2 && (
           <>
-            <h3>Какие ограничения?</h3>
-            <p>
-              Запреты и резерв важнее предпочтений. Неизвестная высота
-              препятствия закрывает весь столб воздуха.
-            </p>
+            <h3 className="mw-editor-section-title">Ветер и безопасность</h3>
+            <MissionWind
+              forecast={!!d.weather}
+              speedMps={d.scenario.wind.speedMps}
+              fromDeg={d.scenario.wind.fromDeg}
+            />
             <div className="mw-field-row">
               <NumberField
                 label="Ветер"
@@ -439,7 +639,17 @@ export default function MissionWizard({
               />
             </div>
             <details className="mw-details">
-              <summary>Облачность и видимость</summary>
+              <summary>
+                <span>Облачность и видимость</span>{' '}
+                <InfoHint label="Источники облачности и видимости">
+                  Дополнительные данные вводит оператор. Прогноз подключается
+                  отдельно через «Погода и условия». Пустые поля означают
+                  неизвестные значения, а не отсутствие ограничений. Граница
+                  облаков задаётся в общей локальной системе высот траекторий,
+                  не над реальным рельефом. Минимум видимости задаёт оператор;
+                  нормативы и разрешения не подставляются автоматически.
+                </InfoHint>
+              </summary>
               <label className="mw-checkbox">
                 <input
                   type="checkbox"
@@ -465,10 +675,6 @@ export default function MissionWizard({
                 />
                 Учитывать облачность и видимость
               </label>
-              <p className="mw-caption">
-                Данные вводит оператор. Прогноз погоды не загружается. Пустые
-                поля означают неизвестные значения, а не отсутствие ограничений.
-              </p>
               {d.environment && (
                 <>
                   {(
@@ -532,83 +738,91 @@ export default function MissionWizard({
                       }
                     />
                   </label>
-                  <p className="mw-caption">
-                    Граница облаков задаётся в общей локальной системе высот
-                    траекторий. Это не высота над реальным рельефом. Минимум
-                    видимости задаёт оператор; нормативы и разрешения не
-                    подставляются автоматически.
-                  </p>
                 </>
               )}
             </details>
-            <div className="mw-field-row">
-              <NumberField
-                label="Резерв АКБ"
-                unit="%"
-                min={10}
-                max={80}
-                value={d.scenario.reservePct}
-                onChange={(n) => patchScenario({ reservePct: n })}
-              />
-              <NumberField
-                label="Зазор до зон"
-                unit="м"
-                min={2}
-                max={100}
-                value={d.scenario.clearanceM}
-                onChange={(n) => patchScenario({ clearanceM: n })}
-              />
-            </div>
-            <div className="mw-field-row">
-              <NumberField
-                label="Между БВС XY"
-                unit="м"
-                min={1}
-                max={2000}
-                value={d.planning.separationHorizontalM}
-                onChange={(n) => patchPlanning({ separationHorizontalM: n })}
-              />
-              <NumberField
-                label="Между БВС Z"
-                unit="м"
-                min={1}
-                max={500}
-                value={d.planning.separationVerticalM}
-                onChange={(n) => patchPlanning({ separationVerticalM: n })}
-              />
-            </div>
-            <label className="mw-field">
-              Источник интервалов
-              <textarea
-                value={d.planning.separationSource}
-                maxLength={500}
-                onChange={(e) =>
-                  patchPlanning({ separationSource: e.target.value })
-                }
-              />
-            </label>
-            <div className="mw-actions">
-              <button
-                className="mw-button small"
-                onClick={() => onDraw('exclusion')}
-              >
-                Нарисовать запрет
-              </button>
-              <button className="mw-button small" onClick={onImportGeometry}>
-                Загрузить слой
-              </button>
-              <button
-                className="mw-button small"
-                onClick={() => onDraw('reserve')}
-              >
-                Резервная посадка
-              </button>
-            </div>
-            <details className="mw-details">
+            <details className="mw-details mw-editor-detail">
+              <summary>
+                Расстояния и резерв батареи · {d.scenario.reservePct}%{' '}
+                <InfoHint label="Что означают резерв и безопасные расстояния?">
+                  Резерв — минимально допустимый остаток батареи при посадке, а
+                  не потраченный заряд. XY — горизонтальный зазор между БВС; Z —
+                  вертикальный. Это настраиваемые ограничения нашей модели, не
+                  универсальные нормы и не разрешение на полёт.
+                </InfoHint>
+              </summary>
+              <div className="mw-field-row">
+                <NumberField
+                  label="Резерв АКБ"
+                  unit="%"
+                  min={10}
+                  max={80}
+                  value={d.scenario.reservePct}
+                  onChange={(n) => patchScenario({ reservePct: n })}
+                />
+                <NumberField
+                  label="Зазор до зон"
+                  unit="м"
+                  min={2}
+                  max={100}
+                  value={d.scenario.clearanceM}
+                  onChange={(n) => patchScenario({ clearanceM: n })}
+                />
+              </div>
+              <div className="mw-field-row">
+                <NumberField
+                  label="Между БВС XY"
+                  unit="м"
+                  min={1}
+                  max={2000}
+                  value={d.planning.separationHorizontalM}
+                  onChange={(n) => patchPlanning({ separationHorizontalM: n })}
+                />
+                <NumberField
+                  label="Между БВС Z"
+                  unit="м"
+                  min={1}
+                  max={500}
+                  value={d.planning.separationVerticalM}
+                  onChange={(n) => patchPlanning({ separationVerticalM: n })}
+                />
+              </div>
+              <label className="mw-field">
+                Источник интервалов
+                <textarea
+                  value={d.planning.separationSource}
+                  maxLength={500}
+                  onChange={(e) =>
+                    patchPlanning({ separationSource: e.target.value })
+                  }
+                />
+              </label>
+            </details>
+            <details className="mw-details mw-editor-detail">
               <summary>
                 Запреты и препятствия ·{' '}
-                {d.restrictions.length + d.scenario.exclusions.length}
+                {d.restrictions.length + d.scenario.exclusions.length}{' '}
+                <InfoHint label="Неизвестная высота препятствия">
+                  Неизвестная высота препятствия закрывает весь столб воздуха.
+                </InfoHint>
               </summary>
+              <div className="mw-actions">
+                <button
+                  className="mw-button small mw-action-add"
+                  onClick={() => onDraw('exclusion')}
+                >
+                  Нарисовать запрет
+                </button>
+                <button className="mw-button small" onClick={onImportGeometry}>
+                  Загрузить слой
+                </button>
+                <button
+                  className="mw-button small mw-action-add"
+                  onClick={() => onDraw('reserve')}
+                >
+                  Резервная посадка
+                </button>
+              </div>
               {d.restrictions.map((r) => (
                 <div className="mw-card" key={r.id}>
                   <strong>{r.name}</strong>
@@ -730,7 +944,7 @@ export default function MissionWizard({
                     </label>
                   </details>
                   <button
-                    className="mw-button small danger"
+                    className="mw-button small danger mw-action-remove"
                     onClick={() =>
                       patch({
                         restrictions: d.restrictions.filter(
@@ -747,7 +961,7 @@ export default function MissionWizard({
                 <div className="mw-card" key={`old-${index}`}>
                   Постоянный запрет {index + 1}
                   <button
-                    className="mw-button small danger"
+                    className="mw-button small danger mw-action-remove"
                     onClick={() =>
                       patchScenario({
                         exclusions: d.scenario.exclusions.filter(
@@ -761,121 +975,154 @@ export default function MissionWizard({
                 </div>
               ))}
             </details>
-            <hr className="mw-separator" />
-            <div className="mw-field-row">
-              <NumberField
-                label="Ниже при съёмке нельзя"
-                unit="м"
-                max={1000}
-                value={d.flightEnvelope.minSurveyAltitudeM}
-                onChange={(n) =>
-                  patch({
-                    flightEnvelope: {
-                      ...d.flightEnvelope,
-                      minSurveyAltitudeM: n,
-                    },
-                  })
-                }
-              />
-              <NumberField
-                label="Потолок"
-                unit="м"
-                min={10}
-                max={6000}
-                value={d.flightEnvelope.maxAltitudeM}
-                onChange={(n) =>
-                  patch({
-                    flightEnvelope: { ...d.flightEnvelope, maxAltitudeM: n },
-                  })
-                }
-              />
-            </div>
-            <p className="mw-caption">
-              Высоты — относительно старта в текущей модели. Рельеф:{' '}
+            <p
+              className={`mw-editor-terrain-status ${d.terrainModel.kind === 'unknown' ? 'warning' : ''}`}
+            >
               {d.terrainModel.kind === 'flat'
-                ? 'явно принят плоским'
-                : 'неизвестен'}
-              . Юридические разрешения не проверяются.
+                ? 'Рельеф: принято допущение плоской поверхности'
+                : 'Рельеф неизвестен — безопасность по высотам не подтверждена'}
             </p>
-            <details className="mw-details">
-              <summary>Источник высот и модель рельефа</summary>
-              <label className="mw-field">
-                Модель
-                <select
-                  value={d.terrainModel.kind}
-                  onChange={(e) =>
-                    patch({
-                      terrainModel:
-                        e.target.value === 'flat'
-                          ? {
-                              kind: 'flat',
-                              elevationM: 0,
-                              source:
-                                'Оператор принял учебную горизонтальную поверхность. Реальный DEM не загружен.',
-                            }
-                          : {
-                              kind: 'unknown',
-                              source: 'Высоты рельефа не предоставлены.',
-                            },
-                    })
-                  }
-                >
-                  <option value="unknown">Рельеф неизвестен</option>
-                  <option value="flat">
-                    Явное допущение: плоская поверхность
-                  </option>
-                </select>
-              </label>
-              <label className="mw-field">
-                Обоснование пределов высот
-                <textarea
-                  value={d.flightEnvelope.source}
-                  maxLength={500}
-                  onChange={(e) =>
+            <details className="mw-details mw-editor-detail">
+              <summary>
+                Высоты и модель рельефа{' '}
+                <InfoHint label="Высоты и разрешение на полёт">
+                  Высоты — относительно старта в текущей модели. Реальный DEM не
+                  подключён. Выбор плоской поверхности — допущение, не загрузка
+                  высот из карты. Юридические разрешения не проверяются.
+                </InfoHint>
+              </summary>
+              <div className="mw-field-row">
+                <NumberField
+                  label="Ниже при съёмке нельзя"
+                  unit="м"
+                  max={1000}
+                  value={d.flightEnvelope.minSurveyAltitudeM}
+                  onChange={(n) =>
                     patch({
                       flightEnvelope: {
                         ...d.flightEnvelope,
-                        source: e.target.value,
+                        minSurveyAltitudeM: n,
                       },
                     })
                   }
                 />
-              </label>
-              <p className="mw-caption">
-                Реальный DEM не подключён. Выбор плоской поверхности —
-                допущение, не загрузка высот из карты.
-              </p>
+                <NumberField
+                  label="Потолок"
+                  unit="м"
+                  min={10}
+                  max={6000}
+                  value={d.flightEnvelope.maxAltitudeM}
+                  onChange={(n) =>
+                    patch({
+                      flightEnvelope: { ...d.flightEnvelope, maxAltitudeM: n },
+                    })
+                  }
+                />
+              </div>
+              <details className="mw-details">
+                <summary>Источник высот и модель рельефа</summary>
+                <label className="mw-field">
+                  Модель
+                  <select
+                    value={d.terrainModel.kind}
+                    onChange={(e) =>
+                      patch({
+                        terrainModel:
+                          e.target.value === 'flat'
+                            ? {
+                                kind: 'flat',
+                                elevationM: 0,
+                                source:
+                                  'Оператор принял учебную горизонтальную поверхность. Реальный DEM не загружен.',
+                              }
+                            : {
+                                kind: 'unknown',
+                                source: 'Высоты рельефа не предоставлены.',
+                              },
+                      })
+                    }
+                  >
+                    <option value="unknown">Рельеф неизвестен</option>
+                    <option value="flat">
+                      Явное допущение: плоская поверхность
+                    </option>
+                  </select>
+                </label>
+                <label className="mw-field">
+                  Обоснование пределов высот
+                  <textarea
+                    value={d.flightEnvelope.source}
+                    maxLength={500}
+                    onChange={(e) =>
+                      patch({
+                        flightEnvelope: {
+                          ...d.flightEnvelope,
+                          source: e.target.value,
+                        },
+                      })
+                    }
+                  />
+                </label>
+              </details>
             </details>
           </>
         )}
-        {step === 5 && (
-          <>
-            <h3>Что важнее в результате?</h3>
-            <p>
-              Рассчитаем оба критерия на одном входе. Одинаковые результаты не
-              выдаём за разную выгоду.
-            </p>
+        {(step === 0 || step === 4) && (
+          <details
+            className="mw-details mw-editor-detail"
+            open={section === 'quality' ? true : undefined}
+          >
+            <summary>
+              {!section && 'Приоритет · '}Высота и качество съёмки{' '}
+              <InfoHint label="Как сравниваются приоритеты миссии">
+                Рассчитаем оба критерия на одном входе. Одинаковые результаты не
+                выдаём за разную выгоду. Пример: два БВС по 20 минут —
+                завершение через 20 минут, общий налёт 40. Один БВС за 30 минут
+                завершит позже, но общий налёт меньше: 30 вместо 40 минут.
+              </InfoHint>
+            </summary>
+            {!section && d.jobs.length > 1 && (
+              <label className="mw-field">
+                Работа для настройки качества
+                <select
+                  value={job.id}
+                  onChange={(event) =>
+                    onSelectJob(
+                      d.jobs.findIndex(
+                        (work) => work.id === event.target.value,
+                      ),
+                    )
+                  }
+                >
+                  {d.jobs.map((work) => (
+                    <option key={work.id} value={work.id}>
+                      {work.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
             <button
               className={`mw-choice ${d.scenario.objective === 'makespan' ? 'active' : ''}`}
+              hidden={!!section}
               onClick={() => patchScenario({ objective: 'makespan' })}
             >
               <Check size={16} />
               <span>
-                <strong>Закончить все работы раньше</strong>
-                <small>С учётом подготовки, возвращения и обслуживания.</small>
+                <strong>Раньше завершить миссию</strong>
               </span>
             </button>
             <button
               className={`mw-choice ${d.scenario.objective === 'flightTime' ? 'active' : ''}`}
+              hidden={!!section}
               onClick={() => patchScenario({ objective: 'flightTime' })}
             >
               <Check size={16} />
               <span>
-                <strong>Меньше суммарно летать</strong>
-                <small>Считаем время полёта всех аппаратов.</small>
+                <strong>Снизить общий налёт</strong>
               </span>
             </button>
-            <label className="mw-field">
+            <label className="mw-field" hidden={!!section}>
               Предпочтение по высоте
               <select
                 value={d.planning.altitudePreference}
@@ -900,7 +1147,13 @@ export default function MissionWizard({
               onChange={(n) => patchJob({ job: { ...job.job, altitudeM: n } })}
             />
             <details className="mw-details">
-              <summary>Параметры покрытия / сенсора</summary>
+              <summary>
+                Параметры покрытия / сенсора{' '}
+                <InfoHint label="Откуда берутся полоса и шаг съёмки">
+                  При параметрической модели ядро пересчитает полосу из сенсора,
+                  высоты и качества. Источник и основание профиля задаются ниже.
+                </InfoHint>
+              </summary>
               <div style={{ marginTop: 10 }}>
                 <div className="mw-field-row">
                   <NumberField
@@ -939,11 +1192,7 @@ export default function MissionWizard({
                     patchJob({ job: { ...job.job, triggerDistanceM: n } })
                   }
                 />
-                <p className="mw-caption">
-                  Режим профиля: {job.quality.mode}; источник:{' '}
-                  {job.quality.source}. При параметрической модели ядро
-                  пересчитает полосу из сенсора, высоты и качества.
-                </p>
+                <p className="mw-caption">Режим профиля: {job.quality.mode}</p>
                 <label className="mw-field">
                   Основание профиля
                   <select
@@ -1047,29 +1296,35 @@ export default function MissionWizard({
                     }
                   />
                 )}
-                <label className="mw-field">
-                  Обоснование ручных параметров
-                  <textarea
-                    value={job.job.qualitySource}
-                    maxLength={400}
-                    onChange={(e) =>
-                      patchJob({
-                        job: { ...job.job, qualitySource: e.target.value },
-                      })
-                    }
-                  />
-                </label>
+                {job.quality.mode === 'manual' && (
+                  <label className="mw-field">
+                    Обоснование ручных параметров
+                    <textarea
+                      value={job.job.qualitySource}
+                      maxLength={400}
+                      onChange={(e) =>
+                        patchJob({
+                          job: { ...job.job, qualitySource: e.target.value },
+                        })
+                      }
+                    />
+                  </label>
+                )}
               </div>
             </details>
-          </>
+          </details>
         )}
-        {step === 6 && (
-          <>
-            <h3>Правильно поняли задачу?</h3>
-            <p>
-              Сейчас подтверждается ввод для расчёта. Выбор рассчитанного плана
-              — отдельное действие.
-            </p>
+        {step === 0 && (
+          <details className="mw-details mw-editor-detail">
+            <summary>
+              Сводка, комментарий и полный JSON{' '}
+              <InfoHint label="Перед подтверждением миссии">
+                Модельная симуляция. Паспортные максимумы не заменяют измерения;
+                карта не является разрешением на полёт. Неизвестные данные будут
+                показаны отдельно. Комментарий сохраняется, но не задаёт скрытых
+                правил расчёта.
+              </InfoHint>
+            </summary>
             <div className="mw-card">
               <h3>{d.name || 'Без названия'}</h3>
               {d.jobs.map((j) => (
@@ -1080,8 +1335,6 @@ export default function MissionWizard({
               <dl className="mw-definition">
                 <dt>Доступные БВС</dt>
                 <dd>{d.scenario.vehicles.filter((v) => v.enabled).length}</dd>
-                <dt>Батареи</dt>
-                <dd>{d.batteries.length}</dd>
                 <dt>Ветер</dt>
                 <dd>{d.scenario.wind.speedMps} м/с</dd>
                 <dt>Резерв</dt>
@@ -1100,52 +1353,12 @@ export default function MissionWizard({
                 maxLength={2000}
                 onChange={(e) => patch({ notes: e.target.value })}
               />
-              <small>
-                Комментарий сохраняется, но не задаёт скрытых правил расчёта.
-              </small>
             </label>
-            <div className="mw-card warning">
-              <p className="mw-caption">
-                Модельная симуляция. Паспортные максимумы не заменяют измерения;
-                карта не является разрешением на полёт. Неизвестные данные будут
-                показаны отдельно.
-              </p>
-            </div>
             <details className="mw-details">
-              <summary>Полное задание JSON</summary>
+              <summary>Миссия целиком · JSON</summary>
               <pre>{JSON.stringify(d, null, 2)}</pre>
             </details>
-            <button
-              className="mw-button"
-              style={{ marginTop: 12 }}
-              onClick={onSave}
-            >
-              Сохранить в библиотеку
-            </button>
-          </>
-        )}
-      </div>
-      <div className="mw-wizard-foot">
-        <button
-          className="mw-button"
-          onClick={() => setStep(Math.max(0, step - 1))}
-          disabled={step === 0}
-        >
-          <ArrowLeft size={14} />
-          Назад
-        </button>
-        {step < 6 ? (
-          <button
-            className="mw-button primary"
-            onClick={() => setStep(step + 1)}
-          >
-            Далее
-            <ArrowRight size={14} />
-          </button>
-        ) : (
-          <button className="mw-button primary" onClick={onDone}>
-            Подтвердить ввод
-          </button>
+          </details>
         )}
       </div>
     </div>

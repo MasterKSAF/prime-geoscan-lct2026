@@ -1,0 +1,221 @@
+{
+  "schemaVersion": "2.0",
+  "id": "geoscan-201-model-demo",
+  "name": "Геоскан 201 — самолётная модель",
+  "scenario": {
+    "schemaVersion": "1.0",
+    "name": "Учебная съёмка · 1 км²",
+    "area": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            30.3,
+            60.035
+          ],
+          [
+            30.307202184521756,
+            60.035
+          ],
+          [
+            30.307202184521756,
+            60.0385972814549
+          ],
+          [
+            30.3,
+            60.0385972814549
+          ],
+          [
+            30.3,
+            60.035
+          ]
+        ]
+      ]
+    },
+    "airspace": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            30.25498634673903,
+            60.01251699090688
+          ],
+          [
+            30.363019114565358,
+            60.01251699090688
+          ],
+          [
+            30.363019114565358,
+            60.06647621273036
+          ],
+          [
+            30.25498634673903,
+            60.06647621273036
+          ],
+          [
+            30.25498634673903,
+            60.01251699090688
+          ]
+        ]
+      ]
+    },
+    "exclusions": [],
+    "reserveSites": [],
+    "job": {
+      "type": "RGB",
+      "altitudeM": 120,
+      "swathM": 200,
+      "sideOverlap": 0,
+      "triggerDistanceM": 20,
+      "bearingDeg": 0,
+      "autoBearing": false,
+      "qualitySource": "Учебный RGB-профиль PF1B: 23,5 мм / 20 мм на 100 м; перекрытие 60% и шаг 15,6 м — параметры сценария. Скорость затвора не подтверждена."
+    },
+    "wind": {
+      "speedMps": 2,
+      "fromDeg": 270
+    },
+    "reservePct": 20,
+    "clearanceM": 10,
+    "objective": "makespan",
+    "terrain": "unknown",
+    "vehicles": [
+      {
+        "id": "wing-201",
+        "name": "Геоскан 201",
+        "model": "201",
+        "kind": "fixedWing",
+        "enabled": true,
+        "airspeedMps": 22,
+        "maxWindMps": 12,
+        "batteryPct": 100,
+        "effectiveEnduranceMin": 120,
+        "climbMps": 3,
+        "descentMps": 1,
+        "turnSeconds": 4,
+        "start": [
+          30.281994538695614,
+          60.02600679636275
+        ],
+        "landing": [
+          30.281994538695614,
+          60.02600679636275
+        ],
+        "jobs": [
+          "RGB",
+          "MS"
+        ],
+        "assumptions": [
+          "28 мин — расчётный бюджет учебной конфигурации, не измеренная выносливость.",
+          "Скорость, развороты, набор/снижение и частота кадров требуют калибровки."
+        ],
+        "source": "https://download.geoscan.ru/site-files/gemini/Gemini_Specs_EN_RUS.pdf?v2",
+        "maxAirspeedMps": 30.555555555555554,
+        "fixedWingProfile": {
+          "version": "geoscan201-dubins-v1",
+          "bankLimitDeg": 25,
+          "minimumTurnRadiusM": 100,
+          "launchHeadingDeg": 0,
+          "parachuteDescentMps": 4,
+          "parachuteReleaseAltitudeM": 70,
+          "trackingToleranceM": 5,
+          "source": "Учебная модель: крен 25°, радиус ≥100 м, снижение парашюта 4 м/с и трубка слежения 5 м не калиброваны по полётным логам; паспорт https://download.geoscan.ru/site-files/201/Geoscan_201_Manual.pdf, с. 11–12, 115."
+        }
+      }
+    ]
+  },
+  "jobs": [
+    {
+      "id": "rgb-01",
+      "name": "RGB · вся территория",
+      "area": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              30.3,
+              60.035
+            ],
+            [
+              30.307202184521756,
+              60.035
+            ],
+            [
+              30.307202184521756,
+              60.0385972814549
+            ],
+            [
+              30.3,
+              60.0385972814549
+            ],
+            [
+              30.3,
+              60.035
+            ]
+          ]
+        ]
+      },
+      "job": {
+        "type": "RGB",
+        "altitudeM": 120,
+        "swathM": 200,
+        "sideOverlap": 0,
+        "triggerDistanceM": 20,
+        "bearingDeg": 0,
+        "autoBearing": false,
+        "qualitySource": "Учебный RGB-профиль PF1B: 23,5 мм / 20 мм на 100 м; перекрытие 60% и шаг 15,6 м — параметры сценария. Скорость затвора не подтверждена."
+      },
+      "assignedVehicleIds": [],
+      "quality": {
+        "mode": "manual",
+        "status": "assumed",
+        "source": "Тестовый модельный профиль"
+      },
+      "daylight": "none"
+    }
+  ],
+  "window": {
+    "start": "2026-09-24T10:00:00+03:00",
+    "end": "2026-09-24T18:00:00+03:00",
+    "timezone": "Europe/Moscow"
+  },
+  "planning": {
+    "preparationSec": 120,
+    "serviceSec": 180,
+    "separationHorizontalM": 30,
+    "separationVerticalM": 15,
+    "temporalBufferSec": 5,
+    "separationSource": "Учебные допуски, не подтверждённая норма жюри.",
+    "maxSortiesPerVehicle": 8,
+    "maxComputeMs": 10000,
+    "altitudePreference": "balanced",
+    "windModel": "constantAirspeed",
+    "safetyPolicy": "continuous-occupancy-v1",
+    "batteryPolicy": "installed-current-v1"
+  },
+  "batteries": [
+    {
+      "id": "wing-installed",
+      "vehicleId": "wing-201",
+      "name": "Gemini · 01 · АКБ 1",
+      "initialPct": 100,
+      "readyAt": "2026-09-24T10:00:00+03:00",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
+    }
+  ],
+  "restrictions": [],
+  "terrainModel": {
+    "kind": "flat",
+    "elevationM": 0,
+    "source": "Тестовая плоскость"
+  },
+  "flightEnvelope": {
+    "minSurveyAltitudeM": 10,
+    "maxAltitudeM": 500,
+    "source": "Учебный диапазон сценария, не разрешение воздушного пространства."
+  },
+  "notes": "Пример самолётной модели: 201 с явными учебными параметрами. RGB участка 400×400м; 2м/с западный ветер; запуск с катапульты, движущиеся развороты, посадочный круг, парашют с70м. Не реальное полётное задание и не паспортная калибровка."
+}

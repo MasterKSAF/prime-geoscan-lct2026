@@ -12,6 +12,7 @@ export type ShowcaseScenario = {
   expected: 'feasible_model' | 'rejected';
   highlights: string[];
   checks: string[];
+  walkthrough?: string[];
   create: () => MissionDocument;
 };
 
@@ -76,11 +77,12 @@ function setFleet(
     x: number;
     speed?: number;
     endurance?: number;
-    delay?: number;
     model?: Vehicle['model'];
   }[],
 ) {
   const template = d.scenario.vehicles[0];
+  d.planning.batteryPolicy = 'installed-current-v1';
+  d.planning.safetyPolicy = 'continuous-occupancy-v1';
   d.scenario.vehicles = profiles.map((profile) => ({
     ...structuredClone(template),
     id: profile.id,
@@ -98,18 +100,18 @@ function setFleet(
     ],
   }));
   d.scenario.reserveSites = d.scenario.vehicles.map((v) => v.landing);
-  d.batteries = d.scenario.vehicles.flatMap((vehicle, index) =>
-    Array.from({ length: 6 }, (_, battery) => ({
+  d.batteries = d.scenario.vehicles.flatMap((vehicle) =>
+    Array.from({ length: 1 }, (_, battery) => ({
       id: `${vehicle.id}-battery-${battery + 1}`,
       vehicleId: vehicle.id,
       name: `АКБ ${battery + 1} · ${vehicle.id}`,
       initialPct: 100,
-      readyAt: instant(d, profiles[index].delay ?? 0),
+      readyAt: instant(d, 0),
       rechargeSec: null,
       cycles: null,
       commissionedAt: null,
       source:
-        'Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены.',
+        'Текущая батарея учебного БВС. Замена не прогнозируется; повторные вылеты используют остаток.',
     })),
   );
 }
@@ -137,7 +139,7 @@ export const SHOWCASE_SCENARIOS: ShowcaseScenario[] = [
     id: 'automatic-tradeoff',
     title: 'Автовыбор БВС: время, налёт и баланс',
     summary:
-      'Один RGB-участок и три совместимых БВС с разными базами, скоростями и доступностью АКБ. Три проверенных варианта выбираются реальным поиском.',
+      'Фотосъёмка участка: подбор одного аппарата или группы с учётом баз, скорости и ресурса. Все заданные батареи доступны к старту.',
     expected: 'feasible_model',
     highlights: [
       'Автоматическое назначение',
@@ -171,7 +173,6 @@ export const SHOWCASE_SCENARIOS: ShowcaseScenario[] = [
           x: 350,
           speed: 9,
           endurance: 26,
-          delay: 300,
         },
         {
           id: 'rgb-near',
@@ -186,13 +187,12 @@ export const SHOWCASE_SCENARIOS: ShowcaseScenario[] = [
           x: 620,
           speed: 12,
           endurance: 22,
-          delay: 600,
         },
       ]);
       const names = [
-        'RGB-A · центральная база',
-        'RGB-B · ближняя база',
-        'RGB-C · быстрый, АКБ позже',
+        'БВС 01 · центральная база',
+        'БВС 02 · ближняя база',
+        'БВС 03 · быстрый',
       ];
       d.scenario.vehicles.forEach((vehicle, index) => {
         vehicle.name = names[index];
@@ -222,7 +222,7 @@ export const SHOWCASE_SCENARIOS: ShowcaseScenario[] = [
       d.jobs[0].name = 'RGB · автоматический выбор совместимого БВС';
       d.jobs[0].assignedVehicleIds = [];
       d.notes =
-        'Синтетическая задача 700 × 600 м. Назначения пусты: движок сам выбирает среди трёх совместимых БВС. RGB-B медленнее, но АКБ доступны сразу; RGB-A быстрее и готов через 300 с; RGB-C быстрее всех и готов через 600 с. Отличаются также базы и временной ресурс. Компромисс налёта — не физический износ. Геометрия и профили не являются разрешённым полётным заданием.';
+        'Синтетическая задача 700 × 600 м. Назначения автоматические. Все заданные АКБ доступны к началу; базы, скорости и ресурс различаются. Сравниваются время завершения и суммарный налёт, не физический износ. Число различных найденных вариантов не гарантируется. Это не разрешение полёта.';
       return parseMissionDocument(d);
     },
   },
@@ -230,7 +230,7 @@ export const SHOWCASE_SCENARIOS: ShowcaseScenario[] = [
     id: 'mixed-fleet',
     title: 'Три работы и смешанный флот',
     summary:
-      'RGB, мультиспектральная и ИК-съёмка назначены разным учебным БВС; ИК-батареи доступны позже.',
+      'Фотосъёмка, мультиспектральная и тепловая съёмка назначены разным учебным БВС. Все батареи доступны к началу.',
     expected: 'feasible_model',
     highlights: [
       'RGB + MS + IR',
@@ -249,7 +249,6 @@ export const SHOWCASE_SCENARIOS: ShowcaseScenario[] = [
           jobs: ['IR'],
           x: 680,
           speed: 6,
-          delay: 240,
           model: '801',
         },
       ]);
@@ -297,17 +296,19 @@ export const SHOWCASE_SCENARIOS: ShowcaseScenario[] = [
   },
   {
     id: 'repeat-sorties',
-    title: 'Повторные вылеты и смена АКБ',
+    title: 'Три вылета на текущей батарее',
     summary:
-      'Один БВС с ограниченным ресурсом выполняет участок несколькими вылетами и обслуживается между ними.',
+      'Один БВС выполняет три небольших участка, каждый раз продолжая с остатком заряда. Без замены батареи.',
     expected: 'feasible_model',
     highlights: ['Один БВС', 'Несколько вылетов', 'Резерв и обслуживание'],
     checks: ['ENERGY', 'BATTERIES', 'WINDOW', 'EVENT_JOURNAL'],
     create: () => {
-      const d = base('repeat-sorties', 'Повторные вылеты и смена АКБ');
-      setFleet(d, [{ id: 'rgb-1', jobs: ['RGB'], x: 200, endurance: 12 }]);
+      const d = base('repeat-sorties', 'Три вылета на текущей батарее');
+      setFleet(d, [{ id: 'rgb-1', jobs: ['RGB'], x: 200, endurance: 28 }]);
       d.scenario.area = rectangle(0, 0, 600, 500);
-      d.jobs = [job(d, 'rgb', 'RGB', d.scenario.area, 'rgb-1')];
+      d.jobs = [100, 240, 380].map((x, i) =>
+        job(d, `rgb-${i + 1}`, 'RGB', rectangle(x, 0, 100, 100), 'rgb-1'),
+      );
       return parseMissionDocument(d);
     },
   },
@@ -417,6 +418,163 @@ export const SHOWCASE_SCENARIOS: ShowcaseScenario[] = [
       const d = base('insufficient-energy', 'Отказ: недостаточный ресурс');
       for (const battery of d.batteries) battery.initialPct = 26;
       for (const vehicle of d.scenario.vehicles) vehicle.batteryPct = 26;
+      return parseMissionDocument(d);
+    },
+  },
+];
+
+/** Three short presentation stories. Legacy acceptance examples retain their IDs. */
+export const DEMONSTRATION_SCENARIOS: ShowcaseScenario[] = [
+  {
+    id: 'demo-01-survey',
+    title: '1. Съёмка участка — от задания до результата',
+    summary:
+      'Квадратный участок 600 × 600 м. Три БВС в парке; система распределяет фотосъёмку и сравнивает время с общим налётом.',
+    expected: 'feasible_model',
+    highlights: [
+      'Создание и изменение задания',
+      'Автовыбор группы',
+      'История, заряд и доказательства',
+    ],
+    checks: ['COMPATIBILITY', 'SEPARATION', 'BATTERIES', 'COVERAGE', 'METRICS'],
+    walkthrough: [
+      'Откройте или загрузите JSON; измените название и сохраните копию.',
+      'Посмотрите участок и три БВС во вкладке «Парк».',
+      'Рассчитайте варианты и выберите: раньше закончить или меньше летать.',
+      'Подтвердите план, запустите симуляцию и дождитесь посадки.',
+      'Откройте историю и результаты: остатки заряда, проверки, комплект JSON. Снимки в симуляции не создаются.',
+    ],
+    create: () => {
+      const d = SHOWCASE_SCENARIOS[0].create();
+      d.id = 'demo-01-survey';
+      d.name = 'Демо 1 · Фотосъёмка квадрата';
+      d.scenario.name = d.name;
+      d.scenario.area = rectangle(0, 0, 600, 600);
+      d.jobs[0].area = structuredClone(d.scenario.area);
+      d.jobs[0].name = 'Фотосъёмка · квадрат 600 × 600 м';
+      d.notes = `${synthetic} Первый показ: загрузка/редактирование, автоматическое распределение, выбор плана, симуляция, история и доказательства. Три БВС доступны; число задействованных определяет расчёт, не сценарий показа. Реальные фотографии не создаются.`;
+      return parseMissionDocument(d);
+    },
+  },
+  {
+    id: 'demo-02-obstacles',
+    title: '2. Препятствие и совместная работа',
+    summary:
+      'Два БВС выполняют RGB и мультиспектральную съёмку одного участка. Высокое препятствие перекрывает прямой переход от баз.',
+    expected: 'feasible_model',
+    highlights: [
+      'Обход препятствия',
+      'Разнесение по времени',
+      'Два вида съёмки',
+    ],
+    checks: [
+      'COMPATIBILITY',
+      'SEPARATION',
+      'GEOMETRY',
+      'FOUR_DIMENSIONAL',
+      'COVERAGE',
+    ],
+    walkthrough: [
+      'Откройте сценарий и рассмотрите препятствие в «Условия».',
+      'Покажите два аппарата с разными камерами и отдельные площадки старта.',
+      'Рассчитайте маршрут: препятствие обходится сбоку, работы согласуются по времени.',
+      'Запустите симуляцию; выберите БВС на карте, покажите этап, батарею и маршрут.',
+      'В результатах раскройте проверки разнесения и объёмов; скачайте доказательства.',
+    ],
+    create: () => {
+      const d = base(
+        'demo-02-obstacles',
+        'Демо 2 · Обход и согласованная съёмка',
+      );
+      setFleet(d, [
+        {
+          id: 'demo-rgb',
+          jobs: ['RGB'],
+          x: 0,
+          speed: 8,
+          endurance: 35,
+          model: 'Gemini',
+        },
+        {
+          id: 'demo-ms',
+          jobs: ['MS'],
+          x: 0,
+          speed: 6,
+          endurance: 35,
+          model: 'Gemini',
+        },
+      ]);
+      d.scenario.vehicles[1].start = point(0, 400);
+      d.scenario.vehicles[1].landing = point(0, 400);
+      d.scenario.vehicles[0].name = 'БВС 01 · фотокамера';
+      d.scenario.vehicles[1].name = 'БВС 02 · мультиспектр';
+      d.scenario.reserveSites = d.scenario.vehicles.map((v) => v.landing);
+      d.scenario.area = rectangle(400, 50, 280, 220);
+      d.scenario.airspace = rectangle(-350, -400, 1550, 1450);
+      d.scenario.wind = { speedMps: 2, fromDeg: 270 };
+      d.jobs = [
+        job(d, 'demo-rgb-work', 'RGB', d.scenario.area, 'demo-rgb'),
+        job(d, 'demo-ms-work', 'MS', d.scenario.area, 'demo-ms'),
+      ];
+      d.jobs[0].name = 'Фотосъёмка участка';
+      d.jobs[1].name = 'Мультиспектральная съёмка участка';
+      d.restrictions = [
+        {
+          id: 'demo-tall-building',
+          name: 'Препятствие 160 м · прямой путь закрыт',
+          kind: 'obstacle',
+          geometry: rectangle(150, -200, 100, 650),
+          minAltitudeM: 0,
+          maxAltitudeM: 160,
+          startAt: null,
+          endAt: null,
+          source:
+            'Синтетическое высокое препятствие; высоты от общей плоской поверхности. Коридоры обхода заданы воздушной областью.',
+        },
+      ];
+      d.notes = `${synthetic} Две камеры снимают один участок: RGB и MS — разные работы. Переходы от баз должны обойти препятствие сбоку, не поверх него: рабочая высота 100 м, препятствие 160 м. Реальные пределы 35 минут, расстояния 30/20 м и 2 с — учебные допущения. Приёмочный тест отдельно проверяет конфликт при искусственном совмещении стартов.`;
+      return parseMissionDocument(d);
+    },
+  },
+  {
+    id: 'demo-03-repair',
+    title: '3. Ресурса не хватает — что изменить',
+    summary:
+      'БВС 07 с фотокамерой и зарядом 26% должен снять участок при резерве 25%. Вместо опасного запуска — причины отказа и проверка исправлений.',
+    expected: 'rejected',
+    highlights: [
+      'Объяснение отказа',
+      'Гипотеза замены батареи',
+      'Повторный расчёт и новая копия',
+    ],
+    checks: ['STRIPS', 'COVERAGE_demo-repair-rgb'],
+    walkthrough: [
+      'Загрузите JSON и покажите БВС 07: камера и текущие 26%.',
+      'Нажмите «Рассчитать варианты»: неполный результат нельзя подтвердить.',
+      'Результаты → Анализ → «Что изменить»: проверьте замену батареи БВС 07 на 100%.',
+      'Сравните с автовыбором и дополнительными 30 минутами: одно ожидание не добавляет заряд.',
+      'Подтвердите понимание гипотезы, откройте отдельную копию, повторно рассчитайте и запустите симуляцию. Реальный парк не изменён.',
+    ],
+    create: () => {
+      const d = base(
+        'demo-03-repair',
+        'Демо 3 · Недостаточный заряд и решение',
+      );
+      setFleet(d, [
+        {
+          id: 'demo-07',
+          jobs: ['RGB'],
+          x: 150,
+          model: 'Gemini',
+          endurance: 28,
+        },
+      ]);
+      d.scenario.vehicles[0].name = 'БВС 07 · фотокамера PF1B';
+      d.scenario.vehicles[0].batteryPct = 26;
+      d.batteries[0].initialPct = 26;
+      d.jobs = [job(d, 'demo-repair-rgb', 'RGB', d.scenario.area, 'demo-07')];
+      d.jobs[0].name = 'Фотосъёмка · требуется весь участок';
+      d.notes = `${synthetic} Заряд 26% при резерве 25%: ожидается отказ. Проверяется гипотеза замены установленной батареи БВС 07 перед стартом; ожидание само по себе не заряжает батарею. Выданная рекомендация не является командой и не изменяет телеметрию или историю парка.`;
       return parseMissionDocument(d);
     },
   },

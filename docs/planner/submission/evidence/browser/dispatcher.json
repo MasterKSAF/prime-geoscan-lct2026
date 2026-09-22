@@ -1,0 +1,132 @@
+{
+  "at": "2026-09-22T07:14:18.698Z",
+  "checks": [
+    {
+      "name": "all TZ models can be added",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "unsaved fleet survives workspace switching",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "shared fleet survives reload",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "profiles are not presented as real telemetry",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "multiple types coexist",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "altitude edits remain scoped to selected work",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "selected work retains its own altitude",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "per-work period is editable",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "work period does not leak to another work",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "automatic assignment is explicit",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "area cloning preserves map host",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "saved and edited mission appears exactly once",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "search filters list",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "search finds edited mission",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "real backend produces feasible candidate",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "safety acknowledgement is mandatory",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "execution map and controls share top row",
+      "pass": true,
+      "detail": "{\"map\":{\"x\":732,\"y\":70,\"width\":692,\"height\":854},\"panel\":{\"x\":16,\"y\":70,\"width\":704,\"height\":854}}"
+    },
+    {
+      "name": "execution persists an actual model checkpoint",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "status filter shows selected execution",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "mission reaches completed state",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "results belong to selected mission",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "export includes completed run, model-only journal and immutable evidence",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "standalone HTML report contains run identity and limits",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "mobile missions do not overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no browser exceptions",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "errors": [],
+  "status": "pass"
+}

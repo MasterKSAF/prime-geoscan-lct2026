@@ -1,0 +1,166 @@
+/* Progressive disclosure for the editor; fields and safety rules remain intact. */
+.mission-workbench .mw-simple-editor .mw-wizard-nav {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--mw-line);
+}
+.mission-workbench .mw-simple-editor .mw-wizard-nav button {
+  min-height: 38px;
+  padding: 8px;
+  font-size: 15px;
+  text-align: center;
+}
+.mission-workbench
+  .mw-simple-editor
+  .mw-wizard-nav
+  button[aria-current='step'] {
+  color: var(--mw-accent);
+}
+.mission-workbench .mw-simple-editor .mw-wizard-body {
+  padding: 14px 16px 20px;
+}
+.mission-workbench .mw-editor-local-nav {
+  display: inline-flex;
+  gap: 4px;
+  padding: 3px;
+  margin-bottom: 14px;
+  border-radius: 9px;
+  background: var(--mw-surface-soft);
+}
+.mission-workbench .mw-editor-local-nav button {
+  border: 1px solid transparent;
+  border-radius: 7px;
+  padding: 6px 12px;
+  background: transparent;
+  color: var(--mw-muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.mission-workbench .mw-editor-local-nav button[aria-pressed='true'] {
+  border-color: var(--mw-line);
+  background: var(--mw-surface);
+  color: var(--mw-ink);
+}
+.mission-workbench .mw-editor-local-nav button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.mission-workbench .mw-simple-editor :is(.mw-work-checklist, .mw-field) {
+  margin-top: 0;
+}
+.mission-workbench .mw-simple-editor .mw-work-checklist {
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.mission-workbench .mw-simple-editor .mw-work-option {
+  padding: 9px 10px;
+}
+.mission-workbench .mw-simple-editor .mw-work-option strong {
+  font-size: 14px;
+}
+.mission-workbench .mw-simple-editor .mw-editor-detail {
+  border: 1px solid var(--mw-line);
+  border-radius: 10px;
+  background: var(--mw-surface);
+  margin: 10px 0 0;
+  padding: 11px 12px;
+}
+.mission-workbench .mw-simple-editor .mw-editor-detail > summary {
+  color: var(--mw-ink);
+  line-height: 1.45;
+  font-size: 13px;
+}
+.mission-workbench .mw-simple-editor .mw-editor-detail[open] > summary {
+  margin-bottom: 14px;
+}
+.mission-workbench .mw-simple-editor .mw-editor-section-title {
+  margin-top: 20px;
+}
+.mission-workbench .mw-editor-fleet-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 5px 8px;
+  padding: 12px;
+  border: 1px solid var(--mw-line);
+  border-radius: 10px;
+  background: var(--mw-pale);
+}
+.mission-workbench .mw-editor-fleet-overview > strong {
+  font-size: 15px;
+}
+.mission-workbench .mw-editor-fleet-overview > span {
+  grid-column: 1;
+  color: var(--mw-muted);
+  font-size: 12px;
+}
+.mission-workbench .mw-editor-fleet-overview > :last-child {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+}
+.mission-workbench .mw-editor-fleet-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+  border: 1px solid var(--mw-line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.mission-workbench .mw-editor-fleet-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  font-size: 13px;
+}
+.mission-workbench .mw-editor-fleet-list li + li {
+  border-top: 1px solid var(--mw-line);
+}
+.mission-workbench .mw-editor-fleet-list li > span:first-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.mission-workbench .mw-editor-fleet-list li > span:last-child {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.mission-workbench .mw-editor-fleet-list strong,
+.mission-workbench .mw-editor-fleet-list small {
+  display: block;
+}
+.mission-workbench .mw-editor-fleet-list small {
+  margin-top: 3px;
+  color: var(--mw-muted);
+  font-size: 12px;
+}
+.mission-workbench .mw-editor-fleet-list .mw-editor-unsupported {
+  color: var(--mw-warning);
+}
+.mission-workbench .mw-simple-editor .mw-editor-terrain-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: 9px;
+  background: var(--mw-surface-soft);
+  color: var(--mw-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.mission-workbench .mw-simple-editor .mw-editor-terrain-status.warning {
+  background: var(--mw-warning-bg);
+  color: var(--mw-warning);
+}
+@media (max-width: 600px) {
+  .mission-workbench .mw-simple-editor .mw-wizard-body {
+    padding: 12px;
+  }
+  .mission-workbench .mw-simple-editor .mw-wizard-nav {
+    padding: 8px;
+  }
+}

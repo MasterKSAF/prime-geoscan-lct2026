@@ -1,0 +1,137 @@
+.mi-panel {
+  border: 1px solid var(--mw-line);
+  border-radius: 16px;
+  background: var(--mw-surface);
+  padding: 16px;
+  margin-top: 16px;
+  min-width: 0;
+}
+.mi-panel > header {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.mi-panel h2 {
+  margin: 0;
+  font-size: 17px;
+}
+.mi-panel h3 {
+  font-size: 14px;
+  margin: 0 0 8px;
+}
+.mi-panel p,
+.mi-panel li {
+  font-size: 13px;
+  line-height: 1.55;
+}
+.mi-panel ul {
+  padding-left: 20px;
+  margin: 10px 0;
+}
+.mi-panel li + li {
+  margin-top: 6px;
+}
+.mi-section {
+  border-top: 1px solid var(--mw-line);
+  padding-top: 12px;
+  margin-top: 12px;
+}
+.mi-section > summary {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 0;
+}
+.mi-panel details details {
+  font-size: 12px;
+  margin-top: 10px;
+}
+.mi-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(270px, 100%), 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.mi-cards > article,
+.mi-case {
+  border: 1px solid var(--mw-line);
+  padding: 14px;
+  border-radius: 12px;
+  background: var(--mw-surface-soft);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.mi-status {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 8px;
+  margin: 4px 6px 4px 0;
+  border-radius: 7px;
+  background: var(--mw-selected);
+  color: var(--mw-ink);
+}
+.mi-case > strong {
+  display: block;
+  margin-bottom: 4px;
+}
+.mi-case.safe .mi-status {
+  background: var(--mw-success-bg);
+  color: var(--mw-success);
+}
+.mi-case.unsafe_in_model .mi-status {
+  background: var(--mw-warning-bg);
+  color: var(--mw-warning);
+}
+.mi-stress-results {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+.mi-error {
+  border-left: 3px solid var(--mw-warning);
+  padding: 10px;
+  background: var(--mw-warning-bg);
+}
+.mi-coverage-card svg {
+  display: block;
+  width: 100%;
+  max-height: 210px;
+  margin: 10px 0;
+}
+.mi-coverage-card > span,
+.mi-coverage-card > small {
+  display: block;
+  font-size: 12px;
+  margin-top: 8px;
+}
+.mi-coverage-card > small {
+  color: var(--mw-muted);
+}
+.mi-panel .mw-actions {
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.mi-panel button {
+  white-space: normal;
+}
+.mi-confirm {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.mi-confirm input {
+  margin-top: 3px;
+  flex: none;
+}
+@media (max-width: 600px) {
+  .mi-panel {
+    padding: 12px;
+  }
+  .mi-cards {
+    grid-template-columns: 1fr;
+  }
+}

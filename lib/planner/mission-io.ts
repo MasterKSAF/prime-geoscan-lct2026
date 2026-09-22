@@ -195,11 +195,16 @@ export function missionSummaryMarkdown(document: MissionDocument): string {
     `- Критерий: ${scenario.objective === 'flightTime' ? 'меньше суммарного налёта' : 'раньше завершить работы'}`,
     `- Доступных БВС: ${vehicles.filter((v) => v.enabled).length} из ${vehicles.length}`,
     `- Резерв: ${markdown(scenario.reservePct)}%`,
-    `- Батарей: ${doc.batteries.length}; неизвестный ресурс: ${doc.batteries.filter((b) => b.cycles === null).length}`,
+    doc.planning.batteryPolicy ? '- Батарея каждого БВС: текущий заряд; повторные вылеты на остатке, без прогнозируемой замены.' : `- Архивная ресурсная модель; неизвестный ресурс батарей: ${doc.batteries.filter((b) => b.cycles === null).length}`,
     `- Дополнительных ограничений: ${doc.restrictions.length}; постоянных запретов: ${scenario.exclusions.length}`,
     `- Разнесение: ${doc.planning.separationHorizontalM} м по горизонтали, ${doc.planning.separationVerticalM} м по вертикали. Источник: ${markdown(doc.planning.separationSource)}`,
     `- Рельеф: ${doc.terrainModel.kind === 'unknown' ? 'неизвестен' : 'учебная плоскость'}; ${markdown(doc.terrainModel.source)}`,
-    `- Ветер: ${scenario.wind.speedMps} м/с, от ${scenario.wind.fromDeg}°. Постоянный вектор на всё окно, не прогноз.`,
+    `- Ветер: ${scenario.wind.speedMps} м/с, от ${scenario.wind.fromDeg}°. ${doc.weather ? 'Постоянный вектор из максимума сохранённого прогноза Open-Meteo, не динамическая модель.' : 'Постоянный ручной вектор на всё окно.'}`,
+    ...(doc.weather
+      ? [
+          `- Прогноз: Open-Meteo (https://open-meteo.com), CC BY 4.0; получен ${doc.weather.snapshot.fetchedAt}. ${doc.weather.snapshot.points.length} контрольных точек; ветер на опорной высоте ${doc.weather.snapshot.referenceHeightM} м. Снимок и пределы включены в JSON ниже. ${markdown(doc.weather.limits.source)}`,
+        ]
+      : []),
     ...(doc.environment
       ? [
           `- Облачность: нижняя граница ${markdown(doc.environment.cloudBaseM)} м, запас ${doc.environment.cloudClearanceM} м; видимость ${markdown(doc.environment.visibilityM)} м, минимум ${markdown(doc.environment.minVisibilityM)} м. Источник: ${markdown(doc.environment.source)}. Высоты в общем локальном уровне миссии, не фактическая AGL. Условия постоянны.`,

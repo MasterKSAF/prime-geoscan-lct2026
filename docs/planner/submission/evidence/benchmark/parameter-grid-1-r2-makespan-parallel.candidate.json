@@ -1,0 +1,3296 @@
+{
+  "id": "makespan-planned",
+  "objective": "makespan",
+  "status": "feasible_model",
+  "plan": {
+    "engineVersion": "0.3.0",
+    "inputHash": "d6e9a371c3a0332216638e13a66a5ab42b00daa58d5df7a9cbb1badd32a36b1c",
+    "createdAt": "2026-09-22T06:50:58.372Z",
+    "scenario": {
+      "schemaVersion": "1.0",
+      "name": "Автовыбор БВС: время и налёт",
+      "area": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              30.3,
+              60.035
+            ],
+            [
+              30.312603822913072,
+              60.035
+            ],
+            [
+              30.312603822913072,
+              60.04039592218234
+            ],
+            [
+              30.3,
+              60.04039592218234
+            ],
+            [
+              30.3,
+              60.035
+            ]
+          ]
+        ]
+      },
+      "airspace": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              30.292797815478245,
+              60.030503398181374
+            ],
+            [
+              30.319806007434828,
+              60.030503398181374
+            ],
+            [
+              30.319806007434828,
+              60.044892524000964
+            ],
+            [
+              30.292797815478245,
+              60.044892524000964
+            ],
+            [
+              30.292797815478245,
+              60.030503398181374
+            ]
+          ]
+        ]
+      },
+      "exclusions": [],
+      "reserveSites": [
+        [
+          30.306301911456536,
+          60.03365101945441
+        ],
+        [
+          30.30144043690435,
+          60.034100679636275
+        ],
+        [
+          30.311163386008722,
+          60.033201359272546
+        ]
+      ],
+      "job": {
+        "type": "RGB",
+        "altitudeM": 100,
+        "swathM": 117.5,
+        "sideOverlap": 0.6,
+        "triggerDistanceM": 15.6,
+        "bearingDeg": 0,
+        "autoBearing": true,
+        "qualitySource": "Учебный RGB-профиль PF1B: 23,5 мм / 20 мм на 100 м; перекрытие 60% и шаг 15,6 м — параметры сценария. Скорость затвора не подтверждена."
+      },
+      "wind": {
+        "speedMps": 1,
+        "fromDeg": 0
+      },
+      "reservePct": 25,
+      "clearanceM": 5,
+      "objective": "makespan",
+      "terrain": "unknown",
+      "vehicles": [
+        {
+          "id": "rgb-center",
+          "name": "БВС 01 · центральная база",
+          "model": "Custom",
+          "kind": "multirotor",
+          "enabled": true,
+          "airspeedMps": 9,
+          "maxWindMps": 10,
+          "batteryPct": 100,
+          "effectiveEnduranceMin": 26,
+          "climbMps": 3,
+          "descentMps": 1,
+          "turnSeconds": 4,
+          "start": [
+            30.306301911456536,
+            60.03365101945441
+          ],
+          "landing": [
+            30.306301911456536,
+            60.03365101945441
+          ],
+          "jobs": [
+            "RGB",
+            "MS",
+            "IR"
+          ],
+          "assumptions": [
+            "Все три учебных мультиротора совместимы с RGB. Скорость, ресурс и доступность АКБ заданы оператором для стенда."
+          ],
+          "source": "Полностью синтетический профиль для демонстрации автоматического выбора, не паспорт реального БВС."
+        },
+        {
+          "id": "rgb-near",
+          "name": "БВС 02 · ближняя база",
+          "model": "Custom",
+          "kind": "multirotor",
+          "enabled": true,
+          "airspeedMps": 6,
+          "maxWindMps": 10,
+          "batteryPct": 100,
+          "effectiveEnduranceMin": 30,
+          "climbMps": 3,
+          "descentMps": 1,
+          "turnSeconds": 4,
+          "start": [
+            30.30144043690435,
+            60.034100679636275
+          ],
+          "landing": [
+            30.30144043690435,
+            60.034100679636275
+          ],
+          "jobs": [
+            "RGB",
+            "MS",
+            "IR"
+          ],
+          "assumptions": [
+            "Все три учебных мультиротора совместимы с RGB. Скорость, ресурс и доступность АКБ заданы оператором для стенда."
+          ],
+          "source": "Полностью синтетический профиль для демонстрации автоматического выбора, не паспорт реального БВС."
+        },
+        {
+          "id": "rgb-fast",
+          "name": "БВС 03 · быстрый",
+          "model": "Custom",
+          "kind": "multirotor",
+          "enabled": true,
+          "airspeedMps": 12,
+          "maxWindMps": 10,
+          "batteryPct": 100,
+          "effectiveEnduranceMin": 22,
+          "climbMps": 3,
+          "descentMps": 1,
+          "turnSeconds": 4,
+          "start": [
+            30.311163386008722,
+            60.033201359272546
+          ],
+          "landing": [
+            30.311163386008722,
+            60.033201359272546
+          ],
+          "jobs": [
+            "RGB",
+            "MS",
+            "IR"
+          ],
+          "assumptions": [
+            "Все три учебных мультиротора совместимы с RGB. Скорость, ресурс и доступность АКБ заданы оператором для стенда."
+          ],
+          "source": "Полностью синтетический профиль для демонстрации автоматического выбора, не паспорт реального БВС."
+        }
+      ]
+    },
+    "status": "undetermined",
+    "missions": [
+      {
+        "id": "sortie-1",
+        "jobId": "rgb-01",
+        "batteryId": "rgb-fast-battery-1",
+        "vehicleId": "rgb-fast",
+        "name": "БВС 03 · быстрый",
+        "startSec": 60,
+        "endSec": 1018.7040073184595,
+        "readySec": 1198.7040073184594,
+        "segments": [
+          {
+            "from": [
+              30.311163386008722,
+              60.033201359272546
+            ],
+            "to": [
+              30.311163386008722,
+              60.033201359272546
+            ],
+            "phase": "takeoff",
+            "altitudeFromM": 0,
+            "altitudeToM": 100,
+            "airspeedMps": 0,
+            "groundSpeedMps": 0,
+            "distanceM": 0,
+            "startSec": 60,
+            "endSec": 93.33333333333334,
+            "batteryFromPct": 100,
+            "batteryToPct": 97.47474747474747
+          },
+          {
+            "from": [
+              30.311163386008722,
+              60.033201359272546
+            ],
+            "to": [
+              30.300420127430435,
+              60.04039592218217
+            ],
+            "phase": "transit",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 12,
+            "groundSpeedMps": 11.183497198059351,
+            "distanceM": 998.0035626591341,
+            "startSec": 93.33333333333334,
+            "endSec": 182.5722847082499,
+            "batteryFromPct": 97.47474747474747,
+            "batteryToPct": 90.71422085543561
+          },
+          {
+            "from": [
+              30.300420127430435,
+              60.04039592218217
+            ],
+            "to": [
+              30.300420127430435,
+              60.04039592218217
+            ],
+            "phase": "turn",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 0,
+            "groundSpeedMps": 0,
+            "distanceM": 0,
+            "startSec": 182.5722847082499,
+            "endSec": 186.5722847082499,
+            "batteryFromPct": 90.71422085543561,
+            "batteryToPct": 90.41119055240532
+          },
+          {
+            "from": [
+              30.300420127430435,
+              60.04039592218217
+            ],
+            "to": [
+              30.300420127430435,
+              60.03500000000017
+            ],
+            "phase": "survey",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 11,
+            "groundSpeedMps": 12,
+            "distanceM": 599.9999999613252,
+            "startSec": 186.5722847082499,
+            "endSec": 236.572284705027,
+            "batteryFromPct": 90.41119055240532,
+            "batteryToPct": 86.62331176477069,
+            "stripId": 0
+          },
+          {
+            "from": [
+              30.300420127430435,
+              60.03500000000017
+            ],
+            "to": [
+              30.301260382291307,
+              60.04039592218217
+            ],
+            "phase": "transit",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 12,
+            "groundSpeedMps": 11.002760492433564,
+            "distanceM": 601.8120784193087,
+            "startSec": 236.572284705027,
+            "endSec": 291.26874736393574,
+            "batteryFromPct": 86.62331176477068,
+            "batteryToPct": 82.47964035121699
+          },
+          {
+            "from": [
+              30.301260382291307,
+              60.04039592218217
+            ],
+            "to": [
+              30.301260382291307,
+              60.04039592218217
+            ],
+            "phase": "turn",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 0,
+            "groundSpeedMps": 0,
+            "distanceM": 0,
+            "startSec": 291.26874736393574,
+            "endSec": 295.26874736393574,
+            "batteryFromPct": 82.47964035121699,
+            "batteryToPct": 82.17661004818669
+          },
+          {
+            "from": [
+              30.301260382291307,
+              60.04039592218217
+            ],
+            "to": [
+              30.301260382291307,
+              60.03500000000017
+            ],
+            "phase": "survey",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 11,
+            "groundSpeedMps": 12,
+            "distanceM": 599.9999999613252,
+            "startSec": 295.26874736393574,
+            "endSec": 345.26874736071284,
+            "batteryFromPct": 82.17661004818669,
+            "batteryToPct": 78.38873126055206,
+            "stripId": 1
+          },
+          {
+            "from": [
+              30.301260382291307,
+              60.03500000000017
+            ],
+            "to": [
+              30.30210063715218,
+              60.04039592218217
+            ],
+            "phase": "transit",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 12,
+            "groundSpeedMps": 11.002760492433564,
+            "distanceM": 601.8120784193087,
+            "startSec": 345.26874736071284,
+            "endSec": 399.96521001962157,
+            "batteryFromPct": 78.38873126055205,
+            "batteryToPct": 74.24505984699836
+          },
+          {
+            "from": [
+              30.30210063715218,
+              60.04039592218217
+            ],
+            "to": [
+              30.30210063715218,
+              60.04039592218217
+            ],
+            "phase": "turn",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 0,
+            "groundSpeedMps": 0,
+            "distanceM": 0,
+            "startSec": 399.96521001962157,
+            "endSec": 403.96521001962157,
+            "batteryFromPct": 74.24505984699837,
+            "batteryToPct": 73.94202954396808
+          },
+          {
+            "from": [
+              30.30210063715218,
+              60.04039592218217
+            ],
+            "to": [
+              30.30210063715218,
+              60.03500000000017
+            ],
+            "phase": "survey",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 11,
+            "groundSpeedMps": 12,
+            "distanceM": 599.9999999613252,
+            "startSec": 403.96521001962157,
+            "endSec": 453.96521001639866,
+            "batteryFromPct": 73.94202954396806,
+            "batteryToPct": 70.15415075633344,
+            "stripId": 2
+          },
+          {
+            "from": [
+              30.30210063715218,
+              60.03500000000017
+            ],
+            "to": [
+              30.30294089201305,
+              60.04039592218217
+            ],
+            "phase": "transit",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 12,
+            "groundSpeedMps": 11.002760492433564,
+            "distanceM": 601.8120784193087,
+            "startSec": 453.96521001639866,
+            "endSec": 508.6616726753074,
+            "batteryFromPct": 70.15415075633344,
+            "batteryToPct": 66.01047934277975
+          },
+          {
+            "from": [
+              30.30294089201305,
+              60.04039592218217
+            ],
+            "to": [
+              30.30294089201305,
+              60.04039592218217
+            ],
+            "phase": "turn",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 0,
+            "groundSpeedMps": 0,
+            "distanceM": 0,
+            "startSec": 508.6616726753074,
+            "endSec": 512.6616726753074,
+            "batteryFromPct": 66.01047934277975,
+            "batteryToPct": 65.70744903974945
+          },
+          {
+            "from": [
+              30.30294089201305,
+              60.04039592218217
+            ],
+            "to": [
+              30.30294089201305,
+              60.03500000000017
+            ],
+            "phase": "survey",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 11,
+            "groundSpeedMps": 12,
+            "distanceM": 599.9999999613252,
+            "startSec": 512.6616726753074,
+            "endSec": 562.6616726720845,
+            "batteryFromPct": 65.70744903974943,
+            "batteryToPct": 61.91957025211481,
+            "stripId": 3
+          },
+          {
+            "from": [
+              30.30294089201305,
+              60.03500000000017
+            ],
+            "to": [
+              30.303781146873924,
+              60.04039592218217
+            ],
+            "phase": "transit",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 12,
+            "groundSpeedMps": 11.002760492433564,
+            "distanceM": 601.8120784193087,
+            "startSec": 562.6616726720845,
+            "endSec": 617.3581353309933,
+            "batteryFromPct": 61.919570252114816,
+            "batteryToPct": 57.775898838561126
+          },
+          {
+            "from": [
+              30.303781146873924,
+              60.04039592218217
+            ],
+            "to": [
+              30.303781146873924,
+              60.04039592218217
+            ],
+            "phase": "turn",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 0,
+            "groundSpeedMps": 0,
+            "distanceM": 0,
+            "startSec": 617.3581353309933,
+            "endSec": 621.3581353309933,
+            "batteryFromPct": 57.77589883856112,
+            "batteryToPct": 57.472868535530814
+          },
+          {
+            "from": [
+              30.303781146873924,
+              60.04039592218217
+            ],
+            "to": [
+              30.303781146873924,
+              60.03500000000017
+            ],
+            "phase": "survey",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 11,
+            "groundSpeedMps": 12,
+            "distanceM": 599.9999999613252,
+            "startSec": 621.3581353309933,
+            "endSec": 671.3581353277704,
+            "batteryFromPct": 57.472868535530814,
+            "batteryToPct": 53.68498974789619,
+            "stripId": 4
+          },
+          {
+            "from": [
+              30.303781146873924,
+              60.03500000000017
+            ],
+            "to": [
+              30.304621401734792,
+              60.04039592218217
+            ],
+            "phase": "transit",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 12,
+            "groundSpeedMps": 11.002760492433564,
+            "distanceM": 601.8120784193087,
+            "startSec": 671.3581353277704,
+            "endSec": 726.054597986679,
+            "batteryFromPct": 53.68498974789618,
+            "batteryToPct": 49.54131833434249
+          },
+          {
+            "from": [
+              30.304621401734792,
+              60.04039592218217
+            ],
+            "to": [
+              30.304621401734792,
+              60.04039592218217
+            ],
+            "phase": "turn",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 0,
+            "groundSpeedMps": 0,
+            "distanceM": 0,
+            "startSec": 726.054597986679,
+            "endSec": 730.054597986679,
+            "batteryFromPct": 49.5413183343425,
+            "batteryToPct": 49.238288031312194
+          },
+          {
+            "from": [
+              30.304621401734792,
+              60.04039592218217
+            ],
+            "to": [
+              30.304621401734792,
+              60.03500000000017
+            ],
+            "phase": "survey",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 11,
+            "groundSpeedMps": 12,
+            "distanceM": 599.9999999613252,
+            "startSec": 730.054597986679,
+            "endSec": 780.0545979834561,
+            "batteryFromPct": 49.238288031312194,
+            "batteryToPct": 45.45040924367757,
+            "stripId": 5
+          },
+          {
+            "from": [
+              30.304621401734792,
+              60.03500000000017
+            ],
+            "to": [
+              30.305461656595664,
+              60.04039592218217
+            ],
+            "phase": "transit",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 12,
+            "groundSpeedMps": 11.002760492433564,
+            "distanceM": 601.8120784193087,
+            "startSec": 780.0545979834561,
+            "endSec": 834.7510606423648,
+            "batteryFromPct": 45.45040924367757,
+            "batteryToPct": 41.30673783012388
+          },
+          {
+            "from": [
+              30.305461656595664,
+              60.04039592218217
+            ],
+            "to": [
+              30.305461656595664,
+              60.04039592218217
+            ],
+            "phase": "turn",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 0,
+            "groundSpeedMps": 0,
+            "distanceM": 0,
+            "startSec": 834.7510606423648,
+            "endSec": 838.7510606423648,
+            "batteryFromPct": 41.30673783012387,
+            "batteryToPct": 41.00370752709357
+          },
+          {
+            "from": [
+              30.305461656595664,
+              60.04039592218217
+            ],
+            "to": [
+              30.305461656595664,
+              60.03500000000017
+            ],
+            "phase": "survey",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 11,
+            "groundSpeedMps": 12,
+            "distanceM": 599.9999999613252,
+            "startSec": 838.7510606423648,
+            "endSec": 888.7510606391419,
+            "batteryFromPct": 41.00370752709358,
+            "batteryToPct": 37.215828739458956,
+            "stripId": 6
+          },
+          {
+            "from": [
+              30.305461656595664,
+              60.03500000000017
+            ],
+            "to": [
+              30.311163386008722,
+              60.033201359272546
+            ],
+            "phase": "return",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 12,
+            "groundSpeedMps": 12.504170455225923,
+            "distanceM": 374.5367509144809,
+            "startSec": 888.7510606391419,
+            "endSec": 918.7040073184595,
+            "batteryFromPct": 37.21582873945894,
+            "batteryToPct": 34.94666611223791
+          },
+          {
+            "from": [
+              30.311163386008722,
+              60.033201359272546
+            ],
+            "to": [
+              30.311163386008722,
+              60.033201359272546
+            ],
+            "phase": "landing",
+            "altitudeFromM": 100,
+            "altitudeToM": 0,
+            "airspeedMps": 0,
+            "groundSpeedMps": 0,
+            "distanceM": 0,
+            "startSec": 918.7040073184595,
+            "endSec": 1018.7040073184595,
+            "batteryFromPct": 34.94666611223791,
+            "batteryToPct": 27.37090853648033
+          }
+        ],
+        "durationSec": 958.7040073184595,
+        "distanceM": 9183.412783818745,
+        "remainingPct": 27.370908536480343,
+        "strips": 7,
+        "shots": 182
+      },
+      {
+        "id": "sortie-2",
+        "jobId": "rgb-01",
+        "batteryId": "rgb-near-battery-1",
+        "vehicleId": "rgb-near",
+        "name": "БВС 02 · ближняя база",
+        "startSec": 60,
+        "endSec": 1187.1592664203063,
+        "readySec": 1367.1592664203063,
+        "segments": [
+          {
+            "from": [
+              30.30144043690435,
+              60.034100679636275
+            ],
+            "to": [
+              30.30144043690435,
+              60.034100679636275
+            ],
+            "phase": "takeoff",
+            "altitudeFromM": 0,
+            "altitudeToM": 100,
+            "airspeedMps": 0,
+            "groundSpeedMps": 0,
+            "distanceM": 0,
+            "startSec": 60,
+            "endSec": 93.33333333333334,
+            "batteryFromPct": 100,
+            "batteryToPct": 98.14814814814815
+          },
+          {
+            "from": [
+              30.30144043690435,
+              60.034100679636275
+            ],
+            "to": [
+              30.306301911456536,
+              60.04039592218217
+            ],
+            "phase": "transit",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 6,
+            "groundSpeedMps": 5.056196292492327,
+            "distanceM": 750.2666192576767,
+            "startSec": 93.33333333333334,
+            "endSec": 241.7189132942433,
+            "batteryFromPct": 98.14814814814815,
+            "batteryToPct": 89.90450481698649
+          },
+          {
+            "from": [
+              30.306301911456536,
+              60.04039592218217
+            ],
+            "to": [
+              30.306301911456536,
+              60.04039592218217
+            ],
+            "phase": "turn",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 0,
+            "groundSpeedMps": 0,
+            "distanceM": 0,
+            "startSec": 241.7189132942433,
+            "endSec": 245.7189132942433,
+            "batteryFromPct": 89.90450481698649,
+            "batteryToPct": 89.68228259476426
+          },
+          {
+            "from": [
+              30.306301911456536,
+              60.04039592218217
+            ],
+            "to": [
+              30.306301911456536,
+              60.03500000000017
+            ],
+            "phase": "survey",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 5,
+            "groundSpeedMps": 6,
+            "distanceM": 599.9999999613252,
+            "startSec": 245.7189132942433,
+            "endSec": 345.7189132877975,
+            "batteryFromPct": 89.68228259476426,
+            "batteryToPct": 84.1267270395668,
+            "stripId": 7
+          },
+          {
+            "from": [
+              30.306301911456536,
+              60.03500000000017
+            ],
+            "to": [
+              30.30714216631741,
+              60.04039592218217
+            ],
+            "phase": "transit",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 6,
+            "groundSpeedMps": 5.002509932134753,
+            "distanceM": 601.8120784193087,
+            "startSec": 345.7189132877975,
+            "endSec": 466.02093898762325,
+            "batteryFromPct": 84.1267270395668,
+            "batteryToPct": 77.44328116735426
+          },
+          {
+            "from": [
+              30.30714216631741,
+              60.04039592218217
+            ],
+            "to": [
+              30.30714216631741,
+              60.04039592218217
+            ],
+            "phase": "turn",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 0,
+            "groundSpeedMps": 0,
+            "distanceM": 0,
+            "startSec": 466.02093898762325,
+            "endSec": 470.02093898762325,
+            "batteryFromPct": 77.44328116735426,
+            "batteryToPct": 77.22105894513203
+          },
+          {
+            "from": [
+              30.30714216631741,
+              60.04039592218217
+            ],
+            "to": [
+              30.30714216631741,
+              60.03500000000017
+            ],
+            "phase": "survey",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 5,
+            "groundSpeedMps": 6,
+            "distanceM": 599.9999999613252,
+            "startSec": 470.02093898762325,
+            "endSec": 570.0209389811774,
+            "batteryFromPct": 77.22105894513204,
+            "batteryToPct": 71.66550338993459,
+            "stripId": 8
+          },
+          {
+            "from": [
+              30.30714216631741,
+              60.03500000000017
+            ],
+            "to": [
+              30.30798242117828,
+              60.04039592218217
+            ],
+            "phase": "transit",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 6,
+            "groundSpeedMps": 5.002509932134753,
+            "distanceM": 601.8120784193087,
+            "startSec": 570.0209389811774,
+            "endSec": 690.3229646810032,
+            "batteryFromPct": 71.66550338993459,
+            "batteryToPct": 64.98205751772204
+          },
+          {
+            "from": [
+              30.30798242117828,
+              60.04039592218217
+            ],
+            "to": [
+              30.30798242117828,
+              60.04039592218217
+            ],
+            "phase": "turn",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 0,
+            "groundSpeedMps": 0,
+            "distanceM": 0,
+            "startSec": 690.3229646810032,
+            "endSec": 694.3229646810032,
+            "batteryFromPct": 64.98205751772204,
+            "batteryToPct": 64.75983529549981
+          },
+          {
+            "from": [
+              30.30798242117828,
+              60.04039592218217
+            ],
+            "to": [
+              30.30798242117828,
+              60.03500000000017
+            ],
+            "phase": "survey",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 5,
+            "groundSpeedMps": 6,
+            "distanceM": 599.9999999613252,
+            "startSec": 694.3229646810032,
+            "endSec": 794.3229646745574,
+            "batteryFromPct": 64.75983529549983,
+            "batteryToPct": 59.20427974030237,
+            "stripId": 9
+          },
+          {
+            "from": [
+              30.30798242117828,
+              60.03500000000017
+            ],
+            "to": [
+              30.30882267603915,
+              60.04039592218217
+            ],
+            "phase": "transit",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 6,
+            "groundSpeedMps": 5.002509932134753,
+            "distanceM": 601.8120784193087,
+            "startSec": 794.3229646745574,
+            "endSec": 914.6249903743832,
+            "batteryFromPct": 59.20427974030237,
+            "batteryToPct": 52.520833868089824
+          },
+          {
+            "from": [
+              30.30882267603915,
+              60.04039592218217
+            ],
+            "to": [
+              30.30882267603915,
+              60.04039592218217
+            ],
+            "phase": "turn",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 0,
+            "groundSpeedMps": 0,
+            "distanceM": 0,
+            "startSec": 914.6249903743832,
+            "endSec": 918.6249903743832,
+            "batteryFromPct": 52.520833868089824,
+            "batteryToPct": 52.2986116458676
+          },
+          {
+            "from": [
+              30.30882267603915,
+              60.04039592218217
+            ],
+            "to": [
+              30.30882267603915,
+              60.03500000000017
+            ],
+            "phase": "survey",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 5,
+            "groundSpeedMps": 6,
+            "distanceM": 599.9999999613252,
+            "startSec": 918.6249903743832,
+            "endSec": 1018.6249903679374,
+            "batteryFromPct": 52.298611645867595,
+            "batteryToPct": 46.74305609067014,
+            "stripId": 10
+          },
+          {
+            "from": [
+              30.30882267603915,
+              60.03500000000017
+            ],
+            "to": [
+              30.30144043690435,
+              60.034100679636275
+            ],
+            "phase": "return",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 6,
+            "groundSpeedMps": 6.157779453338963,
+            "distanceM": 422.01895692473784,
+            "startSec": 1018.6249903679374,
+            "endSec": 1087.1592664203063,
+            "batteryFromPct": 46.743056090670144,
+            "batteryToPct": 42.935596309982984
+          },
+          {
+            "from": [
+              30.30144043690435,
+              60.034100679636275
+            ],
+            "to": [
+              30.30144043690435,
+              60.034100679636275
+            ],
+            "phase": "landing",
+            "altitudeFromM": 100,
+            "altitudeToM": 0,
+            "airspeedMps": 0,
+            "groundSpeedMps": 0,
+            "distanceM": 0,
+            "startSec": 1087.1592664203063,
+            "endSec": 1187.1592664203063,
+            "batteryFromPct": 42.935596309982984,
+            "batteryToPct": 37.38004075442743
+          }
+        ],
+        "durationSec": 1127.1592664203063,
+        "distanceM": 5377.721811285642,
+        "remainingPct": 37.380040754427434,
+        "strips": 4,
+        "shots": 104
+      },
+      {
+        "id": "sortie-3",
+        "jobId": "rgb-01",
+        "batteryId": "rgb-center-battery-1",
+        "vehicleId": "rgb-center",
+        "name": "БВС 01 · центральная база",
+        "startSec": 1022.7140073184595,
+        "endSec": 1798.9683056188137,
+        "readySec": 1978.9683056188137,
+        "segments": [
+          {
+            "from": [
+              30.306301911456536,
+              60.03365101945441
+            ],
+            "to": [
+              30.306301911456536,
+              60.03365101945441
+            ],
+            "phase": "takeoff",
+            "altitudeFromM": 0,
+            "altitudeToM": 100,
+            "airspeedMps": 0,
+            "groundSpeedMps": 0,
+            "distanceM": 0,
+            "startSec": 1022.7140073184595,
+            "endSec": 1056.0473406517929,
+            "batteryFromPct": 100,
+            "batteryToPct": 97.86324786324786
+          },
+          {
+            "from": [
+              30.306301911456536,
+              60.03365101945441
+            ],
+            "to": [
+              30.30966293090002,
+              60.04039592218217
+            ],
+            "phase": "transit",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 9,
+            "groundSpeedMps": 8.02636306827609,
+            "distanceM": 772.8806145939549,
+            "startSec": 1056.0473406517929,
+            "endSec": 1152.3400959158473,
+            "batteryFromPct": 97.86324786324786,
+            "batteryToPct": 91.6906353463213
+          },
+          {
+            "from": [
+              30.30966293090002,
+              60.04039592218217
+            ],
+            "to": [
+              30.30966293090002,
+              60.04039592218217
+            ],
+            "phase": "turn",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 0,
+            "groundSpeedMps": 0,
+            "distanceM": 0,
+            "startSec": 1152.3400959158473,
+            "endSec": 1156.3400959158473,
+            "batteryFromPct": 91.6906353463213,
+            "batteryToPct": 91.43422508991104
+          },
+          {
+            "from": [
+              30.30966293090002,
+              60.04039592218217
+            ],
+            "to": [
+              30.30966293090002,
+              60.03500000000017
+            ],
+            "phase": "survey",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 8,
+            "groundSpeedMps": 9,
+            "distanceM": 599.9999999613252,
+            "startSec": 1156.3400959158473,
+            "endSec": 1223.0067625782167,
+            "batteryFromPct": 91.43422508991104,
+            "batteryToPct": 87.16072081668223,
+            "stripId": 11
+          },
+          {
+            "from": [
+              30.30966293090002,
+              60.03500000000017
+            ],
+            "to": [
+              30.310503185760894,
+              60.04039592218217
+            ],
+            "phase": "transit",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 9,
+            "groundSpeedMps": 8.002676974852951,
+            "distanceM": 601.8120784193087,
+            "startSec": 1223.0067625782167,
+            "endSec": 1298.2081083666824,
+            "batteryFromPct": 87.16072081668223,
+            "batteryToPct": 82.34012172767802
+          },
+          {
+            "from": [
+              30.310503185760894,
+              60.04039592218217
+            ],
+            "to": [
+              30.310503185760894,
+              60.04039592218217
+            ],
+            "phase": "turn",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 0,
+            "groundSpeedMps": 0,
+            "distanceM": 0,
+            "startSec": 1298.2081083666824,
+            "endSec": 1302.2081083666824,
+            "batteryFromPct": 82.34012172767802,
+            "batteryToPct": 82.08371147126776
+          },
+          {
+            "from": [
+              30.310503185760894,
+              60.04039592218217
+            ],
+            "to": [
+              30.310503185760894,
+              60.03500000000017
+            ],
+            "phase": "survey",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 8,
+            "groundSpeedMps": 9,
+            "distanceM": 599.9999999613252,
+            "startSec": 1302.2081083666824,
+            "endSec": 1368.8747750290518,
+            "batteryFromPct": 82.08371147126776,
+            "batteryToPct": 77.81020719803895,
+            "stripId": 12
+          },
+          {
+            "from": [
+              30.310503185760894,
+              60.03500000000017
+            ],
+            "to": [
+              30.311343440621766,
+              60.04039592218217
+            ],
+            "phase": "transit",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 9,
+            "groundSpeedMps": 8.002676974852951,
+            "distanceM": 601.8120784193087,
+            "startSec": 1368.8747750290518,
+            "endSec": 1444.0761208175174,
+            "batteryFromPct": 77.81020719803895,
+            "batteryToPct": 72.98960810903475
+          },
+          {
+            "from": [
+              30.311343440621766,
+              60.04039592218217
+            ],
+            "to": [
+              30.311343440621766,
+              60.04039592218217
+            ],
+            "phase": "turn",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 0,
+            "groundSpeedMps": 0,
+            "distanceM": 0,
+            "startSec": 1444.0761208175174,
+            "endSec": 1448.0761208175174,
+            "batteryFromPct": 72.98960810903475,
+            "batteryToPct": 72.73319785262449
+          },
+          {
+            "from": [
+              30.311343440621766,
+              60.04039592218217
+            ],
+            "to": [
+              30.311343440621766,
+              60.03500000000017
+            ],
+            "phase": "survey",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 8,
+            "groundSpeedMps": 9,
+            "distanceM": 599.9999999613252,
+            "startSec": 1448.0761208175174,
+            "endSec": 1514.7427874798868,
+            "batteryFromPct": 72.73319785262449,
+            "batteryToPct": 68.45969357939568,
+            "stripId": 13
+          },
+          {
+            "from": [
+              30.311343440621766,
+              60.03500000000017
+            ],
+            "to": [
+              30.312183695482638,
+              60.04039592218217
+            ],
+            "phase": "transit",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 9,
+            "groundSpeedMps": 8.00267697485295,
+            "distanceM": 601.8120784193086,
+            "startSec": 1514.7427874798868,
+            "endSec": 1589.9441332683525,
+            "batteryFromPct": 68.45969357939568,
+            "batteryToPct": 63.63909449039147
+          },
+          {
+            "from": [
+              30.312183695482638,
+              60.04039592218217
+            ],
+            "to": [
+              30.312183695482638,
+              60.04039592218217
+            ],
+            "phase": "turn",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 0,
+            "groundSpeedMps": 0,
+            "distanceM": 0,
+            "startSec": 1589.9441332683525,
+            "endSec": 1593.9441332683525,
+            "batteryFromPct": 63.63909449039147,
+            "batteryToPct": 63.382684233981216
+          },
+          {
+            "from": [
+              30.312183695482638,
+              60.04039592218217
+            ],
+            "to": [
+              30.312183695482638,
+              60.03500000000017
+            ],
+            "phase": "survey",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 8,
+            "groundSpeedMps": 9,
+            "distanceM": 599.9999999613252,
+            "startSec": 1593.9441332683525,
+            "endSec": 1660.610799930722,
+            "batteryFromPct": 63.382684233981216,
+            "batteryToPct": 59.10917996075241,
+            "stripId": 14
+          },
+          {
+            "from": [
+              30.312183695482638,
+              60.03500000000017
+            ],
+            "to": [
+              30.306301911456536,
+              60.03365101945441
+            ],
+            "phase": "return",
+            "altitudeFromM": 100,
+            "altitudeToM": 100,
+            "airspeedMps": 9,
+            "groundSpeedMps": 9.371294204579335,
+            "distanceM": 359.4594707569322,
+            "startSec": 1660.610799930722,
+            "endSec": 1698.9683056188137,
+            "batteryFromPct": 59.1091799607524,
+            "batteryToPct": 56.65036549356704
+          },
+          {
+            "from": [
+              30.306301911456536,
+              60.03365101945441
+            ],
+            "to": [
+              30.306301911456536,
+              60.03365101945441
+            ],
+            "phase": "landing",
+            "altitudeFromM": 100,
+            "altitudeToM": 0,
+            "airspeedMps": 0,
+            "groundSpeedMps": 0,
+            "distanceM": 0,
+            "startSec": 1698.9683056188137,
+            "endSec": 1798.9683056188137,
+            "batteryFromPct": 56.65036549356704,
+            "batteryToPct": 50.24010908331063
+          }
+        ],
+        "durationSec": 776.2542983003542,
+        "distanceM": 5337.776320454114,
+        "remainingPct": 50.24010908331063,
+        "strips": 4,
+        "shots": 104
+      }
+    ],
+    "checks": [
+      {
+        "id": "sortie-1:QUALITY_rgb-01_CADENCE",
+        "status": "pass",
+        "title": "Интервал кадров",
+        "detail": "1.950 с; камера требует ≥1 с."
+      },
+      {
+        "id": "sortie-1:QUALITY_rgb-01_BLUR",
+        "status": "pass",
+        "title": "Смаз в поступательной модели",
+        "detail": "0.613 пикселя; предел 1."
+      },
+      {
+        "id": "sortie-2:QUALITY_rgb-01_CADENCE",
+        "status": "pass",
+        "title": "Интервал кадров",
+        "detail": "3.900 с; камера требует ≥1 с."
+      },
+      {
+        "id": "sortie-2:QUALITY_rgb-01_BLUR",
+        "status": "pass",
+        "title": "Смаз в поступательной модели",
+        "detail": "0.306 пикселя; предел 1."
+      },
+      {
+        "id": "sortie-3:QUALITY_rgb-01_CADENCE",
+        "status": "pass",
+        "title": "Интервал кадров",
+        "detail": "2.600 с; камера требует ≥1 с."
+      },
+      {
+        "id": "sortie-3:QUALITY_rgb-01_BLUR",
+        "status": "pass",
+        "title": "Смаз в поступательной модели",
+        "detail": "0.460 пикселя; предел 1."
+      },
+      {
+        "id": "GEOMETRY",
+        "status": "pass",
+        "title": "Границы и статические запреты",
+        "detail": "Каждый отрезок проверен целиком, включая переходы и возврат. Запреты расширены, разрешённая зона сужена на защитный запас 5 м в общей локальной проекции. Это параметр модели, не универсальная норма."
+      },
+      {
+        "id": "STRIPS",
+        "status": "pass",
+        "title": "Все рабочие полосы назначены",
+        "detail": "Сверены идентификаторы и геометрия каждой исходной полосы, пропуски и повторы запрещены."
+      },
+      {
+        "id": "REQUESTED_AREA",
+        "status": "pass",
+        "title": "Исходная область не сокращена скрыто",
+        "detail": "Запреты и границы не могут незаметно убрать часть задания. Численный допуск — только 0,1 м², отдельно от порога геометрического покрытия 99%. Потери: rgb-01: 0.000 м²."
+      },
+      {
+        "id": "PHASES",
+        "status": "pass",
+        "title": "Обязательные манёвры и порядок фаз",
+        "detail": "Каждой рабочей полосе предшествует манёвр с turnSeconds профиля; промежуточные вершины перехода/возврата не могут терять поворот. Возврат допускается только после последней рабочей полосы."
+      },
+      {
+        "id": "TIME",
+        "status": "pass",
+        "title": "Время и скорости",
+        "detail": "Независимо пересчитаны длительности, ветер, геометрическая длина и фактическая требуемая воздушная скорость."
+      },
+      {
+        "id": "ENERGY",
+        "status": "pass",
+        "title": "Линейный баланс ресурса",
+        "detail": "Ни одна фаза не теряет расход; после посадки ≥25% в принятой модели."
+      },
+      {
+        "id": "ENDPOINTS",
+        "status": "pass",
+        "title": "Непрерывность траекторий",
+        "detail": "Взлёт, посадка, позиции и высоты непрерывны; повторный вылет начинается в месте предыдущей посадки."
+      },
+      {
+        "id": "WINDOW",
+        "status": "pass",
+        "title": "Календарь и обслуживание",
+        "detail": "Подготовка, общее окно, занятость БВС, обслуживание и предел вылетов проверены."
+      },
+      {
+        "id": "BATTERIES",
+        "status": "pass",
+        "title": "Экземпляры батарей",
+        "detail": "Проверены текущая батарея, расход между повторными вылетами и запас на возвращение; автоматического восстановления заряда нет."
+      },
+      {
+        "id": "COMPATIBILITY",
+        "status": "pass",
+        "title": "Совместимость и пределы профиля",
+        "detail": "Выбранные БВС, назначение, работа, ветер и ограничения скорости согласованы."
+      },
+      {
+        "id": "FLIGHT_ENVELOPE",
+        "status": "pass",
+        "title": "Заданный высотный диапазон",
+        "detail": "Ограничение съёмочной высоты отдельно от взлёта/посадки; абсолютный потолок всех фаз."
+      },
+      {
+        "id": "FOUR_DIMENSIONAL",
+        "status": "pass",
+        "title": "Четырёхмерные ограничения",
+        "detail": "Сегменты пересечены с полигоном, интервалом высоты и активным временем, расширенным на ±2 с. Неизвестный верх закрывает весь столб."
+      },
+      {
+        "id": "SEPARATION",
+        "status": "pass",
+        "title": "Непрерывное разнесение",
+        "detail": "Аналитический минимум расстояния между линейными сегментами с учётом вертикального объёма БВС–геофизический подвес, не проверка по кадрам. Параметры: Учебные защитные расстояния и интервалы; не утверждённый норматив. Временная неопределённость консервативно расширяет защитные расстояния и интервалы. Колебания подвеса не моделируются."
+      },
+      {
+        "id": "DAYLIGHT",
+        "status": "pass",
+        "title": "Условия освещения",
+        "detail": "Проверены только работы с включённым правилом; Солнце вычислено по UTC и координатам, шаг≤60 с и запас0,5°; облачное исключение не применяется."
+      },
+      {
+        "id": "GROUND_SEPARATION",
+        "status": "pass",
+        "title": "Свободные места взлёта и посадки",
+        "detail": "Проверены все переданные БВС на земле: до первого вылета, между вылетами и после посадки; также неназначенные аппараты. Удаление с площадки без данных не предполагается."
+      },
+      {
+        "id": "CLOUD_CEILING",
+        "status": "pass",
+        "title": "Нижняя граница облаков и запас",
+        "detail": "Потолок 200 м = нижняя граница 250 м − запас 50 м; максимальная заданная/маршрутная высота 100 м. Высоты относительно единого базового уровня старта/модельной плоскости, не реальная AGL. Постоянные условия на всё окно, источник: Синтетические постоянные условия; облака относительно общей модельной плоскости старта, не прогноз."
+      },
+      {
+        "id": "VISIBILITY",
+        "status": "pass",
+        "title": "Заданный минимум видимости",
+        "detail": "Заданная видимость 5000 м, требуемый минимум 1000 м. Это не проверка фактического обзора или качества съёмки. Постоянные условия на всё окно, источник: Синтетические постоянные условия; облака относительно общей модельной плоскости старта, не прогноз."
+      },
+      {
+        "id": "RESERVE_LANDING",
+        "status": "pass",
+        "title": "Достижимая посадка из каждой точки",
+        "detail": "Консервативный сертификат: остаток того же проверенного непрерывного маршрута является допустимым путём к назначенной посадке и заканчивается с требуемым резервом. Это не кратчайший аварийный уход."
+      },
+      {
+        "id": "ALTERNATE_ESCAPE",
+        "status": "unknown",
+        "title": "Альтернативный аварийный уход",
+        "detail": "Отдельный интервальный протокол ухода доступен в «Результаты → Анализ → Возврат из любой части маршрута». Этот основной набор проверок не подменяет его результат. Падение, внезапные новые условия и внешние БВС не покрываются сертификатом исходного плана."
+      },
+      {
+        "id": "TERRAIN",
+        "status": "pass",
+        "title": "Поверхность в расчётной модели",
+        "detail": "Единая горизонтальная плоскость 0 м; высоты траекторий относительно неё. Источник: Синтетическая горизонтальная поверхность; не реальный DEM участка. Это не проверка реального рельефа."
+      },
+      {
+        "id": "CALIBRATION",
+        "status": "unknown",
+        "title": "Реальная динамика и энергия",
+        "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+      },
+      {
+        "id": "IMAGE_FOOTPRINTS",
+        "status": "unknown",
+        "title": "Реальные фотоотпечатки",
+        "detail": "Отдельно проверяются ожидаемые отпечатки над плоской поверхностью. Реальные изображения, наклоны, экспозиция и аппаратное срабатывание камеры не получены и не подтверждены."
+      },
+      {
+        "id": "PHOTO_rgb-01_COVERAGE",
+        "status": "pass",
+        "title": "Покрытие ожидаемыми кадрами",
+        "detail": "390 модельных экспозиций; непокрыто 0.00 из 420000.00 м². Проверяются исходный контур, отверстия, края и стыки. Камера вниз, плоская поверхность; реальные фото не получены."
+      },
+      {
+        "id": "PHOTO_rgb-01_OVERLAP",
+        "status": "pass",
+        "title": "Продольное перекрытие ожидаемых кадров",
+        "detail": "70.00% на каждом прямом проходе; требование 70.00%. Между разворотами непрерывность съёмки не предполагается."
+      },
+      {
+        "id": "AIRSPACE_PERMISSION",
+        "status": "unknown",
+        "title": "Допуск к реальному полёту",
+        "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+      },
+      {
+        "id": "rgb-01:QUALITY_rgb-01_SOURCE",
+        "status": "unknown",
+        "title": "Источник параметров сенсора",
+        "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+      },
+      {
+        "id": "rgb-01:QUALITY_rgb-01_TYPE",
+        "status": "pass",
+        "title": "Тип сенсора",
+        "detail": "Камерная модель применима к RGB/MS/ИК, не к лазерным или геофизическим измерениям."
+      },
+      {
+        "id": "rgb-01:QUALITY_rgb-01_FIELDS",
+        "status": "pass",
+        "title": "Параметры камеры",
+        "detail": "Нужны размеры сенсора, объектив, разрешение, перекрытие, период и целевой GSD."
+      },
+      {
+        "id": "rgb-01:QUALITY_rgb-01_GSD",
+        "status": "pass",
+        "title": "Детализация в модели",
+        "detail": "1.958 см/пиксель; требование ≤3 см."
+      },
+      {
+        "id": "rgb-01:QUALITY_rgb-01_STRIP",
+        "status": "pass",
+        "title": "Размеры покрытия",
+        "detail": "Отпечаток и шаг кадров должны быть в поддерживаемом диапазоне ядра."
+      },
+      {
+        "id": "COVERAGE_rgb-01",
+        "status": "pass",
+        "title": "Геометрическое покрытие работы",
+        "detail": "100.000% доступной области; 100.000% исходной. Исключённая запретами часть не засчитана как выполненная."
+      }
+    ],
+    "metrics": {
+      "areaHa": 41.9999999999814,
+      "targetHa": 41.9999999999814,
+      "excludedHa": 0,
+      "coveragePct": 99.9999999936793,
+      "makespanSec": 1798.9683056188137,
+      "flightTimeSec": 2862.1175720391198,
+      "distanceM": 19898.910915558503,
+      "stripCount": 15,
+      "bearingDeg": 0
+    },
+    "baseline": null,
+    "trace": [
+      {
+        "event": "SEARCH_STRATEGY",
+        "detail": "parallel-maximum-prefix-v1"
+      },
+      {
+        "event": "SORTIE",
+        "detail": "sortie-1: rgb-01, rgb-fast, rgb-fast-battery-1, 7 полос, t=60.0..1018.7 с, остаток 27.4%."
+      },
+      {
+        "event": "SORTIE",
+        "detail": "sortie-2: rgb-01, rgb-near, rgb-near-battery-1, 4 полос, t=60.0..1187.2 с, остаток 37.4%."
+      },
+      {
+        "event": "SORTIE",
+        "detail": "sortie-3: rgb-01, rgb-center, rgb-center-battery-1, 4 полос, t=1022.7..1799.0 с, остаток 50.2%."
+      },
+      {
+        "event": "PARALLEL_BASELINE_PROTOCOL",
+        "detail": "parallel-maximum-prefix-v1: исходный порядок работ/полос, максимальный допустимый пакет, жадное назначение по makespan; одновременные вылеты разрешены и проверяются. Без откатов/смены направления полос. Бюджет 1000 мс; 40 попыток. Это контрольный алгоритм, не глобальный оптимум."
+      }
+    ],
+    "computationMs": 9.791799999999967
+  },
+  "sorties": [
+    {
+      "id": "sortie-1",
+      "jobId": "rgb-01",
+      "batteryId": "rgb-fast-battery-1",
+      "vehicleId": "rgb-fast",
+      "name": "БВС 03 · быстрый",
+      "startSec": 60,
+      "endSec": 1018.7040073184595,
+      "readySec": 1198.7040073184594,
+      "segments": [
+        {
+          "from": [
+            30.311163386008722,
+            60.033201359272546
+          ],
+          "to": [
+            30.311163386008722,
+            60.033201359272546
+          ],
+          "phase": "takeoff",
+          "altitudeFromM": 0,
+          "altitudeToM": 100,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0,
+          "startSec": 60,
+          "endSec": 93.33333333333334,
+          "batteryFromPct": 100,
+          "batteryToPct": 97.47474747474747
+        },
+        {
+          "from": [
+            30.311163386008722,
+            60.033201359272546
+          ],
+          "to": [
+            30.300420127430435,
+            60.04039592218217
+          ],
+          "phase": "transit",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 12,
+          "groundSpeedMps": 11.183497198059351,
+          "distanceM": 998.0035626591341,
+          "startSec": 93.33333333333334,
+          "endSec": 182.5722847082499,
+          "batteryFromPct": 97.47474747474747,
+          "batteryToPct": 90.71422085543561
+        },
+        {
+          "from": [
+            30.300420127430435,
+            60.04039592218217
+          ],
+          "to": [
+            30.300420127430435,
+            60.04039592218217
+          ],
+          "phase": "turn",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0,
+          "startSec": 182.5722847082499,
+          "endSec": 186.5722847082499,
+          "batteryFromPct": 90.71422085543561,
+          "batteryToPct": 90.41119055240532
+        },
+        {
+          "from": [
+            30.300420127430435,
+            60.04039592218217
+          ],
+          "to": [
+            30.300420127430435,
+            60.03500000000017
+          ],
+          "phase": "survey",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 11,
+          "groundSpeedMps": 12,
+          "distanceM": 599.9999999613252,
+          "startSec": 186.5722847082499,
+          "endSec": 236.572284705027,
+          "batteryFromPct": 90.41119055240532,
+          "batteryToPct": 86.62331176477069,
+          "stripId": 0
+        },
+        {
+          "from": [
+            30.300420127430435,
+            60.03500000000017
+          ],
+          "to": [
+            30.301260382291307,
+            60.04039592218217
+          ],
+          "phase": "transit",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 12,
+          "groundSpeedMps": 11.002760492433564,
+          "distanceM": 601.8120784193087,
+          "startSec": 236.572284705027,
+          "endSec": 291.26874736393574,
+          "batteryFromPct": 86.62331176477068,
+          "batteryToPct": 82.47964035121699
+        },
+        {
+          "from": [
+            30.301260382291307,
+            60.04039592218217
+          ],
+          "to": [
+            30.301260382291307,
+            60.04039592218217
+          ],
+          "phase": "turn",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0,
+          "startSec": 291.26874736393574,
+          "endSec": 295.26874736393574,
+          "batteryFromPct": 82.47964035121699,
+          "batteryToPct": 82.17661004818669
+        },
+        {
+          "from": [
+            30.301260382291307,
+            60.04039592218217
+          ],
+          "to": [
+            30.301260382291307,
+            60.03500000000017
+          ],
+          "phase": "survey",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 11,
+          "groundSpeedMps": 12,
+          "distanceM": 599.9999999613252,
+          "startSec": 295.26874736393574,
+          "endSec": 345.26874736071284,
+          "batteryFromPct": 82.17661004818669,
+          "batteryToPct": 78.38873126055206,
+          "stripId": 1
+        },
+        {
+          "from": [
+            30.301260382291307,
+            60.03500000000017
+          ],
+          "to": [
+            30.30210063715218,
+            60.04039592218217
+          ],
+          "phase": "transit",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 12,
+          "groundSpeedMps": 11.002760492433564,
+          "distanceM": 601.8120784193087,
+          "startSec": 345.26874736071284,
+          "endSec": 399.96521001962157,
+          "batteryFromPct": 78.38873126055205,
+          "batteryToPct": 74.24505984699836
+        },
+        {
+          "from": [
+            30.30210063715218,
+            60.04039592218217
+          ],
+          "to": [
+            30.30210063715218,
+            60.04039592218217
+          ],
+          "phase": "turn",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0,
+          "startSec": 399.96521001962157,
+          "endSec": 403.96521001962157,
+          "batteryFromPct": 74.24505984699837,
+          "batteryToPct": 73.94202954396808
+        },
+        {
+          "from": [
+            30.30210063715218,
+            60.04039592218217
+          ],
+          "to": [
+            30.30210063715218,
+            60.03500000000017
+          ],
+          "phase": "survey",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 11,
+          "groundSpeedMps": 12,
+          "distanceM": 599.9999999613252,
+          "startSec": 403.96521001962157,
+          "endSec": 453.96521001639866,
+          "batteryFromPct": 73.94202954396806,
+          "batteryToPct": 70.15415075633344,
+          "stripId": 2
+        },
+        {
+          "from": [
+            30.30210063715218,
+            60.03500000000017
+          ],
+          "to": [
+            30.30294089201305,
+            60.04039592218217
+          ],
+          "phase": "transit",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 12,
+          "groundSpeedMps": 11.002760492433564,
+          "distanceM": 601.8120784193087,
+          "startSec": 453.96521001639866,
+          "endSec": 508.6616726753074,
+          "batteryFromPct": 70.15415075633344,
+          "batteryToPct": 66.01047934277975
+        },
+        {
+          "from": [
+            30.30294089201305,
+            60.04039592218217
+          ],
+          "to": [
+            30.30294089201305,
+            60.04039592218217
+          ],
+          "phase": "turn",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0,
+          "startSec": 508.6616726753074,
+          "endSec": 512.6616726753074,
+          "batteryFromPct": 66.01047934277975,
+          "batteryToPct": 65.70744903974945
+        },
+        {
+          "from": [
+            30.30294089201305,
+            60.04039592218217
+          ],
+          "to": [
+            30.30294089201305,
+            60.03500000000017
+          ],
+          "phase": "survey",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 11,
+          "groundSpeedMps": 12,
+          "distanceM": 599.9999999613252,
+          "startSec": 512.6616726753074,
+          "endSec": 562.6616726720845,
+          "batteryFromPct": 65.70744903974943,
+          "batteryToPct": 61.91957025211481,
+          "stripId": 3
+        },
+        {
+          "from": [
+            30.30294089201305,
+            60.03500000000017
+          ],
+          "to": [
+            30.303781146873924,
+            60.04039592218217
+          ],
+          "phase": "transit",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 12,
+          "groundSpeedMps": 11.002760492433564,
+          "distanceM": 601.8120784193087,
+          "startSec": 562.6616726720845,
+          "endSec": 617.3581353309933,
+          "batteryFromPct": 61.919570252114816,
+          "batteryToPct": 57.775898838561126
+        },
+        {
+          "from": [
+            30.303781146873924,
+            60.04039592218217
+          ],
+          "to": [
+            30.303781146873924,
+            60.04039592218217
+          ],
+          "phase": "turn",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0,
+          "startSec": 617.3581353309933,
+          "endSec": 621.3581353309933,
+          "batteryFromPct": 57.77589883856112,
+          "batteryToPct": 57.472868535530814
+        },
+        {
+          "from": [
+            30.303781146873924,
+            60.04039592218217
+          ],
+          "to": [
+            30.303781146873924,
+            60.03500000000017
+          ],
+          "phase": "survey",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 11,
+          "groundSpeedMps": 12,
+          "distanceM": 599.9999999613252,
+          "startSec": 621.3581353309933,
+          "endSec": 671.3581353277704,
+          "batteryFromPct": 57.472868535530814,
+          "batteryToPct": 53.68498974789619,
+          "stripId": 4
+        },
+        {
+          "from": [
+            30.303781146873924,
+            60.03500000000017
+          ],
+          "to": [
+            30.304621401734792,
+            60.04039592218217
+          ],
+          "phase": "transit",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 12,
+          "groundSpeedMps": 11.002760492433564,
+          "distanceM": 601.8120784193087,
+          "startSec": 671.3581353277704,
+          "endSec": 726.054597986679,
+          "batteryFromPct": 53.68498974789618,
+          "batteryToPct": 49.54131833434249
+        },
+        {
+          "from": [
+            30.304621401734792,
+            60.04039592218217
+          ],
+          "to": [
+            30.304621401734792,
+            60.04039592218217
+          ],
+          "phase": "turn",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0,
+          "startSec": 726.054597986679,
+          "endSec": 730.054597986679,
+          "batteryFromPct": 49.5413183343425,
+          "batteryToPct": 49.238288031312194
+        },
+        {
+          "from": [
+            30.304621401734792,
+            60.04039592218217
+          ],
+          "to": [
+            30.304621401734792,
+            60.03500000000017
+          ],
+          "phase": "survey",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 11,
+          "groundSpeedMps": 12,
+          "distanceM": 599.9999999613252,
+          "startSec": 730.054597986679,
+          "endSec": 780.0545979834561,
+          "batteryFromPct": 49.238288031312194,
+          "batteryToPct": 45.45040924367757,
+          "stripId": 5
+        },
+        {
+          "from": [
+            30.304621401734792,
+            60.03500000000017
+          ],
+          "to": [
+            30.305461656595664,
+            60.04039592218217
+          ],
+          "phase": "transit",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 12,
+          "groundSpeedMps": 11.002760492433564,
+          "distanceM": 601.8120784193087,
+          "startSec": 780.0545979834561,
+          "endSec": 834.7510606423648,
+          "batteryFromPct": 45.45040924367757,
+          "batteryToPct": 41.30673783012388
+        },
+        {
+          "from": [
+            30.305461656595664,
+            60.04039592218217
+          ],
+          "to": [
+            30.305461656595664,
+            60.04039592218217
+          ],
+          "phase": "turn",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0,
+          "startSec": 834.7510606423648,
+          "endSec": 838.7510606423648,
+          "batteryFromPct": 41.30673783012387,
+          "batteryToPct": 41.00370752709357
+        },
+        {
+          "from": [
+            30.305461656595664,
+            60.04039592218217
+          ],
+          "to": [
+            30.305461656595664,
+            60.03500000000017
+          ],
+          "phase": "survey",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 11,
+          "groundSpeedMps": 12,
+          "distanceM": 599.9999999613252,
+          "startSec": 838.7510606423648,
+          "endSec": 888.7510606391419,
+          "batteryFromPct": 41.00370752709358,
+          "batteryToPct": 37.215828739458956,
+          "stripId": 6
+        },
+        {
+          "from": [
+            30.305461656595664,
+            60.03500000000017
+          ],
+          "to": [
+            30.311163386008722,
+            60.033201359272546
+          ],
+          "phase": "return",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 12,
+          "groundSpeedMps": 12.504170455225923,
+          "distanceM": 374.5367509144809,
+          "startSec": 888.7510606391419,
+          "endSec": 918.7040073184595,
+          "batteryFromPct": 37.21582873945894,
+          "batteryToPct": 34.94666611223791
+        },
+        {
+          "from": [
+            30.311163386008722,
+            60.033201359272546
+          ],
+          "to": [
+            30.311163386008722,
+            60.033201359272546
+          ],
+          "phase": "landing",
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0,
+          "startSec": 918.7040073184595,
+          "endSec": 1018.7040073184595,
+          "batteryFromPct": 34.94666611223791,
+          "batteryToPct": 27.37090853648033
+        }
+      ],
+      "durationSec": 958.7040073184595,
+      "distanceM": 9183.412783818745,
+      "remainingPct": 27.370908536480343,
+      "strips": 7,
+      "shots": 182
+    },
+    {
+      "id": "sortie-2",
+      "jobId": "rgb-01",
+      "batteryId": "rgb-near-battery-1",
+      "vehicleId": "rgb-near",
+      "name": "БВС 02 · ближняя база",
+      "startSec": 60,
+      "endSec": 1187.1592664203063,
+      "readySec": 1367.1592664203063,
+      "segments": [
+        {
+          "from": [
+            30.30144043690435,
+            60.034100679636275
+          ],
+          "to": [
+            30.30144043690435,
+            60.034100679636275
+          ],
+          "phase": "takeoff",
+          "altitudeFromM": 0,
+          "altitudeToM": 100,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0,
+          "startSec": 60,
+          "endSec": 93.33333333333334,
+          "batteryFromPct": 100,
+          "batteryToPct": 98.14814814814815
+        },
+        {
+          "from": [
+            30.30144043690435,
+            60.034100679636275
+          ],
+          "to": [
+            30.306301911456536,
+            60.04039592218217
+          ],
+          "phase": "transit",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 6,
+          "groundSpeedMps": 5.056196292492327,
+          "distanceM": 750.2666192576767,
+          "startSec": 93.33333333333334,
+          "endSec": 241.7189132942433,
+          "batteryFromPct": 98.14814814814815,
+          "batteryToPct": 89.90450481698649
+        },
+        {
+          "from": [
+            30.306301911456536,
+            60.04039592218217
+          ],
+          "to": [
+            30.306301911456536,
+            60.04039592218217
+          ],
+          "phase": "turn",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0,
+          "startSec": 241.7189132942433,
+          "endSec": 245.7189132942433,
+          "batteryFromPct": 89.90450481698649,
+          "batteryToPct": 89.68228259476426
+        },
+        {
+          "from": [
+            30.306301911456536,
+            60.04039592218217
+          ],
+          "to": [
+            30.306301911456536,
+            60.03500000000017
+          ],
+          "phase": "survey",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 5,
+          "groundSpeedMps": 6,
+          "distanceM": 599.9999999613252,
+          "startSec": 245.7189132942433,
+          "endSec": 345.7189132877975,
+          "batteryFromPct": 89.68228259476426,
+          "batteryToPct": 84.1267270395668,
+          "stripId": 7
+        },
+        {
+          "from": [
+            30.306301911456536,
+            60.03500000000017
+          ],
+          "to": [
+            30.30714216631741,
+            60.04039592218217
+          ],
+          "phase": "transit",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 6,
+          "groundSpeedMps": 5.002509932134753,
+          "distanceM": 601.8120784193087,
+          "startSec": 345.7189132877975,
+          "endSec": 466.02093898762325,
+          "batteryFromPct": 84.1267270395668,
+          "batteryToPct": 77.44328116735426
+        },
+        {
+          "from": [
+            30.30714216631741,
+            60.04039592218217
+          ],
+          "to": [
+            30.30714216631741,
+            60.04039592218217
+          ],
+          "phase": "turn",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0,
+          "startSec": 466.02093898762325,
+          "endSec": 470.02093898762325,
+          "batteryFromPct": 77.44328116735426,
+          "batteryToPct": 77.22105894513203
+        },
+        {
+          "from": [
+            30.30714216631741,
+            60.04039592218217
+          ],
+          "to": [
+            30.30714216631741,
+            60.03500000000017
+          ],
+          "phase": "survey",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 5,
+          "groundSpeedMps": 6,
+          "distanceM": 599.9999999613252,
+          "startSec": 470.02093898762325,
+          "endSec": 570.0209389811774,
+          "batteryFromPct": 77.22105894513204,
+          "batteryToPct": 71.66550338993459,
+          "stripId": 8
+        },
+        {
+          "from": [
+            30.30714216631741,
+            60.03500000000017
+          ],
+          "to": [
+            30.30798242117828,
+            60.04039592218217
+          ],
+          "phase": "transit",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 6,
+          "groundSpeedMps": 5.002509932134753,
+          "distanceM": 601.8120784193087,
+          "startSec": 570.0209389811774,
+          "endSec": 690.3229646810032,
+          "batteryFromPct": 71.66550338993459,
+          "batteryToPct": 64.98205751772204
+        },
+        {
+          "from": [
+            30.30798242117828,
+            60.04039592218217
+          ],
+          "to": [
+            30.30798242117828,
+            60.04039592218217
+          ],
+          "phase": "turn",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0,
+          "startSec": 690.3229646810032,
+          "endSec": 694.3229646810032,
+          "batteryFromPct": 64.98205751772204,
+          "batteryToPct": 64.75983529549981
+        },
+        {
+          "from": [
+            30.30798242117828,
+            60.04039592218217
+          ],
+          "to": [
+            30.30798242117828,
+            60.03500000000017
+          ],
+          "phase": "survey",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 5,
+          "groundSpeedMps": 6,
+          "distanceM": 599.9999999613252,
+          "startSec": 694.3229646810032,
+          "endSec": 794.3229646745574,
+          "batteryFromPct": 64.75983529549983,
+          "batteryToPct": 59.20427974030237,
+          "stripId": 9
+        },
+        {
+          "from": [
+            30.30798242117828,
+            60.03500000000017
+          ],
+          "to": [
+            30.30882267603915,
+            60.04039592218217
+          ],
+          "phase": "transit",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 6,
+          "groundSpeedMps": 5.002509932134753,
+          "distanceM": 601.8120784193087,
+          "startSec": 794.3229646745574,
+          "endSec": 914.6249903743832,
+          "batteryFromPct": 59.20427974030237,
+          "batteryToPct": 52.520833868089824
+        },
+        {
+          "from": [
+            30.30882267603915,
+            60.04039592218217
+          ],
+          "to": [
+            30.30882267603915,
+            60.04039592218217
+          ],
+          "phase": "turn",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0,
+          "startSec": 914.6249903743832,
+          "endSec": 918.6249903743832,
+          "batteryFromPct": 52.520833868089824,
+          "batteryToPct": 52.2986116458676
+        },
+        {
+          "from": [
+            30.30882267603915,
+            60.04039592218217
+          ],
+          "to": [
+            30.30882267603915,
+            60.03500000000017
+          ],
+          "phase": "survey",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 5,
+          "groundSpeedMps": 6,
+          "distanceM": 599.9999999613252,
+          "startSec": 918.6249903743832,
+          "endSec": 1018.6249903679374,
+          "batteryFromPct": 52.298611645867595,
+          "batteryToPct": 46.74305609067014,
+          "stripId": 10
+        },
+        {
+          "from": [
+            30.30882267603915,
+            60.03500000000017
+          ],
+          "to": [
+            30.30144043690435,
+            60.034100679636275
+          ],
+          "phase": "return",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 6,
+          "groundSpeedMps": 6.157779453338963,
+          "distanceM": 422.01895692473784,
+          "startSec": 1018.6249903679374,
+          "endSec": 1087.1592664203063,
+          "batteryFromPct": 46.743056090670144,
+          "batteryToPct": 42.935596309982984
+        },
+        {
+          "from": [
+            30.30144043690435,
+            60.034100679636275
+          ],
+          "to": [
+            30.30144043690435,
+            60.034100679636275
+          ],
+          "phase": "landing",
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0,
+          "startSec": 1087.1592664203063,
+          "endSec": 1187.1592664203063,
+          "batteryFromPct": 42.935596309982984,
+          "batteryToPct": 37.38004075442743
+        }
+      ],
+      "durationSec": 1127.1592664203063,
+      "distanceM": 5377.721811285642,
+      "remainingPct": 37.380040754427434,
+      "strips": 4,
+      "shots": 104
+    },
+    {
+      "id": "sortie-3",
+      "jobId": "rgb-01",
+      "batteryId": "rgb-center-battery-1",
+      "vehicleId": "rgb-center",
+      "name": "БВС 01 · центральная база",
+      "startSec": 1022.7140073184595,
+      "endSec": 1798.9683056188137,
+      "readySec": 1978.9683056188137,
+      "segments": [
+        {
+          "from": [
+            30.306301911456536,
+            60.03365101945441
+          ],
+          "to": [
+            30.306301911456536,
+            60.03365101945441
+          ],
+          "phase": "takeoff",
+          "altitudeFromM": 0,
+          "altitudeToM": 100,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0,
+          "startSec": 1022.7140073184595,
+          "endSec": 1056.0473406517929,
+          "batteryFromPct": 100,
+          "batteryToPct": 97.86324786324786
+        },
+        {
+          "from": [
+            30.306301911456536,
+            60.03365101945441
+          ],
+          "to": [
+            30.30966293090002,
+            60.04039592218217
+          ],
+          "phase": "transit",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 9,
+          "groundSpeedMps": 8.02636306827609,
+          "distanceM": 772.8806145939549,
+          "startSec": 1056.0473406517929,
+          "endSec": 1152.3400959158473,
+          "batteryFromPct": 97.86324786324786,
+          "batteryToPct": 91.6906353463213
+        },
+        {
+          "from": [
+            30.30966293090002,
+            60.04039592218217
+          ],
+          "to": [
+            30.30966293090002,
+            60.04039592218217
+          ],
+          "phase": "turn",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0,
+          "startSec": 1152.3400959158473,
+          "endSec": 1156.3400959158473,
+          "batteryFromPct": 91.6906353463213,
+          "batteryToPct": 91.43422508991104
+        },
+        {
+          "from": [
+            30.30966293090002,
+            60.04039592218217
+          ],
+          "to": [
+            30.30966293090002,
+            60.03500000000017
+          ],
+          "phase": "survey",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 8,
+          "groundSpeedMps": 9,
+          "distanceM": 599.9999999613252,
+          "startSec": 1156.3400959158473,
+          "endSec": 1223.0067625782167,
+          "batteryFromPct": 91.43422508991104,
+          "batteryToPct": 87.16072081668223,
+          "stripId": 11
+        },
+        {
+          "from": [
+            30.30966293090002,
+            60.03500000000017
+          ],
+          "to": [
+            30.310503185760894,
+            60.04039592218217
+          ],
+          "phase": "transit",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 9,
+          "groundSpeedMps": 8.002676974852951,
+          "distanceM": 601.8120784193087,
+          "startSec": 1223.0067625782167,
+          "endSec": 1298.2081083666824,
+          "batteryFromPct": 87.16072081668223,
+          "batteryToPct": 82.34012172767802
+        },
+        {
+          "from": [
+            30.310503185760894,
+            60.04039592218217
+          ],
+          "to": [
+            30.310503185760894,
+            60.04039592218217
+          ],
+          "phase": "turn",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0,
+          "startSec": 1298.2081083666824,
+          "endSec": 1302.2081083666824,
+          "batteryFromPct": 82.34012172767802,
+          "batteryToPct": 82.08371147126776
+        },
+        {
+          "from": [
+            30.310503185760894,
+            60.04039592218217
+          ],
+          "to": [
+            30.310503185760894,
+            60.03500000000017
+          ],
+          "phase": "survey",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 8,
+          "groundSpeedMps": 9,
+          "distanceM": 599.9999999613252,
+          "startSec": 1302.2081083666824,
+          "endSec": 1368.8747750290518,
+          "batteryFromPct": 82.08371147126776,
+          "batteryToPct": 77.81020719803895,
+          "stripId": 12
+        },
+        {
+          "from": [
+            30.310503185760894,
+            60.03500000000017
+          ],
+          "to": [
+            30.311343440621766,
+            60.04039592218217
+          ],
+          "phase": "transit",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 9,
+          "groundSpeedMps": 8.002676974852951,
+          "distanceM": 601.8120784193087,
+          "startSec": 1368.8747750290518,
+          "endSec": 1444.0761208175174,
+          "batteryFromPct": 77.81020719803895,
+          "batteryToPct": 72.98960810903475
+        },
+        {
+          "from": [
+            30.311343440621766,
+            60.04039592218217
+          ],
+          "to": [
+            30.311343440621766,
+            60.04039592218217
+          ],
+          "phase": "turn",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0,
+          "startSec": 1444.0761208175174,
+          "endSec": 1448.0761208175174,
+          "batteryFromPct": 72.98960810903475,
+          "batteryToPct": 72.73319785262449
+        },
+        {
+          "from": [
+            30.311343440621766,
+            60.04039592218217
+          ],
+          "to": [
+            30.311343440621766,
+            60.03500000000017
+          ],
+          "phase": "survey",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 8,
+          "groundSpeedMps": 9,
+          "distanceM": 599.9999999613252,
+          "startSec": 1448.0761208175174,
+          "endSec": 1514.7427874798868,
+          "batteryFromPct": 72.73319785262449,
+          "batteryToPct": 68.45969357939568,
+          "stripId": 13
+        },
+        {
+          "from": [
+            30.311343440621766,
+            60.03500000000017
+          ],
+          "to": [
+            30.312183695482638,
+            60.04039592218217
+          ],
+          "phase": "transit",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 9,
+          "groundSpeedMps": 8.00267697485295,
+          "distanceM": 601.8120784193086,
+          "startSec": 1514.7427874798868,
+          "endSec": 1589.9441332683525,
+          "batteryFromPct": 68.45969357939568,
+          "batteryToPct": 63.63909449039147
+        },
+        {
+          "from": [
+            30.312183695482638,
+            60.04039592218217
+          ],
+          "to": [
+            30.312183695482638,
+            60.04039592218217
+          ],
+          "phase": "turn",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0,
+          "startSec": 1589.9441332683525,
+          "endSec": 1593.9441332683525,
+          "batteryFromPct": 63.63909449039147,
+          "batteryToPct": 63.382684233981216
+        },
+        {
+          "from": [
+            30.312183695482638,
+            60.04039592218217
+          ],
+          "to": [
+            30.312183695482638,
+            60.03500000000017
+          ],
+          "phase": "survey",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 8,
+          "groundSpeedMps": 9,
+          "distanceM": 599.9999999613252,
+          "startSec": 1593.9441332683525,
+          "endSec": 1660.610799930722,
+          "batteryFromPct": 63.382684233981216,
+          "batteryToPct": 59.10917996075241,
+          "stripId": 14
+        },
+        {
+          "from": [
+            30.312183695482638,
+            60.03500000000017
+          ],
+          "to": [
+            30.306301911456536,
+            60.03365101945441
+          ],
+          "phase": "return",
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "airspeedMps": 9,
+          "groundSpeedMps": 9.371294204579335,
+          "distanceM": 359.4594707569322,
+          "startSec": 1660.610799930722,
+          "endSec": 1698.9683056188137,
+          "batteryFromPct": 59.1091799607524,
+          "batteryToPct": 56.65036549356704
+        },
+        {
+          "from": [
+            30.306301911456536,
+            60.03365101945441
+          ],
+          "to": [
+            30.306301911456536,
+            60.03365101945441
+          ],
+          "phase": "landing",
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0,
+          "startSec": 1698.9683056188137,
+          "endSec": 1798.9683056188137,
+          "batteryFromPct": 56.65036549356704,
+          "batteryToPct": 50.24010908331063
+        }
+      ],
+      "durationSec": 776.2542983003542,
+      "distanceM": 5337.776320454114,
+      "remainingPct": 50.24010908331063,
+      "strips": 4,
+      "shots": 104
+    }
+  ],
+  "checks": [
+    {
+      "id": "sortie-1:QUALITY_rgb-01_CADENCE",
+      "status": "pass",
+      "title": "Интервал кадров",
+      "detail": "1.950 с; камера требует ≥1 с."
+    },
+    {
+      "id": "sortie-1:QUALITY_rgb-01_BLUR",
+      "status": "pass",
+      "title": "Смаз в поступательной модели",
+      "detail": "0.613 пикселя; предел 1."
+    },
+    {
+      "id": "sortie-2:QUALITY_rgb-01_CADENCE",
+      "status": "pass",
+      "title": "Интервал кадров",
+      "detail": "3.900 с; камера требует ≥1 с."
+    },
+    {
+      "id": "sortie-2:QUALITY_rgb-01_BLUR",
+      "status": "pass",
+      "title": "Смаз в поступательной модели",
+      "detail": "0.306 пикселя; предел 1."
+    },
+    {
+      "id": "sortie-3:QUALITY_rgb-01_CADENCE",
+      "status": "pass",
+      "title": "Интервал кадров",
+      "detail": "2.600 с; камера требует ≥1 с."
+    },
+    {
+      "id": "sortie-3:QUALITY_rgb-01_BLUR",
+      "status": "pass",
+      "title": "Смаз в поступательной модели",
+      "detail": "0.460 пикселя; предел 1."
+    },
+    {
+      "id": "GEOMETRY",
+      "status": "pass",
+      "title": "Границы и статические запреты",
+      "detail": "Каждый отрезок проверен целиком, включая переходы и возврат. Запреты расширены, разрешённая зона сужена на защитный запас 5 м в общей локальной проекции. Это параметр модели, не универсальная норма."
+    },
+    {
+      "id": "STRIPS",
+      "status": "pass",
+      "title": "Все рабочие полосы назначены",
+      "detail": "Сверены идентификаторы и геометрия каждой исходной полосы, пропуски и повторы запрещены."
+    },
+    {
+      "id": "REQUESTED_AREA",
+      "status": "pass",
+      "title": "Исходная область не сокращена скрыто",
+      "detail": "Запреты и границы не могут незаметно убрать часть задания. Численный допуск — только 0,1 м², отдельно от порога геометрического покрытия 99%. Потери: rgb-01: 0.000 м²."
+    },
+    {
+      "id": "PHASES",
+      "status": "pass",
+      "title": "Обязательные манёвры и порядок фаз",
+      "detail": "Каждой рабочей полосе предшествует манёвр с turnSeconds профиля; промежуточные вершины перехода/возврата не могут терять поворот. Возврат допускается только после последней рабочей полосы."
+    },
+    {
+      "id": "TIME",
+      "status": "pass",
+      "title": "Время и скорости",
+      "detail": "Независимо пересчитаны длительности, ветер, геометрическая длина и фактическая требуемая воздушная скорость."
+    },
+    {
+      "id": "ENERGY",
+      "status": "pass",
+      "title": "Линейный баланс ресурса",
+      "detail": "Ни одна фаза не теряет расход; после посадки ≥25% в принятой модели."
+    },
+    {
+      "id": "ENDPOINTS",
+      "status": "pass",
+      "title": "Непрерывность траекторий",
+      "detail": "Взлёт, посадка, позиции и высоты непрерывны; повторный вылет начинается в месте предыдущей посадки."
+    },
+    {
+      "id": "WINDOW",
+      "status": "pass",
+      "title": "Календарь и обслуживание",
+      "detail": "Подготовка, общее окно, занятость БВС, обслуживание и предел вылетов проверены."
+    },
+    {
+      "id": "BATTERIES",
+      "status": "pass",
+      "title": "Экземпляры батарей",
+      "detail": "Проверены текущая батарея, расход между повторными вылетами и запас на возвращение; автоматического восстановления заряда нет."
+    },
+    {
+      "id": "COMPATIBILITY",
+      "status": "pass",
+      "title": "Совместимость и пределы профиля",
+      "detail": "Выбранные БВС, назначение, работа, ветер и ограничения скорости согласованы."
+    },
+    {
+      "id": "FLIGHT_ENVELOPE",
+      "status": "pass",
+      "title": "Заданный высотный диапазон",
+      "detail": "Ограничение съёмочной высоты отдельно от взлёта/посадки; абсолютный потолок всех фаз."
+    },
+    {
+      "id": "FOUR_DIMENSIONAL",
+      "status": "pass",
+      "title": "Четырёхмерные ограничения",
+      "detail": "Сегменты пересечены с полигоном, интервалом высоты и активным временем, расширенным на ±2 с. Неизвестный верх закрывает весь столб."
+    },
+    {
+      "id": "SEPARATION",
+      "status": "pass",
+      "title": "Непрерывное разнесение",
+      "detail": "Аналитический минимум расстояния между линейными сегментами с учётом вертикального объёма БВС–геофизический подвес, не проверка по кадрам. Параметры: Учебные защитные расстояния и интервалы; не утверждённый норматив. Временная неопределённость консервативно расширяет защитные расстояния и интервалы. Колебания подвеса не моделируются."
+    },
+    {
+      "id": "DAYLIGHT",
+      "status": "pass",
+      "title": "Условия освещения",
+      "detail": "Проверены только работы с включённым правилом; Солнце вычислено по UTC и координатам, шаг≤60 с и запас0,5°; облачное исключение не применяется."
+    },
+    {
+      "id": "GROUND_SEPARATION",
+      "status": "pass",
+      "title": "Свободные места взлёта и посадки",
+      "detail": "Проверены все переданные БВС на земле: до первого вылета, между вылетами и после посадки; также неназначенные аппараты. Удаление с площадки без данных не предполагается."
+    },
+    {
+      "id": "CLOUD_CEILING",
+      "status": "pass",
+      "title": "Нижняя граница облаков и запас",
+      "detail": "Потолок 200 м = нижняя граница 250 м − запас 50 м; максимальная заданная/маршрутная высота 100 м. Высоты относительно единого базового уровня старта/модельной плоскости, не реальная AGL. Постоянные условия на всё окно, источник: Синтетические постоянные условия; облака относительно общей модельной плоскости старта, не прогноз."
+    },
+    {
+      "id": "VISIBILITY",
+      "status": "pass",
+      "title": "Заданный минимум видимости",
+      "detail": "Заданная видимость 5000 м, требуемый минимум 1000 м. Это не проверка фактического обзора или качества съёмки. Постоянные условия на всё окно, источник: Синтетические постоянные условия; облака относительно общей модельной плоскости старта, не прогноз."
+    },
+    {
+      "id": "RESERVE_LANDING",
+      "status": "pass",
+      "title": "Достижимая посадка из каждой точки",
+      "detail": "Консервативный сертификат: остаток того же проверенного непрерывного маршрута является допустимым путём к назначенной посадке и заканчивается с требуемым резервом. Это не кратчайший аварийный уход."
+    },
+    {
+      "id": "ALTERNATE_ESCAPE",
+      "status": "unknown",
+      "title": "Альтернативный аварийный уход",
+      "detail": "Отдельный интервальный протокол ухода доступен в «Результаты → Анализ → Возврат из любой части маршрута». Этот основной набор проверок не подменяет его результат. Падение, внезапные новые условия и внешние БВС не покрываются сертификатом исходного плана."
+    },
+    {
+      "id": "TERRAIN",
+      "status": "pass",
+      "title": "Поверхность в расчётной модели",
+      "detail": "Единая горизонтальная плоскость 0 м; высоты траекторий относительно неё. Источник: Синтетическая горизонтальная поверхность; не реальный DEM участка. Это не проверка реального рельефа."
+    },
+    {
+      "id": "CALIBRATION",
+      "status": "unknown",
+      "title": "Реальная динамика и энергия",
+      "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+    },
+    {
+      "id": "IMAGE_FOOTPRINTS",
+      "status": "unknown",
+      "title": "Реальные фотоотпечатки",
+      "detail": "Отдельно проверяются ожидаемые отпечатки над плоской поверхностью. Реальные изображения, наклоны, экспозиция и аппаратное срабатывание камеры не получены и не подтверждены."
+    },
+    {
+      "id": "PHOTO_rgb-01_COVERAGE",
+      "status": "pass",
+      "title": "Покрытие ожидаемыми кадрами",
+      "detail": "390 модельных экспозиций; непокрыто 0.00 из 420000.00 м². Проверяются исходный контур, отверстия, края и стыки. Камера вниз, плоская поверхность; реальные фото не получены."
+    },
+    {
+      "id": "PHOTO_rgb-01_OVERLAP",
+      "status": "pass",
+      "title": "Продольное перекрытие ожидаемых кадров",
+      "detail": "70.00% на каждом прямом проходе; требование 70.00%. Между разворотами непрерывность съёмки не предполагается."
+    },
+    {
+      "id": "AIRSPACE_PERMISSION",
+      "status": "unknown",
+      "title": "Допуск к реальному полёту",
+      "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+    },
+    {
+      "id": "rgb-01:QUALITY_rgb-01_SOURCE",
+      "status": "unknown",
+      "title": "Источник параметров сенсора",
+      "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+    },
+    {
+      "id": "rgb-01:QUALITY_rgb-01_TYPE",
+      "status": "pass",
+      "title": "Тип сенсора",
+      "detail": "Камерная модель применима к RGB/MS/ИК, не к лазерным или геофизическим измерениям."
+    },
+    {
+      "id": "rgb-01:QUALITY_rgb-01_FIELDS",
+      "status": "pass",
+      "title": "Параметры камеры",
+      "detail": "Нужны размеры сенсора, объектив, разрешение, перекрытие, период и целевой GSD."
+    },
+    {
+      "id": "rgb-01:QUALITY_rgb-01_GSD",
+      "status": "pass",
+      "title": "Детализация в модели",
+      "detail": "1.958 см/пиксель; требование ≤3 см."
+    },
+    {
+      "id": "rgb-01:QUALITY_rgb-01_STRIP",
+      "status": "pass",
+      "title": "Размеры покрытия",
+      "detail": "Отпечаток и шаг кадров должны быть в поддерживаемом диапазоне ядра."
+    },
+    {
+      "id": "COVERAGE_rgb-01",
+      "status": "pass",
+      "title": "Геометрическое покрытие работы",
+      "detail": "100.000% доступной области; 100.000% исходной. Исключённая запретами часть не засчитана как выполненная."
+    }
+  ],
+  "events": [
+    {
+      "timeSec": 0,
+      "type": "prepare",
+      "vehicleId": "rgb-center",
+      "sortieId": "sortie-3",
+      "batteryId": "rgb-center-battery-1",
+      "detail": "Подготовка 60 с и ожидание разрешённого старта; модельный стенд."
+    },
+    {
+      "timeSec": 0,
+      "type": "prepare",
+      "vehicleId": "rgb-fast",
+      "sortieId": "sortie-1",
+      "batteryId": "rgb-fast-battery-1",
+      "detail": "Подготовка 60 с и ожидание разрешённого старта; модельный стенд."
+    },
+    {
+      "timeSec": 0,
+      "type": "prepare",
+      "vehicleId": "rgb-near",
+      "sortieId": "sortie-2",
+      "batteryId": "rgb-near-battery-1",
+      "detail": "Подготовка 60 с и ожидание разрешённого старта; модельный стенд."
+    },
+    {
+      "timeSec": 60,
+      "type": "battery",
+      "vehicleId": "rgb-fast",
+      "sortieId": "sortie-1",
+      "batteryId": "rgb-fast-battery-1",
+      "detail": "Текущая батарея rgb-fast-battery-1; заряд 100.0%."
+    },
+    {
+      "timeSec": 60,
+      "type": "takeoff",
+      "vehicleId": "rgb-fast",
+      "sortieId": "sortie-1",
+      "batteryId": "rgb-fast-battery-1",
+      "detail": "Начало вылета по работе rgb-01."
+    },
+    {
+      "timeSec": 60,
+      "type": "battery",
+      "vehicleId": "rgb-near",
+      "sortieId": "sortie-2",
+      "batteryId": "rgb-near-battery-1",
+      "detail": "Текущая батарея rgb-near-battery-1; заряд 100.0%."
+    },
+    {
+      "timeSec": 60,
+      "type": "takeoff",
+      "vehicleId": "rgb-near",
+      "sortieId": "sortie-2",
+      "batteryId": "rgb-near-battery-1",
+      "detail": "Начало вылета по работе rgb-01."
+    },
+    {
+      "timeSec": 186.5722847082499,
+      "type": "survey",
+      "vehicleId": "rgb-fast",
+      "sortieId": "sortie-1",
+      "batteryId": "rgb-fast-battery-1",
+      "detail": "Рабочая полоса 0; расчётное событие сенсора, не полученный снимок."
+    },
+    {
+      "timeSec": 245.7189132942433,
+      "type": "survey",
+      "vehicleId": "rgb-near",
+      "sortieId": "sortie-2",
+      "batteryId": "rgb-near-battery-1",
+      "detail": "Рабочая полоса 7; расчётное событие сенсора, не полученный снимок."
+    },
+    {
+      "timeSec": 295.26874736393574,
+      "type": "survey",
+      "vehicleId": "rgb-fast",
+      "sortieId": "sortie-1",
+      "batteryId": "rgb-fast-battery-1",
+      "detail": "Рабочая полоса 1; расчётное событие сенсора, не полученный снимок."
+    },
+    {
+      "timeSec": 403.96521001962157,
+      "type": "survey",
+      "vehicleId": "rgb-fast",
+      "sortieId": "sortie-1",
+      "batteryId": "rgb-fast-battery-1",
+      "detail": "Рабочая полоса 2; расчётное событие сенсора, не полученный снимок."
+    },
+    {
+      "timeSec": 470.02093898762325,
+      "type": "survey",
+      "vehicleId": "rgb-near",
+      "sortieId": "sortie-2",
+      "batteryId": "rgb-near-battery-1",
+      "detail": "Рабочая полоса 8; расчётное событие сенсора, не полученный снимок."
+    },
+    {
+      "timeSec": 512.6616726753074,
+      "type": "survey",
+      "vehicleId": "rgb-fast",
+      "sortieId": "sortie-1",
+      "batteryId": "rgb-fast-battery-1",
+      "detail": "Рабочая полоса 3; расчётное событие сенсора, не полученный снимок."
+    },
+    {
+      "timeSec": 621.3581353309933,
+      "type": "survey",
+      "vehicleId": "rgb-fast",
+      "sortieId": "sortie-1",
+      "batteryId": "rgb-fast-battery-1",
+      "detail": "Рабочая полоса 4; расчётное событие сенсора, не полученный снимок."
+    },
+    {
+      "timeSec": 694.3229646810032,
+      "type": "survey",
+      "vehicleId": "rgb-near",
+      "sortieId": "sortie-2",
+      "batteryId": "rgb-near-battery-1",
+      "detail": "Рабочая полоса 9; расчётное событие сенсора, не полученный снимок."
+    },
+    {
+      "timeSec": 730.054597986679,
+      "type": "survey",
+      "vehicleId": "rgb-fast",
+      "sortieId": "sortie-1",
+      "batteryId": "rgb-fast-battery-1",
+      "detail": "Рабочая полоса 5; расчётное событие сенсора, не полученный снимок."
+    },
+    {
+      "timeSec": 838.7510606423648,
+      "type": "survey",
+      "vehicleId": "rgb-fast",
+      "sortieId": "sortie-1",
+      "batteryId": "rgb-fast-battery-1",
+      "detail": "Рабочая полоса 6; расчётное событие сенсора, не полученный снимок."
+    },
+    {
+      "timeSec": 918.6249903743832,
+      "type": "survey",
+      "vehicleId": "rgb-near",
+      "sortieId": "sortie-2",
+      "batteryId": "rgb-near-battery-1",
+      "detail": "Рабочая полоса 10; расчётное событие сенсора, не полученный снимок."
+    },
+    {
+      "timeSec": 1018.7040073184595,
+      "type": "landing",
+      "vehicleId": "rgb-fast",
+      "sortieId": "sortie-1",
+      "batteryId": "rgb-fast-battery-1",
+      "detail": "Посадка; остаток 27.4%."
+    },
+    {
+      "timeSec": 1018.7040073184595,
+      "type": "service",
+      "vehicleId": "rgb-fast",
+      "sortieId": "sortie-1",
+      "batteryId": "rgb-fast-battery-1",
+      "detail": "Обслуживание 180 с; БВС доступен не ранее t=1198.7 с."
+    },
+    {
+      "timeSec": 1018.7040073184595,
+      "type": "complete",
+      "vehicleId": "rgb-fast",
+      "sortieId": "sortie-1",
+      "batteryId": "rgb-fast-battery-1",
+      "detail": "Последний назначенный модельный вылет завершён. Получение и копирование реальных материалов съёмки не подтверждено."
+    },
+    {
+      "timeSec": 1022.7140073184595,
+      "type": "battery",
+      "vehicleId": "rgb-center",
+      "sortieId": "sortie-3",
+      "batteryId": "rgb-center-battery-1",
+      "detail": "Текущая батарея rgb-center-battery-1; заряд 100.0%."
+    },
+    {
+      "timeSec": 1022.7140073184595,
+      "type": "takeoff",
+      "vehicleId": "rgb-center",
+      "sortieId": "sortie-3",
+      "batteryId": "rgb-center-battery-1",
+      "detail": "Начало вылета по работе rgb-01."
+    },
+    {
+      "timeSec": 1156.3400959158473,
+      "type": "survey",
+      "vehicleId": "rgb-center",
+      "sortieId": "sortie-3",
+      "batteryId": "rgb-center-battery-1",
+      "detail": "Рабочая полоса 11; расчётное событие сенсора, не полученный снимок."
+    },
+    {
+      "timeSec": 1187.1592664203063,
+      "type": "landing",
+      "vehicleId": "rgb-near",
+      "sortieId": "sortie-2",
+      "batteryId": "rgb-near-battery-1",
+      "detail": "Посадка; остаток 37.4%."
+    },
+    {
+      "timeSec": 1187.1592664203063,
+      "type": "service",
+      "vehicleId": "rgb-near",
+      "sortieId": "sortie-2",
+      "batteryId": "rgb-near-battery-1",
+      "detail": "Обслуживание 180 с; БВС доступен не ранее t=1367.2 с."
+    },
+    {
+      "timeSec": 1187.1592664203063,
+      "type": "complete",
+      "vehicleId": "rgb-near",
+      "sortieId": "sortie-2",
+      "batteryId": "rgb-near-battery-1",
+      "detail": "Последний назначенный модельный вылет завершён. Получение и копирование реальных материалов съёмки не подтверждено."
+    },
+    {
+      "timeSec": 1302.2081083666824,
+      "type": "survey",
+      "vehicleId": "rgb-center",
+      "sortieId": "sortie-3",
+      "batteryId": "rgb-center-battery-1",
+      "detail": "Рабочая полоса 12; расчётное событие сенсора, не полученный снимок."
+    },
+    {
+      "timeSec": 1448.0761208175174,
+      "type": "survey",
+      "vehicleId": "rgb-center",
+      "sortieId": "sortie-3",
+      "batteryId": "rgb-center-battery-1",
+      "detail": "Рабочая полоса 13; расчётное событие сенсора, не полученный снимок."
+    },
+    {
+      "timeSec": 1593.9441332683525,
+      "type": "survey",
+      "vehicleId": "rgb-center",
+      "sortieId": "sortie-3",
+      "batteryId": "rgb-center-battery-1",
+      "detail": "Рабочая полоса 14; расчётное событие сенсора, не полученный снимок."
+    },
+    {
+      "timeSec": 1798.9683056188137,
+      "type": "landing",
+      "vehicleId": "rgb-center",
+      "sortieId": "sortie-3",
+      "batteryId": "rgb-center-battery-1",
+      "detail": "Посадка; остаток 50.2%."
+    },
+    {
+      "timeSec": 1798.9683056188137,
+      "type": "service",
+      "vehicleId": "rgb-center",
+      "sortieId": "sortie-3",
+      "batteryId": "rgb-center-battery-1",
+      "detail": "Обслуживание 180 с; БВС доступен не ранее t=1979.0 с."
+    },
+    {
+      "timeSec": 1798.9683056188137,
+      "type": "complete",
+      "vehicleId": "rgb-center",
+      "sortieId": "sortie-3",
+      "batteryId": "rgb-center-battery-1",
+      "detail": "Последний назначенный модельный вылет завершён. Получение и копирование реальных материалов съёмки не подтверждено."
+    }
+  ],
+  "jobCoverage": [
+    {
+      "jobId": "rgb-01",
+      "bearingDeg": 0,
+      "grossAreaHa": 41.9999999999814,
+      "targetAreaHa": 41.9999999999814,
+      "coveragePct": 99.9999999936793,
+      "grossCoveragePct": 99.9999999936793
+    }
+  ],
+  "trace": [
+    {
+      "event": "SEARCH_STRATEGY",
+      "detail": "parallel-maximum-prefix-v1"
+    },
+    {
+      "event": "SORTIE",
+      "detail": "sortie-1: rgb-01, rgb-fast, rgb-fast-battery-1, 7 полос, t=60.0..1018.7 с, остаток 27.4%."
+    },
+    {
+      "event": "SORTIE",
+      "detail": "sortie-2: rgb-01, rgb-near, rgb-near-battery-1, 4 полос, t=60.0..1187.2 с, остаток 37.4%."
+    },
+    {
+      "event": "SORTIE",
+      "detail": "sortie-3: rgb-01, rgb-center, rgb-center-battery-1, 4 полос, t=1022.7..1799.0 с, остаток 50.2%."
+    },
+    {
+      "event": "PARALLEL_BASELINE_PROTOCOL",
+      "detail": "parallel-maximum-prefix-v1: исходный порядок работ/полос, максимальный допустимый пакет, жадное назначение по makespan; одновременные вылеты разрешены и проверяются. Без откатов/смены направления полос. Бюджет 1000 мс; 40 попыток. Это контрольный алгоритм, не глобальный оптимум."
+    }
+  ],
+  "metrics": {
+    "makespanSec": 1798.9683056188137,
+    "flightTimeSec": 2862.1175720391198,
+    "distanceM": 19898.910915558503,
+    "sortieCount": 3,
+    "vehicleCount": 3,
+    "coveragePct": 99.9999999936793,
+    "grossCoveragePct": 99.9999999936793,
+    "batteryChanges": 0,
+    "minimumRemainingPct": 27.370908536480343
+  },
+  "assumptions": [
+    "Камера направлена вниз; прямоугольный отпечаток на локальной горизонтальной поверхности. Рельеф, наклон, дисторсия и реальные кадры требуют отдельной проверки.",
+    "Линейный расход ресурса по времени полёта; ток, температура, здоровье батареи и мощность нагрузки не калиброваны.",
+    "Разнесение 30/15 м и временной запас 2 с: Учебные защитные расстояния и интервалы; не утверждённый норматив.",
+    "Одна текущая батарея БВС: повторные вылеты на остатке, без прогнозирования замены или восстановления заряда. Наземное обслуживание — проверка перед вылетом, не замена.",
+    "При съёмке параметр скорости БВС — целевая путевая скорость, на переходах — воздушная. Требуемая воздушная скорость проверяется по пределу профиля.",
+    "Маршруты — локальные прямолинейные сегменты для мультироторной модели; это не команды автопилоту и не разрешение полёта.",
+    "Порог покрытия 99% — инженерный критерий геометрических полос, не официальная матрица жюри и не доказательство качества снимков.",
+    "Планируемые кадры: в начале прохода и через заданный шаг, пока координата не превысит конец; внеполосный последний кадр не добавляется. Реальные отпечатки кадров и краевое фотопокрытие не подтверждены.",
+    "Облачность и видимость заданы постоянными на всё окно: Синтетические постоянные условия; облака относительно общей модельной плоскости старта, не прогноз. Высоты относительно общего базового уровня старта/модельной плоскости; фактическая AGL, пространственное изменение погоды и прогноз не определены."
+  ]
+}

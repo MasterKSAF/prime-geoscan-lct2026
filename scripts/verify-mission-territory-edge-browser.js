@@ -1,0 +1,51 @@
+async (page) => {
+ const checks=[],errors=[],out='output/playwright/territory-2026-09-20';
+ const check=(name,pass)=>{checks.push({name,pass:!!pass});if(!pass)throw Error(name);};
+ page.removeAllListeners('dialog');page.on('dialog',d=>void d.accept().catch(()=>{}));page.on('pageerror',e=>errors.push(e.message));
+ const b=name=>page.getByRole('button',{name,exact:true});
+ const settle=()=>page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+ const load=async file=>{await page.locator('input[type=file][accept=".json,.yaml,.yml"]').setInputFiles(file);await b('Заменить текущее задание').click();await b('2. Территория').click();await settle();};
+ const exportDoc=async name=>{await b('Действия с этой миссией').click();const wait=page.waitForEvent('download');await b('Скачать задание JSON').click();const d=await wait;await d.saveAs(`${out}/${name}.json`);let text='';for await(const part of await d.createReadStream())text+=part.toString('utf8');await page.getByRole('dialog').getByRole('button',{name:'Закрыть окно',exact:true}).click();return JSON.parse(text);};
+ try {
+  await page.setViewportSize({width:1440,height:960});
+  await load('public/planner/scenarios/area-with-hole.mission.json');
+  const original=await exportDoc('hole-before');
+  check('imported hole has outer and inner edit handles',await page.locator('.mission-area-vertex').count()===8);
+  const handles=await page.locator('.mission-area-vertex').all();const a=await handles[0].boundingBox(),target=await handles[1].boundingBox(),d=await handles[3].boundingBox();
+  await page.mouse.move(target.x+7,target.y+7);await page.mouse.down();await page.mouse.move(a.x-30,(a.y+d.y)/2+7,{steps:10});await page.mouse.up();await settle();
+  check('crossing vertex drag raises visible error',await page.locator('.mw-alert.error').count()>0);
+  const invalid=await exportDoc('hole-after-invalid-drag');
+  check('invalid drag rolls back exact original geometry and holes',JSON.stringify(invalid.jobs[0].area)===JSON.stringify(original.jobs[0].area));
+  await b('Закрыть ошибку').click();
+  const first=await page.locator('.mission-area-vertex').first().boundingBox();await page.mouse.move(first.x+7,first.y+7);await page.mouse.down();await page.mouse.move(first.x+3,first.y+11,{steps:5});await page.mouse.up();await settle();
+  const valid=await exportDoc('hole-after-valid-drag');
+  check('valid outer edit preserves exact inner ring',JSON.stringify(valid.jobs[0].area.coordinates[1])===JSON.stringify(original.jobs[0].area.coordinates[1]));
+  await page.locator('.mt-editor details').filter({has:page.locator('summary').filter({hasText:'Отверстия'})}).locator('summary').click();
+  await b('Удалить отверстие 1').click();
+  check('hole deletion is explicit and updates map handles',await page.locator('.mission-area-vertex').count()===4);
+  await b('По точкам').click();const map=await page.locator('.mission-map').boundingBox();
+  for(const [x,y] of [[.4,.3],[.6,.3],[.6,.5],[.4,.5],[.4,.3]])await page.mouse.click(map.x+map.width*x,map.y+map.height*y);
+  await page.locator('.mw-map-draw').waitFor({state:'hidden'});
+  check('clicking the first point closes and applies polygon',await page.locator('.mission-area-vertex').count()===4);
+  await b('Добавить участок').click();await b('Отмена').click();await b('Удалить участок').click();
+  check('empty added area can be deleted without leaving a blocked editor',await b('Рассчитать варианты').isEnabled()&&await b('Добавить участок').isEnabled());
+  await load('public/planner/scenarios/automatic-tradeoff.mission.json');
+  const wait=page.waitForResponse(r=>r.url().endsWith('/api/planner/missions/solve')&&r.request().method()==='POST');await b('Рассчитать варианты').click();const result=await(await wait).json();
+  const assigned=new Set(result.candidates[0].sorties.map(s=>s.vehicleId)),index=result.document.scenario.vehicles.findIndex(v=>!assigned.has(v.id));
+  check('test includes an unassigned fleet member',index>=0);
+  await b('1 Задание').click();await b('2. Территория').click();await page.locator('.mt-bases > summary').click();
+  await b('Перенести взлёт').first().click();await b('Перенести взлёт').nth(index).click();
+  const rect=await page.locator('.mission-map').boundingBox();await page.mouse.click(rect.x+rect.width*.5,rect.y+rect.height*.7);await settle();
+  const changed=await exportDoc('base-moved');
+  check('moving unassigned vehicle base changes only that vehicle',changed.scenario.vehicles.every((v,i)=>i===index?JSON.stringify(v.start)!==JSON.stringify(result.document.scenario.vehicles[i].start):JSON.stringify(v.start)===JSON.stringify(result.document.scenario.vehicles[i].start)));
+  await load('output/playwright/territory-2026-09-20/baseline.json');
+  const solve=page.waitForResponse(r=>r.url().endsWith('/api/planner/missions/solve')&&r.request().method()==='POST');await b('Рассчитать варианты').click();await solve;
+  await b('1 Задание').click();await b('2. Территория').click();await b('Удалить участок').click();
+  check('deleting last solved area removes old candidate from approval flow',await b('2 Выбор плана').isDisabled()&&await b('3 Запуск').isDisabled());
+  await page.getByRole('tab',{name:'Выполнение',exact:true}).click();
+  check('deleted solved area cannot start old simulation',await page.locator('.mw-playback').getByRole('button',{name:'Начать симуляцию',exact:true}).isDisabled());
+  await page.getByRole('tab',{name:'Редактор',exact:true}).click();await b('Восстановить контур').click();
+  check('edge checks produce no unhandled errors',errors.length===0);
+ }catch(e){checks.push({name:'fatal',pass:false,detail:String(e)});await page.screenshot({path:`${out}/edge-failure.png`});}
+ const report={createdAt:new Date().toISOString(),url:page.url(),checks,errors};page.__territoryEdgeReport=report;return report;
+}

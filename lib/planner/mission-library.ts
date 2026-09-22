@@ -303,6 +303,26 @@ export function createMissionLibrary(options: MissionLibraryOptions = {}) {
     return text;
   }
 
+  async function remove(id: string, expectedRevision: number): Promise<void> {
+    const db = await open(),
+      tx = db.transaction(STORE, 'readwrite'),
+      done = completion(tx),
+      store = tx.objectStore(STORE);
+    try {
+      const value = await request(store.get(id));
+      if (!value || parseSaved(value).revision !== expectedRevision)
+        throw new Error('Версия изменилась. Удаление отменено.');
+      await request(store.delete(id));
+      await done;
+    } catch (error) {
+      try {
+        tx.abort();
+      } catch {}
+      await done.catch(() => undefined);
+      throw friendlyError(error);
+    }
+  }
+
   async function importBackup(text: string): Promise<number> {
     const raw = parseStructuredText(text, 'json', MAX_LIBRARY_BACKUP_BYTES);
     if (!raw || typeof raw !== 'object' || Array.isArray(raw))
@@ -356,7 +376,18 @@ export function createMissionLibrary(options: MissionLibraryOptions = {}) {
     openPromise = undefined;
   }
 
-  return { get, list, save, archive, exportBackup, importBackup, close };
+  return {
+    get,
+    list,
+    save,
+    archive,
+    remove,
+    restore: async (entry: SavedMission) =>
+      save(entry.document, { expectedRevision: entry.revision }),
+    exportBackup,
+    importBackup,
+    close,
+  };
 }
 
 export type MissionLibrary = ReturnType<typeof createMissionLibrary>;

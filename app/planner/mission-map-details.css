@@ -1,0 +1,114 @@
+/* Leaflet owns the inner host; React changes only outer data attributes. */
+.mission-map-canvas {
+  width: 100%;
+  height: 100%;
+  background: var(--mw-map-bg, #eaf1f3);
+}
+.mission-map[data-drawing='true'] .mission-map-canvas,
+.mission-map[data-drawing='true'] .leaflet-interactive {
+  cursor: crosshair;
+}
+.mission-map-coordinates,
+.mission-map-status,
+.mission-map-draft-list {
+  position: absolute;
+  z-index: 550;
+  color: var(--mw-ink, #233b47);
+  background: var(--mw-surface-raised, #fff);
+  border: 1px solid var(--mw-line, #d1dfe6);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px #00000012;
+  font-size: 11px;
+  line-height: 1.45;
+}
+.mission-map-coordinates {
+  right: 48px;
+  bottom: 28px;
+  padding: 6px 9px;
+  pointer-events: none;
+  font-variant-numeric: tabular-nums;
+  max-width: calc(100% - 65px);
+}
+.mission-map-coordinates span,
+.mission-map-coordinates small {
+  display: block;
+}
+.mission-map-coordinates small {
+  color: var(--mw-muted, #607985);
+  font-size: 10px;
+}
+.mission-map[data-drawing='true'] ~ .mw-map-draw {
+  /* The panel grows upward when its coordinate list opens. Keep its lower
+     edge above the fixed cursor readout instead of guessing its height. */
+  bottom: 120px;
+}
+.mission-map-status {
+  bottom: 100px;
+  right: 14px;
+  max-width: min(340px, calc(100% - 28px));
+  padding: 8px 10px;
+}
+.mission-map-status button {
+  display: block;
+  color: var(--mw-blue, #176ea0);
+  font: inherit;
+  text-decoration: underline;
+  background: transparent;
+  border: 0;
+  margin-top: 4px;
+  padding: 3px 0;
+  cursor: pointer;
+}
+.mission-map-status button:focus-visible,
+.mission-map-draft-list summary:focus-visible {
+  outline: 2px solid var(--mw-blue, #176ea0);
+  outline-offset: 2px;
+}
+.mission-map-draft-list {
+  top: 62px;
+  left: 14px;
+  max-width: calc(100% - 28px);
+  padding: 6px 9px;
+}
+.mission-map-draft-list summary {
+  cursor: pointer;
+}
+.mission-map-draft-list ol {
+  margin: 6px 0 0;
+  padding-left: 24px;
+  max-height: 145px;
+  overflow: auto;
+  font-variant-numeric: tabular-nums;
+}
+.mission-map-point-label,
+.mission-map-feature-tooltip {
+  color: var(--mw-ink, #233b47);
+  background: var(--mw-surface-raised, #fff);
+  border-color: var(--mw-line, #d1dfe6);
+}
+.mission-map-point-label {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 5px;
+}
+.mission-map-canvas .mission-map-feature-tooltip {
+  width: max-content;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  max-width: min(300px, calc(100vw - 48px));
+}
+@media (max-width: 640px) {
+  .mission-map-coordinates {
+    right: 8px;
+    bottom: 46px;
+    font-size: 10px;
+    max-width: calc(100% - 16px);
+  }
+  .mission-map-coordinates small {
+    display: none;
+  }
+  .mission-map[data-drawing='true'] ~ .mission-map-coordinates {
+    right: 8px;
+    padding: 4px 6px;
+  }
+}

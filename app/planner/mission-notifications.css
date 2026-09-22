@@ -1,0 +1,224 @@
+/* An overlay never reserves a row in the workspace or moves its map. */
+.mission-workbench .mw-notification-trigger {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: transparent;
+  color: #dce7fa;
+  cursor: pointer;
+}
+.mission-workbench .mw-notification-trigger:hover,
+.mission-workbench .mw-notification-trigger[aria-expanded='true'] {
+  background: #ffffff12;
+  border-color: #ffffff33;
+}
+.mission-workbench .mw-notification-trigger.has-unread {
+  color: #efc36d;
+}
+.mission-workbench[data-workspace='missions'] .mw-notification-trigger {
+  margin-left: auto;
+}
+.mission-workbench .mw-notification-trigger > span {
+  position: absolute;
+  right: -3px;
+  top: -2px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: #a87416;
+  color: #fff;
+  font-size: 10px;
+  line-height: 16px;
+  font-weight: 700;
+}
+.mw-notification-layer {
+  position: fixed;
+  inset: 64px 16px auto auto;
+  z-index: 5000;
+  width: min(380px, calc(100vw - 24px));
+  max-width: none;
+  max-height: calc(100dvh - 80px);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: visible;
+  background: transparent;
+  color: var(--mw-ink, #233648);
+  font:
+    13px/1.45 Arial,
+    Helvetica,
+    sans-serif;
+  text-align: left;
+  pointer-events: none;
+}
+.mw-notification-layer::backdrop {
+  background: transparent;
+  pointer-events: none;
+}
+.mw-notification-layer * {
+  box-sizing: border-box;
+}
+.mw-notification-layer .mw-notification-stack {
+  display: grid;
+  gap: 8px;
+  max-height: calc(100dvh - 80px);
+  overflow: auto;
+  padding: 2px;
+  scrollbar-width: thin;
+}
+.mw-notification-layer .mw-notification-card {
+  display: grid;
+  grid-template-columns: 19px minmax(0, 1fr) 26px;
+  align-items: start;
+  gap: 8px;
+  width: 100%;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--mw-line, #d6dfe7);
+  border-inline-start: 3px solid #54809c;
+  border-radius: 12px;
+  background: var(--mw-surface, #fff);
+  box-shadow: 0 5px 24px #14253726;
+  pointer-events: auto;
+  opacity: 1;
+  transition: opacity 2s ease;
+}
+.mw-notification-layer .mw-notification-card.is-fading {
+  opacity: 0;
+}
+.mw-notification-layer .mw-notification-warning {
+  border-inline-start-color: #bb8a32;
+}
+.mw-notification-layer .mw-notification-card > svg {
+  margin-top: 2px;
+  color: #54809c;
+}
+.mw-notification-layer .mw-notification-warning > svg {
+  color: #ac7b24;
+}
+.mw-notification-layer .mw-notification-copy {
+  min-width: 0;
+}
+.mw-notification-layer .mw-notification-copy > strong {
+  display: block;
+  font-size: 13px;
+}
+.mw-notification-layer p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.mw-notification-layer .mw-notification-copy > p {
+  max-height: 150px;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+.mw-notification-layer .mw-notification-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  min-height: 0;
+  padding: 3px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.mw-notification-layer .mw-notification-close:hover {
+  background: var(--mw-surface-soft, #edf2f7);
+}
+.mw-notification-layer button:focus-visible {
+  outline: 2px solid #54809c;
+  outline-offset: 2px;
+}
+.mw-notification-layer .mw-notification-action {
+  display: inline-flex;
+  margin-top: 8px;
+  padding: 5px 8px;
+  border: 1px solid var(--mw-line, #d6dfe7);
+  border-radius: 6px;
+  background: var(--mw-surface-soft, #edf2f7);
+  color: var(--mw-ink, #233648);
+  font-size: 12px;
+  cursor: pointer;
+}
+.mw-notification-layer .mw-notification-history {
+  overflow: hidden;
+  border: 1px solid var(--mw-line, #d6dfe7);
+  border-radius: 12px;
+  background: var(--mw-surface, #fff);
+  box-shadow: 0 8px 32px #14253730;
+  pointer-events: auto;
+}
+.mw-notification-layer .mw-notification-history > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--mw-line, #d6dfe7);
+}
+.mw-notification-layer .mw-notification-history-list {
+  max-height: min(520px, calc(100dvh - 132px));
+  overflow: auto;
+}
+.mw-notification-layer .mw-notification-history-item {
+  padding: 12px;
+  border-inline-start: 3px solid #54809c;
+}
+.mw-notification-layer .mw-notification-history-item.mw-notification-warning {
+  border-inline-start-color: #bb8a32;
+}
+.mw-notification-layer
+  .mw-notification-history-item
+  + .mw-notification-history-item {
+  border-top: 1px solid var(--mw-line, #d6dfe7);
+}
+.mw-notification-layer .mw-notification-history-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.mw-notification-layer .mw-notification-history-heading > time {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--mw-muted, #65788b);
+}
+.mw-notification-layer .mw-notification-empty {
+  padding: 16px;
+  margin: 0;
+  color: var(--mw-muted, #65788b);
+}
+@media (max-width: 640px) {
+  .mw-notification-layer {
+    inset: 60px 12px auto auto;
+  }
+}
+@media (max-width: 700px) {
+  .mission-workbench .mw-notification-trigger {
+    order: 2;
+    align-self: flex-start;
+    margin-top: 4px;
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mw-notification-layer .mw-notification-card {
+    transition: none;
+  }
+}

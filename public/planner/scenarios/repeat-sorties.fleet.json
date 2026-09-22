@@ -11,7 +11,7 @@
       "airspeedMps": 8,
       "maxWindMps": 10,
       "batteryPct": 100,
-      "effectiveEnduranceMin": 12,
+      "effectiveEnduranceMin": 28,
       "climbMps": 3,
       "descentMps": 1,
       "turnSeconds": 4,
@@ -42,62 +42,7 @@
       "rechargeSec": null,
       "cycles": null,
       "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "rgb-1-battery-2",
-      "vehicleId": "rgb-1",
-      "name": "АКБ 2 · rgb-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "rgb-1-battery-3",
-      "vehicleId": "rgb-1",
-      "name": "АКБ 3 · rgb-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "rgb-1-battery-4",
-      "vehicleId": "rgb-1",
-      "name": "АКБ 4 · rgb-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "rgb-1-battery-5",
-      "vehicleId": "rgb-1",
-      "name": "АКБ 5 · rgb-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "rgb-1-battery-6",
-      "vehicleId": "rgb-1",
-      "name": "АКБ 6 · rgb-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
+      "source": "Текущая батарея учебного БВС. Замена не прогнозируется; повторные вылеты используют остаток."
     }
   ]
 }

@@ -1,66 +1,69 @@
-# Чек-лист экспертной проверки
+# Чек-лист эксперта
 
-Проверять на отдельном профиле браузера: сценарии и тесты изменяют локальную библиотеку миссий. Расчёты модельные; не подключать реальные БВС. Команды выполнять из корня клона проекта. Для Node-проверок нужен Node 24; Docker должен быть запущен, порт 3016 свободен. Первичная сборка требует сети.
+Проверять в отдельном профиле браузера, без подключения реальных БВС. Изменения демо не должны затрагивать рабочую библиотеку пользователя.
 
-## 1. Запуск и базовые проверки
+## 1. Чистый запуск
+
+```powershell
+git clone https://github.com/MasterKSAF/prime-geoscan-lct2026.git
+cd prime-geoscan-lct2026
+docker compose -f compose.planner.yaml up -d --build
+docker compose -f compose.planner.yaml ps
+Invoke-RestMethod http://127.0.0.1:3016/api/planner/health
+```
+
+Для закрытого репозитория требуется предоставленный владельцем доступ. Альтернатива — распаковать переданный архив коммита. Если 3016 занят, согласовать остановку прежнего стенда. Успех: контейнер healthy, health `status=ok`, `flightReady=false`.
+
+## 2. Типы и тесты
+
+Для этих команд нужен Node 24 и npm. Docker-сборка уже выполняет типы и модульные тесты, но их можно повторить отдельно.
 
 ```powershell
 npm ci
 npm run typecheck
 npm run test:planner
-docker compose -p lct -f compose.planner.yaml up --build -d
-docker compose -p lct -f compose.planner.yaml ps
-Invoke-RestMethod 'http://127.0.0.1:3016/api/planner/health'
 node --experimental-transform-types --test tests/acceptance/track5-readiness.test.ts
+node scripts/verify-submission.mjs
 ```
 
-Открыть [локальный планировщик](http://127.0.0.1:3016/planner). В health ожидаются `missionEngineVersion: "0.3.0"` и `flightReady: false`; legacy-поле `engineVersion` может относиться к прежнему ядру. Контейнер должен стать `healthy`. Ориентир сохранённого среза — 160/160 модульных и 8/8 приёмочных тестов без пропусков. Отчёт с другим числом тестов проверять по текущим исходникам, не подменять старым.
+Ожидаемый сохранённый срез: 483/483 модульных, 8/8 приёмочных. A8 обращается к API. Проверка комплекта сверяет хеши, состав и локальные ссылки; произвольная правка файла должна обнаруживаться.
 
-Если уже запущен другой стенд проекта `lct`, сначала согласовать его остановку: команда использует то же имя Compose-проекта. Остановка текущего стенда без удаления: `docker compose -p lct -f compose.planner.yaml stop`.
-
-## 2. Короткий показ: 8–12 минут
-
-| Шаг | Действие | Что должно быть видно |
-| --- | --- | --- |
-| 1 | «Сценарии» → «Автовыбор БВС: время, налёт и баланс» → изучить паспорт | Синтетический участок 0,42 км², одна RGB-работа, три разных профиля БВС, ограничения и окно |
-| 2 | Рассчитать → «Сравнить и объяснить варианты» | Два обязательных критерия и «Баланс»; назначения, время завершения, налёт и резерв. В срезе: 23,4/30,1; 34,4/21,4; 26,3/23,6 мин соответственно |
-| 3 | Выбрать вариант, прочитать проверки, подтвердить и проиграть | Карта и расписание соответствуют выбранному кандидату; проигрывается расчёт, а не реальные полёты |
-| 4 | Изменить флот или условие задания | Прежнее подтверждение недействительно; требуется новый расчёт/проверка |
-| 5 | «Сохранить как» с новым ID, экспортировать JSON и загрузить его | Исходная миссия сохранена отдельно; полный паспорт и параметры новой миссии восстановлены |
-| 6 | Загрузить пример временной зоны / высотного препятствия | Показаны источник, интервал и высота ограничения; результат объясняет ожидание, допустимость или отказ |
-| 7 | Загрузить «Повторные вылеты», затем отрицательный сценарий по ветру или ресурсу | В первом — вылеты и обслуживание; во втором — причины отказа и отсутствие допуска к успешной симуляции |
-| 8 | Выгрузить индивидуальные KML/GeoJSON и evidence JSON | ID БВС, последовательность, время, высота, скорость и фазы сохраняются; пакет повторно проверяется командой ниже |
-
-Исходные файлы и варианты показа: [каталог девяти сценариев](../scenarios.md). Числа примера являются ориентиром данного входа, не обещанием точного совпадения на любом CPU при ограниченном бюджете поиска. Не изменять искусственно данные ради воспроизведения табличных минут.
-
-## 3. Повторить API-корпус и проверить пакет
-
-Новая папка сохраняет исторический срез 0.3.0 нетронутым. Для следующего повтора сменить суффикс `expert-review`.
+## 3. HTTP и экспорт
 
 ```powershell
-node --experimental-transform-types scripts/verify-mission-showcase.ts http://127.0.0.1:3016 output/expert-review/scenarios
 node --experimental-transform-types scripts/verify-missions.ts http://127.0.0.1:3016 output/expert-review/api
-node --experimental-transform-types scripts/capture-mission-runtime.ts output/expert-review/api lct-planner-1
-npm run verify:evidence -- output/expert-review/api/evidence-1km2.json output/expert-review/api/independent-check.json
+node --experimental-transform-types scripts/verify-mission-run-report.ts docs/planner/submission/evidence/browser/run.report.json
+npm run verify:evidence -- output/expert-review/api/evidence-repeat-sorties.json output/expert-review/api/check.json
 ```
 
-Ожидается: девять предусмотренных исходов сценариев, 10 HTTP-проверок, отсутствие расхождений исходников контейнера и локальной версии, отдельная проверка evidence без `fail`. Пример 100 км² допускает `not_found` и **не считается полностью решённым**. `unknown` необходимо прочитать и сохранить. При перегрузке CPU ограниченный поиск может дать другой результат — такой прогон нужно анализировать, а не помечать успешным вручную.
+Ожидаются 11 проверок API и отсутствие fail в проверяемом положительном пакете. Статус 100 км² может оставаться not_found. Все unknown сохраняются.
 
-Если использовано другое имя Compose-проекта, передать фактическое имя или ID контейнера последним аргументом `capture-mission-runtime.ts` вместо `lct-planner-1`.
+## 4. Браузер
 
-Для пакета, скачанного из UI:
+Нужен установленный Edge, CLI Playwright — отдельный инструмент проверки. Каждый сценарий запускается в новом именованном профиле.
 
 ```powershell
-npm run verify:evidence -- 'путь/mission.evidence.json' 'output/expert-review/downloaded-check.json'
+npx --yes --package @playwright/cli@0.1.20 playwright-cli -s=expert-main open http://127.0.0.1:3016/planner --browser=msedge
+npx --yes --package @playwright/cli@0.1.20 playwright-cli -s=expert-main run-code --filename=scripts/verify-dispatcher-browser.js
+npx --yes --package @playwright/cli@0.1.20 playwright-cli -s=expert-extra open http://127.0.0.1:3016/planner --browser=msedge
+npx --yes --package @playwright/cli@0.1.20 playwright-cli -s=expert-extra run-code --filename=scripts/verify-eight-points-browser.js
+npx --yes --package @playwright/cli@0.1.20 playwright-cli -s=expert-parallel open http://127.0.0.1:3016/planner --browser=msedge
+npx --yes --package @playwright/cli@0.1.20 playwright-cli -s=expert-parallel run-code --filename=scripts/verify-parallel-browser.js
 ```
 
-Подставить реальный путь к скачанному JSON; KML, GeoJSON и JSON исходного задания не являются evidence-пакетом. Код возврата 0 — прохождение принятой модели, не физический допуск к полёту.
+Результаты: output/playwright/dispatcher/browser-report.json (25), eight-points/report.json (18), eight-parallel/report.json (7). CLI может вернуть управление на модальном событии до окончания сценария: проверять свежий JSON со status=pass, а не только exit code CLI. Закрыть только собственные тестовые сессии командой close.
 
-## 4. Что сохранить после проверки
+## 5. Сравнение алгоритмов
 
-- ID проверенного коммита: `git rev-parse HEAD`; версии Node/Docker; использованный вход и бюджет поиска.
-- Новые `report.json`, `runtime.json`, evidence-пакеты и результаты их повторной проверки.
-- Снимок сравнения вариантов, карты/расписания и объяснения отрицательного сценария.
-- Отдельный список оставшихся `unknown`, отказов и отличий от сохранённого среза.
+```powershell
+node --experimental-transform-types scripts/benchmark-missions.ts output/mission-benchmark/expert-review 3
+node --experimental-transform-types scripts/benchmark-missions.ts --verify output/mission-benchmark/expert-review/report.json
+```
 
-Исторические браузерные отчёты доступны в [основном прогоне](../../../output/playwright/0.3.0-core/results.json) и [проверке новых функций](../../../output/playwright/0.3.0-showcase/browser-report.json). Их сценарии находятся в `scripts/verify-mission-browser.js` и `scripts/verify-mission-showcase-browser.js` и запускаются через Playwright CLI, **не через Node напрямую**. Запускать из корня клона в отдельной сессии: пути теперь относительные, новые результаты идут в `output/playwright/recheck-core` и `output/playwright/recheck-showcase`, не перезаписывая срез 0.3.0. Повторный запуск в ту же папку заменяет предыдущий recheck; при необходимости сначала сохранить его отдельно.
+В наборе 21 задача, 3 повтора, два критерия. Сравнения только на полных парах, отрицательные случаи сохраняются. Папка вывода должна находиться под output/mission-benchmark. Тайминги могут отличаться по CPU и фоновой нагрузке. Не выдавать baseline за продукт конкурента или точный оптимум.
+
+## 6. Ручная демонстрация и фиксация
+
+Пройти [три сценария](DEMO-SCRIPT.md). Отметить сохранение миссии, смену сенсора, ошибочный импорт, независимость журналов, блокировку конфликтующего запуска и выгрузку отчёта. Сверить карту и выбранный ID запуска.
+
+Сохранить входы, результаты, хеш коммита, Node/Docker, дату и все неизвестные/отказные проверки. Презентация не подменяет работающий стенд. Доступ эксперта и официальная подача требуют отдельного подтверждения владельца.

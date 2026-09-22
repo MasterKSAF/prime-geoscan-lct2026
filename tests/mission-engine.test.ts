@@ -253,6 +253,7 @@ void test('fixed-wing unsupported is never reported as verified multirotor', asy
   const d = demoMission(1);
   d.scenario.vehicles[0].kind = 'fixedWing';
   d.scenario.vehicles[0].model = '201';
+  d.jobs[0].assignedVehicleIds = [d.scenario.vehicles[0].id];
   const result = await solveMissionDocument(d);
   assert.ok(result.candidates.every((c) => c.status === 'unsupported'));
 });

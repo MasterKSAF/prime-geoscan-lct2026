@@ -1,0 +1,57 @@
+async (page) => {
+  const checks=[],errors=[],out='output/playwright/redesign-2026-09-20';
+  const check=(name,pass,detail='')=>{checks.push({name,pass:!!pass,detail});if(!pass)throw Error(`${name}: ${detail}`);};
+  page.on('pageerror',e=>errors.push(e.message));
+  page.on('dialog',d=>void d.accept());
+  let forecast;
+  try {
+    await page.setViewportSize({width:1440,height:960});
+    await page.goto('http://127.0.0.1:3016/planner');
+    await page.getByRole('tab',{name:'Редактор',exact:true}).click();
+    await page.locator('.mission-map[data-map-ready=true]').waitFor();
+    await page.getByRole('button',{name:'Погода и условия',exact:true}).click();
+    const weather=page.getByRole('dialog',{name:'Погода для территории миссии'});
+    const pending=page.waitForResponse(r=>r.url().includes('/api/planner/weather?q='));
+    await weather.getByRole('button',{name:'Обновить прогноз',exact:true}).click();
+    const response=await pending;forecast=await response.json();
+    check('live weather source HTTP200',response.status()===200,JSON.stringify(forecast).slice(0,200));
+    check('forecast for five mission points',forecast.provider==='Open-Meteo'&&forecast.points.length===5&&forecast.hours.length===9);
+    await page.screenshot({path:`${out}/weather.png`});
+    await weather.getByRole('button',{name:'Применить к заданию',exact:true}).click();
+    const solve=page.waitForResponse(r=>r.url().endsWith('/api/planner/missions/solve'));
+    await page.getByRole('button',{name:'Рассчитать варианты',exact:true}).click();
+    const result=await (await solve).json();
+    check('applied forecast participates in calculation',result.document.weather.snapshot.provider==='Open-Meteo'&&result.candidates.every(c=>c.checks.some(x=>x.id==='FORECAST_SCOPE')));
+    const bad=result.candidates.some(c=>c.checks.some(x=>x.id.startsWith('FORECAST_')&&x.status==='fail'));
+    check('unsafe forecast cannot be confirmed',!bad||result.candidates.every(c=>c.status!=='feasible_model'));
+    await page.getByRole('tab',{name:'Результаты',exact:true}).click();
+    const download=page.waitForEvent('download');await page.getByRole('button',{name:'Доказательства',exact:true}).click();await (await download).saveAs(`${out}/weather-evidence.json`);
+    await page.getByRole('tab',{name:'Редактор',exact:true}).click();
+    await page.getByRole('button',{name:'Погода и условия',exact:true}).click();
+    await page.context().setOffline(true);
+    await weather.getByRole('button',{name:'Обновить прогноз',exact:true}).click();
+    await weather.getByRole('alert').waitFor();
+    check('offline weather preserves saved forecast and shows error',await weather.getByRole('button',{name:'Применить к заданию',exact:true}).isEnabled());
+    await page.context().setOffline(false);
+    await weather.getByRole('button',{name:'Закрыть погоду'}).click();
+    await page.getByRole('button',{name:'1 Задание',exact:true}).click();
+    await page.getByRole('button',{name:'3. Срок',exact:true}).click();
+    const date=page.locator('.mw-wizard-body input').first(),value=await date.inputValue();
+    await date.fill('');check('empty date does not crash redesigned UI',await page.getByRole('tab',{name:'Редактор',exact:true}).isVisible());await date.fill(value);
+    await page.getByRole('button',{name:'1. Работы',exact:true}).click();
+    await page.setViewportSize({width:390,height:844});
+    check('mobile editor no horizontal overflow',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+    check('mobile editor keeps map',await page.locator('.mw-map-wrap').isVisible());
+    await page.screenshot({path:`${out}/mobile-editor.png`});
+    await page.setViewportSize({width:1440,height:960});
+    await page.locator('input[type=file][accept=".json,.yaml,.yml"]').setInputFiles('public/planner/scenarios/wind-limit.mission.json');
+    await page.getByRole('button',{name:'Заменить текущее задание',exact:true}).click();
+    const blocked=page.waitForResponse(r=>r.url().endsWith('/api/planner/missions/solve'));
+    await page.getByRole('button',{name:'Рассчитать варианты',exact:true}).click();
+    const negative=await (await blocked).json();
+    check('mandatory excessive-wind scenario stays rejected',negative.candidates.every(c=>c.status!=='feasible_model'));
+    check('unsafe plan confirmation disabled',await page.getByRole('button',{name:'Проверить и подтвердить',exact:true}).isDisabled());
+    check('no browser exceptions',errors.length===0,errors.join('\n'));
+  } catch(e) {checks.push({name:'fatal',pass:false,detail:String(e)});await page.context().setOffline(false);}
+  const report={createdAt:new Date().toISOString(),checks,errors,forecast};page.__consoleWeatherReport=report;return report;
+}

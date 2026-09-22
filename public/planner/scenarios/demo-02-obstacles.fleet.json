@@ -1,0 +1,88 @@
+{
+  "type": "prime-fleet",
+  "schemaVersion": "1.0",
+  "vehicles": [
+    {
+      "id": "demo-rgb",
+      "name": "БВС 01 · фотокамера",
+      "model": "Gemini",
+      "kind": "multirotor",
+      "enabled": true,
+      "airspeedMps": 8,
+      "maxWindMps": 10,
+      "batteryPct": 100,
+      "effectiveEnduranceMin": 35,
+      "climbMps": 3,
+      "descentMps": 1,
+      "turnSeconds": 4,
+      "start": [
+        30.3,
+        60.034100679636275
+      ],
+      "landing": [
+        30.3,
+        60.034100679636275
+      ],
+      "jobs": [
+        "RGB"
+      ],
+      "assumptions": [
+        "Числа скорости, ресурса и совместимости заданы для синтетического теста."
+      ],
+      "source": "Учебная конфигурация стенда; реальная совместимость нагрузки не подтверждена."
+    },
+    {
+      "id": "demo-ms",
+      "name": "БВС 02 · мультиспектр",
+      "model": "Gemini",
+      "kind": "multirotor",
+      "enabled": true,
+      "airspeedMps": 6,
+      "maxWindMps": 10,
+      "batteryPct": 100,
+      "effectiveEnduranceMin": 35,
+      "climbMps": 3,
+      "descentMps": 1,
+      "turnSeconds": 4,
+      "start": [
+        30.3,
+        60.0385972814549
+      ],
+      "landing": [
+        30.3,
+        60.0385972814549
+      ],
+      "jobs": [
+        "MS"
+      ],
+      "assumptions": [
+        "Числа скорости, ресурса и совместимости заданы для синтетического теста."
+      ],
+      "source": "Учебная конфигурация стенда; реальная совместимость нагрузки не подтверждена."
+    }
+  ],
+  "batteries": [
+    {
+      "id": "demo-rgb-battery-1",
+      "vehicleId": "demo-rgb",
+      "name": "АКБ 1 · demo-rgb",
+      "initialPct": 100,
+      "readyAt": "2026-06-15T09:00:00.000Z",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Текущая батарея учебного БВС. Замена не прогнозируется; повторные вылеты используют остаток."
+    },
+    {
+      "id": "demo-ms-battery-1",
+      "vehicleId": "demo-ms",
+      "name": "АКБ 1 · demo-ms",
+      "initialPct": 100,
+      "readyAt": "2026-06-15T09:00:00.000Z",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Текущая батарея учебного БВС. Замена не прогнозируется; повторные вылеты используют остаток."
+    }
+  ]
+}

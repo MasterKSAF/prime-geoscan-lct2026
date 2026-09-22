@@ -1,0 +1,225 @@
+{
+  "batteries": [
+    {
+      "commissionedAt": null,
+      "cycles": null,
+      "id": "demo-07-battery-1",
+      "initialPct": 26,
+      "name": "АКБ 1 · demo-07",
+      "readyAt": "2026-06-15T09:00:00.000Z",
+      "rechargeSec": null,
+      "source": "Текущая батарея учебного БВС. Замена не прогнозируется; повторные вылеты используют остаток.",
+      "vehicleId": "demo-07"
+    }
+  ],
+  "flightEnvelope": {
+    "maxAltitudeM": 500,
+    "minSurveyAltitudeM": 10,
+    "source": "Учебный диапазон сценария, не разрешение воздушного пространства."
+  },
+  "id": "demo-03-repair",
+  "jobs": [
+    {
+      "area": {
+        "coordinates": [
+          [
+            [
+              30.3,
+              60.035
+            ],
+            [
+              30.305401638391317,
+              60.035
+            ],
+            [
+              30.305401638391317,
+              60.03697850480019
+            ],
+            [
+              30.3,
+              60.03697850480019
+            ],
+            [
+              30.3,
+              60.035
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      },
+      "assignedVehicleIds": [
+        "demo-07"
+      ],
+      "daylight": "none",
+      "id": "demo-repair-rgb",
+      "job": {
+        "altitudeM": 100,
+        "autoBearing": true,
+        "bearingDeg": 0,
+        "qualitySource": "Учебный RGB-профиль PF1B: 23,5 мм / 20 мм на 100 м; перекрытие 60% и шаг 15,6 м — параметры сценария. Скорость затвора не подтверждена.",
+        "sideOverlap": 0.6,
+        "swathM": 117.5,
+        "triggerDistanceM": 15.6,
+        "type": "RGB"
+      },
+      "name": "Фотосъёмка · требуется весь участок",
+      "quality": {
+        "focalLengthMm": 20,
+        "forwardOverlap": 0.7,
+        "imageHeightPx": 4000,
+        "imageWidthPx": 6000,
+        "maximumBlurPx": 1,
+        "maximumGsdCm": 3,
+        "minimumIntervalSec": 1,
+        "mode": "camera",
+        "sensorHeightMm": 15.6,
+        "sensorWidthMm": 23.5,
+        "shutterSec": 0.001,
+        "source": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры.",
+        "status": "assumed"
+      }
+    }
+  ],
+  "name": "Демо 3 · Недостаточный заряд и решение",
+  "notes": "Синтетический приёмочный пример, не официальный эталон Геоскана и не разрешение реального полёта. Заряд 26% при резерве 25%: ожидается отказ. Проверяется гипотеза замены установленной батареи БВС 07 перед стартом; ожидание само по себе не заряжает батарею. Выданная рекомендация не является командой и не изменяет телеметрию или историю парка.",
+  "planning": {
+    "altitudePreference": "balanced",
+    "batteryPolicy": "installed-current-v1",
+    "maxComputeMs": 5000,
+    "maxSortiesPerVehicle": 12,
+    "preparationSec": 60,
+    "safetyPolicy": "continuous-occupancy-v1",
+    "separationHorizontalM": 30,
+    "separationSource": "Учебные защитные интервалы 30/20 м и 2 с; не утверждённый норматив.",
+    "separationVerticalM": 20,
+    "serviceSec": 180,
+    "temporalBufferSec": 2,
+    "windModel": "constantGroundSpeed"
+  },
+  "restrictions": [],
+  "scenario": {
+    "airspace": {
+      "coordinates": [
+        [
+          [
+            30.293698088543465,
+            60.03185237872696
+          ],
+          [
+            30.320706280500048,
+            60.03185237872696
+          ],
+          [
+            30.320706280500048,
+            60.042644223091656
+          ],
+          [
+            30.293698088543465,
+            60.042644223091656
+          ],
+          [
+            30.293698088543465,
+            60.03185237872696
+          ]
+        ]
+      ],
+      "type": "Polygon"
+    },
+    "area": {
+      "coordinates": [
+        [
+          [
+            30.3,
+            60.035
+          ],
+          [
+            30.305401638391317,
+            60.035
+          ],
+          [
+            30.305401638391317,
+            60.03697850480019
+          ],
+          [
+            30.3,
+            60.03697850480019
+          ],
+          [
+            30.3,
+            60.035
+          ]
+        ]
+      ],
+      "type": "Polygon"
+    },
+    "clearanceM": 5,
+    "exclusions": [],
+    "job": {
+      "altitudeM": 100,
+      "autoBearing": true,
+      "bearingDeg": 0,
+      "qualitySource": "Учебный RGB-профиль PF1B: 23,5 мм / 20 мм на 100 м; перекрытие 60% и шаг 15,6 м — параметры сценария. Скорость затвора не подтверждена.",
+      "sideOverlap": 0.6,
+      "swathM": 117.5,
+      "triggerDistanceM": 15.6,
+      "type": "RGB"
+    },
+    "name": "Демо 3 · Недостаточный заряд и решение",
+    "objective": "makespan",
+    "reservePct": 25,
+    "reserveSites": [
+      [
+        30.30270081919566,
+        60.034100679636275
+      ]
+    ],
+    "schemaVersion": "1.0",
+    "terrain": "unknown",
+    "vehicles": [
+      {
+        "airspeedMps": 8,
+        "assumptions": [
+          "Числа скорости, ресурса и совместимости заданы для синтетического теста."
+        ],
+        "batteryPct": 26,
+        "climbMps": 3,
+        "descentMps": 1,
+        "effectiveEnduranceMin": 28,
+        "enabled": true,
+        "id": "demo-07",
+        "jobs": [
+          "RGB"
+        ],
+        "kind": "multirotor",
+        "landing": [
+          30.30270081919566,
+          60.034100679636275
+        ],
+        "maxWindMps": 10,
+        "model": "Gemini",
+        "name": "БВС 07 · фотокамера PF1B",
+        "source": "Учебная конфигурация стенда; реальная совместимость нагрузки не подтверждена.",
+        "start": [
+          30.30270081919566,
+          60.034100679636275
+        ],
+        "turnSeconds": 4
+      }
+    ],
+    "wind": {
+      "fromDeg": 270,
+      "speedMps": 0
+    }
+  },
+  "schemaVersion": "2.0",
+  "terrainModel": {
+    "elevationM": 0,
+    "kind": "flat",
+    "source": "Синтетическая горизонтальная поверхность; не реальный DEM участка."
+  },
+  "window": {
+    "end": "2026-06-15T15:00:00Z",
+    "start": "2026-06-15T09:00:00Z",
+    "timezone": "Europe/Moscow"
+  }
+}

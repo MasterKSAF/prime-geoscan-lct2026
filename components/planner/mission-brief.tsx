@@ -1,5 +1,6 @@
 import type { MissionDocument } from '@/lib/planner/mission-schema';
 import { jobNames } from './mission-wizard';
+import { InfoHint } from './mission-help';
 
 function date(value: string, timezone: string) {
   try {
@@ -20,11 +21,14 @@ export default function MissionBrief({
   return (
     <div className="ms-brief">
       <div className="ms-eyebrow">Паспорт миссии · {d.id}</div>
-      <h3>{d.name}</h3>
-      <p>
-        {d.notes ||
-          'Описание пока не заполнено. Его можно добавить на шаге «Проверка».'}
-      </p>
+      <h3>
+        {d.name}{' '}
+        <InfoHint label="Описание миссии">
+          Описание можно дополнить при редактировании миссии. Значения ниже
+          относятся к этому сохранённому входу.
+        </InfoHint>
+      </h3>
+      <p>{d.notes || 'Описание не заполнено'}</p>
       <dl className="ms-facts">
         <div>
           <dt>Доступное окно</dt>
@@ -38,16 +42,21 @@ export default function MissionBrief({
           <dt>Ресурсы</dt>
           <dd>
             {d.scenario.vehicles.filter((v) => v.enabled).length} доступных БВС
-            · {d.batteries.length} АКБ
           </dd>
           <small>Запас при посадке: {d.scenario.reservePct}%</small>
         </div>
         <div>
-          <dt>Условия</dt>
+          <dt>
+            Условия{' '}
+            <InfoHint label="Условия в паспорте миссии">
+              Ветер задан постоянным вектором на всё окно; это не прогноз
+              погоды. Ограничения облачности и видимости также постоянны на всё
+              окно.
+            </InfoHint>
+          </dt>
           <dd>
             Ветер {d.scenario.wind.speedMps} м/с, от {d.scenario.wind.fromDeg}°
           </dd>
-          <small>Постоянный вектор на всё окно; не прогноз погоды</small>
         </div>
         <div>
           <dt>Разнесение</dt>
@@ -74,7 +83,7 @@ export default function MissionBrief({
           {d.environment.minVisibilityM === null
             ? 'не задан'
             : `${d.environment.minVisibilityM} м`}
-          . Источник: {d.environment.source}. Условия постоянны на всё окно.
+          . Источник: {d.environment.source}.
         </p>
       )}
       <div className="ms-table-scroll">
@@ -82,7 +91,13 @@ export default function MissionBrief({
           <thead>
             <tr>
               <th>Работа</th>
-              <th>Высота</th>
+              <th>
+                Высота{' '}
+                <InfoHint label="Система высот миссии">
+                  Высоты используют общий локальный уровень миссии. Плоская
+                  модель поверхности не является реальным DEM.
+                </InfoHint>
+              </th>
               <th>Геометрия</th>
               <th>Кто может выполнять</th>
             </tr>
@@ -117,12 +132,10 @@ export default function MissionBrief({
       <p className="mw-caption">
         Объёмных ограничений: {d.restrictions.length}; постоянных запретов:{' '}
         {d.scenario.exclusions.length}; резервных площадок:{' '}
-        {d.scenario.reserveSites.length}. Высоты используют общий локальный
-        уровень миссии.{' '}
+        {d.scenario.reserveSites.length}.{' '}
         {d.terrainModel.kind === 'flat'
           ? 'Поверхность задана плоской.'
-          : 'Рельеф не установлен.'}{' '}
-        Это не реальный DEM.
+          : 'Рельеф не установлен.'}
       </p>
     </div>
   );

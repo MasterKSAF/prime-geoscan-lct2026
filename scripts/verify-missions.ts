@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { demoMission } from '../lib/planner/mission-demo.ts';
+import { installedBatteryDocument } from '../lib/planner/mission-fleet-state.ts';
+import { SHOWCASE_SCENARIOS } from '../lib/planner/mission-showcase.ts';
 import {
   sha256,
   MAX_MISSION_FILE_BYTES,
@@ -34,7 +36,7 @@ checks.push({ name: 'health-v2', status: 'pass' });
 await mkdir(output, { recursive: true });
 const benchmarks: unknown[] = [];
 for (const area of [1, 10, 100] as const) {
-  const document = demoMission(area),
+  const document = installedBatteryDocument(demoMission(area)),
     started = performance.now(),
     response = await send(document);
   assert.equal(
@@ -52,7 +54,7 @@ for (const area of [1, 10, 100] as const) {
     }
   }
   if (area === 1) {
-    assert.ok(result.candidates.every((c) => c.status === 'feasible_model'));
+    // Current batteries only: a partial result is honest for this legacy fleet.
     const evidence = await missionEvidence(result, result.candidates[0]);
     await writeFile(
       `${output}/evidence-1km2.json`,
@@ -92,6 +94,25 @@ for (const area of [1, 10, 100] as const) {
   );
   checks.push({ name: `bounded-honest-area-${area}`, status: 'pass' });
 }
+const positive = SHOWCASE_SCENARIOS.find(
+  (s) => s.id === 'repeat-sorties',
+)!.create();
+const positiveResponse = await send(positive);
+assert.equal(positiveResponse.status, 200);
+const positiveResult = (await positiveResponse.json()) as MissionResult;
+assert.equal(positiveResult.candidates[0].status, 'feasible_model');
+await writeFile(
+  `${output}/evidence-repeat-sorties.json`,
+  JSON.stringify(
+    await missionEvidence(positiveResult, positiveResult.candidates[0]),
+    null,
+    2,
+  ),
+);
+checks.push({
+  name: 'current-battery-positive-repeat-sorties',
+  status: 'pass',
+});
 const invalid: [string, unknown, number][] = [
   ['bad-json', '{"x":', 400],
   ['unknown-field', { ...demoMission(), unexpected: true }, 400],

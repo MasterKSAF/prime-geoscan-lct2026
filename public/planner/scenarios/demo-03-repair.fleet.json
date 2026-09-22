@@ -1,0 +1,48 @@
+{
+  "type": "prime-fleet",
+  "schemaVersion": "1.0",
+  "vehicles": [
+    {
+      "id": "demo-07",
+      "name": "БВС 07 · фотокамера PF1B",
+      "model": "Gemini",
+      "kind": "multirotor",
+      "enabled": true,
+      "airspeedMps": 8,
+      "maxWindMps": 10,
+      "batteryPct": 26,
+      "effectiveEnduranceMin": 28,
+      "climbMps": 3,
+      "descentMps": 1,
+      "turnSeconds": 4,
+      "start": [
+        30.30270081919566,
+        60.034100679636275
+      ],
+      "landing": [
+        30.30270081919566,
+        60.034100679636275
+      ],
+      "jobs": [
+        "RGB"
+      ],
+      "assumptions": [
+        "Числа скорости, ресурса и совместимости заданы для синтетического теста."
+      ],
+      "source": "Учебная конфигурация стенда; реальная совместимость нагрузки не подтверждена."
+    }
+  ],
+  "batteries": [
+    {
+      "id": "demo-07-battery-1",
+      "vehicleId": "demo-07",
+      "name": "АКБ 1 · demo-07",
+      "initialPct": 26,
+      "readyAt": "2026-06-15T09:00:00.000Z",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Текущая батарея учебного БВС. Замена не прогнозируется; повторные вылеты используют остаток."
+    }
+  ]
+}

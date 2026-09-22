@@ -100,62 +100,7 @@
       "rechargeSec": null,
       "cycles": null,
       "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "rgb-1-battery-2",
-      "vehicleId": "rgb-1",
-      "name": "АКБ 2 · rgb-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "rgb-1-battery-3",
-      "vehicleId": "rgb-1",
-      "name": "АКБ 3 · rgb-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "rgb-1-battery-4",
-      "vehicleId": "rgb-1",
-      "name": "АКБ 4 · rgb-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "rgb-1-battery-5",
-      "vehicleId": "rgb-1",
-      "name": "АКБ 5 · rgb-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "rgb-1-battery-6",
-      "vehicleId": "rgb-1",
-      "name": "АКБ 6 · rgb-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
+      "source": "Текущая батарея учебного БВС. Замена не прогнозируется; повторные вылеты используют остаток."
     },
     {
       "id": "ms-1-battery-1",
@@ -166,128 +111,18 @@
       "rechargeSec": null,
       "cycles": null,
       "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "ms-1-battery-2",
-      "vehicleId": "ms-1",
-      "name": "АКБ 2 · ms-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "ms-1-battery-3",
-      "vehicleId": "ms-1",
-      "name": "АКБ 3 · ms-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "ms-1-battery-4",
-      "vehicleId": "ms-1",
-      "name": "АКБ 4 · ms-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "ms-1-battery-5",
-      "vehicleId": "ms-1",
-      "name": "АКБ 5 · ms-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "ms-1-battery-6",
-      "vehicleId": "ms-1",
-      "name": "АКБ 6 · ms-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
+      "source": "Текущая батарея учебного БВС. Замена не прогнозируется; повторные вылеты используют остаток."
     },
     {
       "id": "ir-1-battery-1",
       "vehicleId": "ir-1",
       "name": "АКБ 1 · ir-1",
       "initialPct": 100,
-      "readyAt": "2026-06-15T09:04:00.000Z",
+      "readyAt": "2026-06-15T09:00:00.000Z",
       "rechargeSec": null,
       "cycles": null,
       "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "ir-1-battery-2",
-      "vehicleId": "ir-1",
-      "name": "АКБ 2 · ir-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:04:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "ir-1-battery-3",
-      "vehicleId": "ir-1",
-      "name": "АКБ 3 · ir-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:04:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "ir-1-battery-4",
-      "vehicleId": "ir-1",
-      "name": "АКБ 4 · ir-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:04:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "ir-1-battery-5",
-      "vehicleId": "ir-1",
-      "name": "АКБ 5 · ir-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:04:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
-    },
-    {
-      "id": "ir-1-battery-6",
-      "vehicleId": "ir-1",
-      "name": "АКБ 6 · ir-1",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:04:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Учебный запас заряженных АКБ; наличие и состояние у оператора не подтверждены."
+      "source": "Текущая батарея учебного БВС. Замена не прогнозируется; повторные вылеты используют остаток."
     }
   ]
 }

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-22",
+  "file": "docs/planner/submission/presentation/prime-geoscan-lct2026.pptx",
+  "sha256": "b5a3a1257e9bf54b05d3e531b2af6a1f655411e57e5588ca5d9188d409dfcf4b",
+  "slides": 12,
+  "packageIntegrity": "pass",
+  "layoutFindings": 0,
+  "layoutWarnings": [
+    {
+      "kind": "object_outside_slide_boundary",
+      "slide": 1,
+      "note": "Inherited decorative cover element; reviewed visually in final rendering."
+    }
+  ],
+  "fontPolicy": {
+    "basis": "reference",
+    "passed": true,
+    "observedFamilies": [
+      "Montserrat"
+    ],
+    "nativeFontRenderingVerified": false
+  },
+  "nativeTables": {
+    "count": 3,
+    "slides": [
+      3,
+      7,
+      9
+    ]
+  },
+  "reimport": "pass",
+  "visualInspection": {
+    "slides": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "observedTextClipping": false
+  },
+  "nativePowerPointExecution": false
+}

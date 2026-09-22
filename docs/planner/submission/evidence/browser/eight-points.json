@@ -1,0 +1,79 @@
+{
+  "at": "2026-09-22T07:15:06.620Z",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "linked area locks inherited quality fields",
+      "pass": true
+    },
+    {
+      "name": "parent altitude propagates to linked area",
+      "pass": true
+    },
+    {
+      "name": "detached area cannot modify parent",
+      "pass": true
+    },
+    {
+      "name": "panel width changes map without removing it",
+      "pass": true
+    },
+    {
+      "name": "mission was actually persisted",
+      "pass": true
+    },
+    {
+      "name": "rename preserves identity",
+      "pass": true
+    },
+    {
+      "name": "archived mission is discoverable",
+      "pass": true
+    },
+    {
+      "name": "restored mission keeps saved ID",
+      "pass": true
+    },
+    {
+      "name": "explicit draft deletion removes only selected record",
+      "pass": true
+    },
+    {
+      "name": "custom base name survives reload",
+      "pass": true
+    },
+    {
+      "name": "theme dark",
+      "pass": true
+    },
+    {
+      "name": "theme light",
+      "pass": true
+    },
+    {
+      "name": "theme system",
+      "pass": true
+    },
+    {
+      "name": "mobile list remains within viewport",
+      "pass": true
+    },
+    {
+      "name": "invalid import does not overwrite editor",
+      "pass": true
+    },
+    {
+      "name": "revision opens remaining work and comparison",
+      "pass": true
+    },
+    {
+      "name": "original run remains immutable in history",
+      "pass": true
+    },
+    {
+      "name": "no JavaScript errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

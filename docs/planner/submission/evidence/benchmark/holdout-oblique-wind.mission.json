@@ -1,0 +1,324 @@
+{
+  "schemaVersion": "2.0",
+  "id": "holdout-oblique-wind",
+  "name": "holdout-oblique-wind",
+  "scenario": {
+    "schemaVersion": "1.0",
+    "name": "Автовыбор БВС: время и налёт",
+    "area": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            30.3,
+            60.035
+          ],
+          [
+            30.312603822913072,
+            60.035
+          ],
+          [
+            30.312603822913072,
+            60.04039592218234
+          ],
+          [
+            30.3,
+            60.04039592218234
+          ],
+          [
+            30.3,
+            60.035
+          ]
+        ]
+      ]
+    },
+    "airspace": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            30.292797815478245,
+            60.030503398181374
+          ],
+          [
+            30.319806007434828,
+            60.030503398181374
+          ],
+          [
+            30.319806007434828,
+            60.044892524000964
+          ],
+          [
+            30.292797815478245,
+            60.044892524000964
+          ],
+          [
+            30.292797815478245,
+            60.030503398181374
+          ]
+        ]
+      ]
+    },
+    "exclusions": [],
+    "reserveSites": [
+      [
+        30.306301911456536,
+        60.03365101945441
+      ],
+      [
+        30.30144043690435,
+        60.034100679636275
+      ],
+      [
+        30.311163386008722,
+        60.033201359272546
+      ]
+    ],
+    "job": {
+      "type": "RGB",
+      "altitudeM": 100,
+      "swathM": 117.5,
+      "sideOverlap": 0.6,
+      "triggerDistanceM": 15.6,
+      "bearingDeg": 0,
+      "autoBearing": true,
+      "qualitySource": "Учебный RGB-профиль PF1B: 23,5 мм / 20 мм на 100 м; перекрытие 60% и шаг 15,6 м — параметры сценария. Скорость затвора не подтверждена."
+    },
+    "wind": {
+      "speedMps": 2,
+      "fromDeg": 33
+    },
+    "reservePct": 25,
+    "clearanceM": 5,
+    "objective": "makespan",
+    "terrain": "unknown",
+    "vehicles": [
+      {
+        "id": "rgb-center",
+        "name": "БВС 01 · центральная база",
+        "model": "Custom",
+        "kind": "multirotor",
+        "enabled": true,
+        "airspeedMps": 9,
+        "maxWindMps": 10,
+        "batteryPct": 100,
+        "effectiveEnduranceMin": 26,
+        "climbMps": 3,
+        "descentMps": 1,
+        "turnSeconds": 4,
+        "start": [
+          30.306301911456536,
+          60.03365101945441
+        ],
+        "landing": [
+          30.306301911456536,
+          60.03365101945441
+        ],
+        "jobs": [
+          "RGB",
+          "MS",
+          "IR"
+        ],
+        "assumptions": [
+          "Все три учебных мультиротора совместимы с RGB. Скорость, ресурс и доступность АКБ заданы оператором для стенда."
+        ],
+        "source": "Полностью синтетический профиль для демонстрации автоматического выбора, не паспорт реального БВС."
+      },
+      {
+        "id": "rgb-near",
+        "name": "БВС 02 · ближняя база",
+        "model": "Custom",
+        "kind": "multirotor",
+        "enabled": true,
+        "airspeedMps": 6,
+        "maxWindMps": 10,
+        "batteryPct": 100,
+        "effectiveEnduranceMin": 30,
+        "climbMps": 3,
+        "descentMps": 1,
+        "turnSeconds": 4,
+        "start": [
+          30.30144043690435,
+          60.034100679636275
+        ],
+        "landing": [
+          30.30144043690435,
+          60.034100679636275
+        ],
+        "jobs": [
+          "RGB",
+          "MS",
+          "IR"
+        ],
+        "assumptions": [
+          "Все три учебных мультиротора совместимы с RGB. Скорость, ресурс и доступность АКБ заданы оператором для стенда."
+        ],
+        "source": "Полностью синтетический профиль для демонстрации автоматического выбора, не паспорт реального БВС."
+      },
+      {
+        "id": "rgb-fast",
+        "name": "БВС 03 · быстрый",
+        "model": "Custom",
+        "kind": "multirotor",
+        "enabled": true,
+        "airspeedMps": 12,
+        "maxWindMps": 10,
+        "batteryPct": 100,
+        "effectiveEnduranceMin": 22,
+        "climbMps": 3,
+        "descentMps": 1,
+        "turnSeconds": 4,
+        "start": [
+          30.311163386008722,
+          60.033201359272546
+        ],
+        "landing": [
+          30.311163386008722,
+          60.033201359272546
+        ],
+        "jobs": [
+          "RGB",
+          "MS",
+          "IR"
+        ],
+        "assumptions": [
+          "Все три учебных мультиротора совместимы с RGB. Скорость, ресурс и доступность АКБ заданы оператором для стенда."
+        ],
+        "source": "Полностью синтетический профиль для демонстрации автоматического выбора, не паспорт реального БВС."
+      }
+    ]
+  },
+  "jobs": [
+    {
+      "id": "rgb-01",
+      "name": "RGB · автоматический выбор совместимого БВС",
+      "area": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              30.3,
+              60.035
+            ],
+            [
+              30.312603822913072,
+              60.035
+            ],
+            [
+              30.312603822913072,
+              60.04039592218234
+            ],
+            [
+              30.3,
+              60.04039592218234
+            ],
+            [
+              30.3,
+              60.035
+            ]
+          ]
+        ]
+      },
+      "job": {
+        "type": "RGB",
+        "altitudeM": 100,
+        "swathM": 117.5,
+        "sideOverlap": 0.6,
+        "triggerDistanceM": 15.6,
+        "bearingDeg": 0,
+        "autoBearing": true,
+        "qualitySource": "Учебный RGB-профиль PF1B: 23,5 мм / 20 мм на 100 м; перекрытие 60% и шаг 15,6 м — параметры сценария. Скорость затвора не подтверждена."
+      },
+      "assignedVehicleIds": [],
+      "quality": {
+        "mode": "camera",
+        "status": "assumed",
+        "source": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры.",
+        "sensorWidthMm": 23.5,
+        "sensorHeightMm": 15.6,
+        "focalLengthMm": 20,
+        "imageWidthPx": 6000,
+        "imageHeightPx": 4000,
+        "forwardOverlap": 0.7,
+        "minimumIntervalSec": 1,
+        "maximumGsdCm": 3,
+        "shutterSec": 0.001,
+        "maximumBlurPx": 1
+      },
+      "daylight": "none"
+    }
+  ],
+  "window": {
+    "start": "2026-06-15T09:00:00Z",
+    "end": "2026-06-15T15:00:00Z",
+    "timezone": "Europe/Moscow"
+  },
+  "planning": {
+    "preparationSec": 60,
+    "serviceSec": 180,
+    "separationHorizontalM": 30,
+    "separationVerticalM": 15,
+    "temporalBufferSec": 2,
+    "separationSource": "Учебные защитные расстояния и интервалы; не утверждённый норматив.",
+    "maxSortiesPerVehicle": 8,
+    "maxComputeMs": 2000,
+    "altitudePreference": "balanced",
+    "windModel": "constantAirspeed",
+    "batteryPolicy": "installed-current-v1",
+    "safetyPolicy": "continuous-occupancy-v1"
+  },
+  "batteries": [
+    {
+      "id": "rgb-center-battery-1",
+      "vehicleId": "rgb-center",
+      "name": "АКБ 1 · БВС 01 · центральная база",
+      "initialPct": 100,
+      "readyAt": "2026-06-15T09:00:00.000Z",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Синтетическая доступность заряженного экземпляра АКБ; не измеренное время реальной подготовки."
+    },
+    {
+      "id": "rgb-near-battery-1",
+      "vehicleId": "rgb-near",
+      "name": "АКБ 1 · БВС 02 · ближняя база",
+      "initialPct": 100,
+      "readyAt": "2026-06-15T09:00:00.000Z",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Синтетическая доступность заряженного экземпляра АКБ; не измеренное время реальной подготовки."
+    },
+    {
+      "id": "rgb-fast-battery-1",
+      "vehicleId": "rgb-fast",
+      "name": "АКБ 1 · БВС 03 · быстрый",
+      "initialPct": 100,
+      "readyAt": "2026-06-15T09:00:00.000Z",
+      "rechargeSec": null,
+      "cycles": null,
+      "commissionedAt": null,
+      "source": "Синтетическая доступность заряженного экземпляра АКБ; не измеренное время реальной подготовки."
+    }
+  ],
+  "restrictions": [],
+  "terrainModel": {
+    "kind": "flat",
+    "elevationM": 0,
+    "source": "Синтетическая горизонтальная поверхность; не реальный DEM участка."
+  },
+  "flightEnvelope": {
+    "minSurveyAltitudeM": 10,
+    "maxAltitudeM": 500,
+    "source": "Учебный диапазон сценария, не разрешение воздушного пространства."
+  },
+  "environment": {
+    "cloudBaseM": 250,
+    "cloudClearanceM": 50,
+    "visibilityM": 5000,
+    "minVisibilityM": 1000,
+    "source": "Синтетические постоянные условия; облака относительно общей модельной плоскости старта, не прогноз."
+  },
+  "notes": "Синтетическая задача 700 × 600 м. Назначения автоматические. Все заданные АКБ доступны к началу; базы, скорости и ресурс различаются. Сравниваются время завершения и суммарный налёт, не физический износ. Число различных найденных вариантов не гарантируется. Это не разрешение полёта."
+}

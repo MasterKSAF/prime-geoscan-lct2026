@@ -9,6 +9,7 @@ export function GET() {
     engineVersion: ENGINE_VERSION,
     missionEngineVersion: MISSION_ENGINE_VERSION,
     missionSchemaVersion: MISSION_VERSION,
+    safetyValidationPolicy: 'continuous-occupancy-v1',
     mode: 'engineering-preview',
     flightReady: false,
   });

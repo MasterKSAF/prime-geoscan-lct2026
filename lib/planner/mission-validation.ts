@@ -9,7 +9,13 @@ import {
 } from './mission-schema.ts';
 import type { MissionCandidate } from './mission-schema.ts';
 import type { Check } from './schema.ts';
-import { coordinate } from './schema.ts';
+import { coordinate, fixedWingSegmentMetadataSchema } from './schema.ts';
+import { plannedPhotoCoverage } from './mission-photo-footprints.ts';
+import {
+  fixedWingSegmentKinematics,
+  validateFixedWingSortie,
+} from './fixed-wing-mission.ts';
+import { capsuleInside } from './fixed-wing-dubins.ts';
 import type { JobContext } from './mission-engine.ts';
 import { missionJobContext } from './mission-engine.ts';
 import {
@@ -22,6 +28,8 @@ import { groundSpeed } from './engine.ts';
 import { qualityForJob } from './quality.ts';
 import { buildMissionEvents } from './mission-events.ts';
 import { z } from 'zod';
+import { vehiclePlanningEligibility } from './fixed-wing-profile.ts';
+import { missionWeatherChecks } from './mission-weather.ts';
 
 const EPS = 1e-7;
 const resultNumber = (min: number, max = 604800) =>
@@ -49,6 +57,7 @@ const resultSegmentSchema = z
     batteryFromPct: resultNumber(0, 100),
     batteryToPct: resultNumber(0, 100),
     stripId: resultNumber(0, 400).int().optional(),
+    fixedWing: fixedWingSegmentMetadataSchema.optional(),
   })
   .strict();
 const resultSortieSchema = z
@@ -117,11 +126,17 @@ export function segmentSeparation(
   b: Segment,
   horizontalM: number,
   verticalM: number,
+  forward?: (p: Coordinate) => Point,
 ): { conflict: boolean; distanceM: number; atSec: number } | null {
   const begin = Math.max(a.startSec, b.startSec),
     end = Math.min(a.endSec, b.endSec);
   if (end < begin - EPS) return null;
-  const p = projection(a.from),
+  // Standalone calls use an order-independent conservative longitude scale.
+  // Mission calls supply ONE common local metre plane for the entire fleet.
+  const latitude = Math.max(
+      ...[a.from, a.to, b.from, b.to].map((p) => Math.abs(p[1])),
+    ),
+    p = { forward: forward ?? projection([0, latitude]).forward },
     aa = positionAt(a, begin),
     bb = positionAt(b, begin),
     pa = p.forward(aa.coordinate),
@@ -205,13 +220,47 @@ export function segmentIntersectsVolume(
       [0, Math.max(0, end - begin)],
       alt,
       vz,
-      volume.minAltitudeM,
-      volume.maxAltitudeM,
+      volume.minAltitudeM - (segment.fixedWing?.tubeRadiusM ?? 0),
+      volume.maxAltitudeM + (segment.fixedWing?.tubeRadiusM ?? 0),
     );
   if (!interval) return false;
   const a = forward(positionAt(segment, begin + interval[0]).coordinate),
     b = forward(positionAt(segment, begin + interval[1]).coordinate);
   if (inside(a, volume.footprint) || inside(b, volume.footprint)) return true;
+  const radius = segment.fixedWing?.tubeRadiusM ?? 0;
+  if (radius > 0) {
+    const pointEdge = (p: Point, c: Point, e: Point) => {
+      const x = e[0] - c[0],
+        y = e[1] - c[1],
+        den = x * x + y * y;
+      const t = den
+        ? Math.max(
+            0,
+            Math.min(1, ((p[0] - c[0]) * x + (p[1] - c[1]) * y) / den),
+          )
+        : 0;
+      return distance(p, [c[0] + x * t, c[1] + y * t]);
+    };
+    if (
+      volume.footprint.some((poly) =>
+        poly.some((ring) =>
+          ring
+            .slice(1)
+            .some(
+              (e, i) =>
+                Math.min(
+                  pointEdge(a, ring[i], e),
+                  pointEdge(b, ring[i], e),
+                  pointEdge(ring[i], a, b),
+                  pointEdge(e, a, b),
+                ) <=
+                radius + EPS,
+            ),
+        ),
+      )
+    )
+      return true;
+  }
   return volume.footprint.some((poly) =>
     poly.some((ring) =>
       ring.slice(1).some((point, i) => edgesIntersect(a, b, ring[i], point)),
@@ -286,7 +335,8 @@ export function compileRestrictions(
   g: { forward: (p: Coordinate) => Point },
   sensorOffsetM = 0,
 ): CompiledRestriction[] {
-  const start = Date.parse(d.window.start);
+  const start = Date.parse(d.window.start),
+    guard = d.planning.safetyPolicy ? d.planning.temporalBufferSec : 0;
   return d.restrictions.map((r) => {
     return {
       id: r.id,
@@ -301,9 +351,13 @@ export function compileRestrictions(
           ? Infinity
           : r.maxAltitudeM + d.scenario.clearanceM + sensorOffsetM,
       startSec:
-        r.startAt === null ? -Infinity : (Date.parse(r.startAt) - start) / 1000,
+        r.startAt === null
+          ? -Infinity
+          : (Date.parse(r.startAt) - start) / 1000 - guard,
       endSec:
-        r.endAt === null ? Infinity : (Date.parse(r.endAt) - start) / 1000,
+        r.endAt === null
+          ? Infinity
+          : (Date.parse(r.endAt) - start) / 1000 + guard,
     };
   });
 }
@@ -392,13 +446,106 @@ export function sortiesConflict(
             segmentSeparation(
               centred(aa, aOffset),
               centred(bb, bOffset),
-              horizontal,
-              vertical,
+              horizontal +
+                (aa.fixedWing?.tubeRadiusM ?? 0) +
+                (bb.fixedWing?.tubeRadiusM ?? 0),
+              vertical +
+                (aa.fixedWing?.tubeRadiusM ?? 0) +
+                (bb.fixedWing?.tubeRadiusM ?? 0),
+              projection(
+                d.planning.safetyPolicy
+                  ? d.scenario.area.coordinates[0][0]
+                  : aa.from,
+              ).forward,
             )?.conflict
           )
             return true;
     }
   return false;
+}
+
+/** A parked aircraft does not disappear. Compare flights against all supplied
+ * ground positions before departure, between sorties and after landing. Adjacent
+ * parked aircraft alone are not an airborne conflict. No unreported taxi/removal
+ * from a pad is invented. Unassigned/disabled fleet records still occupy space.
+ */
+export function groundSeparationConflicts(
+  d: MissionDocument,
+  sorties: ScheduledSortie[],
+) {
+  const conflicts: {
+    vehicleId: string;
+    otherVehicleId: string;
+    startSec: number;
+    endSec: number;
+  }[] = [];
+  const horizon =
+    Math.max(0, ...sorties.map((s) => s.endSec)) +
+    d.planning.temporalBufferSec * 2;
+  for (const v of d.scenario.vehicles) {
+    const flights = sorties
+      .filter((s) => s.vehicleId === v.id)
+      .sort((a, b) => a.startSec - b.startSec);
+    let from = v.start,
+      start = 0;
+    const intervals: { from: Coordinate; start: number; end: number }[] = [];
+    for (const flight of flights) {
+      if (flight.startSec >= start)
+        intervals.push({ from, start, end: flight.startSec });
+      from = flight.segments.at(-1)?.to ?? v.landing;
+      start = flight.endSec;
+    }
+    if (horizon >= start) intervals.push({ from, start, end: horizon });
+    for (const interval of intervals) {
+      const segment: Segment = {
+        from: interval.from,
+        to: interval.from,
+        startSec: interval.start,
+        endSec: interval.end,
+        phase: 'landing',
+        altitudeFromM: 0,
+        altitudeToM: 0,
+        airspeedMps: 0,
+        groundSpeedMps: 0,
+        distanceM: 0,
+        batteryFromPct: 0,
+        batteryToPct: 0,
+      };
+      const hold: ScheduledSortie = {
+        id: `ground-${v.id}`,
+        jobId: '',
+        vehicleId: v.id,
+        batteryId: '',
+        name: v.name,
+        startSec: interval.start,
+        endSec: interval.end,
+        readySec: interval.end,
+        durationSec: interval.end - interval.start,
+        distanceM: 0,
+        remainingPct: 0,
+        strips: 0,
+        shots: null,
+        segments: [segment],
+      };
+      for (const flight of sorties) {
+        if (sortiesConflict(d, flight, hold))
+          conflicts.push({
+            vehicleId: flight.vehicleId,
+            otherVehicleId: v.id,
+            startSec: Math.max(
+              0,
+              flight.startSec - d.planning.temporalBufferSec,
+              interval.start - d.planning.temporalBufferSec,
+            ),
+            endSec: Math.min(
+              flight.endSec + d.planning.temporalBufferSec,
+              interval.end + d.planning.temporalBufferSec,
+            ),
+          });
+      }
+    }
+  }
+  return conflicts;
 }
 
 export function findSortieConflicts(
@@ -426,7 +573,9 @@ export function findSortieConflicts(
       else
         nextStartSec = Math.max(
           nextStartSec,
-          restriction.endSec + d.planning.temporalBufferSec + 0.01,
+          restriction.endSec +
+            (d.planning.safetyPolicy ? 0 : d.planning.temporalBufferSec) +
+            0.01,
         );
     }
   return { nextStartSec, permanent };
@@ -448,8 +597,8 @@ export function missionEnvironmentChecks(
   for (const segment of segments)
     maximumAltitudeM = Math.max(
       maximumAltitudeM,
-      segment.altitudeFromM,
-      segment.altitudeToM,
+      segment.altitudeFromM + (segment.fixedWing?.tubeRadiusM ?? 0),
+      segment.altitudeToM + (segment.fixedWing?.tubeRadiusM ?? 0),
     );
   const ceiling =
     environment.cloudBaseM === null
@@ -585,6 +734,15 @@ export function validateMissionCandidate(
         ...vehicle,
         airspeedMps: maxSurveySpeed || vehicle.airspeedMps,
       });
+    if (context.job.window) {
+      const start = (Date.parse(context.job.window.start) - begin) / 1000;
+      const end = (Date.parse(context.job.window.end) - begin) / 1000;
+      const pass = sortie.startSec >= start - EPS && sortie.endSec <= end + EPS;
+      time &&= pass;
+      checks.push({ id: `${sortie.id}:WORK_WINDOW`, title: 'Период работы', status: pass ? 'pass' : 'fail', detail: `${context.job.name}: вылет и посадка должны находиться в периоде ${context.job.window.start} — ${context.job.window.end}.` });
+    }
+    if (vehicle.kind === 'fixedWing')
+      checks.push(...validateFixedWingSortie(d, sortie, context));
     checks.push(
       ...quality.checks
         .filter(
@@ -598,8 +756,7 @@ export function validateMissionCandidate(
     );
     compatibility &&=
       vehicle.enabled &&
-      vehicle.kind === 'multirotor' &&
-      vehicle.model !== '201' &&
+      vehiclePlanningEligibility(vehicle).supported &&
       vehicle.jobs.includes(context.job.job.type) &&
       (!context.job.assignedVehicleIds.length ||
         context.job.assignedVehicleIds.includes(vehicle.id)) &&
@@ -623,7 +780,8 @@ export function validateMissionCandidate(
       phases &&=
         (seg.phase !== 'transit' || index < lastSurveyIndex) &&
         (seg.phase !== 'return' || index > lastSurveyIndex) &&
-        (vehicle.turnSeconds === 0 ||
+        (vehicle.kind === 'fixedWing' ||
+          vehicle.turnSeconds === 0 ||
           ((seg.phase !== 'survey' || previousPhase === 'turn') &&
             !(seg.phase === 'transit' && previousPhase === 'transit') &&
             !(seg.phase === 'return' && previousPhase === 'return')));
@@ -631,7 +789,10 @@ export function validateMissionCandidate(
         seg.phase === 'survey'
           ? seg.stripId !== undefined
           : seg.stripId === undefined;
-      geometry &&= segmentInside(a, b, g.free);
+      geometry &&=
+        vehicle.kind === 'fixedWing'
+          ? capsuleInside(a, b, seg.fixedWing?.tubeRadiusM ?? Infinity, g.free)
+          : !seg.fixedWing && segmentInside(a, b, g.free);
       restrictions &&= !volumes.some((volume) =>
         segmentIntersectsVolume(seg, volume, g.forward),
       );
@@ -649,7 +810,12 @@ export function validateMissionCandidate(
       let expectedDuration = 0,
         expectedAir = 0;
       try {
-        if (seg.phase === 'takeoff') {
+        if (vehicle.kind === 'fixedWing') {
+          const fixed = fixedWingSegmentKinematics(d, vehicle, seg, g.forward);
+          expectedDuration = fixed.durationSec;
+          expectedAir = fixed.airspeedMps;
+          compatibility &&= fixed.errors.length === 0;
+        } else if (seg.phase === 'takeoff') {
           expectedDuration = altitude / vehicle.climbMps;
           continuity &&=
             index === 0 &&
@@ -683,9 +849,13 @@ export function validateMissionCandidate(
             );
             compatibility &&=
               expectedAir <=
-              (['Gemini', '801'].includes(vehicle.model)
-                ? 15
-                : vehicle.airspeedMps) +
+              Math.min(
+                vehicle.maxAirspeedMps ??
+                  (['Gemini', '801'].includes(vehicle.model)
+                    ? 15
+                    : vehicle.airspeedMps),
+                ['Gemini', '801'].includes(vehicle.model) ? 15 : Infinity,
+              ) +
                 EPS;
           } else {
             expectedDuration =
@@ -845,7 +1015,9 @@ export function validateMissionCandidate(
     'GEOMETRY',
     geometry,
     'Границы и статические запреты',
-    'Каждый отрезок проверен целиком, включая пересечения с границами, переходы и возврат.',
+    d.planning.safetyPolicy
+      ? `Каждый отрезок проверен целиком, включая переходы и возврат. Запреты расширены, разрешённая зона сужена на защитный запас ${d.scenario.clearanceM} м в общей локальной проекции. Это параметр модели, не универсальная норма.`
+      : 'Каждый отрезок проверен целиком, включая пересечения с границами, переходы и возврат.',
   );
   push(
     'STRIPS',
@@ -897,7 +1069,9 @@ export function validateMissionCandidate(
     'BATTERIES',
     batteries,
     'Экземпляры батарей',
-    'Проверены ID, исходный заряд, доступность и последовательная модельная зарядка; заряд не восстанавливается без события.',
+    d.planning.batteryPolicy
+      ? 'Проверены текущая батарея, расход между повторными вылетами и запас на возвращение; автоматического восстановления заряда нет.'
+      : 'Проверены ID, исходный заряд, доступность и последовательная модельная зарядка; заряд не восстанавливается без события.',
   );
   push(
     'COMPATIBILITY',
@@ -915,7 +1089,9 @@ export function validateMissionCandidate(
     'FOUR_DIMENSIONAL',
     restrictions,
     'Четырёхмерные ограничения',
-    'Сегменты пересечены с полигоном, интервалом высоты и активным временем; неизвестный верх закрывает весь столб.',
+    d.planning.safetyPolicy
+      ? `Сегменты пересечены с полигоном, интервалом высоты и активным временем, расширенным на ±${d.planning.temporalBufferSec} с. Неизвестный верх закрывает весь столб.`
+      : 'Сегменты пересечены с полигоном, интервалом высоты и активным временем; неизвестный верх закрывает весь столб.',
   );
   push(
     'SEPARATION',
@@ -929,7 +1105,29 @@ export function validateMissionCandidate(
     'Условия освещения',
     'Проверены только работы с включённым правилом; Солнце вычислено по UTC и координатам, шаг≤60 с и запас0,5°; облачное исключение не применяется.',
   );
+  const groundConflicts = d.planning.safetyPolicy
+    ? groundSeparationConflicts(d, sorties)
+    : [];
+  if (d.planning.safetyPolicy)
+    push(
+      'GROUND_SEPARATION',
+      groundConflicts.length === 0,
+      'Свободные места взлёта и посадки',
+      groundConflicts.length
+        ? `Опасное сближение со стоящим БВС: ${groundConflicts
+            .slice(0, 8)
+            .map((x) => `${x.vehicleId} / ${x.otherVehicleId}`)
+            .join(
+              '; ',
+            )}. Укажите разнесённые физические площадки; освобождение места не предполагается автоматически.`
+        : 'Проверены все переданные БВС на земле: до первого вылета, между вылетами и после посадки; также неназначенные аппараты. Удаление с площадки без данных не предполагается.',
+    );
   checks.push(...environmentChecks);
+  const forecastChecks = missionWeatherChecks(
+    d,
+    sorties.map((s) => s.vehicleId),
+  );
+  checks.push(...forecastChecks);
   push(
     'RESERVE_LANDING',
     geometry &&
@@ -940,7 +1138,10 @@ export function validateMissionCandidate(
       restrictions &&
       envelope &&
       schedule &&
-      !environmentChecks.some((check) => check.status === 'fail'),
+      (!d.planning.safetyPolicy ||
+        (separation && groundConflicts.length === 0)) &&
+      !environmentChecks.some((check) => check.status === 'fail') &&
+      !forecastChecks.some((check) => check.status === 'fail'),
     'Достижимая посадка из каждой точки',
     'Консервативный сертификат: остаток того же проверенного непрерывного маршрута является допустимым путём к назначенной посадке и заканчивается с требуемым резервом. Это не кратчайший аварийный уход.',
   );
@@ -949,7 +1150,7 @@ export function validateMissionCandidate(
     status: 'unknown',
     title: 'Альтернативный аварийный уход',
     detail:
-      'Независимые кратчайшие пути к резервным площадкам, отказы батареи/связи и внешние БВС не моделируются.',
+      'Отдельный интервальный протокол ухода доступен в «Результаты → Анализ → Возврат из любой части маршрута». Этот основной набор проверок не подменяет его результат. Падение, внезапные новые условия и внешние БВС не покрываются сертификатом исходного плана.',
   });
   checks.push({
     id: 'TERRAIN',
@@ -972,8 +1173,11 @@ export function validateMissionCandidate(
     status: 'unknown',
     title: 'Реальные фотоотпечатки',
     detail:
-      'Число модельных событий затвора вычислено без выхода за рабочую полосу. Краевое покрытие отдельными кадрами, наклоны и реальное качество изображений не доказаны геометрическим покрытием полос.',
+      'Отдельно проверяются ожидаемые отпечатки над плоской поверхностью. Реальные изображения, наклоны, экспозиция и аппаратное срабатывание камеры не получены и не подтверждены.',
   });
+  checks.push(
+    ...plannedPhotoCoverage(d, sorties).flatMap((view) => view.checks),
+  );
   checks.push({
     id: 'AIRSPACE_PERMISSION',
     status: 'unknown',
@@ -1200,7 +1404,13 @@ export async function validateExportedCandidate(
               'NO_ASSIGNMENT',
               'BUDGET',
               'SEARCH',
+              'SEARCH_STRATEGY',
+              'SEARCH_REPAIR',
+              'PARALLEL_BASELINE_PROTOCOL',
               'COMMON_CANDIDATE_POOL',
+              'BASELINE_PROTOCOL',
+              'VEHICLE_EXCLUDED',
+              'GROUND_REJECT',
             ]),
             detail: z.string().max(10000),
           })

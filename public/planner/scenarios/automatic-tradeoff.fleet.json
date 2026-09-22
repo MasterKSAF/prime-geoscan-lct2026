@@ -4,7 +4,7 @@
   "vehicles": [
     {
       "id": "rgb-center",
-      "name": "RGB-A · центральная база",
+      "name": "БВС 01 · центральная база",
       "model": "Custom",
       "kind": "multirotor",
       "enabled": true,
@@ -35,7 +35,7 @@
     },
     {
       "id": "rgb-near",
-      "name": "RGB-B · ближняя база",
+      "name": "БВС 02 · ближняя база",
       "model": "Custom",
       "kind": "multirotor",
       "enabled": true,
@@ -66,7 +66,7 @@
     },
     {
       "id": "rgb-fast",
-      "name": "RGB-C · быстрый, АКБ позже",
+      "name": "БВС 03 · быстрый",
       "model": "Custom",
       "kind": "multirotor",
       "enabled": true,
@@ -100,31 +100,9 @@
     {
       "id": "rgb-center-battery-1",
       "vehicleId": "rgb-center",
-      "name": "АКБ 1 · RGB-A · центральная база",
+      "name": "АКБ 1 · БВС 01 · центральная база",
       "initialPct": 100,
-      "readyAt": "2026-06-15T09:05:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Синтетическая доступность заряженного экземпляра АКБ; не измеренное время реальной подготовки."
-    },
-    {
-      "id": "rgb-center-battery-2",
-      "vehicleId": "rgb-center",
-      "name": "АКБ 2 · RGB-A · центральная база",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:05:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Синтетическая доступность заряженного экземпляра АКБ; не измеренное время реальной подготовки."
-    },
-    {
-      "id": "rgb-center-battery-3",
-      "vehicleId": "rgb-center",
-      "name": "АКБ 3 · RGB-A · центральная база",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:05:00.000Z",
+      "readyAt": "2026-06-15T09:00:00.000Z",
       "rechargeSec": null,
       "cycles": null,
       "commissionedAt": null,
@@ -133,29 +111,7 @@
     {
       "id": "rgb-near-battery-1",
       "vehicleId": "rgb-near",
-      "name": "АКБ 1 · RGB-B · ближняя база",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Синтетическая доступность заряженного экземпляра АКБ; не измеренное время реальной подготовки."
-    },
-    {
-      "id": "rgb-near-battery-2",
-      "vehicleId": "rgb-near",
-      "name": "АКБ 2 · RGB-B · ближняя база",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:00:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Синтетическая доступность заряженного экземпляра АКБ; не измеренное время реальной подготовки."
-    },
-    {
-      "id": "rgb-near-battery-3",
-      "vehicleId": "rgb-near",
-      "name": "АКБ 3 · RGB-B · ближняя база",
+      "name": "АКБ 1 · БВС 02 · ближняя база",
       "initialPct": 100,
       "readyAt": "2026-06-15T09:00:00.000Z",
       "rechargeSec": null,
@@ -166,31 +122,9 @@
     {
       "id": "rgb-fast-battery-1",
       "vehicleId": "rgb-fast",
-      "name": "АКБ 1 · RGB-C · быстрый, АКБ позже",
+      "name": "АКБ 1 · БВС 03 · быстрый",
       "initialPct": 100,
-      "readyAt": "2026-06-15T09:10:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Синтетическая доступность заряженного экземпляра АКБ; не измеренное время реальной подготовки."
-    },
-    {
-      "id": "rgb-fast-battery-2",
-      "vehicleId": "rgb-fast",
-      "name": "АКБ 2 · RGB-C · быстрый, АКБ позже",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:10:00.000Z",
-      "rechargeSec": null,
-      "cycles": null,
-      "commissionedAt": null,
-      "source": "Синтетическая доступность заряженного экземпляра АКБ; не измеренное время реальной подготовки."
-    },
-    {
-      "id": "rgb-fast-battery-3",
-      "vehicleId": "rgb-fast",
-      "name": "АКБ 3 · RGB-C · быстрый, АКБ позже",
-      "initialPct": 100,
-      "readyAt": "2026-06-15T09:10:00.000Z",
+      "readyAt": "2026-06-15T09:00:00.000Z",
       "rechargeSec": null,
       "cycles": null,
       "commissionedAt": null,

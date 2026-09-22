@@ -2,14 +2,15 @@ import type {
   MissionCandidate,
   MissionResult,
 } from '@/lib/planner/mission-schema';
+import { InfoHint } from './mission-help';
 const number = (v: number) =>
   v.toLocaleString('ru-RU', { maximumFractionDigits: 1 });
 const title = (c: MissionCandidate) =>
   c.id === 'balanced'
     ? 'Баланс'
     : c.objective === 'makespan'
-      ? 'Раньше закончить'
-      : 'Меньше летать';
+      ? 'Раньше завершить'
+      : 'Снизить общий налёт';
 export default function MissionComparisonView({
   result,
   selectedId,
@@ -21,28 +22,81 @@ export default function MissionComparisonView({
 }) {
   const rows = [
     ...result.candidates,
-    ...(result.recommendation ? [result.recommendation.candidate] : []),
+    ...(result.recommendation && !result.recommendation.samePlan
+      ? [result.recommendation.candidate]
+      : []),
   ];
   const selected = rows.find((c) => c.id === selectedId) ?? rows[0];
   const maxTime = Math.max(1, ...rows.map((c) => c.metrics.makespanSec)),
     maxFlight = Math.max(1, ...rows.map((c) => c.metrics.flightTimeSec));
   return (
     <>
-      <p className="ms-notice">
-        Сначала — выполнение всей задачи и соблюдение ограничений. Безопасность
-        и покрытие не обмениваются на минуты. Среди допустимых вариантов
-        сравниваются время до последней посадки и суммарное время в воздухе.
-      </p>
       <div className="ms-table-scroll">
         <table className="ms-table">
           <thead>
             <tr>
-              <th>Вариант</th>
-              <th>До завершения</th>
-              <th>Суммарный налёт</th>
-              <th>Покрытие</th>
-              <th>Вылеты / замены АКБ</th>
-              <th>Мин. остаток</th>
+              <th>
+                Вариант
+                <InfoHint label="Как сравниваются варианты">
+                  Все варианты рассчитываются для одной миссии. «Раньше
+                  завершить» сокращает срок, «Снизить общий налёт» — суммарный
+                  налёт. «Баланс» ищет компромисс 50/50 среди найденных
+                  допустимых планов. Это ограниченный поиск, не доказанный
+                  лучший маршрут из всех возможных. Сначала проверяются
+                  выполнение всей задачи и ограничения. Безопасность и покрытие
+                  не обмениваются на минуты.
+                </InfoHint>
+              </th>
+              <th>
+                До завершения
+                <InfoHint label="Время до завершения">
+                  От начала заданного окна до последней посадки. Включает
+                  подготовку, ожидания и обслуживание между вылетами.
+                  Последующая обработка полученных данных не моделируется.
+                  Меньше — раньше закончена миссия.
+                </InfoHint>
+              </th>
+              <th>
+                Суммарный налёт
+                <InfoHint label="Суммарный налёт">
+                  Время в воздухе всех аппаратов складывается, даже если они
+                  летят одновременно. Два БВС по 10 минут дают 20 минут налёта.
+                  Это показатель использования ресурса, не измеренный износ
+                  батарей.
+                </InfoHint>
+              </th>
+              <th>
+                Покрытие
+                <InfoHint label="Покрытие исходной миссии">
+                  Доля исходной площади всех работ, закрытая расчётными полосами
+                  съёмки. Вырезанная запретами часть не считается выполненной.
+                  Порог модели — 99%; это не оценка жюри и не подтверждение
+                  качества реальных снимков. Для камер проверяются заданная
+                  детализация, перекрытие, интервал кадров и смаз при наличии
+                  параметров. Для LiDAR — средняя плотность, для геофизики — шаг
+                  измерений и высота датчика. Качество — обязательное условие:
+                  нарушение порога не компенсируется выигрышем времени.
+                  Неизвестные параметры требуют отдельного подтверждения.
+                </InfoHint>
+              </th>
+              <th>БВС</th>
+              <th>
+                Вылеты
+                <InfoHint label="Вылеты и замены аккумулятора">
+                  Полёты от взлёта до посадки. Повторные вылеты используют
+                  оставшийся заряд; будущая замена не закладывается в план без
+                  сообщения о состоянии.
+                </InfoHint>
+              </th>
+              <th>
+                Мин. остаток
+                <InfoHint label="Минимальный остаток на посадке">
+                  Самый небольшой расчётный остаток батареи среди всех
+                  завершений вылетов. Он должен сохранять заданный резерв.
+                  Расход линейный по времени полёта, без калибровки температуры
+                  и деградации АКБ.
+                </InfoHint>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -87,9 +141,8 @@ export default function MissionComparisonView({
                   </div>
                 </td>
                 <td>{number(c.metrics.grossCoveragePct)}%</td>
-                <td>
-                  {c.metrics.sortieCount} / {c.metrics.batteryChanges}
-                </td>
+                <td>{c.metrics.vehicleCount}</td>
+                <td>{c.metrics.sortieCount}</td>
                 <td>
                   {c.sorties.length
                     ? `${number(c.metrics.minimumRemainingPct)}%`
@@ -102,24 +155,28 @@ export default function MissionComparisonView({
       </div>
       {result.recommendation ? (
         <>
-          <h3>Почему выбран баланс</h3>
-          <p className="mw-caption">{result.recommendation.explanation}</p>
+          <h3>
+            Почему выбран баланс
+            <InfoHint label="Что означает оценка баланса">
+              Время завершения и налёт приводятся к шкале от 0 до 1 по найденным
+              допустимым кандидатам. Затем складываются с весами 0,5 и 0,5.
+              Меньшая оценка предпочтительнее в этом наборе. Одинаковые маршруты
+              не выдаются за разные альтернативы; безопасность и качество в эту
+              сумму не входят. {result.recommendation.explanation}
+            </InfoHint>
+          </h3>
           <p>
-            В пуле {result.recommendation.poolSize} допустимых кандидатов,{' '}
-            {result.recommendation.distinctPlanCount} разных планов. Оценка
-            выбранного: {result.recommendation.score.toFixed(4)} (меньше лучше).
+            Допустимых кандидатов: {result.recommendation.poolSize} · разных
+            планов: {result.recommendation.distinctPlanCount} · оценка:{' '}
+            {result.recommendation.score.toFixed(4)}
           </p>
           {result.recommendation.samePlan && (
-            <p className="ms-notice">
-              Компромисс совпадает с одним из основных вариантов. Это одинаковый
-              план, а не отдельная выдуманная альтернатива.
-            </p>
+            <p className="ms-notice">Совпадает с основным вариантом.</p>
           )}
         </>
       ) : (
         <p className="ms-notice">
-          Полных допустимых вариантов нет — баланс не предлагается. Измените
-          вход по проваленным проверкам и выполните новый расчёт.
+          Баланс недоступен: нет полного допустимого плана.
         </p>
       )}
       {selected && (
@@ -176,12 +233,6 @@ export default function MissionComparisonView({
           </div>
         </>
       )}
-      <p className="mw-caption">
-        Налёт — показатель использования ресурса, а не измеренный износ
-        двигателей или аккумуляторов. Метрика завершения — последняя посадка;
-        отдельная выгрузка и обработка данных после посадки не моделируются.
-        Глобальный оптимум не гарантирован.
-      </p>
     </>
   );
 }

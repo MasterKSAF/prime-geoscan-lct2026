@@ -1,0 +1,1352 @@
+/* Task-oriented console. Overrides the older dense workbench presentation only. */
+.mission-workbench {
+  --mw-ink: #17243a;
+  --mw-muted: #5e6c81;
+  --mw-blue: #245cdd;
+  --mw-line: #dce3ee;
+  --mw-pale: #eff4ff;
+  --mw-surface: #fff;
+  --console-bg: #eef1f6;
+  --console-shadow: 0 4px 24px #2134520a;
+  background: var(--console-bg);
+  color: var(--mw-ink);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.mw-appbar {
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 20px;
+  background: #15243b;
+  color: #fff;
+  min-height: 64px;
+}
+.mw-appbar .mw-workspace-tabs {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.mw-appbar .mw-workspace-tabs [role='tablist'] {
+  gap: 6px;
+}
+.mw-appbar .mw-workspace-tabs [role='tab'] {
+  color: #bbcae0;
+  padding: 0 20px;
+  min-height: 64px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.mw-appbar .mw-workspace-tabs [role='tab'][aria-selected='true'] {
+  color: #fff;
+  border-color: #7eacff;
+  background: #ffffff0a;
+}
+.mw-settings-button {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 0;
+  background: #ffffff12;
+  color: #dce7fa;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.mw-settings-button:hover {
+  background: #ffffff25;
+}
+.mission-workbench .mw-button {
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  min-height: 38px;
+  padding: 8px 13px;
+  box-shadow: none;
+  color: var(--mw-ink);
+  background: var(--mw-surface);
+  border-color: var(--mw-line);
+}
+.mission-workbench .mw-button.primary {
+  background: var(--mw-blue);
+  color: white;
+  border-color: var(--mw-blue);
+}
+.mission-workbench .mw-button.quiet {
+  border-color: transparent;
+  background: transparent;
+}
+.mission-workbench .mw-button:disabled {
+  opacity: 0.45;
+}
+.mission-workbench .mw-button.square {
+  padding: 9px;
+  min-width: 38px;
+}
+.mission-workbench .mw-titlebar {
+  background: transparent;
+  border: 0;
+  padding: 24px 28px 14px;
+  min-height: 0;
+}
+.mission-workbench .mw-titlebar h1 {
+  font-size: 24px;
+  letter-spacing: -0.025em;
+  color: var(--mw-ink);
+  font-weight: 700;
+}
+.mission-workbench .mw-footer {
+  display: none;
+}
+.mission-workbench .mw-grid {
+  gap: 16px;
+  padding: 0 24px 24px;
+  background: transparent;
+  grid-template-columns: 400px minmax(0, 1fr);
+  height: max(570px, calc(100dvh - 250px));
+  border: 0;
+}
+.mission-workbench .mw-sidebar,
+.mission-workbench .mw-inspector {
+  background: var(--mw-surface);
+  border: 0;
+  border-radius: 16px;
+  box-shadow: var(--console-shadow);
+}
+.mission-workbench .mw-map-wrap {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--console-shadow);
+}
+.mission-workbench .mw-panel-head {
+  border: 0;
+  padding: 18px 20px 6px;
+}
+.mission-workbench .mw-panel-head h2 {
+  font-size: 18px;
+  font-weight: 700;
+}
+.mission-workbench .mw-panel-head > small {
+  display: none;
+}
+.mission-workbench .mw-wizard-nav {
+  padding: 14px 20px;
+  gap: 7px;
+  border: 0;
+}
+.mission-workbench .mw-wizard-body {
+  padding: 8px 20px 24px;
+}
+.mission-workbench .mw-wizard-body h3 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.mission-workbench .mw-wizard-body > p {
+  font-size: 14px;
+  line-height: 1.55;
+}
+.mission-workbench .mw-field {
+  font-size: 14px;
+  color: var(--mw-ink);
+  gap: 7px;
+}
+.mission-workbench .mw-field input,
+.mission-workbench .mw-field select {
+  font-size: 15px;
+  border-radius: 8px;
+  min-height: 40px;
+}
+.mission-workbench .mw-wizard-foot {
+  border-top: 0;
+  padding: 14px 20px;
+  gap: 10px;
+  background: var(--mw-surface);
+}
+.mission-workbench .mw-modal {
+  color: var(--mw-ink);
+  background: var(--mw-surface);
+  border: 0;
+  border-radius: 18px;
+  box-shadow: 0 24px 100px #06122540;
+}
+.mission-workbench .mw-modal-head {
+  padding: 22px 24px 12px;
+  border: 0;
+}
+.mission-workbench .mw-modal-head h2 {
+  font-size: 23px;
+  font-weight: 700;
+}
+.mission-workbench .mw-modal-body {
+  padding: 16px 24px 24px;
+  font-size: 16px;
+}
+.mission-workbench .mw-modal-footer {
+  padding: 16px 24px;
+}
+.mission-workbench .mw-caption {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--mw-muted);
+}
+.mission-workbench .mw-live-label {
+  background: #174e42;
+  color: #c1ffdb;
+  border-radius: 5px;
+  font-size: 12px;
+}
+:root[data-prime-theme='dark'] .mission-workbench {
+  --mw-ink: #e6edf8;
+  --mw-muted: #aab9ce;
+  --mw-blue: #306cde;
+  --mw-line: #35455e;
+  --mw-pale: #263c59;
+  --mw-surface: #1c2a40;
+  --console-bg: #101b2d;
+  --console-shadow: 0 4px 24px #0001;
+}
+.mission-workbench .mw-document-status {
+  margin-top: 5px;
+  font-size: 13px;
+  color: var(--mw-muted);
+}
+.mission-workbench:is([data-workspace='planning'], [data-workspace='execution'])
+  #workspace-content {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100dvh - 64px);
+  height: calc(100dvh - 64px);
+}
+.mission-workbench:is([data-workspace='planning'], [data-workspace='execution'])
+  #workspace-content
+  > :not(.mw-grid) {
+  flex-shrink: 0;
+}
+.mission-workbench:is([data-workspace='planning'], [data-workspace='execution'])
+  .mw-grid {
+  flex: 1;
+  height: auto;
+  min-height: 400px;
+}
+.mission-workbench[data-workspace='planning'] .mw-bottom {
+  display: none;
+}
+.mission-workbench .mw-playback .mw-model-source {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  display: block;
+}
+.mission-workbench .mw-alert.success {
+  position: fixed;
+  z-index: 1200;
+  bottom: 16px;
+  right: 16px;
+  max-width: min(520px, calc(100vw - 32px));
+  margin: 0;
+  box-shadow: var(--console-shadow);
+}
+:root[data-prime-theme='dark'] .mission-workbench .mw-weather-open strong,
+:root[data-prime-theme='dark']
+  .mission-workbench
+  .mw-map-tools
+  .mw-button.active {
+  color: #a5ccff;
+}
+:root[data-prime-theme='dark'] .mission-workbench .mw-appbar,
+:root[data-prime-theme='dark'] .mission-workbench .mw-workspace-tabs {
+  background: #15243b;
+}
+:root[data-prime-theme='dark'] .mission-workbench .mw-planning-steps,
+:root[data-prime-theme='dark'] .mission-workbench .mw-weather-summary {
+  background: transparent;
+}
+.mission-workbench .mw-planning-steps {
+  margin: 0 24px;
+  padding: 0 0 12px;
+  background: transparent;
+  border: 0;
+  gap: 8px;
+}
+.mission-workbench .mw-planning-steps button {
+  background: transparent;
+  border: 0;
+  color: var(--mw-muted);
+  min-height: 36px;
+  padding: 6px 12px;
+}
+.mission-workbench .mw-planning-steps button.active {
+  background: var(--mw-surface);
+  color: var(--mw-blue);
+  box-shadow: var(--console-shadow);
+}
+.mission-workbench .mw-planning-steps button span {
+  font-size: 12px;
+  width: 21px;
+  height: 21px;
+}
+.mission-workbench .mw-weather-summary {
+  padding: 0 28px 14px;
+  background: transparent;
+  border: 0;
+  gap: 20px;
+  font-size: 13px;
+}
+.mission-workbench .mw-weather-open {
+  gap: 9px;
+  margin-right: 0;
+  border: 0;
+}
+.mission-workbench .mw-weather-open > span {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.mission-workbench .mw-weather-open strong {
+  font-size: 14px;
+  color: var(--mw-blue);
+  font-weight: 600;
+}
+.mission-workbench .mw-weather-open small {
+  font-size: 13px;
+  margin: 0;
+}
+.mission-workbench .mw-weather-summary > span {
+  display: flex;
+  gap: 9px;
+  align-items: baseline;
+  margin-left: auto;
+}
+.mission-workbench .mw-weather-summary > span small {
+  font-size: 12px;
+}
+.mission-workbench .mw-grid {
+  height: max(470px, calc(100dvh - 252px));
+  min-height: 470px;
+}
+.mission-workbench[data-workspace='planning'][data-planning-step='task']
+  .mw-sidebar
+  > .mw-panel-head {
+  display: none;
+}
+.mission-workbench .mw-wizard {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.mission-workbench .mw-wizard-nav {
+  display: flex;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  padding: 16px 18px 12px;
+  gap: 6px;
+  background: transparent;
+}
+.mission-workbench .mw-wizard-nav button {
+  width: auto;
+  height: auto;
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 7px;
+  border: 0;
+  background: transparent;
+  color: var(--mw-muted);
+}
+.mission-workbench .mw-wizard-nav button[aria-current='step'] {
+  background: var(--mw-pale);
+  color: var(--mw-blue);
+  font-weight: 700;
+}
+.mission-workbench .mw-wizard-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+.mission-workbench .mw-wizard-body > p {
+  margin: 7px 0 16px;
+}
+.mission-workbench .mw-wizard-foot {
+  flex-shrink: 0;
+  box-shadow: 0 -5px 16px #172b4506;
+}
+.mission-workbench .mw-work-checklist {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0;
+}
+.mission-workbench .mw-work-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: var(--console-bg);
+  cursor: pointer;
+}
+.mission-workbench .mw-work-option.active {
+  background: var(--mw-pale);
+  border-color: color-mix(in srgb, var(--mw-blue) 36%, transparent);
+}
+.mission-workbench .mw-work-option > svg {
+  color: var(--mw-muted);
+  flex-shrink: 0;
+}
+.mission-workbench .mw-work-option > span {
+  flex: 1;
+  min-width: 0;
+}
+.mission-workbench .mw-work-option strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+}
+.mission-workbench .mw-work-option small {
+  display: block;
+  font-size: 12px;
+  margin-top: 3px;
+  color: var(--mw-muted);
+}
+.mission-workbench .mw-work-option [data-slot='checkbox'] {
+  flex: 0 0 20px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-color: var(--mw-line);
+  color: white;
+  background: var(--mw-surface);
+}
+.mission-workbench .mw-work-option [data-slot='checkbox'][aria-checked='true'] {
+  background: var(--mw-blue);
+  border-color: var(--mw-blue);
+}
+.mission-workbench .mw-work-option [data-slot='checkbox']:disabled {
+  opacity: 1;
+}
+.mission-workbench .mw-work-option {
+  padding: 10px 12px;
+}
+.mission-workbench .mw-work-checklist {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+}
+.mission-workbench .mw-details,
+.mission-workbench .mw-work-details {
+  padding: 12px 0;
+  border: 0;
+  margin-top: 6px;
+  background: transparent;
+  font-size: 14px;
+}
+.mission-workbench .mw-details summary {
+  font-size: 14px;
+  color: var(--mw-muted);
+  font-weight: 600;
+  cursor: pointer;
+}
+.mission-workbench .mw-details[open] > summary {
+  margin-bottom: 12px;
+}
+.mission-workbench .mw-active-work {
+  padding: 12px;
+  margin: 0 0 18px;
+  background: var(--mw-pale);
+  border-radius: 9px;
+}
+.mission-workbench .mw-map-tools {
+  z-index: 560;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  gap: 6px;
+}
+.mission-workbench .mw-map-tools .mw-button {
+  box-shadow: 0 3px 12px #12233e18;
+  background: var(--mw-surface);
+  font-size: 13px;
+  min-height: 36px;
+  border: 0;
+}
+.mission-workbench .mw-map-tools .mw-button.active {
+  background: var(--mw-pale);
+  color: var(--mw-blue);
+}
+.mission-workbench .mw-map-legend {
+  bottom: 32px;
+  left: 14px;
+  background: var(--mw-surface);
+  border: 0;
+  border-radius: 9px;
+  box-shadow: 0 3px 12px #12233e18;
+  padding: 9px 12px;
+  max-width: 250px;
+  font-size: 12px;
+}
+.mission-workbench .mw-map-legend summary {
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+.mission-workbench .mw-map-legend[open] summary {
+  margin-bottom: 9px;
+}
+.mission-workbench .mw-map-legend div {
+  margin: 8px 0;
+}
+.mission-workbench[data-workspace='execution'] .mw-grid {
+  grid-template-columns: minmax(0, 1fr) 300px;
+  height: max(480px, calc(100dvh - 285px));
+}
+.mission-workbench[data-workspace='execution'] .mw-map-wrap {
+  grid-column: 1;
+  grid-row: 1;
+}
+.mission-workbench[data-workspace='execution'] .mw-sidebar {
+  grid-column: 2;
+  grid-row: 1;
+}
+.mission-workbench[data-workspace='execution'] .mw-metrics {
+  display: none;
+}
+.mission-workbench .mw-playback {
+  margin: 0 24px 14px;
+  padding: 16px 20px 12px;
+  background: var(--mw-surface);
+  border: 0;
+  border-radius: 14px;
+  box-shadow: var(--console-shadow);
+}
+.mission-workbench .mw-flight-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.mission-workbench .mw-flight-status strong {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+}
+.mission-workbench .mw-flight-status small {
+  display: block;
+  font-size: 13px;
+  margin-top: 1px;
+  color: var(--mw-muted);
+}
+.mw-flight-status-indicator {
+  width: 11px;
+  height: 11px;
+  background: #d49128;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.mw-flight-status[data-running='true'] .mw-flight-status-indicator {
+  background: #11946a;
+  box-shadow: 0 0 0 5px #11946a18;
+}
+.mission-workbench .mw-playback-controls {
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.mission-workbench .mw-playback-time {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--mw-ink);
+}
+.mission-workbench .mw-playback-controls input[type='range'] {
+  accent-color: var(--mw-blue);
+  min-width: 120px;
+  flex: 1;
+}
+.mission-workbench .mw-playback .mw-model-source {
+  margin: 10px 0 0;
+  font-size: 12px;
+}
+.mission-workbench .mw-playback-controls > .mw-caption {
+  font-size: 13px;
+}
+.mission-workbench .mw-playback select {
+  font-size: 14px;
+  background: var(--mw-pale);
+  border: 0;
+  border-radius: 6px;
+  padding: 6px;
+  color: var(--mw-ink);
+}
+.mw-flight-schedule {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--mw-muted);
+}
+.mw-flight-schedule > summary {
+  cursor: pointer;
+}
+.mission-workbench .mw-timeline-row {
+  grid-template-columns: 80px minmax(0, 1fr);
+}
+.mw-flight-panel {
+  padding: 12px 18px 20px;
+}
+.mw-flight-list {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0 20px;
+}
+.mw-flight-card {
+  display: flex;
+  align-items: center;
+  text-align: left;
+  gap: 10px;
+  width: 100%;
+  border-radius: 10px;
+  background: var(--console-bg);
+  border: 1px solid transparent;
+  color: var(--mw-ink);
+  padding: 12px;
+}
+.mw-flight-card.selected {
+  border-color: var(--mw-blue);
+  background: var(--mw-pale);
+}
+.mw-flight-color {
+  width: 9px;
+  height: 32px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.mw-flight-card strong {
+  font-size: 16px;
+  font-weight: 700;
+  display: block;
+}
+.mw-flight-card small {
+  display: block;
+  font-size: 13px;
+  color: var(--mw-muted);
+  margin-top: 2px;
+}
+.mw-flight-charge {
+  margin-left: auto;
+  font-size: 14px;
+  font-weight: 600;
+}
+.mw-flight-focus-title h3 {
+  font-size: 15px;
+  font-weight: 700;
+}
+.mw-flight-focus-title > span {
+  color: var(--mw-muted);
+  font-size: 14px;
+}
+.mw-flight-instruments {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.mw-flight-instruments strong {
+  display: block;
+  font-size: 30px;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  font-weight: 650;
+}
+.mw-flight-instruments span {
+  display: block;
+  font-size: 12px;
+  color: var(--mw-muted);
+  margin-top: 7px;
+}
+.mw-flight-instruments .mw-info-hint {
+  display: inline-flex;
+}
+.mw-flight-detail > .mw-button {
+  margin: 16px 0 6px;
+  width: 100%;
+}
+.mission-workbench .mw-bottom {
+  padding: 0 24px 24px;
+  background: transparent;
+  border: 0;
+  display: block;
+}
+.mission-workbench .mw-telemetry {
+  padding: 18px 20px;
+  border: 0;
+  background: var(--mw-surface);
+  border-radius: 14px;
+}
+.mission-workbench .mw-telemetry > summary {
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+.mission-workbench .mw-telemetry[open] > summary {
+  margin-bottom: 20px;
+}
+.mission-workbench .mw-missions-home {
+  padding: 30px 28px;
+  max-width: 1380px;
+}
+.mission-workbench .mw-home-heading {
+  margin-bottom: 28px;
+}
+.mission-workbench .mw-home-heading h1 {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+.mission-workbench .mw-home-heading p {
+  font-size: 15px;
+}
+.mission-workbench .mw-current-draft {
+  background: var(--mw-surface);
+  border: 0;
+  box-shadow: var(--console-shadow);
+  border-radius: 16px;
+  padding: 24px;
+}
+.mission-workbench .mw-current-draft h2 {
+  font-size: 22px;
+  font-weight: 700;
+}
+.mission-workbench .mw-current-draft p {
+  font-size: 14px;
+}
+.mission-workbench .mo-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+}
+.mission-workbench .mo-header p,
+.mission-workbench .mo-notice {
+  font-size: 13px;
+}
+.mission-workbench .mo-stats {
+  gap: 12px;
+}
+.mission-workbench .mo-stats > div {
+  padding: 18px;
+  border: 0;
+  background: var(--mw-surface);
+  border-radius: 12px;
+  box-shadow: var(--console-shadow);
+}
+.mission-workbench .mo-stats strong {
+  font-size: 28px;
+  font-weight: 650;
+}
+.mission-workbench .mo-stats span {
+  font-size: 13px;
+}
+.mission-workbench .mo-run,
+.mission-workbench .mo-empty {
+  border: 0;
+  padding: 22px;
+  border-radius: 14px;
+  background: var(--mw-surface);
+  box-shadow: var(--console-shadow);
+}
+.mission-workbench .mo-run h3 {
+  font-size: 19px;
+  font-weight: 650;
+}
+.mission-workbench .mo-progress {
+  max-width: 700px;
+}
+.mission-workbench .mw-settings-section {
+  margin: 0 0 26px;
+}
+.mission-workbench .mw-settings-section h3 {
+  font-size: 18px;
+  font-weight: 650;
+  margin-bottom: 12px;
+}
+.mission-workbench .mw-settings-section p {
+  color: var(--mw-muted);
+  margin: 0 0 14px;
+}
+.mission-workbench .mw-theme-control {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.mission-workbench .mw-theme-control select {
+  padding: 10px 12px;
+  background: var(--mw-pale);
+  color: var(--mw-ink);
+  border: 0;
+  border-radius: 8px;
+  font-size: 15px;
+}
+.mw-mission-action-list {
+  display: grid;
+  gap: 9px;
+  margin-top: 20px;
+}
+.mw-mission-action-list .mw-button {
+  justify-content: flex-start;
+}
+.mw-program-help [role='tablist'] {
+  display: flex;
+  flex-wrap: wrap;
+  height: auto;
+  gap: 7px;
+  background: var(--console-bg);
+  padding: 6px;
+  border-radius: 10px;
+  margin-bottom: 22px;
+}
+.mw-program-help [role='tab'] {
+  font-size: 14px;
+  padding: 10px 16px;
+  color: var(--mw-muted);
+}
+.mw-program-help [role='tab'][aria-selected='true'] {
+  color: var(--mw-ink);
+  background: var(--mw-surface);
+  border-radius: 7px;
+}
+.mission-workbench .mw-guide-steps {
+  padding-left: 25px;
+  font-size: 16px;
+  line-height: 1.7;
+}
+.mission-workbench .mw-guide-steps li {
+  margin: 0 0 20px;
+  padding-left: 4px;
+}
+.mw-help-limit {
+  margin-top: 20px !important;
+  background: var(--mw-pale);
+  border-radius: 10px;
+  padding: 16px;
+  font-size: 14px;
+}
+.mw-help-glossary > div {
+  margin: 0 0 22px;
+}
+.mw-help-glossary dt {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+.mw-help-glossary dd {
+  margin: 0;
+  color: var(--mw-muted);
+  line-height: 1.65;
+}
+.mw-help-screens figure {
+  margin: 0 0 30px;
+}
+.mw-help-screens h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px !important;
+}
+.mw-help-screens img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--mw-line);
+  border-radius: 10px;
+}
+.mw-help-screens figcaption {
+  font-size: 14px;
+  color: var(--mw-muted);
+  margin-top: 10px;
+}
+.mw-drone-marker {
+  background: transparent;
+  border: 0;
+}
+.mw-map-display {
+  position: relative;
+  pointer-events: auto;
+}
+.mw-map-display > summary {
+  cursor: pointer;
+  list-style: none;
+  background: var(--mw-surface);
+  color: var(--mw-ink);
+  padding: 9px 12px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 3px 12px #12233e18;
+}
+.mw-map-display > div {
+  position: absolute;
+  right: 0;
+  top: 44px;
+  min-width: 170px;
+  display: grid;
+  gap: 6px;
+  background: var(--mw-surface);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 8px 28px #1327472b;
+}
+.mission-workbench[data-workspace='execution']
+  .mw-map-tools
+  .mw-map-display
+  button {
+  display: inline-flex;
+}
+.mission-workbench .mw-drone-button {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 3px solid currentColor;
+  background: white;
+  box-shadow: 0 3px 12px #0b24485c;
+  cursor: pointer;
+  padding: 4px;
+}
+.mission-workbench .mw-drone-button.selected {
+  box-shadow:
+    0 0 0 5px #ffffffc9,
+    0 3px 20px #11254480;
+}
+.mw-drone-heading {
+  position: absolute;
+  top: -13px;
+  left: 10px;
+  width: 18px;
+  height: 18px;
+  text-align: center;
+  font-size: 15px;
+  transform-origin: 12px 34px;
+}
+.mw-drone-name {
+  position: absolute;
+  top: 46px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  background: #14243dec;
+  color: white;
+  font:
+    600 12px/1.4 'Segoe UI',
+    sans-serif;
+  padding: 4px 8px;
+  border-radius: 5px;
+  pointer-events: none;
+}
+.mw-drone-button.moving:after {
+  content: '';
+  position: absolute;
+  inset: -9px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  animation: mw-drone-pulse 2s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes mw-drone-pulse {
+  from {
+    opacity: 0.55;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mw-drone-button.moving:after {
+    animation: none;
+    opacity: 0.35;
+  }
+}
+.mission-workbench .mw-alert {
+  margin: 0 24px 12px;
+  padding: 10px 14px;
+  border-radius: 9px;
+  font-size: 14px;
+}
+.mission-workbench .mw-panel-content {
+  padding: 12px 20px;
+}
+.mission-workbench .mw-plan-card {
+  padding: 14px;
+  border: 1px solid var(--mw-line);
+  border-radius: 12px;
+  background: transparent;
+}
+.mission-workbench .mw-plan-card.selected {
+  background: var(--mw-pale);
+  border-color: var(--mw-blue);
+}
+.mission-workbench .mw-plan-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+}
+.mw-plan-headline {
+  display: flex;
+  gap: 24px;
+  margin-top: 12px;
+}
+.mw-plan-headline strong {
+  display: block;
+  font-size: 21px;
+  color: var(--mw-ink);
+}
+.mw-plan-headline small {
+  font-size: 12px;
+  color: var(--mw-muted);
+}
+.mission-workbench .mw-results-checks {
+  margin: 0 24px 18px;
+  padding: 24px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--mw-surface);
+}
+.mission-workbench .mw-metrics {
+  margin: 0 24px 18px;
+  gap: 12px;
+  border: 0;
+  background: transparent;
+}
+.mission-workbench .mw-metric {
+  border: 0;
+  border-radius: 14px;
+  padding: 20px;
+  background: var(--mw-surface);
+}
+.mission-workbench .mw-delivery {
+  padding: 24px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--mw-surface);
+}
+@media (max-width: 1050px) {
+  .mission-workbench .mw-grid {
+    grid-template-columns: 350px minmax(0, 1fr);
+  }
+  .mission-workbench[data-workspace='execution'] .mw-grid {
+    grid-template-columns: minmax(0, 1fr) 270px;
+  }
+  .mission-workbench .mw-titlebar {
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .mission-workbench .mw-titlebar .mw-actions {
+    max-width: 100%;
+  }
+  .mission-workbench .mw-weather-summary > span {
+    display: none;
+  }
+}
+@media (max-width: 650px) {
+  .mission-workbench:is(
+      [data-workspace='planning'],
+      [data-workspace='execution']
+    )
+    #workspace-content {
+    display: block;
+    height: auto;
+  }
+  .mw-appbar {
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .mw-appbar .mw-workspace-tabs [role='tab'] {
+    padding: 0 10px;
+    font-size: 14px;
+    min-height: 58px;
+  }
+  .mission-workbench .mw-titlebar {
+    padding: 18px 14px;
+  }
+  .mission-workbench .mw-grid {
+    padding: 0 12px 12px;
+    height: auto;
+  }
+  .mission-workbench .mw-titlebar h1 {
+    font-size: 21px;
+  }
+  .mission-workbench .mw-workspace-tabs [role='tablist'] {
+    gap: 0;
+  }
+  .mw-appbar .mw-workspace-tabs [role='tab'] {
+    padding: 0 6px;
+  }
+  .mw-settings-button {
+    width: 34px;
+    height: 34px;
+  }
+  .mission-workbench .mw-live-label {
+    display: none;
+  }
+  .mission-workbench .mw-grid,
+  .mission-workbench[data-workspace='execution'] .mw-grid {
+    display: flex;
+    height: auto;
+  }
+  .mission-workbench .mw-map-wrap {
+    min-height: 390px;
+    height: 55dvh;
+    flex-shrink: 0;
+  }
+  .mission-workbench .mw-sidebar {
+    max-height: 650px;
+  }
+  .mission-workbench .mw-planning-steps {
+    margin: 0 12px;
+  }
+  .mission-workbench .mw-weather-summary {
+    padding: 0 14px 14px;
+  }
+  .mission-workbench .mw-weather-open > span {
+    display: block;
+  }
+  .mission-workbench .mw-playback {
+    margin: 0 12px 12px;
+    padding: 16px;
+  }
+  .mission-workbench .mw-playback-controls input[type='range'] {
+    flex-basis: 100%;
+    order: 1;
+  }
+  .mission-workbench .mw-map-tools .mw-button {
+    font-size: 12px;
+    padding: 7px;
+  }
+  .mission-workbench .mw-map-tools {
+    gap: 4px;
+    left: 10px;
+    right: 10px;
+  }
+  .mission-workbench .mw-missions-home {
+    padding: 24px 14px;
+  }
+  .mission-workbench .mw-bottom {
+    padding: 0 12px 16px;
+  }
+  .mission-workbench .mw-alert {
+    margin: 0 12px 10px;
+  }
+  .mission-workbench .mw-results-checks,
+  .mission-workbench .mw-metrics {
+    margin: 0 12px 14px;
+  }
+  .mission-workbench .mw-modal-body {
+    padding: 12px 18px 20px;
+  }
+}
+.mission-workbench .mo-stats {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+}
+.mission-workbench .mo-stats button {
+  appearance: none;
+  border: 1px solid var(--mw-line);
+  border-radius: 12px;
+  padding: 15px;
+  text-align: left;
+  color: var(--mw-ink);
+  background: var(--mw-surface);
+  cursor: pointer;
+  display: grid;
+  gap: 4px;
+  border-top: 3px solid #8393aa;
+}
+.mission-workbench .mo-stats button strong {
+  font-size: 24px;
+}
+.mission-workbench .mo-stats button span {
+  font-size: 14px;
+}
+.mission-workbench .mo-stats button[data-status='scheduled'] {
+  border-top-color: #4385df;
+}
+.mission-workbench .mo-stats button[data-status='running'] {
+  border-top-color: #279279;
+}
+.mission-workbench .mo-stats button[data-status='paused'] {
+  border-top-color: #c39a33;
+}
+.mission-workbench .mo-stats button[data-status='completed'] {
+  border-top-color: #7265be;
+}
+.mission-workbench .mo-stats button[aria-pressed='true'] {
+  background: var(--mw-surface-soft);
+  outline: 2px solid var(--mw-accent);
+  outline-offset: 1px;
+}
+.mission-workbench .mw-current-draft {
+  border-left: 4px solid var(--mw-accent);
+  background: var(--mw-surface-soft);
+  box-shadow: none;
+}
+.mw-saved-home {
+  margin: 20px 0 28px;
+}
+.mw-saved-home h2 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+.mw-saved-home h2 > span {
+  color: var(--mw-muted);
+  font-weight: 400;
+}
+.mw-saved-home > p {
+  color: var(--mw-muted);
+  font-size: 14px;
+}
+.mw-saved-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 13px 16px;
+  border: 1px solid var(--mw-line);
+  background: var(--mw-surface);
+  color: var(--mw-ink);
+  border-radius: 10px;
+  margin: 7px 0;
+  text-align: left;
+  cursor: pointer;
+}
+.mw-saved-entry span {
+  display: grid;
+  gap: 4px;
+}
+.mw-saved-entry small {
+  color: var(--mw-muted);
+}
+.mw-scenario-facts {
+  display: grid;
+  gap: 12px;
+  margin: 16px 0;
+}
+.mw-scenario-facts > div {
+  display: grid;
+  gap: 3px;
+}
+.mw-scenario-facts dt {
+  font-size: 12px;
+  color: var(--mw-muted);
+}
+.mw-scenario-facts dd {
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
+.mw-import-choices {
+  display: grid;
+  gap: 14px;
+}
+.mw-import-choices section {
+  border: 1px solid var(--mw-line);
+  padding: 18px;
+  border-radius: 12px;
+}
+.mw-import-choices h3 {
+  margin: 0 0 8px;
+}
+.mw-import-choices p {
+  font-size: 14px;
+}
+.mw-import-choices a {
+  display: inline-block;
+  margin-left: 14px;
+  font-size: 14px;
+}
+.mw-fleet-counts {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 16px 0;
+  font-size: 14px;
+}
+.mission-workbench .mw-focus-toggle {
+  margin-left: auto;
+}
+.mission-workbench[data-focus='true'] .mw-appbar .mw-workspace-tabs,
+.mission-workbench[data-focus='true'] .mw-metrics,
+.mission-workbench[data-focus='true'] .mw-telemetry,
+.mission-workbench[data-focus='true'] .mw-flight-schedule,
+.mission-workbench[data-focus='true'] .mw-document-status,
+.mission-workbench[data-focus='true'] .mw-model-source,
+.mission-workbench[data-focus='true'] .mw-saved-home {
+  display: none !important;
+}
+.mission-workbench[data-focus='true'] .mw-titlebar {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.mission-workbench .mo-cancelled,
+.mission-workbench .ms-negative {
+  color: var(--mw-danger);
+  background: var(--mw-danger-bg);
+}
+@media (max-width: 800px) {
+  .mission-workbench .mo-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.mw-safety-console {
+  margin: 0 22px 14px;
+  padding: 14px 18px;
+  border: 1px solid #b69b58;
+  border-left: 4px solid #b08a2e;
+  border-radius: 12px;
+  background: var(--mw-surface);
+  color: var(--mw-ink);
+  flex-shrink: 0;
+}
+.mw-safety-console p,
+.mw-safety-console li {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.mw-safety-console details {
+  margin: 6px 0;
+}
+.mw-safety-heading {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.mw-safety-heading > span {
+  margin-left: auto;
+  color: var(--mw-warning);
+  font-size: 14px;
+}
+.mw-safety-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: end;
+  padding: 12px 0;
+}
+.mw-safety-controls label {
+  display: grid;
+  gap: 5px;
+  font-size: 14px;
+}
+.mw-safety-controls input,
+.mw-safety-controls select {
+  background: var(--mw-surface);
+  color: var(--mw-ink);
+  border: 1px solid var(--mw-line);
+  border-radius: 7px;
+  padding: 7px;
+}
+.mw-safety-controls input {
+  max-width: 120px;
+}

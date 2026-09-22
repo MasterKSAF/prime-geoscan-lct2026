@@ -114,8 +114,8 @@ async (page) => {
       assert('occupied ID rejected', (await collision.innerText()).includes('уже сохранена'));
       await screenshot('03-saveas-collision');
       await close();
-      await page.getByRole('button', { name: 'Библиотека', exact: true }).click();
-      const library = page.getByRole('dialog', { name: 'Локальная библиотека миссий', exact: true });
+      await page.getByRole('button', { name: 'Сохранённые задания', exact: true }).click();
+      const library = page.getByRole('dialog', { name: 'Сохранённые задания', exact: true });
       const backup = JSON.parse(await download(library.getByRole('button', { name: 'Резервная копия', exact: true }), 'library-after-collision.json'));
       const saved = backup.entries.find((entry) => entry.id === originId);
       assert('original content and revision untouched', saved?.revision === 1 && JSON.stringify(stable(saved.document)) === JSON.stringify(stable(original)));

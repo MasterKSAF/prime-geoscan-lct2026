@@ -1,0 +1,65 @@
+/* Action meaning supplements the existing text and icons; never color alone. */
+.mission-workbench {
+  --mw-add-bg: #e8f5ec;
+  --mw-add-hover: #d8eddf;
+  --mw-add-ink: #245e3a;
+  --mw-add-border: #a4cbb1;
+  --mw-remove-bg: #fbecef;
+  --mw-remove-hover: #f4dce2;
+  --mw-remove-ink: #843e50;
+  --mw-remove-border: #d9acb7;
+}
+
+:root[data-prime-theme='dark'] .mission-workbench {
+  --mw-add-bg: #213d32;
+  --mw-add-hover: #2b4b3e;
+  --mw-add-ink: #c5ead2;
+  --mw-add-border: #628c72;
+  --mw-remove-bg: #462f38;
+  --mw-remove-hover: #553a44;
+  --mw-remove-ink: #f6d2dc;
+  --mw-remove-border: #a0717d;
+}
+
+.mission-workbench :is(button, .mw-button).mw-action-add {
+  color: var(--mw-add-ink);
+  background: var(--mw-add-bg);
+  border-color: var(--mw-add-border);
+}
+
+.mission-workbench :is(button, .mw-button).mw-action-add:hover:not(:disabled) {
+  color: var(--mw-add-ink);
+  background: var(--mw-add-hover);
+  border-color: var(--mw-add-ink);
+}
+
+.mission-workbench :is(button, .mw-button).mw-action-remove {
+  color: var(--mw-remove-ink);
+  background: var(--mw-remove-bg);
+  border-color: var(--mw-remove-border);
+}
+
+.mission-workbench :is(button, .mw-button).mw-action-remove:hover:not(:disabled) {
+  color: var(--mw-remove-ink);
+  background: var(--mw-remove-hover);
+  border-color: var(--mw-remove-ink);
+}
+
+.mission-workbench :is(button, .mw-button).mw-action-add:focus-visible,
+.mission-workbench :is(button, .mw-button).mw-action-remove:focus-visible {
+  outline: 3px solid var(--mw-blue);
+  outline-offset: 3px;
+}
+
+.mission-workbench :is(button, .mw-button).mw-action-add:disabled,
+.mission-workbench :is(button, .mw-button).mw-action-remove:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@media (forced-colors: active) {
+  .mission-workbench :is(button, .mw-button).mw-action-add,
+  .mission-workbench :is(button, .mw-button).mw-action-remove {
+    border: 1px solid ButtonText;
+  }
+}

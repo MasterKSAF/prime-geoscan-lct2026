@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { missionWeatherSchema } from './mission-weather.ts';
 import {
   scenarioSchema,
   polygon,
@@ -44,9 +45,12 @@ export const missionJobSchema = z
     name: z.string().min(1).max(100),
     area: polygon,
     job: scenarioSchema.shape.job,
-    assignedVehicleIds: z.array(id).max(10),
+    assignedVehicleIds: z.array(id).max(20),
     quality: qualitySchema,
     daylight: z.enum(['none', 'sunAboveHorizon', 'topographicClearSky']),
+    // Optional extension: old documents retain their exact canonical hashes.
+    window: z.object({ start: instant, end: instant }).strict().optional(),
+    inheritsFrom: id.optional(),
   })
   .strict();
 export const missionEnvironmentSchema = z
@@ -67,6 +71,33 @@ export const missionDocumentSchema = z
     id,
     name: z.string().min(1).max(100),
     scenario: scenarioSchema,
+    bases: z
+      .array(
+        z.object({ id, name: z.string().min(1).max(100), coordinate }).strict(),
+      )
+      .max(40)
+      .optional(),
+    revisionSource: z
+      .object({
+        operationId: id,
+        integrityHash: z.string().regex(/^[a-f0-9]{64}$/),
+        rootMissionId: id,
+        progressSec: num(0, 604800),
+        reason: text,
+        coverage: z
+          .array(
+            z
+              .object({
+                jobId: id,
+                completedM2: num(0, 1e12),
+                remainingM2: num(0, 1e12),
+              })
+              .strict(),
+          )
+          .max(8),
+      })
+      .strict()
+      .optional(),
     jobs: z.array(missionJobSchema).min(1).max(8),
     window: z
       .object({
@@ -87,6 +118,9 @@ export const missionDocumentSchema = z
         maxComputeMs: num(100, 30000).int(),
         altitudePreference: z.enum(['balanced', 'lower', 'higher']),
         windModel: z.enum(['constantAirspeed', 'constantGroundSpeed']),
+        // Optional, never defaulted: historical input hashes must stay unchanged.
+        batteryPolicy: z.literal('installed-current-v1').optional(),
+        safetyPolicy: z.literal('continuous-occupancy-v1').optional(),
       })
       .strict(),
     batteries: z
@@ -143,6 +177,19 @@ export const missionDocumentSchema = z
       .strict(),
     // No default: omitted legacy weather stays omitted, including in input hashes.
     environment: missionEnvironmentSchema.optional(),
+    weather: missionWeatherSchema.optional(),
+    fleetSnapshot: z
+      .array(
+        z
+          .object({
+            vehicleId: id,
+            revision: z.number().int().min(1),
+            unavailable: z.boolean().optional(),
+          })
+          .strict(),
+      )
+      .max(20)
+      .optional(),
     notes: z.string().max(2000),
   })
   .strict();
@@ -157,6 +204,38 @@ export function parseMissionDocument(value: unknown): MissionDocument {
       throw new Error(`${label}: повторяющиеся идентификаторы.`);
   };
   parseScenario(d.scenario);
+  if (d.bases) {
+    unique(
+      d.bases.map((b) => b.id),
+      'Базы',
+    );
+    unique(
+      d.bases.map((b) => b.coordinate.join(',')),
+      'Координаты баз',
+    );
+  }
+  for (const job of d.jobs)
+    if (job.inheritsFrom) {
+      const parent = d.jobs.find((j) => j.id === job.inheritsFrom);
+      if (
+        !parent ||
+        parent.inheritsFrom ||
+        parent.id === job.id ||
+        parent.job.type !== job.job.type
+      )
+        throw new Error('Неверный источник общих параметров работы.');
+      for (const key of [
+        'job',
+        'quality',
+        'daylight',
+        'window',
+        'assignedVehicleIds',
+      ] as const)
+        if (JSON.stringify(job[key]) !== JSON.stringify(parent[key]))
+          throw new Error(
+            'Унаследованные параметры участка расходятся с параметрами работы.',
+          );
+    }
   unique(
     d.jobs.map((x) => x.id),
     'Работы',
@@ -180,10 +259,40 @@ export function parseMissionDocument(value: unknown): MissionDocument {
     throw new Error('Неизвестный часовой пояс.');
   }
   const ids = new Set(d.scenario.vehicles.map((x) => x.id));
+  if (d.planning.batteryPolicy === 'installed-current-v1') {
+    for (const v of d.scenario.vehicles) {
+      const installed = d.batteries.filter((b) => b.vehicleId === v.id);
+      if (
+        installed.length !== 1 ||
+        installed[0].rechargeSec !== null ||
+        installed[0].initialPct !== v.batteryPct
+      )
+        throw new Error(
+          `БВС ${v.id}: нужна одна текущая батарея с согласованным зарядом, без прогнозируемой зарядки.`,
+        );
+    }
+  }
+  if (d.fleetSnapshot) {
+    unique(
+      d.fleetSnapshot.map((s) => s.vehicleId),
+      'Снимок парка',
+    );
+    if (d.fleetSnapshot.some((s) => !ids.has(s.vehicleId)))
+      throw new Error('Снимок парка ссылается на неизвестный БВС.');
+  }
   for (const b of d.batteries)
     if (!ids.has(b.vehicleId))
       throw new Error(`Батарея ${b.id}: неизвестный БВС.`);
   for (const j of d.jobs) {
+    if (
+      j.window &&
+      (Date.parse(j.window.end) <= Date.parse(j.window.start) ||
+        Date.parse(j.window.start) < Date.parse(d.window.start) ||
+        Date.parse(j.window.end) > Date.parse(d.window.end))
+    )
+      throw new Error(
+        `Работа ${j.name}: период должен находиться внутри периода миссии и иметь положительную длительность.`,
+      );
     unique(j.assignedVehicleIds, `Работа ${j.id}`);
     if (j.assignedVehicleIds.some((x) => !ids.has(x)))
       throw new Error(`Работа ${j.id}: неизвестный назначенный БВС.`);

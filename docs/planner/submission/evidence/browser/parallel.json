@@ -1,0 +1,35 @@
+{
+  "at": "2026-09-22T07:15:49.810Z",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "first mission is running",
+      "pass": true
+    },
+    {
+      "name": "two distinct missions run simultaneously",
+      "pass": true
+    },
+    {
+      "name": "both independent clocks advance",
+      "pass": true
+    },
+    {
+      "name": "mission browser lists both runs",
+      "pass": true
+    },
+    {
+      "name": "selected mission has its own inline journal",
+      "pass": true
+    },
+    {
+      "name": "pausing selected mission preserves other execution",
+      "pass": true
+    },
+    {
+      "name": "no JavaScript errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

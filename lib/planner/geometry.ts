@@ -37,7 +37,7 @@ export function area(m: Multi): number {
   );
 }
 function onEdge(p: Point, a: Point, b: Point) {
-  return Math.abs(distance(a, p) + distance(p, b) - distance(a, b)) < EPS;
+  return pointSegmentDistance(p, a, b) <= EPS;
 }
 function inRing(p: Point, r: Point[]) {
   let hit = false;
@@ -129,6 +129,16 @@ function assertPolygon(p: Polygon, project: (p: Coordinate) => Point) {
   }
 }
 
+/** Validate editor geometry before replacing a valid contour. */
+export function validatePolygonTopology(p: Polygon): void {
+  if (
+    !p.coordinates.length ||
+    p.coordinates.some((r) => r.length < 4 || r.length > 70)
+  )
+    throw new Error('Контур: от 3 до 69 вершин.');
+  assertPolygon(p, projection(p.coordinates[0][0]).forward);
+}
+
 function pointSegmentDistance(p: Point, a: Point, b: Point): number {
   const dx = b[0] - a[0],
     dy = b[1] - a[1],
@@ -144,8 +154,13 @@ function pointSegmentDistance(p: Point, a: Point, b: Point): number {
 /** Exact planar segment-to-filled-polygon clearance, not a geodetic or sampled test. */
 export function segmentClearance(a: Point, b: Point, obstacle: Multi): number {
   if (inside(a, obstacle) || inside(b, obstacle)) return 0;
+  return segmentBoundaryClearance(a, b, obstacle);
+}
+
+/** Distance to polygon rings only, so points inside an airspace remain measurable. */
+function segmentBoundaryClearance(a: Point, b: Point, boundary: Multi): number {
   let minimum = Infinity;
-  for (const polygon of obstacle)
+  for (const polygon of boundary)
     for (const ring of polygon) {
       for (let i = 1; i < ring.length; i++) {
         const c = ring[i - 1],
@@ -161,6 +176,39 @@ export function segmentClearance(a: Point, b: Point, obstacle: Multi): number {
       }
     }
   return minimum;
+}
+
+function boundaryBufferPieces(projected: Point[][], clearanceM: number): Multi {
+  const safe = clearanceM + 0.01,
+    outerRadius = safe / Math.cos(Math.PI / 8);
+  const pieces: Multi = [];
+  for (const ring of projected) {
+    for (let i = 1; i < ring.length; i++) {
+      const a = ring[i - 1],
+        b = ring[i],
+        length = distance(a, b),
+        nx = (-(b[1] - a[1]) / length) * safe,
+        ny = ((b[0] - a[0]) / length) * safe;
+      const rectangle: Point[] = [
+        [a[0] + nx, a[1] + ny],
+        [b[0] + nx, b[1] + ny],
+        [b[0] - nx, b[1] - ny],
+        [a[0] - nx, a[1] - ny],
+        [a[0] + nx, a[1] + ny],
+      ];
+      pieces.push([rectangle]);
+      const octagon: Point[] = Array.from({ length: 8 }, (_, j) => {
+        const angle = Math.PI / 8 + (j * Math.PI) / 4;
+        return [
+          a[0] + Math.cos(angle) * outerRadius,
+          a[1] + Math.sin(angle) * outerRadius,
+        ];
+      });
+      octagon.push([...octagon[0]]);
+      pieces.push([octagon]);
+    }
+  }
+  return pieces;
 }
 
 /**
@@ -197,35 +245,10 @@ export function conservativeBuffer(
       'Защитный буфер рассчитан на локальные участки радиусом до 15 км.',
     );
   assertPolygon(p, forward);
-  const safe = clearanceM + 0.01,
-    outerRadius = safe / Math.cos(Math.PI / 8);
-  const pieces: Point[][][] = [projected];
-  for (const ring of projected) {
-    for (let i = 1; i < ring.length; i++) {
-      const a = ring[i - 1],
-        b = ring[i],
-        length = distance(a, b),
-        nx = (-(b[1] - a[1]) / length) * safe,
-        ny = ((b[0] - a[0]) / length) * safe;
-      const rectangle: Point[] = [
-        [a[0] + nx, a[1] + ny],
-        [b[0] + nx, b[1] + ny],
-        [b[0] - nx, b[1] - ny],
-        [a[0] - nx, a[1] - ny],
-        [a[0] + nx, a[1] + ny],
-      ];
-      pieces.push([rectangle]);
-      const octagon: Point[] = Array.from({ length: 8 }, (_, j) => {
-        const angle = Math.PI / 8 + (j * Math.PI) / 4;
-        return [
-          a[0] + Math.cos(angle) * outerRadius,
-          a[1] + Math.sin(angle) * outerRadius,
-        ];
-      });
-      octagon.push([...octagon[0]]);
-      pieces.push([octagon]);
-    }
-  }
+  const pieces: Multi = [
+    projected,
+    ...boundaryBufferPieces(projected, clearanceM),
+  ];
   // Boolean operations use integer millimetres to avoid near-coincident seams.
   // The 10 mm apothem margin dominates the <= 1 mm coordinate perturbation.
   const snapped = pieces.map((part) =>
@@ -265,8 +288,73 @@ export function conservativeBuffer(
   return metric;
 }
 
-export function prepareGeometry(s: Scenario) {
-  const proj = projection(s.area.coordinates[0][0]);
+/**
+ * Erode every airspace ring by a conservative metric boundary buffer. Removing
+ * complete edge strips and circumscribed vertex octagons expands holes and can
+ * disconnect or close narrow corridors. Integer-millimetre clipping is guarded
+ * by an independent analytical check of all resulting edges against all source
+ * edges; a numerical defect or empty corridor fails closed.
+ */
+function conservativeAirspaceInset(boundary: Multi, clearanceM: number): Multi {
+  const projected = boundary[0];
+  if (projected.length > 5 || projected.some((ring) => ring.length > 70))
+    throw new Error('Слишком сложный исходный полигон воздушного коридора.');
+  const pieces = [
+    projected,
+    ...boundaryBufferPieces(projected, clearanceM),
+  ].map((part) =>
+    part.map((ring) =>
+      ring.map(([x, y]): Point => [Math.round(x * 1000), Math.round(y * 1000)]),
+    ),
+  );
+  let result: Multi = [pieces[0]];
+  for (const piece of pieces.slice(1)) {
+    result = clipping.difference(result, piece) as Multi;
+    if (!result.length)
+      throw new Error(
+        'Воздушный коридор пуст после применения защитного запаса.',
+      );
+  }
+  if (result.flat(2).length > 3000)
+    throw new Error('Результат сужения воздушного коридора слишком сложный.');
+  const metric = result.map((poly) =>
+    poly.map((ring) => ring.map(([x, y]): Point => [x / 1000, y / 1000])),
+  );
+  for (const polygon of metric)
+    for (const ring of polygon)
+      for (let i = 1; i < ring.length; i++) {
+        if (
+          !segmentInside(ring[i - 1], ring[i], boundary) ||
+          segmentBoundaryClearance(ring[i - 1], ring[i], boundary) <
+            clearanceM - EPS
+        )
+          throw new Error(
+            'Не удалось подтвердить защитный запас воздушного коридора.',
+          );
+      }
+  // Also reject a lost source hole or another source boundary swallowed by the
+  // result: resulting exterior edges alone cannot detect that topological defect.
+  for (const ring of projected)
+    for (let i = 1; i < ring.length; i++)
+      if (segmentClearance(ring[i - 1], ring[i], metric) < clearanceM - EPS)
+        throw new Error('Не удалось подтвердить границы воздушного коридора.');
+  return metric;
+}
+
+export function prepareGeometry(
+  s: Scenario,
+  airspaceClearanceM = 0,
+  origin?: Coordinate,
+) {
+  if (
+    !Number.isFinite(airspaceClearanceM) ||
+    airspaceClearanceM < 0 ||
+    airspaceClearanceM > 100
+  )
+    throw new Error(
+      'Защитный запас воздушного коридора должен быть в пределах [0; 100] м.',
+    );
+  const proj = projection(origin ?? s.area.coordinates[0][0]);
   const polys = [s.area, s.airspace, ...s.exclusions];
   polys.forEach((p) => assertPolygon(p, proj.forward));
   const all = polys
@@ -283,8 +371,13 @@ export function prepareGeometry(s: Scenario) {
     p.coordinates.map((r) => r.map(proj.forward)),
   ];
   const gross = convert(s.area),
-    boundary = convert(s.airspace);
-  // Buffer only hard exclusions. The airspace boundary itself is a hard containment constraint.
+    sourceBoundary = convert(s.airspace),
+    boundary =
+      airspaceClearanceM > 0
+        ? conservativeAirspaceInset(sourceBoundary, airspaceClearanceM)
+        : sourceBoundary;
+  // Hard exclusions retain their own buffer; the optional corridor margin also
+  // applies to the exterior and holes of the permitted airspace.
   const obstacles: Multi[] = s.exclusions.map((p) =>
     conservativeBuffer(p, s.clearanceM, proj.forward),
   );

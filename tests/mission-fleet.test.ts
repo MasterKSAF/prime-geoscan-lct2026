@@ -209,10 +209,10 @@ void test('import rejects either type of ID collision without mutating input', (
 
 void test('vehicle and battery caps reject additions and whole imports', () => {
   let vehicles = demoMission(1);
-  while (vehicles.scenario.vehicles.length < 10)
+  while (vehicles.scenario.vehicles.length < 20)
     vehicles = addMissionVehicle(vehicles, 'Custom');
-  assert.throws(() => addMissionVehicle(vehicles, 'Custom'), /10 БВС/);
-  assert.throws(() => importMissionFleet(vehicles, incoming()), /10 БВС/);
+  assert.throws(() => addMissionVehicle(vehicles, 'Custom'), /20 БВС/);
+  assert.throws(() => importMissionFleet(vehicles, incoming()), /20 БВС/);
   let batteries = demoMission(1);
   while (batteries.batteries.length < 100)
     batteries = addMissionBattery(batteries, batteries.scenario.vehicles[0].id);

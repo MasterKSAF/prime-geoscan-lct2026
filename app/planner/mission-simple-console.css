@@ -1,0 +1,421 @@
+/* First presentation: one task per surface; analysis remains available on demand. */
+.mw-heading-with-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.mw-heading-with-hint > :is(h2, h3) {
+  margin: 0;
+}
+.mission-workbench
+  .mw-simple-editor
+  .mw-wizard-nav
+  button[aria-current='step'] {
+  color: #fff;
+  background: var(--mw-blue);
+}
+.mission-workbench .mw-simple-editor .mw-work-checklist {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.mission-workbench .mw-simple-editor .mw-work-option {
+  min-width: 0;
+}
+.mission-workbench .mw-appbar {
+  gap: 10px;
+}
+.mission-workbench .mw-appbar .mw-workspace-tabs,
+.mission-workbench[data-focus='true'] .mw-appbar .mw-workspace-tabs {
+  display: block !important;
+}
+.mission-workbench .mw-header-actions .mw-edit-action:not([hidden]) {
+  display: inline-flex;
+}
+.mission-workbench .mw-stage-label {
+  font-size: 12px;
+  color: var(--mw-muted);
+}
+.mission-workbench .mw-contextbar .mw-titlebar {
+  max-width: none;
+}
+.mission-workbench .mw-contextbar .mw-weather-open small {
+  display: block;
+  font-size: 11px;
+  max-width: 300px;
+}
+.mission-workbench .mw-contextbar .mw-weather-open {
+  align-items: center;
+}
+.mission-workbench[data-workspace='planning'] .mw-grid {
+  grid-template-columns: minmax(350px, 45fr) minmax(0, 55fr);
+}
+.mission-workbench[data-workspace='planning']:not([data-planning-step='task'])
+  .mw-grid {
+  grid-template-columns: minmax(0, 55fr) minmax(360px, 45fr);
+}
+.mission-workbench[data-workspace='planning'][data-focus='true'] .mw-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+.mission-workbench[data-workspace='planning'][data-focus='true']
+  :is(.mw-sidebar, .mw-inspector) {
+  display: none;
+}
+.mission-workbench[data-workspace='execution'] .mw-grid {
+  grid-template-columns: minmax(0, 7fr) minmax(300px, 3fr);
+}
+.mission-workbench .mw-map-tools {
+  flex-wrap: wrap;
+}
+.mission-workbench[data-workspace='planning']:not(
+    [data-territory-editing='true']
+  )
+  .mission-map-coordinates,
+.mission-workbench[data-workspace='execution'] .mission-map-coordinates {
+  display: none;
+}
+.mission-workbench .mw-model-source {
+  font-size: 11px;
+}
+.mission-workbench .mw-flight-status small {
+  font-size: 11px;
+}
+.mission-workbench .mw-playback .mw-flight-status small {
+  display: block;
+  max-width: 280px;
+}
+.mission-workbench .mw-playback {
+  gap: 12px;
+}
+.mission-workbench .mw-playback-controls {
+  flex: 1;
+  justify-content: flex-end;
+}
+.mission-workbench .mw-playback-controls input[type='range'] {
+  flex: 1;
+  max-width: 210px;
+  min-width: 60px;
+}
+.mission-workbench .mw-flight-focus-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.mission-workbench .mw-flight-detail {
+  margin-top: 12px;
+}
+.mission-workbench .mw-safety-console {
+  margin: 0 12px 12px;
+  padding: 12px;
+}
+.mission-workbench .mw-safety-console:has(.mw-safety-heading) {
+  border-width: 2px;
+}
+.mission-workbench .mw-safety-console:not(:has(.mw-safety-heading)) {
+  border-color: var(--mw-line);
+  border-width: 1px;
+}
+.mission-workbench .mw-sidebar-schedule {
+  padding: 0 14px;
+}
+.mission-workbench .mw-flight-instruments {
+  gap: 8px;
+  margin: 12px 0;
+}
+.mission-workbench .mw-flight-instruments strong {
+  font-size: 22px;
+}
+.mission-workbench .mw-inspector .mw-plan-card {
+  margin-bottom: 8px;
+  padding: 12px;
+}
+.mission-workbench .mw-inspector .mw-plan-headline {
+  gap: 16px;
+  margin: 10px 0;
+}
+.mission-workbench .mw-inspector .mw-panel-head {
+  padding-bottom: 10px;
+}
+.mission-workbench .mw-panel-content {
+  padding: 12px 16px;
+}
+.mission-workbench .mw-result-tabs {
+  margin-bottom: 10px;
+}
+.mission-workbench .mw-result-tabs [role='tablist'] {
+  justify-content: flex-start;
+  gap: 8px;
+  height: auto;
+}
+.mission-workbench .mw-result-tabs [role='tab'] {
+  padding: 10px 20px;
+  font-size: 15px;
+  color: var(--mw-ink);
+  background: var(--mw-surface);
+  border: 1px solid var(--mw-line);
+}
+.mission-workbench .mw-result-tabs [role='tab'][aria-selected='true'] {
+  color: #fff;
+  background: var(--mw-blue);
+  border-color: var(--mw-blue);
+}
+.mission-workbench .mw-result-tabs [role='tab']::after {
+  display: none;
+}
+.mission-workbench .mw-result-tabs [role='tab']:focus-visible {
+  outline: 2px solid var(--mw-accent);
+  outline-offset: 3px;
+}
+.mission-workbench .mw-result-state {
+  display: block;
+  font-size: 12px;
+  color: var(--mw-warning);
+  margin: 0 0 16px;
+}
+.mission-workbench .mw-result-summary {
+  border: 1px solid var(--mw-line);
+  border-radius: 14px;
+  background: var(--mw-surface);
+  padding: 22px;
+}
+.mission-workbench .mw-result-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.mission-workbench .mw-result-heading h2 {
+  font-size: 22px;
+  margin: 0 0 5px;
+}
+.mission-workbench .mw-result-heading p {
+  color: var(--mw-muted);
+  font-size: 12px;
+  max-width: 540px;
+}
+.mission-workbench .mw-result-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0 0 20px;
+}
+.mission-workbench .mw-result-metrics article {
+  padding: 15px;
+  background: var(--mw-surface-soft);
+  border: 1px solid var(--mw-line);
+  border-radius: 10px;
+}
+.mission-workbench .mw-result-metrics strong {
+  display: block;
+  font-size: 26px;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 6px;
+}
+.mission-workbench .mw-result-metrics span {
+  font-size: 12px;
+  color: var(--mw-muted);
+}
+.mission-workbench .mw-result-next {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+.mission-workbench .ms-safety-summary {
+  padding: 16px;
+  border: 1px solid var(--mw-line);
+  border-radius: 12px;
+  background: var(--mw-surface);
+}
+.mission-workbench .ms-safety-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.mission-workbench .ms-safety-heading strong {
+  font-size: 16px;
+}
+.mission-workbench .ms-safety-heading button {
+  background: transparent;
+  color: var(--mw-accent);
+  font-size: 12px;
+  border: 0;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 5px;
+}
+.mission-workbench .ms-safety-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+.mission-workbench .ms-safety-counts [data-status='fail'],
+.mission-workbench .ms-safety-counts [data-status='unknown'] {
+  color: var(--mw-warning);
+}
+.mission-workbench .ms-safety-chips {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.mission-workbench .ms-safety-chip {
+  padding: 12px;
+  border: 1px solid var(--mw-line);
+  border-radius: 9px;
+  background: var(--mw-surface-soft);
+  color: var(--mw-ink);
+  text-align: left;
+  cursor: pointer;
+}
+.mission-workbench .ms-safety-chip span {
+  display: block;
+  font-size: 14px;
+  font-weight: 650;
+  margin-bottom: 5px;
+}
+.mission-workbench .ms-safety-chip small {
+  font-size: 11px;
+}
+.mission-workbench .ms-safety-chip[data-status='pass'] small {
+  color: var(--mw-accent);
+}
+.mission-workbench .ms-safety-chip[data-status='unknown'] {
+  border-style: dashed;
+  color: var(--mw-warning);
+}
+.mission-workbench .ms-safety-chip[data-status='fail'] {
+  border-color: var(--mw-warning);
+  background: var(--mw-warning-bg);
+  color: var(--mw-warning);
+}
+.mission-workbench .ms-safety-nonpasses {
+  margin-top: 12px;
+  font-size: 12px;
+}
+.mission-workbench .ms-safety-nonpasses > summary {
+  color: var(--mw-warning);
+  cursor: pointer;
+}
+.mission-workbench .ms-safety-nonpasses ul {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+.mission-workbench .ms-safety-nonpasses li {
+  padding: 7px 0;
+  border-top: 1px solid var(--mw-line);
+}
+.mission-workbench .ms-safety-nonpasses li p {
+  margin: 8px 0;
+  color: var(--mw-muted);
+  line-height: 1.6;
+}
+.mission-workbench .ms-safety-note {
+  display: block;
+  margin-top: 12px;
+  color: var(--mw-muted);
+  font-size: 11px;
+}
+.mission-workbench .ms-safety-summary.compact {
+  margin-top: 16px;
+  padding: 12px;
+}
+.mission-workbench .ms-safety-summary.compact .ms-safety-chips {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.mission-workbench .ms-safety-summary.compact .ms-safety-chip {
+  padding: 8px;
+}
+.mission-workbench .ms-safety-summary.compact .ms-safety-chip span {
+  font-size: 12px;
+}
+.mission-workbench .ms-safety-summary.compact .ms-safety-heading strong {
+  font-size: 13px;
+}
+.mission-workbench .mw-interface-guide {
+  overflow-x: auto;
+}
+.mission-workbench .mw-interface-guide table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.mission-workbench .mw-interface-guide th,
+.mission-workbench .mw-interface-guide td {
+  padding: 10px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--mw-line);
+}
+.mission-workbench .mw-interface-guide th {
+  background: var(--mw-surface-soft);
+}
+@media (max-width: 1000px) {
+  .mission-workbench .mw-simple-editor .mw-work-checklist {
+    grid-template-columns: 1fr;
+  }
+  .mission-workbench[data-workspace='planning'] .mw-grid {
+    grid-template-columns: minmax(310px, 45fr) minmax(0, 55fr);
+  }
+  .mission-workbench[data-workspace='planning']:not([data-planning-step='task'])
+    .mw-grid {
+    grid-template-columns: minmax(0, 1fr) 350px;
+  }
+  .mission-workbench .mw-result-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .mission-workbench .mw-stage-label {
+    display: none;
+  }
+}
+@media (max-width: 700px) {
+  .mission-workbench .mw-appbar {
+    padding: 0 10px 8px;
+    gap: 5px;
+  }
+  .mission-workbench .mw-appbar .mw-workspace-tabs [role='tab'] {
+    padding: 0 7px;
+    font-size: 13px;
+  }
+  .mission-workbench .mw-header-actions {
+    width: auto;
+    margin-left: auto;
+  }
+  .mission-workbench .mw-contextbar .mw-weather-open small {
+    max-width: 200px;
+  }
+  .mission-workbench .mw-grid {
+    display: flex;
+    flex-direction: column;
+  }
+  .mission-workbench .mw-result-summary {
+    padding: 14px;
+  }
+  .mission-workbench .mw-result-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .mission-workbench .mw-result-metrics strong {
+    font-size: 22px;
+  }
+  .mission-workbench .ms-safety-chips,
+  .mission-workbench .ms-safety-summary.compact .ms-safety-chips {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .mission-workbench .mw-result-tabs [role='tab'] {
+    padding: 10px 14px;
+  }
+  .mission-workbench .mw-playback-controls {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .mission-workbench .mw-playback-controls input[type='range'] {
+    max-width: none;
+  }
+}

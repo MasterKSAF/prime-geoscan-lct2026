@@ -75,9 +75,9 @@ export function demoMission(areaKm2: 1 | 10 | 100 = 1): MissionDocument {
   if (areaKm2 === 10) {
     doc.planning.maxSortiesPerVehicle = 12;
     for (const battery of doc.batteries) {
-      battery.rechargeSec = 4500;
+      battery.rechargeSec = 6300;
       battery.source +=
-        ' Для стенда: полный цикл зарядки 75 минут на последовательном заряднике каждого БВС; ориентир Gemini при +25 °C, реальные условия не подтверждены.';
+        ' Для стенда: полный цикл до 100% — около 105 минут на последовательном заряднике каждого БВС при +25 °C (руководство Gemini, с. 32–33). 75 минут дают 95%, не 100%. Короткая дозарядка не моделируется без кривой зарядки.';
     }
   }
   doc.notes =

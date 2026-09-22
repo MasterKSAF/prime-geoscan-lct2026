@@ -11,45 +11,9 @@ batteries:
     vehicleId: "gemini-1"
   - commissionedAt: null
     cycles: null
-    id: "gemini-1-battery-2"
-    initialPct: 100
-    name: "Gemini · 01 · АКБ 2"
-    readyAt: "2026-09-24T10:00:00+03:00"
-    rechargeSec: null
-    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
-    vehicleId: "gemini-1"
-  - commissionedAt: null
-    cycles: null
-    id: "gemini-1-battery-3"
-    initialPct: 100
-    name: "Gemini · 01 · АКБ 3"
-    readyAt: "2026-09-24T10:00:00+03:00"
-    rechargeSec: null
-    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
-    vehicleId: "gemini-1"
-  - commissionedAt: null
-    cycles: null
     id: "gemini-2-battery-1"
     initialPct: 100
     name: "Gemini · 02 · АКБ 1"
-    readyAt: "2026-09-24T10:00:00+03:00"
-    rechargeSec: null
-    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
-    vehicleId: "gemini-2"
-  - commissionedAt: null
-    cycles: null
-    id: "gemini-2-battery-2"
-    initialPct: 100
-    name: "Gemini · 02 · АКБ 2"
-    readyAt: "2026-09-24T10:00:00+03:00"
-    rechargeSec: null
-    source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
-    vehicleId: "gemini-2"
-  - commissionedAt: null
-    cycles: null
-    id: "gemini-2-battery-3"
-    initialPct: 100
-    name: "Gemini · 02 · АКБ 3"
     readyAt: "2026-09-24T10:00:00+03:00"
     rechargeSec: null
     source: "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено."
@@ -107,9 +71,11 @@ notes: "Учебный сценарий. Координаты реальные; 
   синтетические. 100 км² — нагрузочный вход: выполнимость и время расчёта не гарантируются."
 planning:
   altitudePreference: "balanced"
+  batteryPolicy: "installed-current-v1"
   maxComputeMs: 6000
   maxSortiesPerVehicle: 8
   preparationSec: 120
+  safetyPolicy: "continuous-occupancy-v1"
   separationHorizontalM: 30
   separationSource: "Учебные допуски, не подтверждённая норма жюри."
   separationVerticalM: 15

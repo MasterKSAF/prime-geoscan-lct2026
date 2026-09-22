@@ -1,0 +1,437 @@
+.mission-workbench [hidden] {
+  display: none !important;
+}
+.mission-workbench {
+  font-size: 14px;
+}
+.mw-workspace-tabs {
+  background: var(--mw-surface, #fff);
+  border-bottom: 1px solid var(--mw-line);
+  padding: 0 24px;
+  display: block;
+}
+.mw-workspace-tabs [role='tablist'] {
+  height: auto;
+  display: flex;
+  justify-content: flex-start;
+  padding: 0;
+  gap: 28px;
+  width: 100%;
+  overflow-x: auto;
+}
+.mw-workspace-tabs [role='tab'] {
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: 0;
+  min-height: 52px;
+  padding: 12px 3px;
+  color: var(--mw-muted);
+  font-size: 15px;
+  background: transparent;
+  box-shadow: none;
+  border-bottom: 3px solid transparent;
+}
+.mw-workspace-tabs [role='tab'][aria-selected='true'] {
+  color: var(--mw-blue);
+  border-bottom-color: var(--mw-blue);
+  background: transparent;
+}
+.mw-workspace-tabs [role='tab']:after {
+  display: none;
+}
+.mw-live-label {
+  font-size: 12px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  background: var(--mw-pale);
+  margin-left: 6px;
+}
+.mw-planning-steps {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 24px;
+  background: var(--mw-surface, #fff);
+  border-bottom: 1px solid var(--mw-line);
+  flex-wrap: wrap;
+}
+.mw-planning-steps button.active {
+  background: var(--mw-pale);
+  color: var(--mw-blue);
+  border-color: var(--mw-blue);
+}
+.mw-planning-steps button span {
+  border-radius: 50%;
+  background: var(--mw-pale);
+  width: 23px;
+  height: 23px;
+  display: grid;
+  place-items: center;
+}
+.mw-missions-home {
+  max-width: 1380px;
+  margin: auto;
+  padding: 28px 24px;
+}
+.mw-home-heading,
+.mw-current-draft {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.mw-home-heading {
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.mw-home-heading h1 {
+  font-size: 24px;
+}
+.mw-home-heading p,
+.mw-current-draft p {
+  color: var(--mw-muted);
+  margin-top: 6px;
+}
+.mw-current-draft {
+  padding: 22px;
+  border: 1px solid var(--mw-line);
+  border-radius: 10px;
+  background: var(--mw-surface, #fff);
+  margin-bottom: 24px;
+}
+.mw-current-draft h2 {
+  font-size: 19px;
+  margin: 6px 0;
+}
+.mw-current-draft small {
+  font-size: 13px;
+  color: var(--mw-muted);
+}
+.mw-titlebar {
+  padding: 14px 24px;
+  min-height: 86px;
+}
+.mw-titlebar p,
+.mw-caption,
+.mw-field,
+.mw-definition,
+.mw-choice strong {
+  font-size: 14px;
+}
+.ms-mission-id,
+.mw-titlebar small,
+.mw-choice small {
+  font-size: 12px;
+}
+.mw-titlebar .mw-actions {
+  max-width: 55%;
+}
+.mw-titlebar .mw-edit-action {
+  display: none;
+}
+.mw-grid {
+  grid-template-columns: 350px minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  height: clamp(460px, calc(100dvh - 395px), 800px);
+  min-height: 460px;
+}
+.mw-map-wrap {
+  min-height: 0;
+}
+.mw-inspector {
+  display: none;
+  grid-column: auto;
+  grid-template-columns: none;
+}
+.mw-sidebar,
+.mw-inspector {
+  min-height: 0;
+}
+.mw-panel-head h2,
+.mw-card h3 {
+  font-size: 15px;
+}
+.mw-wizard-body > p,
+.mw-wizard-foot button,
+.mw-button.small {
+  font-size: 13px;
+}
+.mw-section-label {
+  font-size: 12px;
+}
+.mw-weather-summary {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 10px 24px;
+  background: var(--mw-surface, #fff);
+  border-bottom: 1px solid var(--mw-line);
+  font-size: 14px;
+}
+.mw-weather-open {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  color: var(--mw-ink);
+  padding: 0;
+  margin-right: auto;
+}
+.mw-weather-summary small {
+  display: block;
+  font-size: 12px;
+  color: var(--mw-muted);
+  margin-top: 3px;
+}
+.mw-weather-dialog {
+  width: min(1000px, calc(100vw - 28px));
+  font-size: 14px;
+}
+.mw-weather-dialog .mw-modal-body {
+  line-height: 1.65;
+}
+.mw-weather-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.mw-weather-cards article {
+  background: var(--mw-pale);
+  padding: 16px;
+  border: 1px solid var(--mw-line);
+  border-radius: 8px;
+}
+.mw-weather-cards strong {
+  font-size: 17px;
+}
+.mw-weather-cards p {
+  color: var(--mw-muted);
+  margin-top: 6px;
+}
+.mw-weather-table {
+  overflow: auto;
+  max-height: 350px;
+  margin: 12px 0;
+}
+.mw-weather-table table {
+  width: 100%;
+  border-collapse: collapse;
+  white-space: nowrap;
+  font-size: 13px;
+}
+.mw-weather-table th,
+.mw-weather-table td {
+  text-align: left;
+  border-bottom: 1px solid var(--mw-line);
+  padding: 8px;
+}
+.mw-weather-dialog a {
+  text-decoration: underline;
+}
+.mw-results-checks {
+  padding: 24px;
+  background: var(--mw-surface, #fff);
+  border-bottom: 1px solid var(--mw-line);
+}
+.mw-results-checks h2 {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+.mw-results-checks .mw-check {
+  font-size: 14px;
+  max-width: 1100px;
+}
+.mw-results-checks .mw-check strong {
+  font-size: 15px;
+}
+.mw-bottom {
+  grid-template-columns: 1fr;
+}
+.mw-bottom .mw-delivery {
+  display: none;
+}
+.mw-metrics {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.mw-metrics .mw-metric:nth-child(3) {
+  display: none;
+}
+.mw-metric span {
+  font-size: 12px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.mw-telemetry .mw-definition {
+  max-width: 720px;
+}
+.mission-workbench:not([data-workspace='planning']) .mw-planning-steps,
+.mission-workbench:not([data-workspace='execution']) .mw-playback,
+.mission-workbench:not([data-workspace='execution']) .mw-telemetry,
+.mission-workbench:not([data-workspace='results']):not(
+    [data-workspace='execution']
+  )
+  .mw-metrics,
+.mission-workbench[data-workspace='missions'] .mw-titlebar,
+.mission-workbench[data-workspace='missions'] .mw-weather-summary,
+.mission-workbench[data-workspace='results'] .mw-weather-summary,
+.mission-workbench[data-workspace='missions'] .mw-grid,
+.mission-workbench[data-workspace='results'] .mw-grid {
+  display: none;
+}
+.mission-workbench[data-workspace='results'] .mw-delivery {
+  display: block;
+}
+.mission-workbench[data-workspace='execution'] .mw-edit-action,
+.mission-workbench[data-workspace='results'] .mw-edit-action {
+  display: inline-flex;
+}
+.mission-workbench:not([data-workspace='planning']) .mw-calculate-action,
+.mission-workbench:not([data-workspace='planning']) .mw-plan-action {
+  display: none;
+}
+.mission-workbench[data-workspace='planning']:not([data-planning-step='task'])
+  .mw-grid {
+  grid-template-columns: minmax(0, 1fr) 370px;
+}
+.mission-workbench[data-workspace='planning']:not([data-planning-step='task'])
+  .mw-sidebar {
+  display: none;
+}
+.mission-workbench[data-workspace='planning']:not([data-planning-step='task'])
+  .mw-inspector {
+  display: block;
+}
+.mission-workbench[data-workspace='execution']
+  .mw-map-tools
+  button:nth-child(2),
+.mission-workbench[data-workspace='execution']
+  .mw-map-tools
+  button:nth-child(3),
+.mission-workbench[data-workspace='execution'] .mw-telemetry > .mw-actions {
+  display: none;
+}
+.mission-workbench[data-workspace='planning'][data-planning-step='task']
+  .mw-titlebar
+  .mw-edit-action {
+  display: none;
+}
+.mission-workbench[data-workspace='planning']:not([data-planning-step='task'])
+  .mw-titlebar
+  .mw-edit-action {
+  display: inline-flex;
+}
+:root[data-prime-theme='dark'] .mw-workspace-tabs,
+:root[data-prime-theme='dark'] .mw-planning-steps,
+:root[data-prime-theme='dark'] .mw-weather-summary,
+:root[data-prime-theme='dark'] .mw-current-draft,
+:root[data-prime-theme='dark'] .mw-results-checks {
+  background: #142532;
+}
+@media (max-width: 900px) {
+  .mw-grid,
+  .mission-workbench[data-workspace='planning']:not([data-planning-step='task'])
+    .mw-grid {
+    grid-template-columns: 300px minmax(0, 1fr);
+  }
+  .mission-workbench[data-workspace='planning']:not([data-planning-step='task'])
+    .mw-grid {
+    grid-template-columns: minmax(0, 1fr) 320px;
+  }
+  .mw-titlebar .mw-actions {
+    max-width: 100%;
+  }
+  .mw-header-label,
+  .mw-live-label {
+    display: none;
+  }
+  .mw-weather-summary {
+    gap: 12px;
+  }
+}
+:root[data-prime-theme='dark'] .mw-workspace-tabs [role='tab'] {
+  color: #b9ccda;
+}
+:root[data-prime-theme='dark']
+  .mw-workspace-tabs
+  [role='tab'][aria-selected='true'],
+:root[data-prime-theme='dark'] .mw-planning-steps button.active {
+  color: #9edcff;
+  border-color: #78c5ef;
+}
+@media (max-width: 650px) {
+  .mw-workspace-tabs {
+    padding: 0 12px;
+  }
+  .mw-workspace-tabs [role='tablist'] {
+    gap: 10px;
+  }
+  .mw-workspace-tabs [role='tab'] {
+    font-size: 13px;
+  }
+  .mw-planning-steps,
+  .mw-titlebar,
+  .mw-weather-summary {
+    padding: 12px;
+  }
+  .mw-weather-summary {
+    flex-wrap: wrap;
+  }
+  .mw-weather-summary > span {
+    display: none;
+  }
+  .mw-weather-summary > .mw-button {
+    padding: 6px;
+  }
+  .mw-grid,
+  .mission-workbench[data-workspace='planning']:not([data-planning-step='task'])
+    .mw-grid {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 0;
+  }
+  .mw-map-wrap {
+    order: -1;
+    min-height: 380px;
+    height: 45dvh;
+  }
+  .mw-sidebar,
+  .mw-inspector {
+    max-height: 620px;
+  }
+  .mw-weather-cards {
+    grid-template-columns: 1fr;
+  }
+  .mw-home-heading,
+  .mw-current-draft {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .mw-missions-home {
+    padding: 20px 12px;
+  }
+  .mw-metric {
+    padding: 12px;
+  }
+  .mw-metric strong {
+    font-size: 20px;
+  }
+  .mw-map-legend {
+    max-width: 135px;
+    bottom: 70px;
+    font-size: 10px;
+  }
+  .mw-map-tools {
+    gap: 4px;
+  }
+  .mw-map-tools .mw-button {
+    font-size: 11px;
+    padding: 6px;
+  }
+  .mw-titlebar h1 {
+    font-size: 18px;
+  }
+}

@@ -9,11 +9,11 @@
 - Критерий: раньше завершить работы
 - Доступных БВС: 2 из 2
 - Резерв: 25%
-- Батарей: 6; неизвестный ресурс: 6
+- Батарея каждого БВС: текущий заряд; повторные вылеты на остатке, без прогнозируемой замены.
 - Дополнительных ограничений: 0; постоянных запретов: 0
 - Разнесение: 30 м по горизонтали, 15 м по вертикали. Источник: Учебные допуски, не подтверждённая норма жюри.
 - Рельеф: учебная плоскость; Синтетическая горизонтальная поверхность; не реальный DEM участка.
-- Ветер: 2 м/с, от 270°. Постоянный вектор на всё окно, не прогноз.
+- Ветер: 2 м/с, от 270°. Постоянный ручной вектор на всё окно.
 
 ## Работы
 
@@ -49,53 +49,9 @@
     {
       "commissionedAt": null,
       "cycles": null,
-      "id": "gemini-1-battery-2",
-      "initialPct": 100,
-      "name": "Gemini · 01 · АКБ 2",
-      "readyAt": "2026-09-24T10:00:00+03:00",
-      "rechargeSec": null,
-      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено.",
-      "vehicleId": "gemini-1"
-    },
-    {
-      "commissionedAt": null,
-      "cycles": null,
-      "id": "gemini-1-battery-3",
-      "initialPct": 100,
-      "name": "Gemini · 01 · АКБ 3",
-      "readyAt": "2026-09-24T10:00:00+03:00",
-      "rechargeSec": null,
-      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено.",
-      "vehicleId": "gemini-1"
-    },
-    {
-      "commissionedAt": null,
-      "cycles": null,
       "id": "gemini-2-battery-1",
       "initialPct": 100,
       "name": "Gemini · 02 · АКБ 1",
-      "readyAt": "2026-09-24T10:00:00+03:00",
-      "rechargeSec": null,
-      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено.",
-      "vehicleId": "gemini-2"
-    },
-    {
-      "commissionedAt": null,
-      "cycles": null,
-      "id": "gemini-2-battery-2",
-      "initialPct": 100,
-      "name": "Gemini · 02 · АКБ 2",
-      "readyAt": "2026-09-24T10:00:00+03:00",
-      "rechargeSec": null,
-      "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено.",
-      "vehicleId": "gemini-2"
-    },
-    {
-      "commissionedAt": null,
-      "cycles": null,
-      "id": "gemini-2-battery-3",
-      "initialPct": 100,
-      "name": "Gemini · 02 · АКБ 3",
       "readyAt": "2026-09-24T10:00:00+03:00",
       "rechargeSec": null,
       "source": "Учебный запас заряженных АКБ; наличие у реального оператора не подтверждено.",
@@ -172,9 +128,11 @@
   "notes": "Учебный сценарий. Координаты реальные; область, базы, допуски, ресурсы и плоская поверхность синтетические. 100 км² — нагрузочный вход: выполнимость и время расчёта не гарантируются.",
   "planning": {
     "altitudePreference": "balanced",
+    "batteryPolicy": "installed-current-v1",
     "maxComputeMs": 6000,
     "maxSortiesPerVehicle": 8,
     "preparationSec": 120,
+    "safetyPolicy": "continuous-occupancy-v1",
     "separationHorizontalM": 30,
     "separationSource": "Учебные допуски, не подтверждённая норма жюри.",
     "separationVerticalM": 15,

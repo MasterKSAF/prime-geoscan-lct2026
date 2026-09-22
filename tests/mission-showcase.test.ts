@@ -70,17 +70,27 @@ for (const scenario of SHOWCASE_SCENARIOS) {
       );
       if (scenario.id === 'mixed-fleet') {
         assert.equal(c.metrics.vehicleCount, 3);
-        assert.ok(new Set(c.sorties.map((s) => s.startSec)).size > 1);
         assert.ok(
-          c.sorties
-            .filter((s) => s.vehicleId === 'ir-1')
-            .every((s) => s.startSec >= 240),
+          document.batteries.every(
+            (b) => Date.parse(b.readyAt) === Date.parse(document.window.start),
+          ),
+        );
+        assert.ok(
+          c.sorties.every(
+            (s) => s.startSec >= document.planning.preparationSec,
+          ),
         );
       }
       if (scenario.id === 'repeat-sorties') {
         assert.ok(c.sorties.length >= 2);
         assert.equal(c.metrics.vehicleCount, 1);
-        assert.ok(c.metrics.batteryChanges >= 1);
+        assert.equal(c.metrics.batteryChanges, 0);
+        assert.equal(new Set(c.sorties.map((s) => s.batteryId)).size, 1);
+        for (let i = 1; i < c.sorties.length; i++)
+          assert.equal(
+            c.sorties[i].segments[0].batteryFromPct,
+            c.sorties[i - 1].remainingPct,
+          );
         for (let i = 1; i < c.sorties.length; i++)
           assert.ok(c.sorties[i].startSec >= c.sorties[i - 1].readySec);
       }
@@ -107,16 +117,19 @@ for (const scenario of SHOWCASE_SCENARIOS) {
       assert.ok(
         document.jobs.every((job) => job.assignedVehicleIds.length === 0),
       );
-      assert.ok(fast.metrics.makespanSec < balanced.metrics.makespanSec);
-      assert.ok(balanced.metrics.makespanSec < economical.metrics.makespanSec);
+      assert.ok(fast.metrics.makespanSec <= balanced.metrics.makespanSec);
+      assert.ok(balanced.metrics.makespanSec <= economical.metrics.makespanSec);
       assert.ok(
-        economical.metrics.flightTimeSec < balanced.metrics.flightTimeSec,
+        economical.metrics.flightTimeSec <= balanced.metrics.flightTimeSec,
       );
-      assert.ok(balanced.metrics.flightTimeSec < fast.metrics.flightTimeSec);
-      assert.equal(sameMissionPlan(fast, economical), false);
-      assert.equal(sameMissionPlan(fast, balanced), false);
-      assert.equal(sameMissionPlan(economical, balanced), false);
-      assert.deepEqual(result.recommendation!.samePlanAs, []);
+      assert.ok(balanced.metrics.flightTimeSec <= fast.metrics.flightTimeSec);
+      // All batteries are now available: coinciding optima must be disclosed, not fabricated apart.
+      assert.deepEqual(
+        result.recommendation!.samePlanAs,
+        result.candidates
+          .filter((c) => sameMissionPlan(c, balanced))
+          .map((c) => c.id),
+      );
       assert.equal(result.recommendation!.resourceProxy, 'flightTimeSec');
     }
   });

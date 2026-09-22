@@ -1,0 +1,483 @@
+/* Load after the workbench/showcase styles. Scope preferences to the planner;
+   do not invert map tiles, route colours or the rest of the host application. */
+.mission-workbench {
+  --mw-ink: #243d4b;
+  --mw-muted: #566f80;
+  --mw-line: #d6e2e9;
+  --mw-blue: #196d98;
+  --mw-accent: #17658c;
+  --mw-pale: #edf5f9;
+  --mw-page: #eaf0f4;
+  --mw-surface: #ffffff;
+  --mw-surface-raised: #ffffff;
+  --mw-surface-soft: #f3f7fa;
+  --mw-map-bg: #eaf1f3;
+  --mw-selected: #e6f3fc;
+  --mw-success: #22684f;
+  --mw-success-bg: #e9f5ee;
+  --mw-warning: #775820;
+  --mw-warning-bg: #fff6e2;
+  --mw-danger: #805209;
+  --mw-danger-bg: #fff4d8;
+  --mw-focus: #318bbb;
+  --mw-shadow: 0 14px 44px #16354a24;
+  color-scheme: light;
+  color: var(--mw-ink);
+  background: var(--mw-page);
+}
+
+html[data-prime-theme='dark'] .mission-workbench {
+  --mw-ink: #e0edf5;
+  --mw-muted: #abc0cf;
+  --mw-line: #354e63;
+  --mw-blue: #196c98;
+  --mw-accent: #8ad3f5;
+  --mw-pale: #20364a;
+  --mw-page: #0e1924;
+  --mw-surface: #142434;
+  --mw-surface-raised: #1b3043;
+  --mw-surface-soft: #1c3042;
+  --mw-map-bg: #182e3d;
+  --mw-selected: #1f4057;
+  --mw-success: #98ddbc;
+  --mw-success-bg: #173d32;
+  --mw-warning: #f1d28f;
+  --mw-warning-bg: #423823;
+  --mw-danger: #ffda91;
+  --mw-danger-bg: #39311e;
+  --mw-focus: #89d3ff;
+  --mw-shadow: 0 16px 46px #00000066;
+  color-scheme: dark;
+}
+
+.mission-workbench
+  :is(
+    .mw-header,
+    .mw-titlebar,
+    .mw-sidebar,
+    .mw-inspector,
+    .mw-metrics,
+    .mw-playback,
+    .mw-card,
+    .mw-choice,
+    .mw-modal,
+    .mw-map-draw,
+    .mw-map-tag,
+    .mw-map-legend
+  ),
+.mission-workbench .mw-bottom > section {
+  color: var(--mw-ink);
+  background: var(--mw-surface);
+  border-color: var(--mw-line);
+}
+
+.mission-workbench
+  :is(
+    .mw-process,
+    .mw-wizard-foot,
+    .mw-details pre,
+    .mw-import-summary,
+    .ms-facts > div,
+    .ms-table th,
+    .mw-timeline-track,
+    .ms-metric-bar,
+    .ms-mission-id
+  ) {
+  background: var(--mw-surface-soft);
+  color: var(--mw-ink);
+  border-color: var(--mw-line);
+}
+
+.mission-workbench
+  :is(
+    .mw-panel-head,
+    .mw-tree-section,
+    .mw-wizard-nav,
+    .mw-modal-head,
+    .mw-modal-footer,
+    .mw-library-card,
+    .mw-check,
+    .mw-event,
+    .mw-metric,
+    .ms-table th,
+    .ms-table td,
+    .mw-wizard-foot
+  ) {
+  border-color: var(--mw-line);
+}
+
+.mission-workbench
+  :is(
+    .mw-caption,
+    .mw-field,
+    .mw-field small,
+    .mw-checkbox,
+    .mw-tree-row,
+    .mw-tree-row small,
+    .mw-section-label,
+    .mw-playback-time,
+    .mw-event p,
+    .mw-event time,
+    .mw-footer,
+    .mw-code,
+    .mw-choice small,
+    .mw-metric > span,
+    .ms-eyebrow,
+    .ms-facts dt,
+    .ms-facts small,
+    .ms-table small,
+    .ms-brief > p,
+    .ms-scenario p,
+    .ms-scenario ul,
+    .ms-scenario details
+  ) {
+  color: var(--mw-muted);
+}
+
+.mission-workbench
+  :is(
+    .mw-brand,
+    .mw-details summary,
+    .mw-process span.active,
+    .mw-empty h3,
+    .mw-choice svg,
+    .mw-wind-panel,
+    .mw-overview-stat b,
+    .mission-map-status button
+  ) {
+  color: var(--mw-accent);
+}
+
+.mission-workbench .mw-badge {
+  color: var(--mw-muted);
+  background: var(--mw-surface-soft);
+  border-color: var(--mw-line);
+}
+
+.mission-workbench :is(.mw-button, .mw-wizard-nav button, .mw-process i) {
+  color: var(--mw-ink);
+  background: var(--mw-surface-raised);
+  border-color: var(--mw-line);
+}
+
+.mission-workbench .mw-button:hover:not(:disabled) {
+  color: var(--mw-accent);
+  background: var(--mw-pale);
+  border-color: var(--mw-accent);
+}
+
+.mission-workbench
+  :is(
+    .mw-button.primary,
+    .mw-wizard-nav button[aria-current='step'],
+    .mw-process span.active i
+  ) {
+  color: #fff;
+  background: var(--mw-blue);
+  border-color: var(--mw-blue);
+}
+
+.mission-workbench .mw-button.primary:hover:not(:disabled) {
+  color: #fff;
+  background: #135776;
+}
+
+.mission-workbench .mw-button.quiet {
+  background: transparent;
+  border-color: transparent;
+}
+.mission-workbench .mw-button.danger {
+  color: var(--mw-danger);
+}
+.mission-workbench .mw-button.danger:hover:not(:disabled) {
+  background: var(--mw-danger-bg);
+}
+.mission-workbench .mw-map-tools .mw-button {
+  background: var(--mw-surface-raised);
+}
+
+.mission-workbench
+  :is(
+    .mw-card.selected,
+    .mw-choice.active,
+    .ms-table tr.ms-selected,
+    .mw-map-tools .mw-button.active
+  ) {
+  background: var(--mw-selected);
+  border-color: var(--mw-accent);
+}
+
+.mission-workbench .mw-card.selected {
+  box-shadow: inset 3px 0 var(--mw-accent);
+}
+.mission-workbench
+  :is(.mw-alert, .mw-card.warning, .ms-negative, .map-network) {
+  color: var(--mw-warning);
+  background: var(--mw-warning-bg);
+  border-color: var(--mw-warning);
+}
+.mission-workbench .mw-alert.error {
+  color: var(--mw-danger);
+  background: var(--mw-danger-bg);
+  border-color: var(--mw-danger);
+}
+.mission-workbench :is(.mw-alert.success, .ms-ok, .ms-mode-tag) {
+  color: var(--mw-success);
+  background: var(--mw-success-bg);
+  border-color: var(--mw-success);
+}
+.mission-workbench .mw-check.pass svg {
+  color: var(--mw-success);
+}
+.mission-workbench .mw-check.fail svg {
+  color: var(--mw-danger);
+}
+.mission-workbench .mw-check.unknown svg {
+  color: var(--mw-warning);
+}
+
+.mission-workbench :is(.ms-notice, .ms-quality-gate) {
+  color: var(--mw-ink);
+  background: var(--mw-pale);
+  border-color: var(--mw-accent);
+}
+.mission-workbench .ms-scenario {
+  background: var(--mw-surface-soft);
+  border-color: var(--mw-line);
+}
+.mission-workbench .ms-scenario-top > span {
+  color: var(--mw-accent);
+}
+.mission-workbench .ms-metric-bar span {
+  background: var(--mw-blue);
+}
+.mission-workbench .mw-timeline-cursor {
+  background: var(--mw-ink);
+}
+.mission-workbench :is(.mw-separator, .mw-process em) {
+  background: var(--mw-line);
+}
+
+.mission-workbench
+  :is(
+    input:not([type='checkbox']):not([type='radio']):not([type='range']),
+    select,
+    textarea
+  ) {
+  color: var(--mw-ink);
+  background-color: var(--mw-surface-raised);
+  border-color: var(--mw-line);
+  color-scheme: inherit;
+}
+.mission-workbench input::placeholder,
+.mission-workbench textarea::placeholder {
+  color: var(--mw-muted);
+  opacity: 0.85;
+}
+.mission-workbench :is(input, select, textarea):disabled {
+  color: var(--mw-muted);
+  background: var(--mw-surface-soft);
+}
+.mission-workbench input:is([type='checkbox'], [type='radio'], [type='range']) {
+  accent-color: var(--mw-blue);
+}
+.mission-workbench
+  :is(button, input, select, textarea, a, summary):focus-visible {
+  outline: 3px solid var(--mw-focus);
+  outline-offset: 3px;
+}
+.mission-workbench .mw-modal {
+  box-shadow: var(--mw-shadow);
+}
+.mission-workbench .mw-modal::backdrop {
+  background: #08182799;
+}
+
+/* Map tiles remain in their original colours; only map UI chrome follows the theme. */
+.mission-workbench :is(.mw-map-wrap, .leaflet-container, .mission-map-canvas) {
+  background: var(--mw-map-bg);
+}
+.mission-workbench
+  :is(
+    .leaflet-control-zoom a,
+    .leaflet-control-layers,
+    .leaflet-tooltip,
+    .leaflet-popup-content-wrapper,
+    .leaflet-popup-tip
+  ) {
+  background: var(--mw-surface-raised);
+  color: var(--mw-ink);
+  border-color: var(--mw-line);
+}
+.mission-workbench .leaflet-bar {
+  border-color: var(--mw-line);
+}
+.mission-workbench .leaflet-bar a:hover {
+  background: var(--mw-selected);
+}
+.mission-workbench .leaflet-bar a.leaflet-disabled {
+  color: var(--mw-muted);
+  background: var(--mw-surface-soft);
+}
+.mission-workbench .leaflet-control-attribution {
+  background: var(--mw-surface);
+  color: var(--mw-muted);
+}
+.mission-workbench .leaflet-control-attribution a {
+  color: var(--mw-accent);
+}
+.mission-workbench .leaflet-control-scale-line {
+  color: var(--mw-ink);
+  background: var(--mw-surface);
+  border-color: var(--mw-ink);
+  text-shadow: none;
+}
+.mission-workbench .leaflet-tooltip-top::before {
+  border-top-color: var(--mw-line);
+}
+.mission-workbench .leaflet-tooltip-bottom::before {
+  border-bottom-color: var(--mw-line);
+}
+.mission-workbench .leaflet-tooltip-left::before {
+  border-left-color: var(--mw-line);
+}
+.mission-workbench .leaflet-tooltip-right::before {
+  border-right-color: var(--mw-line);
+}
+
+/* Theme selector fits beside existing header actions and uses a native accessible select. */
+.mw-theme-control {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  min-width: 0;
+}
+.mw-theme-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--mw-muted);
+  font-size: 11px;
+}
+.mw-theme-control select {
+  min-height: 34px;
+  max-width: 155px;
+  padding: 5px 7px;
+  border: 1px solid var(--mw-line);
+  border-radius: 5px;
+}
+.mw-theme-storage-note {
+  flex-basis: 100%;
+  max-width: 270px;
+  color: var(--mw-warning);
+  font-size: 10px;
+}
+
+/* Help is text-only. A manual native popover avoids clipping inside <dialog> and table scrolling. */
+.mission-workbench .mw-info-hint {
+  display: inline-flex;
+  vertical-align: middle;
+  margin: 0 0 0 5px;
+}
+.mission-workbench .mw-info-trigger {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  min-height: 24px;
+  flex: 0 0 24px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--mw-line);
+  color: var(--mw-accent);
+  background: var(--mw-surface-raised);
+  font:
+    italic 600 15px/1 Georgia,
+    serif;
+  cursor: help;
+}
+.mission-workbench .mw-info-trigger:hover,
+.mission-workbench .mw-info-trigger[aria-expanded='true'] {
+  background: var(--mw-selected);
+  border-color: var(--mw-accent);
+}
+.mission-workbench .mw-info-trigger > span {
+  display: inline;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-transform: none;
+}
+.mission-workbench .mw-info-popover {
+  position: fixed;
+  inset: auto;
+  z-index: 10000;
+  margin: 0;
+  max-width: calc(100vw - 24px);
+  max-height: calc(100dvh - 24px);
+  overflow: auto;
+  padding: 13px 15px;
+  border: 1px solid var(--mw-line);
+  border-radius: 9px;
+  box-shadow: var(--mw-shadow);
+  color: var(--mw-ink);
+  background: var(--mw-surface-raised);
+  font:
+    12px/1.65 Arial,
+    Helvetica,
+    sans-serif;
+  font-weight: 400;
+  text-align: left;
+  text-transform: none;
+  letter-spacing: normal;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.mission-workbench .mw-info-popover[hidden] {
+  display: none;
+}
+.mission-workbench .mw-info-popover > strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.mission-workbench .mw-info-popover > span {
+  display: block;
+  color: var(--mw-muted);
+  font: inherit;
+  margin: 0;
+  text-transform: none;
+  letter-spacing: normal;
+}
+.ms-quality-gate {
+  padding: 10px 13px;
+  margin: 12px 0;
+  border: 1px solid;
+  border-radius: 6px;
+  font-size: 12px;
+}
+.ms-quality-gate > strong {
+  font-weight: 600;
+}
+
+@media (max-width: 740px) {
+  .mw-theme-label > span {
+    display: none;
+  }
+  .mw-theme-control select {
+    max-width: 140px;
+  }
+  .mission-workbench .mw-info-trigger {
+    width: 26px;
+    height: 26px;
+    min-height: 26px;
+  }
+}
+@media (forced-colors: active) {
+  .mission-workbench .mw-info-trigger,
+  .mission-workbench .mw-info-popover {
+    border-color: ButtonText;
+  }
+}

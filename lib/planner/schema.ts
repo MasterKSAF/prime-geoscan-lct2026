@@ -13,6 +13,34 @@ export const polygon = z
   })
   .strict();
 const finite = (min: number, max: number) => z.number().min(min).max(max);
+/** Explicit model inputs, not a claim of manufacturer-calibrated dynamics. */
+export const fixedWingProfileSchema = z
+  .object({
+    version: z.literal('geoscan201-dubins-v1'),
+    bankLimitDeg: finite(5, 35),
+    minimumTurnRadiusM: finite(30, 2000),
+    launchHeadingDeg: finite(0, 359),
+    parachuteDescentMps: finite(0.5, 10),
+    parachuteReleaseAltitudeM: finite(30, 150),
+    trackingToleranceM: finite(2, 100),
+    source: z.string().min(1).max(400),
+  })
+  .strict();
+export const fixedWingSegmentMetadataSchema = z
+  .object({
+    kind: z.enum(['straight', 'arc', 'parachute']),
+    headingFromRad: finite(-100, 100),
+    headingToRad: finite(-100, 100),
+    tubeRadiusM: finite(0, 1000),
+    center: coordinate.optional(),
+    radiusM: finite(1, 10000).optional(),
+    sweepRad: finite(-Math.PI, Math.PI).optional(),
+  })
+  .strict();
+export type FixedWingProfile = z.infer<typeof fixedWingProfileSchema>;
+export type FixedWingSegmentMetadata = z.infer<
+  typeof fixedWingSegmentMetadataSchema
+>;
 export const scenarioSchema = z
   .object({
     schemaVersion: z.literal('1.0'),
@@ -50,6 +78,8 @@ export const scenarioSchema = z
             kind: z.enum(['multirotor', 'fixedWing']),
             enabled: z.boolean(),
             airspeedMps: finite(2, 40),
+            maxAirspeedMps: finite(2, 100).optional(),
+            fixedWingProfile: fixedWingProfileSchema.optional(),
             maxWindMps: finite(0, 25),
             batteryPct: finite(0, 100),
             effectiveEnduranceMin: finite(1, 240),
@@ -68,7 +98,7 @@ export const scenarioSchema = z
           .strict(),
       )
       .min(1)
-      .max(10),
+      .max(20),
   })
   .strict();
 
@@ -97,6 +127,7 @@ export type Segment = {
   batteryFromPct: number;
   batteryToPct: number;
   stripId?: number;
+  fixedWing?: FixedWingSegmentMetadata;
 };
 export type Mission = {
   vehicleId: string;
