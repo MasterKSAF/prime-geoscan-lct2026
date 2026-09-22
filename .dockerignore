@@ -20,5 +20,10 @@
 !tests/**
 !scripts
 !scripts/verify-mission-evidence.ts
+!scripts/verify-mission-archive.ts
+!scripts/verify-mission-run-report.ts
+!scripts/benchmark-missions.ts
+!scripts/verify-mission-robustness.ts
+!scripts/verify-mission-contingency.ts
 !scripts/create-geometry-overflow-fixtures.ts
 !Dockerfile.planner

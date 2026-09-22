@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { obstacleSourceSchema } from './obstacle-layer.ts';
 import { missionWeatherSchema } from './mission-weather.ts';
 import {
   scenarioSchema,
@@ -51,6 +52,9 @@ export const missionJobSchema = z
     // Optional extension: old documents retain their exact canonical hashes.
     window: z.object({ start: instant, end: instant }).strict().optional(),
     inheritsFrom: id.optional(),
+    // Omitted = automatic. Optional fields preserve existing document hashes.
+    priority: num(1, 8).int().optional(),
+    workPriority: num(1, 5).int().optional(),
   })
   .strict();
 export const missionEnvironmentSchema = z
@@ -191,6 +195,8 @@ export const missionDocumentSchema = z
       .max(20)
       .optional(),
     notes: z.string().max(2000),
+    // Immutable attachment travels with a run; ordinary mission fields keep their 200 KiB budget.
+    obstacleLayer: obstacleSourceSchema.optional(),
   })
   .strict();
 export type MissionDocument = z.infer<typeof missionDocumentSchema>;

@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:56.258Z",
+  "createdAt": "2026-09-22T14:21:28.444Z",
   "inputHash": "640dba15f0b846247579ff04295ff018cd72d2928762afe2df4b2e590f356511",
-  "planHash": "44a5333786e93475f3af83214d246dcd5e2af41ed7643fa88fc549e983dbe01d",
+  "planHash": "d8d6436573064ebc853856f59f584f88dbe90b9b9a5500617da97cdffb16ad27",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -276,7 +276,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "640dba15f0b846247579ff04295ff018cd72d2928762afe2df4b2e590f356511",
-      "createdAt": "2026-09-22T06:50:56.147Z",
+      "createdAt": "2026-09-22T14:21:28.301Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Ожидание временного запрета",
@@ -1112,7 +1112,7 @@
           "detail": "serial-one-sortie-at-a-time-v1: первая допустимая конфигурация в исходном порядке парка, один вылет одновременно; бюджет 1000 мс, 7 попыток. Вход, ограничения, ресурс и проверка совпадают с основным расчётом; глобальная оптимальность не заявляется."
         }
       ],
-      "computationMs": 3.9750999999996566
+      "computationMs": 4.6950000000006185
     },
     "sorties": [
       {

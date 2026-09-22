@@ -4,6 +4,7 @@ import {
   MAX_ROBUSTNESS_REQUEST_BYTES,
 } from '@/lib/planner/mission-robustness';
 import { parseStructuredText } from '@/lib/planner/mission-io';
+import { MAX_OBSTACLE_MISSION_BYTES } from '@/lib/planner/obstacle-layer';
 
 let active = false;
 const headers = {
@@ -12,6 +13,7 @@ const headers = {
 };
 
 export async function POST(request: Request) {
+  const bodyLimit = request.headers.get('x-prime-obstacles') === '1' ? MAX_OBSTACLE_MISSION_BYTES + MAX_ROBUSTNESS_REQUEST_BYTES : MAX_ROBUSTNESS_REQUEST_BYTES;
   const origin = request.headers.get('origin');
   if (origin && origin !== new URL(request.url).origin) {
     void request.body?.cancel().catch(() => {});
@@ -57,7 +59,7 @@ export async function POST(request: Request) {
         break;
       }
       size += part.value.byteLength;
-      if (size > MAX_ROBUSTNESS_REQUEST_BYTES)
+      if (size > bodyLimit)
         return Response.json(
           { code: 'SIZE', error: 'Стресс-запрос больше 2 МиБ.' },
           { status: 413, headers },
@@ -81,7 +83,7 @@ export async function POST(request: Request) {
       value = parseStructuredText(
         new TextDecoder('utf-8', { fatal: true }).decode(bytes),
         'json',
-        MAX_ROBUSTNESS_REQUEST_BYTES,
+        bodyLimit,
       );
     } catch {
       throw new SyntaxError('Некорректный JSON.');

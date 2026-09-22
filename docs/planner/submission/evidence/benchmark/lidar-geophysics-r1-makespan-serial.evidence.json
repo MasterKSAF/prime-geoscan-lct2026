@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:54.736Z",
+  "createdAt": "2026-09-22T14:21:26.360Z",
   "inputHash": "b82d6ef2774753aaadf1be39addd903ed25b9eebe972d5d2f4c8eecbc46f5d8d",
-  "planHash": "5e2c76b34ff370239a2a21e598c58397a6fa2265ad6558ca2ebbc3bbe49f1828",
+  "planHash": "402a80ff14081ca0315092c1c1b78021ad208e4cc8bf5361880b7d7ad33d6ecf",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -328,7 +328,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "b82d6ef2774753aaadf1be39addd903ed25b9eebe972d5d2f4c8eecbc46f5d8d",
-      "createdAt": "2026-09-22T06:50:54.620Z",
+      "createdAt": "2026-09-22T14:21:26.201Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "LiDAR и геофизический подвес",
@@ -1473,7 +1473,7 @@
           "detail": "serial-one-sortie-at-a-time-v1: первая допустимая конфигурация в исходном порядке парка, один вылет одновременно; бюджет 1000 мс, 10 попыток. Вход, ограничения, ресурс и проверка совпадают с основным расчётом; глобальная оптимальность не заявляется."
         }
       ],
-      "computationMs": 4.374299999999948
+      "computationMs": 6.590099999999438
     },
     "sorties": [
       {

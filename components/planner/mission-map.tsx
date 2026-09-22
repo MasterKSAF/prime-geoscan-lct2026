@@ -10,6 +10,13 @@ import {
   vehicleMapLabel,
 } from '@/lib/planner/mission-vehicle-label';
 import 'leaflet/dist/leaflet.css';
+import {
+  parseObstacleKml,
+  boundsOverlap,
+  type Bounds,
+  type ObstacleSource,
+} from '@/lib/planner/obstacle-layer';
+import { conservativeBuffer, projection } from '@/lib/planner/geometry';
 
 export const flightColors = [
   '#1c73d4',
@@ -41,9 +48,13 @@ type Props = {
   fit: number;
   showTiles: boolean;
   showTransit: boolean;
+  showAirspace?: boolean;
   workAreas?: { id: string; name: string; area: Polygon }[];
   activeJobId?: string;
   restrictions?: MissionRestriction[];
+  obstacleLayer?: ObstacleSource;
+  showObstacles?: boolean;
+  obstacleFocus?: Bounds | null;
   missionStartAt?: string;
   execution?: boolean;
   playing?: boolean;
@@ -441,6 +452,124 @@ export default function MissionMap(props: Props) {
     props.plan,
   ]);
   useEffect(() => {
+    const b = props.obstacleFocus;
+    if (ready && b)
+      map.current?.fitBounds(
+        [
+          [b[1], b[0]],
+          [b[3], b[2]],
+        ],
+        { padding: [30, 30], maxZoom: 18 },
+      );
+  }, [ready, props.obstacleFocus]);
+  useEffect(() => {
+    const L = lib.current,
+      m = map.current;
+    if (
+      !ready ||
+      !L ||
+      !m ||
+      !props.obstacleLayer ||
+      props.showObstacles === false
+    )
+      return;
+    const group = L.layerGroup().addTo(m),
+      selectedBuffer = L.layerGroup().addTo(m),
+      source = props.obstacleLayer;
+    let catalog: ReturnType<typeof parseObstacleKml>;
+    try {
+      catalog = parseObstacleKml(source.sourceText);
+    } catch {
+      group.remove();
+      selectedBuffer.remove();
+      return;
+    }
+    const draw = () => {
+      group.clearLayers();
+      const b = m.getBounds();
+      for (const o of catalog.objects) {
+        if (
+          !o.bounds ||
+          !boundsOverlap(o.bounds, [
+            b.getWest(),
+            b.getSouth(),
+            b.getEast(),
+            b.getNorth(),
+          ])
+        )
+          continue;
+        const rings = o.coordinates.map((r) =>
+          r.map((p): [number, number] => [p[1], p[0]]),
+        );
+        if (!rings[0]?.length) continue;
+        const label = document.createElement('span');
+        const heights = o.coordinates.flat().map((p) => p[2]);
+        label.textContent = `${o.name} · ${o.id} · ${Math.min(...heights).toFixed(1)}…${Math.max(...heights).toFixed(1)} м ${o.altitudeMode === 'absolute' ? 'от уровня моря' : o.altitudeMode === 'relativeToGround' ? 'от земли' : '(clampToGround)'} · ${o.status === 'rejected' ? o.error : `обход сбоку, запас ${Math.max(source.bufferM, props.scenario.clearanceM)} м`}`;
+        const shape = (
+          o.kind === 'Polygon'
+            ? L.polygon(rings, {
+                color: '#b27a36',
+                weight: 1.5,
+                fillOpacity: 0.16,
+              })
+            : L.polyline(rings[0], { color: '#a475b8', weight: 3 })
+        )
+          .bindTooltip(label)
+          .addTo(group);
+        shape.on('click', () => {
+          selectedBuffer.clearLayers();
+          if (o.kind !== 'Polygon' || o.status === 'rejected') return;
+          try {
+            const p = projection([
+              o.coordinates[0][0][0],
+              o.coordinates[0][0][1],
+            ]);
+            const buffered = conservativeBuffer(
+              {
+                type: 'Polygon',
+                coordinates: o.coordinates.map((r) =>
+                  r.map((v) => [v[0], v[1]]),
+                ),
+              },
+              Math.max(source.bufferM, props.scenario.clearanceM),
+              p.forward,
+            );
+            for (const poly of buffered)
+              L.polygon(
+                poly.map((ring) =>
+                  ring.map((xy): [number, number] => {
+                    const c = p.inverse(xy);
+                    return [c[1], c[0]];
+                  }),
+                ),
+                {
+                  color: '#ab793e',
+                  weight: 1,
+                  dashArray: '4 4',
+                  fillOpacity: 0.07,
+                  interactive: false,
+                },
+              ).addTo(selectedBuffer);
+          } catch {
+            /* The source stays visible; oversized geometry cannot be labelled a checked buffer. */
+          }
+        });
+      }
+    };
+    draw();
+    m.on('moveend', draw);
+    return () => {
+      m.off('moveend', draw);
+      group.remove();
+      selectedBuffer.remove();
+    };
+  }, [
+    ready,
+    props.obstacleLayer,
+    props.showObstacles,
+    props.scenario.clearanceM,
+  ]);
+  useEffect(() => {
     const L = lib.current,
       layer = layers.current;
     if (!ready || !L || !layer) return;
@@ -451,16 +580,17 @@ export default function MissionMap(props: Props) {
       el.textContent = text;
       return el;
     };
-    L.polygon(
-      props.scenario.airspace.coordinates.map((r) => r.map(lat)),
-      {
-        color: '#759280',
-        weight: 1.5,
-        dashArray: '5 6',
-        fillOpacity: 0.035,
-        interactive: false,
-      },
-    ).addTo(layer);
+    if (props.showAirspace !== false)
+      L.polygon(
+        props.scenario.airspace.coordinates.map((r) => r.map(lat)),
+        {
+          color: '#759280',
+          weight: 1.5,
+          dashArray: '5 6',
+          fillOpacity: 0.035,
+          interactive: false,
+        },
+      ).addTo(layer);
     const areas = props.workAreas ?? [
       { id: 'current', name: 'Область работы', area: props.scenario.area },
     ];
@@ -639,6 +769,7 @@ export default function MissionMap(props: Props) {
     props.plan,
     props.selected,
     props.showTransit,
+    props.showAirspace,
     props.workAreas,
     props.activeJobId,
     props.restrictions,

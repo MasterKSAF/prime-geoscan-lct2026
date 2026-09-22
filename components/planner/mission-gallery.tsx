@@ -6,11 +6,15 @@ import type { ShowcaseScenario } from '@/lib/planner/mission-showcase';
 import type { MissionDocument } from '@/lib/planner/mission-schema';
 import { workLabels } from '@/lib/planner/mission-editing';
 import { InfoHint } from './mission-help';
+import { useState } from 'react';
+import { parseMissionText } from '@/lib/planner/mission-io';
 export default function MissionGallery({
   onOpen,
 }: {
   onOpen: (document: MissionDocument, label: string) => void;
 }) {
+  const [loading, setLoading] = useState(false),
+    [error, setError] = useState('');
   const renderScenario = (s: ShowcaseScenario, i: number, demo = false) => {
     const d = s.create();
     const automatic = d.jobs.every((j) => j.assignedVehicleIds.length === 0);
@@ -76,7 +80,26 @@ export default function MissionGallery({
         <div className="ms-scenario-actions">
           <button
             className="mw-button primary"
-            onClick={() => onOpen(s.create(), `Сценарий: ${s.title}`)}
+            disabled={loading}
+            onClick={async () => {
+              if (s.id !== 'demo-02-expert-obstacles') {
+                onOpen(s.create(), `Сценарий: ${s.title}`);
+                return;
+              }
+              setLoading(true);
+              setError('');
+              try {
+                const response = await fetch(
+                  '/planner/scenarios/demo-02-expert-obstacles.mission.json',
+                );
+                if (!response.ok) throw new Error('Пример недоступен.');
+                onOpen(parseMissionText(await response.text()), s.title);
+              } catch (e) {
+                setError(e instanceof Error ? e.message : String(e));
+              } finally {
+                setLoading(false);
+              }
+            }}
           >
             {demo ? `Открыть демо ${i + 1}` : `Открыть сценарий ${i + 1}`}
           </button>
@@ -88,61 +111,90 @@ export default function MissionGallery({
             JSON
           </a>
         </div>
-        <details>
-          <summary>
-            Примеры для импорта по частям{' '}
-            <InfoHint label="Импорт частей сценария">
-              Флот и объёмы добавляются к текущей миссии. Повторяющиеся ID
-              отклоняются: измените ID в копии файла или используйте другую
-              миссию.
-            </InfoHint>
-          </summary>
-          <div className="ms-scenario-actions">
-            <a
-              className="mw-button small"
-              href={`/planner/scenarios/${s.id}.area.geojson`}
-              download
-            >
-              Участки
-            </a>
-            <a
-              className="mw-button small"
-              href={`/planner/scenarios/${s.id}.restrictions.json`}
-              download
-            >
-              Объёмы
-            </a>
-            <a
-              className="mw-button small"
-              href={`/planner/scenarios/${s.id}.fleet.json`}
-              download
-            >
-              Флот
-            </a>
-          </div>
-        </details>
+        {s.id !== 'demo-02-expert-obstacles' && (
+          <details>
+            <summary>
+              Примеры для импорта по частям{' '}
+              <InfoHint label="Импорт частей сценария">
+                Флот и объёмы добавляются к текущей миссии. Повторяющиеся ID
+                отклоняются: измените ID в копии файла или используйте другую
+                миссию.
+              </InfoHint>
+            </summary>
+            <div className="ms-scenario-actions">
+              <a
+                className="mw-button small"
+                href={`/planner/scenarios/${s.id}.area.geojson`}
+                download
+              >
+                Участки
+              </a>
+              <a
+                className="mw-button small"
+                href={`/planner/scenarios/${s.id}.restrictions.json`}
+                download
+              >
+                Объёмы
+              </a>
+              <a
+                className="mw-button small"
+                href={`/planner/scenarios/${s.id}.fleet.json`}
+                download
+              >
+                Флот
+              </a>
+            </div>
+          </details>
+        )}
       </article>
     );
   };
   return (
     <>
+      {error && <p role="alert">{error}</p>}
+      {loading && <output>Загружаем миссию и исходный слой…</output>}
       <div className="mw-gallery-intro">
         Три сценария для первого показа{' '}
         <InfoHint label="Демонстрационные миссии">
-          Синтетические миссии, не входы жюри и не разрешение полёта. Первые
-          два должны завершиться в модели. Третий сначала отклоняется, затем
+          Синтетические миссии, не входы жюри и не разрешение полёта. Первые два
+          должны завершиться в модели. Третий сначала отклоняется, затем
           отдельно проверяется гипотеза исправления. Фото не создаются.
         </InfoHint>
       </div>
       <div className="ms-gallery">
-        {DEMONSTRATION_SCENARIOS.map((s, i) => renderScenario(s, i, true))}
+        {DEMONSTRATION_SCENARIOS.map((s, i) =>
+          renderScenario(
+            i === 1
+              ? {
+                  ...s,
+                  id: 'demo-02-expert-obstacles',
+                  title: '2. Препятствия из KML экспертов',
+                  summary:
+                    'Небольшой участок в Приморском крае. Два БВС снимают RGB и MS; полный исходный слой из 3 201 препятствия учитывается при обходе.',
+                  walkthrough: [
+                    'Откройте миссию с исходным KML экспертов.',
+                    'В слоях посмотрите источник, объекты и запас обхода.',
+                    'Рассчитайте варианты: перелёт и возврат проверяются вместе с работами.',
+                    'Подтвердите план и выполните модельную миссию.',
+                    'Откройте отчёт и скачайте ZIP доказательств.',
+                  ],
+                }
+              : s,
+            i,
+            true,
+          ),
+        )}
       </div>
       <details>
         <summary>
-          Другие проверочные примеры · {SHOWCASE_SCENARIOS.length}
+          Другие проверочные примеры · {SHOWCASE_SCENARIOS.length + 1}
         </summary>
         <div className="ms-gallery">
           {SHOWCASE_SCENARIOS.map((s, i) => renderScenario(s, i))}
+          {renderScenario(
+            DEMONSTRATION_SCENARIOS[1],
+            SHOWCASE_SCENARIOS.length,
+          )}
         </div>
       </details>
     </>

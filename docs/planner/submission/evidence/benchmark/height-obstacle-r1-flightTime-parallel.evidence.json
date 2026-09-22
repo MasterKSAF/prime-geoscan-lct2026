@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:56.644Z",
+  "createdAt": "2026-09-22T14:21:28.990Z",
   "inputHash": "6210df42fa00f0986657c3f2508b211aeffa9a92762646c5292b513dabb85993",
-  "planHash": "131b9e0533ead61ea5d4c60a547e68c8858152f2691100bf316f1667845aee71",
+  "planHash": "d4e56e7033616fb1cacc9c26a62264da40922c450e5ebbef3197cba653c78a8a",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -276,7 +276,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "6210df42fa00f0986657c3f2508b211aeffa9a92762646c5292b513dabb85993",
-      "createdAt": "2026-09-22T06:50:56.527Z",
+      "createdAt": "2026-09-22T14:21:28.794Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Высотное препятствие под маршрутом",
@@ -1112,7 +1112,7 @@
           "detail": "parallel-maximum-prefix-v1: исходный порядок работ/полос, максимальный допустимый пакет, жадное назначение по flightTime; одновременные вылеты разрешены и проверяются. Без откатов/смены направления полос. Бюджет 1000 мс; 7 попыток. Это контрольный алгоритм, не глобальный оптимум."
         }
       ],
-      "computationMs": 3.5796000000000276
+      "computationMs": 6.119999999999891
     },
     "sorties": [
       {

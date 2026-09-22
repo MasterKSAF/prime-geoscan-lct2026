@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:57.211Z",
+  "createdAt": "2026-09-22T14:21:29.787Z",
   "inputHash": "9bc8ea70599509213b6938c906edb04f5ac0364ad83f80180ff67ff63787ffb5",
-  "planHash": "444939bfc242eba085a6b6903a91e0f4fd999bbac77396de0e0db5abba9d498a",
+  "planHash": "fe26836768fd3cca6a35412226fa60911a0fe065b400ddbf1e587ecfed08d3c6",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -282,7 +282,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "9bc8ea70599509213b6938c906edb04f5ac0364ad83f80180ff67ff63787ffb5",
-      "createdAt": "2026-09-22T06:50:57.075Z",
+      "createdAt": "2026-09-22T14:21:29.576Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Участок с внутренним отверстием",
@@ -1453,7 +1453,7 @@
           "detail": "Выбран минимум flightTimeSec среди 10 найденных и проверенных кандидатов обеих целей; глобальная оптимальность не доказана."
         }
       ],
-      "computationMs": 17.569800000000214
+      "computationMs": 28.57629999999972
     },
     "sorties": [
       {

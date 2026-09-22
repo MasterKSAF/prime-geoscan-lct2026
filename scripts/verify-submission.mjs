@@ -22,7 +22,8 @@ if(process.argv.includes('--write-manifest')){
  const files=execFileSync('git',['ls-files','-z'],{encoding:'utf8'}).split('\0').filter(Boolean).filter(f=>f!==manifestPath).sort();
  const entries=[];
  for(const file of files){const b=await fs.readFile(safe(file));entries.push({path:file,bytes:b.length,sha256:hash(b)});}
- const manifest={schemaVersion:1,releaseId:'prime-geoscan-2026.09.22',generatedAt:new Date().toISOString(),scope:'All Git-index-selected files except this self-referential manifest. Historical files retain historical claims.',treeSha256:hash(JSON.stringify(entries)),files:entries};
+ const release=JSON.parse(await fs.readFile(safe('docs/planner/submission-manifest.json'),'utf8'));
+ const manifest={schemaVersion:1,releaseId:release.release_id,generatedAt:new Date().toISOString(),scope:'All Git-index-selected files except this self-referential manifest. Historical files retain historical claims.',treeSha256:hash(JSON.stringify(entries)),files:entries};
  await fs.writeFile(safe(manifestPath),JSON.stringify(manifest,null,2)+'\n');
 }
 const manifest=JSON.parse(await fs.readFile(safe(manifestPath),'utf8')),failures=[];

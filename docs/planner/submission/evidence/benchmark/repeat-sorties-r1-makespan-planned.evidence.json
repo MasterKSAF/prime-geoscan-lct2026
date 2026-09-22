@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:55.395Z",
+  "createdAt": "2026-09-22T14:21:27.254Z",
   "inputHash": "31466f71936cd514b478bb5c5994176cb098d54817de55a915fff26870d1ba3a",
-  "planHash": "d2dae0d4f9de4e3371346c37ea1486ad4a036fcf9df859953221ae246ae625aa",
+  "planHash": "cdce112242a32029814202030564a87d1739c23f74557f7020ccb2c90000984a",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -358,7 +358,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "31466f71936cd514b478bb5c5994176cb098d54817de55a915fff26870d1ba3a",
-      "createdAt": "2026-09-22T06:50:55.302Z",
+      "createdAt": "2026-09-22T14:21:27.139Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Три вылета на текущей батарее",
@@ -1606,7 +1606,7 @@
           "detail": "Выбран минимум makespanSec среди 14 найденных и проверенных кандидатов обеих целей; глобальная оптимальность не доказана."
         }
       ],
-      "computationMs": 28.579200000000128
+      "computationMs": 31.528199999999742
     },
     "sorties": [
       {

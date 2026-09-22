@@ -1,4 +1,8 @@
 import type { Coordinate, Segment } from './schema.ts';
+import {
+  obstacleFootprints,
+  checkExternalObstacles,
+} from './obstacle-layer.ts';
 import { projection, interpolate, inside, distance } from './geometry.ts';
 import type { Multi, Point } from './geometry.ts';
 import type { MissionDocument, ScheduledSortie } from './mission-schema.ts';
@@ -337,29 +341,43 @@ export function compileRestrictions(
 ): CompiledRestriction[] {
   const start = Date.parse(d.window.start),
     guard = d.planning.safetyPolicy ? d.planning.temporalBufferSec : 0;
-  return d.restrictions.map((r) => {
-    return {
-      id: r.id,
+  return [
+    ...d.restrictions.map((r) => {
+      return {
+        id: r.id,
+        footprint: conservativeBuffer(
+          r.geometry,
+          d.scenario.clearanceM,
+          g.forward,
+        ),
+        minAltitudeM: r.minAltitudeM - d.scenario.clearanceM,
+        maxAltitudeM:
+          r.maxAltitudeM === null
+            ? Infinity
+            : r.maxAltitudeM + d.scenario.clearanceM + sensorOffsetM,
+        startSec:
+          r.startAt === null
+            ? -Infinity
+            : (Date.parse(r.startAt) - start) / 1000 - guard,
+        endSec:
+          r.endAt === null
+            ? Infinity
+            : (Date.parse(r.endAt) - start) / 1000 + guard,
+      };
+    }),
+    ...obstacleFootprints(d).map((geometry, i) => ({
+      id: `external-${i}`,
       footprint: conservativeBuffer(
-        r.geometry,
-        d.scenario.clearanceM,
+        geometry,
+        Math.max(d.scenario.clearanceM, d.obstacleLayer?.bufferM ?? 0),
         g.forward,
       ),
-      minAltitudeM: r.minAltitudeM - d.scenario.clearanceM,
-      maxAltitudeM:
-        r.maxAltitudeM === null
-          ? Infinity
-          : r.maxAltitudeM + d.scenario.clearanceM + sensorOffsetM,
-      startSec:
-        r.startAt === null
-          ? -Infinity
-          : (Date.parse(r.startAt) - start) / 1000 - guard,
-      endSec:
-        r.endAt === null
-          ? Infinity
-          : (Date.parse(r.endAt) - start) / 1000 + guard,
-    };
-  });
+      minAltitudeM: -Infinity,
+      maxAltitudeM: Infinity,
+      startSec: -Infinity,
+      endSec: Infinity,
+    })),
+  ];
 }
 
 function guardSegments(s: Segment, guardSec: number): Segment[] {
@@ -739,7 +757,12 @@ export function validateMissionCandidate(
       const end = (Date.parse(context.job.window.end) - begin) / 1000;
       const pass = sortie.startSec >= start - EPS && sortie.endSec <= end + EPS;
       time &&= pass;
-      checks.push({ id: `${sortie.id}:WORK_WINDOW`, title: 'Период работы', status: pass ? 'pass' : 'fail', detail: `${context.job.name}: вылет и посадка должны находиться в периоде ${context.job.window.start} — ${context.job.window.end}.` });
+      checks.push({
+        id: `${sortie.id}:WORK_WINDOW`,
+        title: 'Период работы',
+        status: pass ? 'pass' : 'fail',
+        detail: `${context.job.name}: вылет и посадка должны находиться в периоде ${context.job.window.start} — ${context.job.window.end}.`,
+      });
     }
     if (vehicle.kind === 'fixedWing')
       checks.push(...validateFixedWingSortie(d, sortie, context));
@@ -1122,7 +1145,11 @@ export function validateMissionCandidate(
             )}. Укажите разнесённые физические площадки; освобождение места не предполагается автоматически.`
         : 'Проверены все переданные БВС на земле: до первого вылета, между вылетами и после посадки; также неназначенные аппараты. Удаление с площадки без данных не предполагается.',
     );
-  checks.push(...environmentChecks);
+  const externalChecks = checkExternalObstacles(
+    d,
+    sorties.flatMap((s) => s.segments),
+  );
+  checks.push(...externalChecks, ...environmentChecks);
   const forecastChecks = missionWeatherChecks(
     d,
     sorties.map((s) => s.vehicleId),
@@ -1141,6 +1168,7 @@ export function validateMissionCandidate(
       (!d.planning.safetyPolicy ||
         (separation && groundConflicts.length === 0)) &&
       !environmentChecks.some((check) => check.status === 'fail') &&
+      !externalChecks.some((check) => check.status === 'fail') &&
       !forecastChecks.some((check) => check.status === 'fail'),
     'Достижимая посадка из каждой точки',
     'Консервативный сертификат: остаток того же проверенного непрерывного маршрута является допустимым путём к назначенной посадке и заканчивается с требуемым резервом. Это не кратчайший аварийный уход.',
@@ -1405,6 +1433,7 @@ export async function validateExportedCandidate(
               'BUDGET',
               'SEARCH',
               'SEARCH_STRATEGY',
+              'JOB_PRIORITY_ORDER',
               'SEARCH_REPAIR',
               'PARALLEL_BASELINE_PROTOCOL',
               'COMMON_CANDIDATE_POOL',

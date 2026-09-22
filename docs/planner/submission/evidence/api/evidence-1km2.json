@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T07:08:15.009Z",
+  "createdAt": "2026-09-22T14:21:02.260Z",
   "inputHash": "dc497c1068263d82fb84b31af62622ac21bf5485e2f24cbc2d4497e2bb832eb1",
-  "planHash": "89af285b2f0f698b7ecbf51fc33e64477068141a9983e84a271d4d04caa3ef35",
+  "planHash": "513ddb67e57cc74edf60205f627cf2246ac97b1d21ef563df2516c1ac39e959b",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -284,7 +284,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "dc497c1068263d82fb84b31af62622ac21bf5485e2f24cbc2d4497e2bb832eb1",
-      "createdAt": "2026-09-22T07:08:14.720Z",
+      "createdAt": "2026-09-22T14:21:00.232Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Учебная съёмка · 1 км²",
@@ -1803,7 +1803,7 @@
           "detail": "519 ограниченных попыток упаковки; baseline partial; оптимальность не доказана."
         }
       ],
-      "computationMs": 156
+      "computationMs": 1344
     },
     "sorties": [
       {

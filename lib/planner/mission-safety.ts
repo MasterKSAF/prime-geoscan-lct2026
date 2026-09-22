@@ -3,6 +3,7 @@ import { groundSpeed } from './engine.ts';
 import { buildFixedWingRecoverySegments } from './fixed-wing-mission.ts';
 import { capsuleInside } from './fixed-wing-dubins.ts';
 import { vehiclePlanningEligibility } from './fixed-wing-profile.ts';
+import { obstacleFootprints } from './obstacle-layer.ts';
 import {
   distance,
   prepareGeometry,
@@ -176,9 +177,11 @@ export function recoveryOptions(
         );
       const scenario = {
         ...doc.scenario,
+        clearanceM: Math.max(doc.scenario.clearanceM, doc.obstacleLayer?.bufferM ?? 0),
         exclusions: [
           ...doc.scenario.exclusions,
           ...doc.restrictions.map((r) => r.geometry),
+          ...obstacleFootprints(doc),
         ],
       };
       const g = prepareGeometry(

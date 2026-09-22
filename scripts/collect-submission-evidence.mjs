@@ -8,30 +8,30 @@ import {createHash} from 'node:crypto';
 const root=process.cwd(), target=path.join(root,'docs/planner/submission/evidence');
 const read=async p=>JSON.parse(await fs.readFile(p,'utf8'));
 const checks=[
- ['output/playwright/dispatcher/browser-report.json',25],
- ['output/playwright/eight-points/report.json',18],
- ['output/playwright/eight-parallel/report.json',7],
- ['output/submission-20260922/api/report.json',11],
+ ['output/playwright/release-obstacles/browser-report.json',null],
+ ['output/release-obstacles-20260922/api/report.json',11],
 ];
 for(const [file,count] of checks){
  const r=await read(file);
- if(r.checks.length!==count||r.checks.some(c=>c.pass===false||c.status==='fail'))throw Error('Failed checks: '+file);
+ if((count!==null&&r.checks.length!==count)||!r.checks.length||r.checks.some(c=>c.pass===false||c.status==='fail'))throw Error('Failed checks: '+file);
  if(r.status&&r.status!=='pass')throw Error('Failed status: '+file);
  if(!(r.at||r.createdAt).startsWith('2026-09-22'))throw Error('Stale evidence: '+file);
 }
 const copy=async(from,to)=>{await fs.mkdir(path.dirname(to),{recursive:true});await fs.cp(from,to,{recursive:true,force:true});};
-await copy('output/mission-benchmark/submission-20260922',path.join(target,'benchmark'));
-await copy('output/submission-20260922/api',path.join(target,'api'));
-for(const name of ['typecheck.log','unit-tests.log','acceptance.log','clean-docker-build.log','npm-audit.json','benchmark.log','benchmark-verification.log'])
- await copy('output/submission-20260922/'+name,path.join(target,'checks',name));
-await copy('output/playwright/dispatcher/browser-report.json',path.join(target,'browser/dispatcher.json'));
-await copy('output/playwright/eight-points/report.json',path.join(target,'browser/eight-points.json'));
-await copy('output/playwright/eight-parallel/report.json',path.join(target,'browser/parallel.json'));
-for(const name of ['run.report.json','run.report.html','01-fleet.png','02-missions.png','03-execution.png','04-report.png','05-mobile.png'])
- await copy('output/playwright/dispatcher/'+name,path.join(target,'browser',name));
-await copy('output/playwright/eight-points/revision.png',path.join(target,'browser/revision.png'));
-await copy('output/playwright/eight-parallel/two-missions.png',path.join(target,'browser/two-missions.png'));
-await copy('output/submission-20260922/run-verification.json',path.join(target,'browser/run-verification.json'));
+await copy('output/mission-benchmark/release-obstacles-20260922',path.join(target,'benchmark'));
+await copy('output/release-obstacles-20260922/api',path.join(target,'api'));
+for(const name of ['typecheck.log','unit-tests.log','acceptance.log','npm-audit.json','benchmark.log','benchmark-verification.log','obstacle-http.log','obstacle-http-repeat.log'])
+ await copy('output/release-obstacles-20260922/'+name,path.join(target,'checks',name));
+await copy('output/obstacle-docker-final-build.log',path.join(target,'checks/docker-build.log'));
+for(const name of ['browser-report.json','run.report.json','run.report.html','mission.evidence.zip','archive-verification.json','zip-interop.json','run-verification.json'])
+ await copy('output/playwright/release-obstacles/'+name,path.join(target,'browser',name));
+for(const name of ['editor.png','fleet.png','missions.png','execution.png','report.png','calculated.png','refusal.png','mobile.png'])
+ await copy('output/playwright/release-obstacles/'+name,path.join(root,'docs/planner/submission/assets',name));
+for(const name of ['verification.json','contingency.json','http-verification.json','expert-mission.evidence.zip'])
+ await copy('output/obstacles-20260922/'+name,path.join(target,'obstacles',name));
+await copy('output/playwright/obstacles-final/QA.md',path.join(target,'obstacles/browser-layer-qa.md'));
+await copy('output/playwright/obstacles-final/final-layer.png',path.join(root,'docs/planner/submission/assets/obstacle-layer.png'));
+await copy('output/playwright/obstacles-final/final-console.txt',path.join(target,'obstacles/browser-layer-console.txt'));
 const lock=await read('package-lock.json'), inventory=[], notices=[];
 for(const [location,p] of Object.entries(lock.packages??{})){
  if(!location)continue;

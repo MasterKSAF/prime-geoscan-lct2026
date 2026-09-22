@@ -12,6 +12,7 @@ COPY hooks ./hooks
 COPY public ./public
 COPY tests ./tests
 COPY scripts/verify-mission-evidence.ts ./scripts/verify-mission-evidence.ts
+COPY scripts/verify-mission-archive.ts ./scripts/verify-mission-archive.ts
 COPY scripts/verify-mission-run-report.ts ./scripts/verify-mission-run-report.ts
 COPY scripts/benchmark-missions.ts ./scripts/benchmark-missions.ts
 COPY scripts/verify-mission-robustness.ts ./scripts/verify-mission-robustness.ts

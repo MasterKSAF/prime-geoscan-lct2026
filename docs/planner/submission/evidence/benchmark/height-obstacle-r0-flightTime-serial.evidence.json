@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:56.454Z",
+  "createdAt": "2026-09-22T14:21:28.685Z",
   "inputHash": "6210df42fa00f0986657c3f2508b211aeffa9a92762646c5292b513dabb85993",
-  "planHash": "10349e7ce4e1efbf6d5338b8ebd50b7c2641b008e9910a7a8018935a4cf5900b",
+  "planHash": "9c45c1539a4036f9cd291c3996b132823da8ceac13974ec5162a8a6cfedb9403",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -276,7 +276,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "6210df42fa00f0986657c3f2508b211aeffa9a92762646c5292b513dabb85993",
-      "createdAt": "2026-09-22T06:50:56.298Z",
+      "createdAt": "2026-09-22T14:21:28.498Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Высотное препятствие под маршрутом",
@@ -1112,7 +1112,7 @@
           "detail": "serial-one-sortie-at-a-time-v1: первая допустимая конфигурация в исходном порядке парка, один вылет одновременно; бюджет 1000 мс, 7 попыток. Вход, ограничения, ресурс и проверка совпадают с основным расчётом; глобальная оптимальность не заявляется."
         }
       ],
-      "computationMs": 4.052999999999884
+      "computationMs": 6.49080000000049
     },
     "sorties": [
       {

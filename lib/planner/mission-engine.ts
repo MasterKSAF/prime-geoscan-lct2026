@@ -1,3 +1,5 @@
+import { prioritizeMissionJobs } from './mission-editing.ts';
+import { obstacleFootprints } from './obstacle-layer.ts';
 import {
   parseMissionDocument,
   sha256,
@@ -112,6 +114,10 @@ export function missionJobContext(
     ),
     scenario: Scenario = {
       ...d.scenario,
+      clearanceM: Math.max(
+        d.scenario.clearanceM,
+        d.obstacleLayer?.bufferM ?? 0,
+      ),
       area: job.area,
       job: {
         ...quality.job,
@@ -123,6 +129,7 @@ export function missionJobContext(
       exclusions: [
         ...d.scenario.exclusions,
         ...permanent.map((r) => r.geometry),
+        ...obstacleFootprints(d),
       ],
     },
     geometry = prepareGeometry(
@@ -141,7 +148,10 @@ export function missionJobContext(
     // clearance. This is a numerical planning guard, never a weaker safety rule.
     routingGeometry = scenario.exclusions.length
       ? prepareGeometry(
-          { ...scenario, clearanceM: scenario.clearanceM + 0.25 },
+          {
+            ...scenario,
+            clearanceM: Math.min(100, scenario.clearanceM + 0.25),
+          },
           d.planning.safetyPolicy ? d.scenario.clearanceM : 0,
           d.planning.safetyPolicy
             ? d.scenario.area.coordinates[0][0]
@@ -411,7 +421,8 @@ function findStart(
   )
     return null;
   const startMs = Date.parse(d.window.start),
-    endSec = (Date.parse(context.job.window?.end ?? d.window.end) - startMs) / 1000,
+    endSec =
+      (Date.parse(context.job.window?.end ?? d.window.end) - startMs) / 1000,
     restrictions = context.restrictions,
     minimumSun =
       context.job.daylight === 'none'
@@ -419,7 +430,11 @@ function findStart(
         : context.job.daylight === 'topographicClearSky'
           ? 15
           : 0;
-  let at = Math.max(d.planning.preparationSec, earliest, (Date.parse(context.job.window?.start ?? d.window.start) - startMs) / 1000);
+  let at = Math.max(
+    d.planning.preparationSec,
+    earliest,
+    (Date.parse(context.job.window?.start ?? d.window.start) - startMs) / 1000,
+  );
   // Whole-minute candidate scan is a bounded heuristic, not a proof of no solution.
   for (
     let iteration = 0;
@@ -714,7 +729,18 @@ function schedule(
     jobs.sort((a, b) => eligibleCount(a) - eligibleCount(b));
   }
   if (strategy.reverseJobs) jobs.reverse();
+  jobs.splice(0, jobs.length, ...prioritizeMissionJobs(jobs));
   trace.push({ event: 'SEARCH_STRATEGY', detail: strategy.name });
+  if (jobs.some((job) => job.workPriority || job.priority))
+    trace.push({
+      event: 'JOB_PRIORITY_ORDER',
+      detail: jobs
+        .map(
+          (j) =>
+            `${j.id}: работа ${j.workPriority ?? 'авто'}, участок ${j.priority ?? 'авто'}`,
+        )
+        .join('; '),
+    });
   for (const job of jobs) {
     if (overBudget(budget)) {
       notFound = true;

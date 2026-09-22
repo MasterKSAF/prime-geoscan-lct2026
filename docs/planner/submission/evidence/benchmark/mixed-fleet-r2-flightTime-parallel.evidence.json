@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:54.356Z",
+  "createdAt": "2026-09-22T14:21:25.790Z",
   "inputHash": "683d1920e338a6d9a93b551218a7a8e80518bab204437133ab4f9315e8f1fc9e",
-  "planHash": "aa09f35de423c8a0e2f208916843f19d8f40d6bfcb9b7b202a59e0484f101db4",
+  "planHash": "14f8406dc264aeaee8cfdd7dea4e1bf6770cd4b68e9cf22a522e0bde28e6b516",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -446,7 +446,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "683d1920e338a6d9a93b551218a7a8e80518bab204437133ab4f9315e8f1fc9e",
-      "createdAt": "2026-09-22T06:50:54.000Z",
+      "createdAt": "2026-09-22T14:21:25.216Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Три работы и смешанный флот",
@@ -2301,7 +2301,7 @@
           "detail": "parallel-maximum-prefix-v1: исходный порядок работ/полос, максимальный допустимый пакет, жадное назначение по flightTime; одновременные вылеты разрешены и проверяются. Без откатов/смены направления полос. Бюджет 1000 мс; 18 попыток. Это контрольный алгоритм, не глобальный оптимум."
         }
       ],
-      "computationMs": 8.32360000000017
+      "computationMs": 28.78789999999981
     },
     "sorties": [
       {

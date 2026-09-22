@@ -5,7 +5,7 @@
   "plan": {
     "engineVersion": "0.3.0",
     "inputHash": "437f2024d0407ef28acb1d1e9bff1872d619c7799ad43baa93bf4e8a06b41b12",
-    "createdAt": "2026-09-22T06:51:03.414Z",
+    "createdAt": "2026-09-22T14:21:37.698Z",
     "scenario": {
       "schemaVersion": "1.0",
       "name": "Автовыбор БВС: время и налёт",
@@ -1819,7 +1819,7 @@
         "detail": "Выбран минимум flightTimeSec среди 10 найденных и проверенных кандидатов обеих целей; глобальная оптимальность не доказана."
       }
     ],
-    "computationMs": 179.22929999999906
+    "computationMs": 275.64660000000185
   },
   "sorties": [
     {

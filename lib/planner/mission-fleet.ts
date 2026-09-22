@@ -9,8 +9,8 @@ import { scenarioSchema } from './schema.ts';
 import type { Vehicle } from './schema.ts';
 import {
   assertSafeTree,
-  canonicalMissionJson,
   checkTextSize,
+  checkMissionSize,
   parseStructuredText,
 } from './mission-io.ts';
 
@@ -101,7 +101,7 @@ export function importMissionFleet(
     batteries: [...document.batteries, ...fleet.batteries],
   });
   // The bundle may fit by itself while the resulting mission cannot be saved.
-  checkTextSize(canonicalMissionJson(merged));
+  checkMissionSize(merged);
   return merged;
 }
 

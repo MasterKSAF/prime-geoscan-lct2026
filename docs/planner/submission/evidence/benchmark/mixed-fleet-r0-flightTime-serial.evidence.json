@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:53.550Z",
+  "createdAt": "2026-09-22T14:21:24.387Z",
   "inputHash": "683d1920e338a6d9a93b551218a7a8e80518bab204437133ab4f9315e8f1fc9e",
-  "planHash": "225940771272598b3082775456fbf36200115d18b2ae0204a87f49d113f5041b",
+  "planHash": "f6db572ecd2155f0faa2680af685ca98a766f0ebd2b35a1b379762305aec8538",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -446,7 +446,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "683d1920e338a6d9a93b551218a7a8e80518bab204437133ab4f9315e8f1fc9e",
-      "createdAt": "2026-09-22T06:50:53.197Z",
+      "createdAt": "2026-09-22T14:21:23.920Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Три работы и смешанный флот",
@@ -2301,7 +2301,7 @@
           "detail": "serial-one-sortie-at-a-time-v1: первая допустимая конфигурация в исходном порядке парка, один вылет одновременно; бюджет 1000 мс, 18 попыток. Вход, ограничения, ресурс и проверка совпадают с основным расчётом; глобальная оптимальность не заявляется."
         }
       ],
-      "computationMs": 8.20939999999996
+      "computationMs": 13.063100000000304
     },
     "sorties": [
       {

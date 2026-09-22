@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:55.416Z",
+  "createdAt": "2026-09-22T14:21:27.277Z",
   "inputHash": "31466f71936cd514b478bb5c5994176cb098d54817de55a915fff26870d1ba3a",
-  "planHash": "5642c797af5991bcbec544f5feee44d400b3c35252f63743ed401bf656e7cc0e",
+  "planHash": "ee9718f28155fc8e873a6f25818a42b56df2fe28bf323979dc1736021a2d1906",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -358,7 +358,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "31466f71936cd514b478bb5c5994176cb098d54817de55a915fff26870d1ba3a",
-      "createdAt": "2026-09-22T06:50:55.353Z",
+      "createdAt": "2026-09-22T14:21:27.206Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Три вылета на текущей батарее",
@@ -1598,7 +1598,7 @@
           "detail": "serial-one-sortie-at-a-time-v1: первая допустимая конфигурация в исходном порядке парка, один вылет одновременно; бюджет 1000 мс, 9 попыток. Вход, ограничения, ресурс и проверка совпадают с основным расчётом; глобальная оптимальность не заявляется."
         }
       ],
-      "computationMs": 3.362999999999829
+      "computationMs": 4.66190000000006
     },
     "sorties": [
       {

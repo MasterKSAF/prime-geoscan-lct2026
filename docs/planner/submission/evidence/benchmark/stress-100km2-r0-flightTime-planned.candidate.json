@@ -5,7 +5,7 @@
   "plan": {
     "engineVersion": "0.3.0",
     "inputHash": "0ec7bb3c5d5832b825ae713fda9a46ca658578ed99be5ee890996679e0578e33",
-    "createdAt": "2026-09-22T06:51:00.884Z",
+    "createdAt": "2026-09-22T14:21:34.807Z",
     "scenario": {
       "schemaVersion": "1.0",
       "name": "Учебная съёмка · 100 км²",
@@ -641,7 +641,7 @@
         "detail": "50 ограниченных попыток упаковки; baseline not_found; оптимальность не доказана."
       }
     ],
-    "computationMs": 24.18039999999928
+    "computationMs": 27.526499999999942
   },
   "sorties": [],
   "checks": [

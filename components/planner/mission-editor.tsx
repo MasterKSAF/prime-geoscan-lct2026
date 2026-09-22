@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, type ComponentProps } from 'react';
+import { useEffect, useId, useState, type ComponentProps } from 'react';
 import { Plane, Drone } from 'lucide-react';
 import MissionWizard from './mission-wizard';
 import { InfoHint } from './mission-help';
@@ -7,6 +7,7 @@ import {
   appendMissionWork,
   removeMissionWorks,
   workLabels,
+  setWorkPriority,
 } from '@/lib/planner/mission-editing';
 import type { MissionJob } from '@/lib/planner/mission-schema';
 import { vehicleDisplayName } from '@/lib/planner/mission-vehicle-label';
@@ -21,6 +22,8 @@ type Props = ComponentProps<typeof MissionWizard> & {
   status?: string;
 };
 export default function MissionEditor(p: Props) {
+  const pickerId = useId();
+  const [pickerPosition, setPickerPosition] = useState({ top: 0, left: 0 });
   const [now, setNow] = useState(Date.now);
   useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 30000);
@@ -31,149 +34,164 @@ export default function MissionEditor(p: Props) {
   const [tab, setTab] = useState<'area' | 'quality' | 'vehicles' | 'time'>(
     'area',
   );
-  const selectedTab = p.territoryIncomplete ? 'area' : tab;
+  const selectedTab = tab;
   const patch = (value: Partial<MissionJob>) =>
     p.onChange({
       ...d,
-      jobs: d.jobs.map((j) => (j.id === job.id ? { ...j, ...value } : j)),
+      jobs: d.jobs.map((j) =>
+        j.id === job.id ? { ...j, ...value, inheritsFrom: undefined } : j,
+      ),
     });
   const types = [...new Set(d.jobs.map((j) => j.job.type))];
   return (
     <div className="me-editor">
-      <label className="mw-field me-name">
-        Название миссии
-        <input
-          value={d.name}
-          maxLength={100}
-          onChange={(e) =>
-            p.onChange({
-              ...d,
-              name: e.target.value,
-              scenario: { ...d.scenario, name: e.target.value },
-            })
-          }
-        />
-      </label>
-      <span className="me-state">{p.status ?? 'Редактируется'}</span>
-      <details className="me-general">
-        <summary>
-          Период и общие правила{' '}
-          <InfoHint label="Общие правила миссии">
-            Общий период ограничивает все работы. У каждой работы можно сузить
-            период. Погода, препятствия и безопасное разнесение учитываются
-            совместно; неизвестные данные не становятся разрешением.
-          </InfoHint>
-        </summary>
-        <label className="mw-field" style={{ padding: '10px 12px' }}>
-          Выбор высоты
-          <select
-            value={d.planning.altitudePreference}
-            onChange={(e) =>
-              p.onChange({
-                ...d,
-                planning: {
-                  ...d.planning,
-                  altitudePreference: e.target
-                    .value as typeof d.planning.altitudePreference,
-                },
-              })
-            }
-          >
-            <option value="balanced">Высота каждой работы</option>
-            <option value="lower">Ниже, если допустимо</option>
-            <option value="higher">Выше, если допустимо</option>
-          </select>
-        </label>
-        <MissionWizard
-          {...p}
-          section="conditions"
-          onTerritoryEditing={undefined}
-        />
-      </details>
       <details open className="me-works">
         <summary>
           Выполняемые работы <span>{types.length}</span>
         </summary>
-        <fieldset className="me-type-picker" aria-label="Виды работ">
-          {Object.entries(workLabels).map(([key, label]) => {
-            const type = key as MissionJob['job']['type'],
-              selected = types.includes(type);
-            return (
-              <label key={type}>
-                <input
-                  type="checkbox"
-                  checked={selected}
-                  disabled={
-                    !!p.territoryIncomplete || (!selected && d.jobs.length >= 8)
-                  }
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      p.onChange(
-                        appendMissionWork(
-                          d,
-                          job.id,
-                          type,
-                          `job-${crypto.randomUUID()}`,
-                        ),
-                      );
-                      p.onSelectJob(d.jobs.length);
-                    } else {
-                      const ids = d.jobs
-                        .filter((j) => j.job.type === type)
-                        .map((j) => j.id);
-                      if (ids.length === d.jobs.length) {
-                        p.onNotice?.('Оставьте хотя бы одну работу.');
-                        return;
-                      }
-                      if (
-                        window.confirm(
-                          `Удалить работу «${label}» и её участки?`,
-                        )
-                      ) {
-                        p.onChange(removeMissionWorks(d, ids));
-                        p.onSelectJob(0);
-                      }
-                    }
-                  }}
-                />
-                {label}
-              </label>
-            );
-          })}
-        </fieldset>
-        <div className="me-work-tabs" aria-label="Выбранная работа">
-          {types.map((type) => (
-            <button
-              key={type}
-              aria-pressed={job.job.type === type}
-              disabled={!!p.territoryIncomplete && job.job.type !== type}
-              onClick={() => {
-                p.onSelectJob(d.jobs.findIndex((j) => j.job.type === type));
-                p.onTerritoryEditing?.(selectedTab === 'area');
-              }}
-            >
-              {workLabels[type]}
-            </button>
-          ))}
-        </div>
-        <label className="mw-field">
-          Участок работы
+        <div className="me-work-selection">
           <select
-            value={job.id}
-            disabled={!!p.territoryIncomplete}
+            aria-label="Выбранная работа"
+            value={job.job.type}
+            onChange={(e) => {
+              p.onSelectJob(
+                d.jobs.findIndex((j) => j.job.type === e.target.value),
+              );
+              p.onTerritoryEditing?.(selectedTab === 'area');
+            }}
+          >
+            {types.map((type) => (
+              <option key={type} value={type}>
+                {workLabels[type]}
+              </option>
+            ))}
+          </select>
+          <button
+            className="mw-button small"
+            popoverTarget={pickerId}
+            onClick={(e) => {
+              const rect = e.currentTarget.getBoundingClientRect();
+              setPickerPosition({
+                top: Math.max(
+                  8,
+                  Math.min(rect.bottom + 6, window.innerHeight - 320),
+                ),
+                left: Math.max(8, Math.min(rect.left, window.innerWidth - 302)),
+              });
+            }}
+          >
+            Виды работ
+          </button>
+          <InfoHint label="Приоритет работы">
+            Автоматически — порядок подбирает алгоритм. Приоритет 1 — самый
+            высокий. При распределении ресурсов сначала учитывается приоритет
+            работы, затем участка. Это предпочтение, не запрет параллельных
+            вылетов; безопасность и сроки обязательны.
+          </InfoHint>
+          <select
+            aria-label="Приоритет работы"
+            value={job.workPriority ?? ''}
             onChange={(e) =>
-              p.onSelectJob(d.jobs.findIndex((j) => j.id === e.target.value))
+              p.onChange(
+                setWorkPriority(
+                  d,
+                  job.job.type,
+                  e.target.value ? Number(e.target.value) : undefined,
+                ),
+              )
             }
           >
-            {d.jobs
-              .filter((j) => j.job.type === job.job.type)
-              .map((j) => (
-                <option key={j.id} value={j.id}>
-                  {j.name}
-                </option>
-              ))}
+            <option value="">Автоматически</option>
+            {[1, 2, 3, 4, 5].map((n) => (
+              <option key={n} value={n}>
+                Приоритет {n}
+              </option>
+            ))}
           </select>
-        </label>
+        </div>
+        <div
+          popover="auto"
+          id={pickerId}
+          className="me-work-picker-popover"
+          style={pickerPosition}
+        >
+          <fieldset className="me-type-picker" aria-label="Виды работ">
+            {Object.entries(workLabels).map(([key, label]) => {
+              const type = key as MissionJob['job']['type'],
+                selected = types.includes(type);
+              return (
+                <label key={type}>
+                  <input
+                    type="checkbox"
+                    checked={selected}
+                    disabled={
+                      !selected &&
+                      (d.jobs.length >= 8 ||
+                        d.jobs.some((j) => !j.area.coordinates[0]?.length))
+                    }
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        p.onChange(
+                          appendMissionWork(
+                            d,
+                            job.id,
+                            type,
+                            `job-${crypto.randomUUID()}`,
+                          ),
+                        );
+                        p.onSelectJob(d.jobs.length);
+                      } else {
+                        const ids = d.jobs
+                          .filter((j) => j.job.type === type)
+                          .map((j) => j.id);
+                        if (ids.length === d.jobs.length) {
+                          p.onNotice?.('Оставьте хотя бы одну работу.');
+                          return;
+                        }
+                        if (
+                          window.confirm(
+                            `Удалить работу «${label}» и её участки?`,
+                          )
+                        ) {
+                          p.onChange(removeMissionWorks(d, ids));
+                          p.onSelectJob(0);
+                        }
+                      }
+                    }}
+                  />
+                  {label}
+                </label>
+              );
+            })}
+          </fieldset>
+          <button
+            className="mw-button small"
+            popoverTarget={pickerId}
+            popoverTargetAction="hide"
+          >
+            Готово
+          </button>
+        </div>
+        {selectedTab !== 'area' && (
+          <label className="mw-field">
+            Участок
+            <select
+              aria-label="Выбранный участок"
+              value={job.id}
+              onChange={(e) =>
+                p.onSelectJob(d.jobs.findIndex((j) => j.id === e.target.value))
+              }
+            >
+              {d.jobs
+                .filter((j) => j.job.type === job.job.type)
+                .map((j) => (
+                  <option key={j.id} value={j.id}>
+                    {j.name}
+                  </option>
+                ))}
+            </select>
+          </label>
+        )}
         <div className="me-local-tabs" aria-label="Параметры выбранной работы">
           {(
             [
@@ -185,7 +203,6 @@ export default function MissionEditor(p: Props) {
           ).map(([id, label]) => (
             <button
               key={id}
-              disabled={!!p.territoryIncomplete && id !== 'area'}
               aria-pressed={selectedTab === id}
               onClick={() => {
                 setTab(id);
@@ -197,57 +214,19 @@ export default function MissionEditor(p: Props) {
           ))}
         </div>
         <section className="me-work-body" aria-label={`Настройки: ${job.name}`}>
-          <label className="mw-field">
-            Параметры участка
-            <select
-              aria-label="Наследование параметров"
-              value={job.inheritsFrom ?? ''}
-              onChange={(e) => {
-                const next = { ...job };
-                if (e.target.value) next.inheritsFrom = e.target.value;
-                else delete next.inheritsFrom;
-                p.onChange({
-                  ...d,
-                  jobs: d.jobs.map((j) => (j.id === job.id ? next : j)),
-                });
-              }}
-            >
-              <option value="">Индивидуальные</option>
-              {d.jobs
-                .filter(
-                  (j) =>
-                    j.id !== job.id &&
-                    j.job.type === job.job.type &&
-                    !j.inheritsFrom &&
-                    !d.jobs.some((c) => c.inheritsFrom === job.id),
-                )
-                .map((j) => (
-                  <option key={j.id} value={j.id}>
-                    Общие с «{j.name}»
-                  </option>
-                ))}
-            </select>
-          </label>
-          {job.inheritsFrom && (
-            <button
-              className="mw-button small"
-              onClick={() =>
-                p.onSelectJob(
-                  d.jobs.findIndex((j) => j.id === job.inheritsFrom),
-                )
-              }
-            >
-              Изменить общие параметры
-            </button>
-          )}
-          <fieldset
-            disabled={!!job.inheritsFrom && selectedTab !== 'area'}
-            className="me-inherited-fields"
-          >
+          <fieldset className="me-inherited-fields">
             {selectedTab === 'area' && p.territoryEditor}
             {selectedTab === 'quality' && (
               <MissionWizard
                 {...p}
+                onChange={(next) =>
+                  p.onChange({
+                    ...next,
+                    jobs: next.jobs.map((j) =>
+                      j.id === job.id ? { ...j, inheritsFrom: undefined } : j,
+                    ),
+                  })
+                }
                 section="quality"
                 onTerritoryEditing={undefined}
               />
@@ -266,6 +245,7 @@ export default function MissionEditor(p: Props) {
                       else {
                         const next = { ...job };
                         delete next.window;
+                        delete next.inheritsFrom;
                         p.onChange({
                           ...d,
                           jobs: d.jobs.map((j) => (j.id === job.id ? next : j)),
@@ -437,6 +417,41 @@ export default function MissionEditor(p: Props) {
             )}
           </fieldset>
         </section>
+      </details>
+      <details className="me-general">
+        <summary>
+          Период и общие правила{' '}
+          <InfoHint label="Общие правила миссии">
+            Общий период ограничивает все работы. Вкладка «Время» задаёт более
+            узкий период для выбранного участка. Сроки, погода и безопасное
+            разнесение проверяются совместно.
+          </InfoHint>
+        </summary>
+        <label className="mw-field me-general-altitude">
+          Выбор высоты
+          <select
+            value={d.planning.altitudePreference}
+            onChange={(e) =>
+              p.onChange({
+                ...d,
+                planning: {
+                  ...d.planning,
+                  altitudePreference: e.target
+                    .value as typeof d.planning.altitudePreference,
+                },
+              })
+            }
+          >
+            <option value="balanced">Высота каждой работы</option>
+            <option value="lower">Ниже, если допустимо</option>
+            <option value="higher">Выше, если допустимо</option>
+          </select>
+        </label>
+        <MissionWizard
+          {...p}
+          section="conditions"
+          onTerritoryEditing={undefined}
+        />
       </details>
     </div>
   );

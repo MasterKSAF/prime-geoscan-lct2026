@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:51:03.217Z",
+  "createdAt": "2026-09-22T14:21:37.407Z",
   "inputHash": "437f2024d0407ef28acb1d1e9bff1872d619c7799ad43baa93bf4e8a06b41b12",
-  "planHash": "2501d495d3c970eb93b2dbd66eda02c6a4ca73d103cb77fabdff87a0347ca215",
+  "planHash": "36af6c2941471628f61356d0b4de9d8e4f19676c46b6bfcb609f6c26d4ef0743",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -337,7 +337,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "437f2024d0407ef28acb1d1e9bff1872d619c7799ad43baa93bf4e8a06b41b12",
-      "createdAt": "2026-09-22T06:51:02.949Z",
+      "createdAt": "2026-09-22T14:21:37.097Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Автовыбор БВС: время и налёт",
@@ -2082,7 +2082,7 @@
           "detail": "serial-one-sortie-at-a-time-v1: первая допустимая конфигурация в исходном порядке парка, один вылет одновременно; бюджет 1000 мс, 21 попыток. Вход, ограничения, ресурс и проверка совпадают с основным расчётом; глобальная оптимальность не заявляется."
         }
       ],
-      "computationMs": 10.807600000000093
+      "computationMs": 12.125899999999092
     },
     "sorties": [
       {

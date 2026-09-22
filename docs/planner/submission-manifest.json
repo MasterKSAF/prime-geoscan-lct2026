@@ -1,7 +1,7 @@
 {
   "schema_version": 3,
   "updated_at": "2026-09-22",
-  "release_id": "prime-geoscan-2026.09.22",
+  "release_id": "prime-geoscan-2026.09.22-r3",
   "status": "expert-review-package",
   "product": "Планер / PRIME",
   "participants": [
@@ -28,7 +28,7 @@
   "verification_snapshot": {
     "date": "2026-09-22",
     "unit": {
-      "pass": 483,
+      "pass": 509,
       "fail": 0
     },
     "acceptance": {
@@ -36,7 +36,7 @@
       "fail": 0
     },
     "browser": {
-      "pass": 50,
+      "pass": 20,
       "fail": 0
     },
     "api": {
@@ -51,8 +51,23 @@
       "baseline_complete_cases": 10,
       "comparable_cases": 10
     },
-    "clean_build": true,
+    "extended_obstacle_api": {
+      "pass_on_repeat": 6,
+      "initial_run": "503 after oversized rejection; known runtime limitation, unresolved"
+    },
+    "obstacle_source": {
+      "objects": 3201,
+      "accepted": 3201,
+      "repaired_rings": 15,
+      "rejected": 0,
+      "sha256": "58b7fc12f8870ac434d2ae3f3a4dd0627878aa41e5afc862c5fd74da22f420a8"
+    },
+    "docker_build": true,
+    "clean_index_build": "passed; 509 tests and production build from isolated Git index copy",
+    "clean_api": { "pass": 11, "fail": 0, "port": 3019 },
+    "runtime_source_files_checked": 172,
     "runtime_source_hash_mismatches": [],
+    "archive": "passes-declared-model",
     "npm_audit_production_known_vulnerabilities": 0
   },
   "limitations": [
@@ -61,8 +76,14 @@
     "Bounded search; not_found is not proof of infeasibility",
     "Parallel independent missions require disjoint envelopes and UAVs",
     "Revision only from a ground checkpoint",
-    "No claim of 100 jury points or first place"
+    "No claim of 100 jury points or first place",
+    "KML obstacles use horizontal all-height avoidance; no DEM or verified overflight",
+    "Known local Wrangler 503 after oversized-body rejection"
   ],
   "archive_policy": "git archive from committed HEAD; archive itself excluded from repository",
-  "publication_commit": "Resolve with git rev-parse HEAD; deliberately excluded from self-referential manifest"
+  "publication_commit": "Resolve with git rev-parse HEAD; deliberately excluded from self-referential manifest",
+  "presentation_pdf": "docs/planner/submission/presentation/prime-geoscan-lct2026.pdf",
+  "presentation_revision": 3,
+  "presentation_native_application_verified": true,
+  "presentation_publication": "Canonical deck included with release source tree; resolve published revision by repository HEAD."
 }

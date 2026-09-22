@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:56.071Z",
+  "createdAt": "2026-09-22T14:21:28.189Z",
   "inputHash": "640dba15f0b846247579ff04295ff018cd72d2928762afe2df4b2e590f356511",
-  "planHash": "3eaafe54764bdb66870ece6fbf4b875975605ba1af6db459430dc94056a94514",
+  "planHash": "ad8871a921021d4611b955eb425cc7b6ab4d53900faebc1b7d8a687ed1a2f0b9",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -276,7 +276,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "640dba15f0b846247579ff04295ff018cd72d2928762afe2df4b2e590f356511",
-      "createdAt": "2026-09-22T06:50:55.946Z",
+      "createdAt": "2026-09-22T14:21:28.035Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Ожидание временного запрета",
@@ -998,7 +998,7 @@
           "detail": "Выбран минимум flightTimeSec среди 10 найденных и проверенных кандидатов обеих целей; глобальная оптимальность не доказана."
         }
       ],
-      "computationMs": 21.845100000000457
+      "computationMs": 21.996099999999387
     },
     "sorties": [
       {

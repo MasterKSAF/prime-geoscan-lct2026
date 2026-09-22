@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:58.251Z",
+  "createdAt": "2026-09-22T14:21:31.296Z",
   "inputHash": "d6e9a371c3a0332216638e13a66a5ab42b00daa58d5df7a9cbb1badd32a36b1c",
-  "planHash": "d6b01ae176828ad73183e45864d8184a2a79ef7e78ca82b95c6c1163dbefacc7",
+  "planHash": "41c78066c54f46f43a7bd85a8978a52316b99b3b198b225adaebf63775191b32",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -337,7 +337,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "d6e9a371c3a0332216638e13a66a5ab42b00daa58d5df7a9cbb1badd32a36b1c",
-      "createdAt": "2026-09-22T06:50:58.150Z",
+      "createdAt": "2026-09-22T14:21:31.173Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Автовыбор БВС: время и налёт",
@@ -1931,7 +1931,7 @@
           "detail": "parallel-maximum-prefix-v1: исходный порядок работ/полос, максимальный допустимый пакет, жадное назначение по makespan; одновременные вылеты разрешены и проверяются. Без откатов/смены направления полос. Бюджет 1000 мс; 40 попыток. Это контрольный алгоритм, не глобальный оптимум."
         }
       ],
-      "computationMs": 12.20470000000023
+      "computationMs": 12.780299999998533
     },
     "sorties": [
       {

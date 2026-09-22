@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:56.100Z",
+  "createdAt": "2026-09-22T14:21:28.230Z",
   "inputHash": "640dba15f0b846247579ff04295ff018cd72d2928762afe2df4b2e590f356511",
-  "planHash": "0afc1d55c1f3aca88932eff2e39da5edfd95d4e62afc586bde34899dd2dd0c53",
+  "planHash": "3b3eb9506413ad4675a429bc1036258bb113ef61694b963d704f4c8c7ad88f3f",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -276,7 +276,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "640dba15f0b846247579ff04295ff018cd72d2928762afe2df4b2e590f356511",
-      "createdAt": "2026-09-22T06:50:55.936Z",
+      "createdAt": "2026-09-22T14:21:28.019Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Ожидание временного запрета",
@@ -1112,7 +1112,7 @@
           "detail": "parallel-maximum-prefix-v1: исходный порядок работ/полос, максимальный допустимый пакет, жадное назначение по flightTime; одновременные вылеты разрешены и проверяются. Без откатов/смены направления полос. Бюджет 1000 мс; 7 попыток. Это контрольный алгоритм, не глобальный оптимум."
         }
       ],
-      "computationMs": 3.0540000000000873
+      "computationMs": 5.2632000000003245
     },
     "sorties": [
       {

@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:55.016Z",
+  "createdAt": "2026-09-22T14:21:26.743Z",
   "inputHash": "b82d6ef2774753aaadf1be39addd903ed25b9eebe972d5d2f4c8eecbc46f5d8d",
-  "planHash": "b198c4e4f1d6cdebdaf5eb0c2b15ad82a0d91839950f5955b6d80ae63ba996c9",
+  "planHash": "eacb3a6d9dd4d089ae4df8d5ff218b33f60026657836c360b9cb696c883d9bee",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -328,7 +328,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "b82d6ef2774753aaadf1be39addd903ed25b9eebe972d5d2f4c8eecbc46f5d8d",
-      "createdAt": "2026-09-22T06:50:54.845Z",
+      "createdAt": "2026-09-22T14:21:26.517Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "LiDAR и геофизический подвес",
@@ -1481,7 +1481,7 @@
           "detail": "Выбран минимум flightTimeSec среди 14 найденных и проверенных кандидатов обеих целей; глобальная оптимальность не доказана."
         }
       ],
-      "computationMs": 30.922299999999723
+      "computationMs": 45.1917999999996
     },
     "sorties": [
       {

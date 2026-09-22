@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:57.135Z",
+  "createdAt": "2026-09-22T14:21:29.665Z",
   "inputHash": "9bc8ea70599509213b6938c906edb04f5ac0364ad83f80180ff67ff63787ffb5",
-  "planHash": "8100113ca89d50f57460615d25243f4f408e3792135562be94198795f896a350",
+  "planHash": "92ee6f4a02c54d592a8607d8b27633181d8b04679beafdea7090b0d2d021dc1c",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -282,7 +282,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "9bc8ea70599509213b6938c906edb04f5ac0364ad83f80180ff67ff63787ffb5",
-      "createdAt": "2026-09-22T06:50:57.075Z",
+      "createdAt": "2026-09-22T14:21:29.576Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Участок с внутренним отверстием",
@@ -1453,7 +1453,7 @@
           "detail": "Выбран минимум makespanSec среди 10 найденных и проверенных кандидатов обеих целей; глобальная оптимальность не доказана."
         }
       ],
-      "computationMs": 17.569800000000214
+      "computationMs": 28.57629999999972
     },
     "sorties": [
       {

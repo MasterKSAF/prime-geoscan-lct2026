@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:53.397Z",
+  "createdAt": "2026-09-22T14:21:24.187Z",
   "inputHash": "683d1920e338a6d9a93b551218a7a8e80518bab204437133ab4f9315e8f1fc9e",
-  "planHash": "df252dd8828f21dd75fe592189cb285e7f1d396ca39561f1fb446b5a0584ca82",
+  "planHash": "991c713059ed918403601c366c3b9d21777bb0ae33c676226ffcfc4cebdeb583",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -446,7 +446,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "683d1920e338a6d9a93b551218a7a8e80518bab204437133ab4f9315e8f1fc9e",
-      "createdAt": "2026-09-22T06:50:53.205Z",
+      "createdAt": "2026-09-22T14:21:23.934Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Три работы и смешанный флот",
@@ -2309,7 +2309,7 @@
           "detail": "Выбран минимум makespanSec среди 14 найденных и проверенных кандидатов обеих целей; глобальная оптимальность не доказана."
         }
       ],
-      "computationMs": 73.13370000000009
+      "computationMs": 112.05769999999984
     },
     "sorties": [
       {

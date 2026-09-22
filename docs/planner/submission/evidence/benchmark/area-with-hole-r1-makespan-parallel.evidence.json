@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:57.173Z",
+  "createdAt": "2026-09-22T14:21:29.724Z",
   "inputHash": "9bc8ea70599509213b6938c906edb04f5ac0364ad83f80180ff67ff63787ffb5",
-  "planHash": "ce6f800e8300c82777494909ff1c1e0feb38b9fdc6f9adf36ad62503150ee982",
+  "planHash": "7c9e5e2e45c06c09f02e4a66317da2a368bb934b04bb58f15373a5c18b18e4f5",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -282,7 +282,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "9bc8ea70599509213b6938c906edb04f5ac0364ad83f80180ff67ff63787ffb5",
-      "createdAt": "2026-09-22T06:50:57.060Z",
+      "createdAt": "2026-09-22T14:21:29.551Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Участок с внутренним отверстием",
@@ -1445,7 +1445,7 @@
           "detail": "parallel-maximum-prefix-v1: исходный порядок работ/полос, максимальный допустимый пакет, жадное назначение по makespan; одновременные вылеты разрешены и проверяются. Без откатов/смены направления полос. Бюджет 1000 мс; 12 попыток. Это контрольный алгоритм, не глобальный оптимум."
         }
       ],
-      "computationMs": 4.1369000000004235
+      "computationMs": 6.305699999999888
     },
     "sorties": [
       {

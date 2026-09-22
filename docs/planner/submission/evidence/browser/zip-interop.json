@@ -1,0 +1,7 @@
+{
+  "status": "pass",
+  "checker": "Python stdlib zipfile/hashlib",
+  "files": 22,
+  "sourceSha256": "58b7fc12f8870ac434d2ae3f3a4dd0627878aa41e5afc862c5fd74da22f420a8",
+  "flightSafetyChecked": false
+}

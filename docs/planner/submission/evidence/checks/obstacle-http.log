@@ -1,0 +1,26 @@
+(node:28668) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"path":"/api/planner/missions/solve","status":413,"error":{"code":"SIZE","error":"Превышен предел запроса 200 КиБ."}}
+{"path":"/api/planner/missions/solve-with-obstacles","status":403,"error":{"code":"ORIGIN","error":"Недопустимый источник запроса."}}
+{"path":"/api/planner/missions/solve-with-obstacles","status":200}
+{"path":"/api/planner/missions/contingency","status":413,"error":{"code":"SIZE","error":"Запрос проверки ухода больше 2 МиБ."}}
+{"path":"/api/planner/missions/contingency","status":503,"error":{}}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+503 !== 200
+
+    at <anonymous> (C:\Users\Misha\Documents\ChatGPT\LCT\scripts\verify-obstacle-http.ts:88:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 503,
+  expected: 200,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.14.1

@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:56.006Z",
+  "createdAt": "2026-09-22T14:21:28.106Z",
   "inputHash": "640dba15f0b846247579ff04295ff018cd72d2928762afe2df4b2e590f356511",
-  "planHash": "e4070d848cc0f0a68a443f2a1d43ebf9345e3c242f0333430fd6a278dbe9a394",
+  "planHash": "00b9d1b5c63c18c9bbd112610683ea0968106137f4dd5169486a6843e45a4e0e",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -276,7 +276,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "640dba15f0b846247579ff04295ff018cd72d2928762afe2df4b2e590f356511",
-      "createdAt": "2026-09-22T06:50:55.946Z",
+      "createdAt": "2026-09-22T14:21:28.035Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Ожидание временного запрета",
@@ -998,7 +998,7 @@
           "detail": "Выбран минимум makespanSec среди 10 найденных и проверенных кандидатов обеих целей; глобальная оптимальность не доказана."
         }
       ],
-      "computationMs": 21.845100000000457
+      "computationMs": 21.996099999999387
     },
     "sorties": [
       {

@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:55.240Z",
+  "createdAt": "2026-09-22T14:21:27.052Z",
   "inputHash": "31466f71936cd514b478bb5c5994176cb098d54817de55a915fff26870d1ba3a",
-  "planHash": "dbf0f083c0313b2b7ff5c8ea4011a75e927fd647391043a5c6b66edc8c0efc12",
+  "planHash": "9493652f82885a7f6987442a5a88cf870ca1bff543a4a2903e848bd92f1859b0",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -358,7 +358,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "31466f71936cd514b478bb5c5994176cb098d54817de55a915fff26870d1ba3a",
-      "createdAt": "2026-09-22T06:50:55.082Z",
+      "createdAt": "2026-09-22T14:21:26.846Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Три вылета на текущей батарее",
@@ -1606,7 +1606,7 @@
           "detail": "Выбран минимум flightTimeSec среди 14 найденных и проверенных кандидатов обеих целей; глобальная оптимальность не доказана."
         }
       ],
-      "computationMs": 23.443399999999656
+      "computationMs": 31.57180000000062
     },
     "sorties": [
       {

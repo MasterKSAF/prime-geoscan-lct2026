@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:57.026Z",
+  "createdAt": "2026-09-22T14:21:29.504Z",
   "inputHash": "9bc8ea70599509213b6938c906edb04f5ac0364ad83f80180ff67ff63787ffb5",
-  "planHash": "f678eb5f30c5ec29b090e65dec271ef25f049fbda71ab6b881dd90365325564e",
+  "planHash": "9ca2b7a7da9825db7cfb326d5c22b865ba19c34be17d2d898ad3850bbe823792",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -282,7 +282,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "9bc8ea70599509213b6938c906edb04f5ac0364ad83f80180ff67ff63787ffb5",
-      "createdAt": "2026-09-22T06:50:56.892Z",
+      "createdAt": "2026-09-22T14:21:29.325Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Участок с внутренним отверстием",
@@ -1445,7 +1445,7 @@
           "detail": "serial-one-sortie-at-a-time-v1: первая допустимая конфигурация в исходном порядке парка, один вылет одновременно; бюджет 1000 мс, 12 попыток. Вход, ограничения, ресурс и проверка совпадают с основным расчётом; глобальная оптимальность не заявляется."
         }
       ],
-      "computationMs": 4.492999999999483
+      "computationMs": 5.746900000000096
     },
     "sorties": [
       {

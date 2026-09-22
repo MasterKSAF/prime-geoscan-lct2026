@@ -5,7 +5,7 @@ import {
   parseMissionDocument,
 } from './mission-schema.ts';
 import type { MissionDocument } from './mission-schema.ts';
-import { assertSafeTree, checkTextSize } from './mission-io.ts';
+import { assertSafeTree, checkMissionSize } from './mission-io.ts';
 
 export const FLEET_STATE_STORE = 'fleet-state';
 const instant = z.iso.datetime({ offset: true });
@@ -146,6 +146,6 @@ export function applyFleetState(
     unavailable: !s.ready || !s.grounded || !s.vehicle.enabled,
   }));
   const parsed = parseMissionDocument(d);
-  checkTextSize(JSON.stringify(parsed));
+  checkMissionSize(parsed);
   return parsed;
 }

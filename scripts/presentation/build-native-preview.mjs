@@ -1,0 +1,20 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+const renderDir=process.argv[2];
+if(!renderDir)throw Error('Usage: node scripts/presentation/build-native-preview.mjs <PowerPoint PNG directory>');
+const out=path.resolve('docs/planner/submission/presentation');
+const source=await fs.readFile(path.join(out,'SPEAKER-NOTES.md'),'utf8');
+const notes=[...source.matchAll(/^## (\d+)\. (.+)\r?\n\r?\n([\s\S]*?)(?=^## |$(?![\s\S]))/gm)].map(m=>({number:Number(m[1]),title:m[2],speech:m[3].trim()}));
+if(notes.length!==12)throw Error('Expected 12 speaker-note sections, got '+notes.length);
+const esc=s=>s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
+await fs.mkdir(path.join(out,'slides'),{recursive:true});
+const sections=[];
+for(const n of notes){
+ const name=String(n.number).padStart(2,'0')+'.png';
+ const img=await fs.readFile(path.join(renderDir,name));
+ await fs.writeFile(path.join(out,'slides',name),img);
+ sections.push('<section'+(n.number===1?'':' hidden')+'><img width="1600" height="900" alt="'+esc(n.title)+'" src="data:image/png;base64,'+img.toString('base64')+'"><details><summary>Текст выступления · '+esc(n.title)+'</summary><p>'+esc(n.speech).replaceAll('\n','<br>')+'</p></details></section>');
+}
+const html='<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Планер / PRIME — презентация</title><style>*{box-sizing:border-box}body{margin:0;background:#17131c;color:#f8f7fa;font:16px system-ui,sans-serif}header{height:56px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 20px}nav{display:flex;gap:8px;align-items:center}button{font:inherit;color:inherit;background:#34283f;border:0;border-radius:7px;padding:8px 14px;cursor:pointer}button:disabled{opacity:.35;cursor:default}button:focus-visible,summary:focus-visible{outline:2px solid #d3b0ff;outline-offset:2px}main{max-width:1600px;margin:auto}section>img{display:block;width:100%;height:auto;max-height:calc(100vh - 112px);object-fit:contain}details{max-width:1000px;margin:14px auto;padding:0 20px;color:#d8d1df}summary{cursor:pointer}p{line-height:1.55;overflow-wrap:anywhere}section[hidden]{display:none}body:fullscreen header{height:48px}body:fullscreen section>img{max-height:calc(100vh - 104px)}@media(max-width:600px){header{padding:6px 10px}header strong{font-size:13px}button{padding:7px 10px}#fullscreen{display:none}}@media print{@page{size:landscape;margin:0}body{background:white}header,details{display:none}section,section[hidden]{display:block;break-after:page}section>img{max-height:none;width:100%}}</style><header><strong>Планер / PRIME</strong><nav aria-label="Слайды"><button id="previous" aria-label="Предыдущий слайд">←</button><span id="counter" aria-live="polite">1 / 12</span><button id="next" aria-label="Следующий слайд">→</button><button id="fullscreen">На весь экран</button></nav></header><main>'+sections.join('')+'</main><script>const slides=[...document.querySelectorAll("section")];let current=0;const prev=document.getElementById("previous"),next=document.getElementById("next"),counter=document.getElementById("counter");function show(n){current=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,i)=>s.hidden=i!==current);prev.disabled=current===0;next.disabled=current===slides.length-1;counter.textContent=(current+1)+" / "+slides.length;}prev.onclick=()=>show(current-1);next.onclick=()=>show(current+1);document.addEventListener("keydown",e=>{if(["ArrowRight","PageDown","ArrowLeft","PageUp","Home","End"].includes(e.key)){e.preventDefault();show(e.key==="Home"?0:e.key==="End"?slides.length-1:current+(["ArrowRight","PageDown"].includes(e.key)?1:-1));}});document.getElementById("fullscreen").onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.body.requestFullscreen();}catch{}};show(0);</script></html>';
+await fs.writeFile(path.join(out,'index.html'),html);
+console.log(JSON.stringify({slides:notes.length,preview:path.join(out,'index.html'),source:'Microsoft PowerPoint PNG export'}));

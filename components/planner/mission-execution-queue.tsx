@@ -8,7 +8,7 @@ import { InfoHint } from './mission-help';
 
 const examples = [
   { id: 'demo-01-survey', name: 'Съёмка участка' },
-  { id: 'demo-02-obstacles', name: 'Обход препятствий' },
+  { id: 'demo-02-expert-obstacles', name: 'Препятствия экспертов' },
 ] as const;
 
 function operationLabel(row: MissionOperation): string {

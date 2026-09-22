@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:55.734Z",
+  "createdAt": "2026-09-22T14:21:27.743Z",
   "inputHash": "31466f71936cd514b478bb5c5994176cb098d54817de55a915fff26870d1ba3a",
-  "planHash": "15082f77a59ca502b336e9d8ee961e74df0e28a96f04333258327e02607a2267",
+  "planHash": "510a94ab796f8c5101800270f868774569a763f81cb2272cf78dc2f360286d3f",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -358,7 +358,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "31466f71936cd514b478bb5c5994176cb098d54817de55a915fff26870d1ba3a",
-      "createdAt": "2026-09-22T06:50:55.538Z",
+      "createdAt": "2026-09-22T14:21:27.462Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Три вылета на текущей батарее",
@@ -1598,7 +1598,7 @@
           "detail": "parallel-maximum-prefix-v1: исходный порядок работ/полос, максимальный допустимый пакет, жадное назначение по flightTime; одновременные вылеты разрешены и проверяются. Без откатов/смены направления полос. Бюджет 1000 мс; 9 попыток. Это контрольный алгоритм, не глобальный оптимум."
         }
       ],
-      "computationMs": 3.3512000000000626
+      "computationMs": 4.882400000000416
     },
     "sorties": [
       {

@@ -1,24 +1,37 @@
 # Презентация
 
-Финальная версия: [prime-geoscan-lct2026.pptx](prime-geoscan-lct2026.pptx), 12 слайдов, формат 16:9. [HTML-просмотр](index.html) работает без сети и PowerPoint; стрелки переключают слайды, текст выступления разворачивается под каждым слайдом.
+Редакция r3 от 22.09.2026 с KML экспертов и свежими доказательствами: [PPTX](prime-geoscan-lct2026.pptx), 12 слайдов, 16:9. [PDF](prime-geoscan-lct2026.pdf) и [автономный HTML](index.html) сохраняют вёрстку без зависимости от шрифтов. В HTML: стрелки переключают слайды, текст выступления раскрывается снизу, есть полноэкранный режим.
 
-[Текст выступления](SPEAKER-NOTES.md). Текст и таблицы внутри PPTX редактируются; скриншоты и фон — изображения. Исходный шаблон: [ЛЦТ 2026](../../../references/lct2026-presentation-template.pptx). Слайды собраны на его макетах, без вымышленных должностей и биографий.
+[Текст выступления](SPEAKER-NOTES.md). Текст и три таблицы внутри PPTX редактируются; скриншоты и фон — изображения. Сохранены фон, логотипы и Montserrat из [шаблона ЛЦТ 2026](../../../references/lct2026-presentation-template.pptx). Удалены пустые объекты шаблона, рамка обложки и линии таблиц. Текст сокращён, блоки выровнены, скриншоты увеличены.
 
-## Правки
+## Проверка и воспроизведение
 
-Самый простой способ — открыть PPTX в PowerPoint или совместимом редакторе. Шрифт шаблона Montserrat не вложен в файл. Если он отсутствует на ПК, редактор может заменить его; фиксированный вид сохраняет HTML. После правок проверить весь показ и обновить контрольные суммы выпуска.
+Итоговый PPTX экспортирован через **Microsoft PowerPoint 16.0**. Все 12 родных PNG просмотрены после экспорта. Проверены границы 86 текстовых объектов и размеры текста в 27 ячейках. На первом прогоне найдено наложение длинной подписи на слайде 8, подпись сокращена перед повторным экспортом. Проверка размеров ячеек не заменяет визуальный просмотр.
 
-Исходный генератор сохранён: [build-expert-deck.mjs](../../../../scripts/presentation/build-expert-deck.mjs). Его authoring-зависимость — @oai/artifact-tool и утилиты навыка Presentations. Они не являются зависимостями стенда и не требуются экспертам для запуска или редактирования PPTX.
+Итоговый PDF также открыт, текст проверен на актуальные 509 тестов и KML, все 12 страниц повторно отрендерены и просмотрены. Наложений или потерянных символов не обнаружено.
 
-Для повторения авторской генерации нужна та же среда, что использована при подготовке: Node, Artifact Tool, Python и валидаторы Presentations. Переменные: RUNTIME_NODE_MODULES, PRESENTATIONS_SKILL_DIR, PRESENTATIONS_PYTHON. Запуск из корня проекта: `node scripts/presentation/build-expert-deck.mjs`. Вывод можно перенаправить переменной DECK_OUTPUT_DIR в новый каталог; существующий финальный PPTX автоматически не перезаписывается.
+[Структурная проверка](../evidence/checks/presentation-validation.json), [проверка PowerPoint и визуального просмотра](../evidence/checks/presentation-native-check.json).
 
-Источники чисел — сохранённый benchmark, источники изображений — assets инструкции. После пересборки необходим визуальный просмотр всех слайдов, не только структурная проверка файла. Генератор не является обещанием побайтовой идентичности экспорта в иной версии authoring-runtime.
+Шрифт Montserrat не встроен в PPTX. На другом компьютере без него вёрстка может измениться; для стабильного показа используйте PDF или HTML. После любой правки PPTX повторите экспорт и просмотр всех страниц.
+
+Авторская сборка: [build-expert-deck.mjs](../../../../scripts/presentation/build-expert-deck.mjs). Нужны Node, @oai/artifact-tool, Python и утилиты навыка Presentations; они не требуются для работы стенда. Переменные: RUNTIME_NODE_MODULES, PRESENTATIONS_SKILL_DIR, PRESENTATIONS_PYTHON. Из корня проекта: `node scripts/presentation/build-expert-deck.mjs`. По умолчанию создаётся отдельный corrected.pptx; каталог и имя задаются DECK_OUTPUT_DIR и DECK_FILENAME.
+
+Проверка в установленном Microsoft PowerPoint на Windows, из корня проекта:
+
+```powershell
+pwsh -NoProfile -File scripts/presentation/render-native.ps1 -PresentationPath docs/planner/submission/presentation/prime-geoscan-lct2026.pptx -OutputDirectory tmp/deck-native -PdfOutputPath docs/planner/submission/presentation/prime-geoscan-lct2026.pdf
+node scripts/presentation/verify-native-layout.mjs tmp/deck-native/native-layout.json
+node scripts/presentation/build-native-preview.mjs tmp/deck-native
+```
+
+Экспорт открывает только собственный файл в режиме чтения, без окна; чужие открытые презентации не закрывает. PDF и HTML обновляются отдельно от PPTX. После проверки обновите контрольные суммы комплекта.
 
 ## Состав
 
-- PPTX — основной редактируемый файл.
-- index.html — автономный запасной показ с речью.
-- slides/01.png…12.png — фиксированные слайды.
+- prime-geoscan-lct2026.pptx — основной редактируемый файл.
+- prime-geoscan-lct2026.pdf — экспорт из Microsoft PowerPoint.
+- index.html — автономный показ с текстом выступления.
+- slides/01.png…12.png — изображения из Microsoft PowerPoint.
 - SPEAKER-NOTES.md — речь и доказательные источники.
 
-Проверка PPTX: корректность ZIP/отношений, 12 слайдов, три нативные таблицы, отсутствие ошибок геометрии текста, повторный импорт и визуальный просмотр 12 рендеров. Родной запуск Microsoft PowerPoint не проверен.
+Источники чисел — сохранённый benchmark, изображений — assets инструкции. Генератор не обещает побайтовую идентичность экспорта в иной версии среды.

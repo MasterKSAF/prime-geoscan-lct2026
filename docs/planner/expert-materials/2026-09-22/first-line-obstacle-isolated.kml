@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<kml xmlns="http://www.opengis.net/kml/2.2"><Document><Placemark id="112246">
+            <name>UHHH103002                    </name>
+            <styleUrl>#99715</styleUrl>
+            <LineString id="112245">
+                <extrude>1</extrude>
+                <altitudeMode>relativeToGround</altitudeMode>
+                <coordinates>131.91862777777777,43.535086111111106,66.1416 131.93768888888889,43.546680555555554,66.1416</coordinates>
+            </LineString>
+        </Placemark>
+        </Document></kml>

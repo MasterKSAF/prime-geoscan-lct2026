@@ -25,7 +25,7 @@ export default function MissionContingencyPanel({
     try {
       const response = await fetch('/api/planner/missions/contingency', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(document.obstacleLayer ? { 'x-prime-obstacles': '1' } : {}) },
         body: JSON.stringify({ document, candidate }),
       });
       const result =

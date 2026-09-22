@@ -275,6 +275,29 @@ async function rejectedRecord(
 
 function checkSize(value: unknown) {
   assertSafeTree(value);
+  const attached =
+    value &&
+    typeof value === 'object' &&
+    'document' in value &&
+    value.document &&
+    typeof value.document === 'object' &&
+    'obstacleLayer' in value.document;
+  if (attached) {
+    const record = value as { document: MissionDocument };
+    const core = {
+      ...record,
+      document: { ...record.document, obstacleLayer: undefined },
+    };
+    if (
+      new TextEncoder().encode(JSON.stringify(core)).length >
+        MAX_OPERATION_BYTES ||
+      new TextEncoder().encode(JSON.stringify(value)).length > 20 * 1024 * 1024
+    )
+      throw new Error(
+        'Превышен размер снимка: 5 МиБ без слоя, 20 МиБ вместе с ним.',
+      );
+    return;
+  }
   if (
     new TextEncoder().encode(JSON.stringify(value)).length > MAX_OPERATION_BYTES
   )
@@ -441,8 +464,17 @@ export function getOperationStartBlockers(
       code: 'STATE',
       detail: 'Запуск возможен только из очереди или явной паузы.',
     });
-  try { assertRevisionBinding(row.document, rows.find(r => r.id === row.document.revisionSource?.operationId)); }
-  catch(e) { blockers.push({ code: 'STATE', detail: e instanceof Error ? e.message : 'Повреждена связь версий.' }); }
+  try {
+    assertRevisionBinding(
+      row.document,
+      rows.find((r) => r.id === row.document.revisionSource?.operationId),
+    );
+  } catch (e) {
+    blockers.push({
+      code: 'STATE',
+      detail: e instanceof Error ? e.message : 'Повреждена связь версий.',
+    });
+  }
   const source = row.document.revisionSource;
   if (
     source &&

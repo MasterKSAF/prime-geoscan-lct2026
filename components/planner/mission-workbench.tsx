@@ -71,16 +71,29 @@ import {
   missionKML,
 } from '@/lib/planner/mission-export';
 import MissionMap, { flightColors } from './mission-map';
+import ObstacleLayerPanel from './obstacle-layer-panel';
+import { buildMissionArchive } from '@/lib/planner/mission-archive';
+import {
+  MAX_OBSTACLE_MISSION_BYTES,
+  type Bounds,
+} from '@/lib/planner/obstacle-layer';
 import type { DrawMode } from './mission-map';
 import { jobNames } from './mission-wizard';
 import MissionEditor from './mission-editor';
 import { prepareGroundRevision } from '@/lib/planner/mission-revision';
-import { synchronizeWorkSettings } from '@/lib/planner/mission-editing';
+import {
+  appendEmptyArea,
+  synchronizeWorkSettings,
+} from '@/lib/planner/mission-editing';
 import {
   missionRunReport,
   missionRunReportHtml,
 } from '@/lib/planner/mission-run-export';
 import FleetWorkspace from './fleet-workspace';
+import {
+  baseAssignmentReport,
+  refreshDraftFleet,
+} from '@/lib/planner/fleet-availability';
 import {
   createFleetRegistry,
   applyRegistryFleet,
@@ -392,6 +405,10 @@ export default function MissionWorkbench() {
   const setNotice = (text: string) =>
     updateNotice(text ? { text, workspace } : null);
   const [clearedAreaId, setClearedAreaId] = useState<string | null>(null);
+  const [areaRestore, setAreaRestore] = useState<{
+    id: string;
+    area: Polygon;
+  } | null>(null);
   const [drawTool, setDrawTool] = useState<
     'polygon' | 'freehand' | 'circle' | 'ellipse'
   >('polygon');
@@ -403,6 +420,8 @@ export default function MissionWorkbench() {
     [draft, setDraft] = useState<Coordinate[]>([]),
     [fit, setFit] = useState(0),
     [showTiles, setShowTiles] = useState(true),
+    [showObstacles, setShowObstacles] = useState(true),
+    [obstacleFocus, setObstacleFocus] = useState<Bounds | null>(null),
     [showWind, setShowWind] = useState(false),
     [showTransit, setShowTransit] = useState(true);
   const [modal, setModal] = useState<
@@ -458,6 +477,16 @@ export default function MissionWorkbench() {
     null,
   );
   const [registryBusy, setRegistryBusy] = useState(false);
+  const [fleetRecalculations, setFleetRecalculations] = useState<
+    {
+      id: string;
+      name: string;
+      status: string;
+      result?: MissionResult;
+      savedRevision?: number;
+    }[]
+  >([]);
+  const fleetRequest = useRef<AbortController | null>(null);
   const registryStore = useRef<ReturnType<typeof createFleetRegistry> | null>(
     null,
   );
@@ -490,23 +519,233 @@ export default function MissionWorkbench() {
   }
   async function saveRegistry(next: MissionDocument) {
     if (!registryStore.current || registryBusy) return false;
+    const editorRevision = revision.current;
     setRegistryBusy(true);
+    let registrySaved = false;
     try {
       const rows = await operations.refresh();
-      assertRegistryChangesSafe(fleetRegistry?.document ?? null, next, rows);
+      const before = fleetRegistry?.document ?? null;
+      assertRegistryChangesSafe(before, next, rows);
+      const states = await operations.listFleet();
+      const moved = next.scenario.vehicles.filter((v) => {
+        const old = before?.scenario.vehicles.find((x) => x.id === v.id);
+        return (
+          old &&
+          (canonicalStringify(old.start) !== canonicalStringify(v.start) ||
+            canonicalStringify(old.landing) !== canonicalStringify(v.landing))
+        );
+      });
+      // Preflight the whole set before writing; reportFleet rechecks reservations transactionally.
+      const reports = moved.map((v) =>
+        baseAssignmentReport(
+          next,
+          v.id,
+          states.find((s) => s.id === v.id),
+          rows,
+        ),
+      );
       const saved = await registryStore.current.save(
         next,
         fleetRegistry?.revision ?? null,
       );
+      registrySaved = true;
       setFleetRegistry(saved);
-      setNotice('Общий парк сохранён. Открытые планы не изменены.');
+      for (const report of reports) await operations.reportFleet(report);
+      if (moved.length)
+        await recalculateFleetDrafts(before, saved.document, editorRevision);
+      else setNotice('Общий парк сохранён.');
       return true;
     } catch (e) {
-      setError(errorMessage(e));
+      setError(
+        `${registrySaved ? 'Каталог сохранён, но обновление состояния или пересчёт не завершены. Проверьте базы и состояние в парке; запуск автоматически не выполнялся. ' : ''}${errorMessage(e)}`,
+      );
+      if (registrySaved) {
+        setApproval(null);
+        setResult(null);
+        await operations.refresh().catch(() => undefined);
+      }
       return false;
     } finally {
       setRegistryBusy(false);
     }
+  }
+  async function recalculateFleetDrafts(
+    before: MissionDocument | null,
+    after: MissionDocument,
+    editorRevision: number,
+  ) {
+    const controller = new AbortController();
+    fleetRequest.current?.abort();
+    fleetRequest.current = controller;
+    const rows = await operations.refresh();
+    const locked = new Set(
+      rows
+        // Reports and previously launched missions are history, not drafts.
+        .filter(
+          (r) => r.startedAt || !['completed', 'cancelled'].includes(r.status),
+        )
+        .map((r) => r.document.id),
+    );
+    const saved = (await library.current?.list()) ?? [];
+    const sources: { document: MissionDocument; savedRevision?: number }[] =
+      saved
+        .filter((s) => !locked.has(s.id))
+        .map((s) => ({ document: s.document, savedRevision: s.revision }));
+    // Do not replace unsaved editor changes with the older library copy.
+    if (!locked.has(document.id) && revision.current === editorRevision) {
+      const index = sources.findIndex((s) => s.document.id === document.id);
+      if (index >= 0) sources.splice(index, 1);
+      sources.unshift({
+        document,
+        savedRevision: dirty ? undefined : savedRevision,
+      });
+    }
+    const affected = sources
+      .map((s) => ({
+        ...s,
+        next: refreshDraftFleet(s.document, before, after),
+      }))
+      .filter((s) => s.next !== s.document);
+    setFleetRecalculations(
+      affected.map((s) => ({
+        id: s.next.id,
+        name: s.next.name,
+        status: 'Ожидает расчёта',
+      })),
+    );
+    const states = await operations.listFleet();
+    let adoptedRevision = editorRevision;
+    for (const source of affected) {
+      if (controller.signal.aborted) return;
+      let storedRevision = source.savedRevision;
+      try {
+        // Never add unrelated aircraft to a mission implicitly.
+        const ids = new Set(source.next.scenario.vehicles.map((v) => v.id));
+        const input = applyFleetState(
+          source.next,
+          states.filter((s) => ids.has(s.id)),
+        );
+        if (
+          source.next.id === document.id &&
+          revision.current === editorRevision
+        ) {
+          edit(input);
+          adoptedRevision = revision.current;
+        }
+        if (storedRevision && library.current) {
+          const stored = await library.current.save(input, {
+            expectedRevision: storedRevision,
+          });
+          storedRevision = stored.revision;
+          if (
+            source.next.id === document.id &&
+            revision.current === adoptedRevision
+          ) {
+            setSavedRevision(stored.revision);
+            setDirty(false);
+          }
+        }
+        setFleetRecalculations((prev) =>
+          prev.map((r) =>
+            r.id === input.id ? { ...r, status: 'Считаем…' } : r,
+          ),
+        );
+        const response = await fetch(
+          input.obstacleLayer
+            ? '/api/planner/missions/solve-with-obstacles'
+            : '/api/planner/missions/solve',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(input),
+            signal: controller.signal,
+          },
+        );
+        const data = (await response.json()) as MissionResult & {
+          error?: string;
+          details?: string[];
+        };
+        if (!response.ok)
+          throw new Error(
+            [data.error, ...(data.details ?? [])].filter(Boolean).join(' · ') ||
+              `Ошибка ${response.status}`,
+          );
+        if (controller.signal.aborted) return;
+        setFleetRecalculations((prev) =>
+          prev.map((r) =>
+            r.id === input.id
+              ? {
+                  ...r,
+                  result: data,
+                  savedRevision: storedRevision,
+                  status: data.candidates.some(
+                    (c) => c.status === 'feasible_model',
+                  )
+                    ? 'Варианты готовы'
+                    : 'Нужны изменения условий',
+                }
+              : r,
+          ),
+        );
+        if (
+          source.next.id === document.id &&
+          revision.current === adoptedRevision
+        ) {
+          setResult(data);
+          setCandidateId(data.candidates[0]?.id ?? '');
+        }
+      } catch (e) {
+        if (controller.signal.aborted) return;
+        setFleetRecalculations((prev) =>
+          prev.map((r) =>
+            r.id === source.next.id
+              ? { ...r, status: `Не пересчитана: ${errorMessage(e)}` }
+              : r,
+          ),
+        );
+      }
+    }
+    if (library.current) setLibraryRows(await library.current.list(true));
+    setNotice(
+      affected.length
+        ? 'База обновлена. Результаты автоматического пересчёта — в парке БВС. Подтверждение и запуск остаются ручными.'
+        : 'База обновлена. Связанных черновиков для пересчёта нет.',
+    );
+  }
+  async function openFleetRecalculation(id: string) {
+    const row = fleetRecalculations.find((r) => r.id === id);
+    if (!row?.result) return;
+    if (row.savedRevision) {
+      const stored = await library.current?.get(id);
+      if (!stored || stored.revision !== row.savedRevision) {
+        setError(
+          'Миссия уже изменена. Откройте актуальную версию и повторите расчёт.',
+        );
+        return;
+      }
+    }
+    if (
+      dirty &&
+      !window.confirm(
+        'Открыть пересчитанный вариант без сохранения текущих изменений?',
+      )
+    )
+      return;
+    edit(row.result.document);
+    setSavedRevision(row.savedRevision);
+    setDirty(!row.savedRevision);
+    setResult(row.result);
+    setCandidateId(row.result.candidates[0]?.id ?? '');
+    setJobIndex(0);
+    setSelected(row.result.document.scenario.vehicles[0].id);
+    setClearedAreaId(null);
+    setAreaRestore(null);
+    setMode(null);
+    setDraft([]);
+    setWizard(false);
+    setWorkspace('planning');
+    setPlanningStep('variants');
+    setFit((n) => n + 1);
   }
   async function applyGlobalFleet() {
     if (!fleetRegistry) return;
@@ -638,7 +877,9 @@ export default function MissionWorkbench() {
     () => ({
       ...document.scenario,
       name: document.name,
-      area: currentJob.area,
+      area: currentJob.area.coordinates[0]?.length
+        ? currentJob.area
+        : document.scenario.area,
       job: currentJob.job,
       exclusions: [
         ...document.scenario.exclusions,
@@ -715,8 +956,11 @@ export default function MissionWorkbench() {
         : 'Не назначен';
   const validation = useMemo(() => {
     try {
-      if (clearedAreaId && document.jobs.some((j) => j.id === clearedAreaId))
-        return 'Территория удалена. Нарисуйте или загрузите новый участок.';
+      const emptyArea = document.jobs.find(
+        (j) => !j.area.coordinates[0]?.length || j.id === clearedAreaId,
+      );
+      if (emptyArea)
+        return `Участок «${emptyArea.name}» без территории. Нарисуйте контур или удалите участок.`;
       parseMissionDocument(document);
       return '';
     } catch (e) {
@@ -744,6 +988,7 @@ export default function MissionWorkbench() {
     return () => {
       library.current?.close();
       request.current?.abort();
+      fleetRequest.current?.abort();
     };
   }, []);
   useEffect(() => {
@@ -1098,6 +1343,7 @@ export default function MissionWorkbench() {
   function acceptPreview() {
     if (!preview) return;
     setClearedAreaId(null);
+    setAreaRestore(null);
     setTerritoryEditing(false);
     edit(installedBatteryDocument(preview));
     setSavedRevision(previewRevision);
@@ -1133,6 +1379,7 @@ export default function MissionWorkbench() {
     };
     if (fleetRegistry) next = applyRegistryFleet(next, fleetRegistry);
     setClearedAreaId(null);
+    setAreaRestore(null);
     setTerritoryEditing(false);
     edit(next);
     setSavedRevision(undefined);
@@ -1176,12 +1423,17 @@ export default function MissionWorkbench() {
       setDocument(input);
       setDirty(true);
       setBusy(true);
-      const response = await fetch('/api/planner/missions/solve', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(input),
-        signal: controller.signal,
-      });
+      const response = await fetch(
+        input.obstacleLayer
+          ? '/api/planner/missions/solve-with-obstacles'
+          : '/api/planner/missions/solve',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(input),
+          signal: controller.signal,
+        },
+      );
       const data = (await response.json()) as MissionResult & {
         error?: string;
         details?: string[];
@@ -1449,6 +1701,8 @@ export default function MissionWorkbench() {
   async function save(copy = false) {
     try {
       if (validation) throw new Error(validation);
+      if (mode)
+        throw new Error('Сначала примените контур или отмените рисование.');
       const rev = revision.current;
       const d = parseMissionDocument(document),
         next = copy
@@ -1473,10 +1727,12 @@ export default function MissionWorkbench() {
       }
       setLibraryRows(await library.current.list(true));
       setNotice(`Сохранено в «Сохранённые миссии» · версия ${saved.revision}`);
+      return true;
     } catch (e) {
       setError(
         `${errorMessage(e)} Если ID занят другой версией, используйте «Сохранить копию» в библиотеке.`,
       );
+      return false;
     }
   }
   async function showLibrary() {
@@ -1498,6 +1754,10 @@ export default function MissionWorkbench() {
   }
   async function saveAs() {
     if (copyBusy) return;
+    if (mode) {
+      setError('Сначала примените контур или отмените рисование.');
+      return;
+    }
     if (validation) {
       setError(validation);
       return;
@@ -1544,9 +1804,12 @@ export default function MissionWorkbench() {
   }
   async function loadFile(f: File, geometryOnly = false) {
     try {
-      if (f.size > MAX_MISSION_FILE_BYTES)
+      if (
+        f.size >
+        (geometryOnly ? MAX_MISSION_FILE_BYTES : MAX_OBSTACLE_MISSION_BYTES)
+      )
         throw new Error(
-          'Файл больше 200 КиБ. Упростите геометрию или разделите вход.',
+          'Файл превышает предел: геометрия 200 КиБ, миссия с источником препятствий 12 МиБ.',
         );
       const text = await f.text();
       if (geometryOnly) {
@@ -1754,7 +2017,7 @@ export default function MissionWorkbench() {
       setDraft([]);
       setFit((n) => n + 1);
       setNotice(
-        'Контур применён. Карта сохранена; для изменённого миссии нужен новый расчёт.',
+        'Контур применён. Нажмите «Сохранить изменения», затем пересчитайте миссию.',
       );
     } catch (e) {
       setError(
@@ -1828,6 +2091,33 @@ export default function MissionWorkbench() {
         `${activeRun.id}.report.${html ? 'html' : 'json'}`,
         html ? missionRunReportHtml(report) : JSON.stringify(report, null, 2),
         html ? 'text/html' : 'application/json',
+      );
+    } catch (e) {
+      setError(errorMessage(e));
+    }
+  }
+  async function exportEvidenceZip() {
+    const doc = activeRun?.document ?? current?.document;
+    const selected = activeRun?.candidate ?? candidate;
+    if (!doc || !selected) return;
+    try {
+      setNotice('Проверяем план и собираем архив…');
+      const { bytes } = await buildMissionArchive(
+        doc,
+        selected,
+        activeRun ?? undefined,
+        operations.rows,
+      );
+      const url = URL.createObjectURL(
+        new Blob([bytes], { type: 'application/zip' }),
+      );
+      const link = window.document.createElement('a');
+      link.href = url;
+      link.download = `${activeRun?.id ?? doc.id}.evidence.zip`;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 30000);
+      setNotice(
+        'Архив доказательств скачан. Внутри — исходники, маршруты и повторные проверки.',
       );
     } catch (e) {
       setError(errorMessage(e));
@@ -2182,6 +2472,14 @@ export default function MissionWorkbench() {
             onNotice={setNotice}
             onReport={operations.reportFleet}
             onApply={() => void applyGlobalFleet()}
+            operations={operations.rows}
+            onOpenOperation={(row) => void openOperation(row)}
+            recalculations={fleetRecalculations}
+            onOpenRecalculation={(id) =>
+              void openFleetRecalculation(id).catch((e) =>
+                setError(errorMessage(e)),
+              )
+            }
           />
         </div>
         <section className="mw-missions-home" hidden={workspace !== 'missions'}>
@@ -2333,6 +2631,20 @@ export default function MissionWorkbench() {
         </section>
         {workspace === 'planning' && (
           <div className="mw-editor-top-tabs" aria-label="Разделы редактора">
+            <input
+              className="mw-inline-mission-name"
+              aria-label="Название миссии"
+              title={document.name}
+              value={document.name}
+              maxLength={100}
+              onChange={(e) =>
+                edit({
+                  ...document,
+                  name: e.target.value,
+                  scenario: { ...document.scenario, name: e.target.value },
+                })
+              }
+            />
             <button
               aria-pressed={planningStep === 'task'}
               onClick={() => {
@@ -2558,7 +2870,13 @@ export default function MissionWorkbench() {
                 onJournal={openRunJournal}
                 onOpenAll={() => setModal('operations')}
                 onOpenExample={(id) => {
-                  if (!['demo-01-survey', 'demo-02-obstacles'].includes(id))
+                  if (
+                    ![
+                      'demo-01-survey',
+                      'demo-02-obstacles',
+                      'demo-02-expert-obstacles',
+                    ].includes(id)
+                  )
                     return;
                   void fetch(`/planner/scenarios/${id}.mission.json`)
                     .then(async (response) => {
@@ -2989,111 +3307,177 @@ export default function MissionWorkbench() {
               </div>
             )}
             {wizard && workspace === 'planning' ? (
-              <MissionEditor
-                onFleet={() => setWorkspace('fleet')}
-                hasGlobalFleet={!!fleetRegistry}
-                fleetStates={operations.fleet}
-                status={dirty ? 'Редактируется · не сохранено' : 'Сохранена'}
-                onUseGlobalFleet={() => void applyGlobalFleet()}
-                onNotice={setNotice}
-                key={editorSession}
-                document={document}
-                onChange={edit}
-                selectedJob={jobIndex}
-                onSelectJob={(n) => {
-                  setJobIndex(n);
-                  setFit((x) => x + 1);
-                }}
-                onDraw={startDrawing}
-                onTerritoryEditing={setTerritoryEditing}
-                territoryIncomplete={!!clearedAreaId}
-                territoryEditor={
-                  <MissionTerritoryEditor
-                    document={document}
-                    selected={jobIndex}
-                    workType={currentJob.job.type}
-                    clearedId={clearedAreaId}
-                    onSelect={(n) => {
-                      setJobIndex(n);
-                      setMode(null);
-                      setDraft([]);
-                      setFit((x) => x + 1);
-                    }}
-                    onChange={edit}
-                    onRestore={() => {
-                      setClearedAreaId(null);
-                      setError('');
-                      setFit((x) => x + 1);
-                    }}
-                    onDelete={() => {
-                      if (
-                        !window.confirm(
-                          `Удалить участок «${currentJob.name}»${document.jobs.length > 1 ? ' и связанную с ним работу' : ''}?`,
-                        )
-                      )
-                        return;
-                      setMode(null);
-                      setDraft([]);
-                      if (document.jobs.length > 1) {
-                        if (currentJob.id === clearedAreaId)
-                          setClearedAreaId(null);
-                        edit({
-                          ...document,
-                          jobs: document.jobs.filter(
-                            (j) => j.id !== currentJob.id,
-                          ),
-                        });
-                        setJobIndex(0);
-                      } else {
-                        edit({ ...document });
-                        setClearedAreaId(currentJob.id);
+              <>
+                {mode && (
+                  <output className="mw-drawing-toolbar">
+                    <span>
+                      {mode === 'area'
+                        ? 'Контур участка'
+                        : mode === 'exclusion'
+                          ? 'Контур ограничения'
+                          : 'Отметьте на карте'}
+                      {draft.length ? ` · ${draft.length} точек` : ''}
+                    </span>
+                    <InfoHint label="Как завершить рисование">
+                      По точкам: замкните фигуру на первой вершине или нажмите
+                      «Применить контур». От руки, круг, овал: протяните мышью.
+                      Esc или крестик отменяют рисование.
+                    </InfoHint>
+                    {!['start', 'landing', 'reserve'].includes(mode) && (
+                      <>
+                        <button
+                          className="mw-button primary small"
+                          disabled={draft.length < 3}
+                          onClick={() => finishDrawing()}
+                        >
+                          Применить контур
+                        </button>
+                        <button
+                          className="mw-button small"
+                          disabled={!draft.length}
+                          onClick={() =>
+                            setDraft((points) => points.slice(0, -1))
+                          }
+                        >
+                          Убрать точку
+                        </button>
+                      </>
+                    )}
+                    <button
+                      className="mw-button small"
+                      aria-label="Отменить рисование"
+                      onClick={() => {
+                        setMode(null);
+                        setDraft([]);
+                      }}
+                    >
+                      <X size={16} />
+                    </button>
+                  </output>
+                )}
+                <MissionEditor
+                  onFleet={() => setWorkspace('fleet')}
+                  hasGlobalFleet={!!fleetRegistry}
+                  fleetStates={operations.fleet}
+                  status={dirty ? 'Редактируется · не сохранено' : 'Сохранена'}
+                  onUseGlobalFleet={() => void applyGlobalFleet()}
+                  onNotice={setNotice}
+                  key={editorSession}
+                  document={document}
+                  onChange={edit}
+                  selectedJob={jobIndex}
+                  onSelectJob={(n) => {
+                    setJobIndex(n);
+                    setMode(null);
+                    setDraft([]);
+                    setFit((x) => x + 1);
+                  }}
+                  onDraw={startDrawing}
+                  onTerritoryEditing={setTerritoryEditing}
+                  territoryIncomplete={!!clearedAreaId}
+                  territoryEditor={
+                    <MissionTerritoryEditor
+                      document={document}
+                      selected={jobIndex}
+                      workType={currentJob.job.type}
+                      clearedId={clearedAreaId}
+                      onSelect={(n) => {
+                        setJobIndex(n);
+                        setTerritoryEditing(true);
+                        setMode(null);
+                        setDraft([]);
+                        setFit((x) => x + 1);
+                      }}
+                      onChange={edit}
+                      canSave={!validation && !mode && !busy}
+                      onSave={() =>
+                        void save().then((saved) => {
+                          if (saved) setTerritoryEditing(false);
+                        })
                       }
-                      setNotice('Участок удалён.');
-                    }}
-                    onAdd={() => {
-                      const id = `job-${crypto.randomUUID()}`;
-                      edit({
-                        ...document,
-                        jobs: [
-                          ...document.jobs,
-                          {
-                            ...structuredClone(currentJob),
-                            id,
-                            name: `Участок ${document.jobs.length + 1}`,
-                          },
-                        ],
-                      });
-                      setJobIndex(document.jobs.length);
-                      setClearedAreaId(id);
-                      startDrawing('area');
-                    }}
-                    onDraw={(tool) => {
-                      startDrawing('area');
-                      setMode('area');
-                      setDrawTool(tool);
-                    }}
-                    onImport={() => geoFile.current?.click()}
-                    onBoundary={() => {
-                      startDrawing('airspace');
-                      setMode('airspace');
-                    }}
-                    onBase={(id, role) => {
-                      setSelected(id);
-                      startDrawing(role);
-                      setMode(role);
-                    }}
-                  />
-                }
-                onImportGeometry={() => geoFile.current?.click()}
-                onExample={(n) =>
-                  openPreview(demoMission(n), `Контрольный сценарий ${n} км²`)
-                }
-                onDone={() => {
-                  if (!validation) void calculate();
-                  else setError(validation);
-                }}
-                onSave={() => void save()}
-              />
+                      onRestore={
+                        areaRestore?.id === currentJob.id
+                          ? () => {
+                              edit({
+                                ...document,
+                                jobs: document.jobs.map((j) =>
+                                  j.id === currentJob.id
+                                    ? {
+                                        ...j,
+                                        area: structuredClone(areaRestore.area),
+                                      }
+                                    : j,
+                                ),
+                              });
+                              setClearedAreaId(null);
+                              setAreaRestore(null);
+                              setError('');
+                              setFit((x) => x + 1);
+                            }
+                          : undefined
+                      }
+                      onDelete={() => {
+                        if (
+                          !window.confirm(
+                            `Удалить участок «${currentJob.name}»${document.jobs.length > 1 ? ' и связанную с ним работу' : ''}?`,
+                          )
+                        )
+                          return;
+                        setMode(null);
+                        setDraft([]);
+                        if (document.jobs.length > 1) {
+                          if (currentJob.id === clearedAreaId)
+                            setClearedAreaId(null);
+                          edit({
+                            ...document,
+                            jobs: document.jobs.filter(
+                              (j) => j.id !== currentJob.id,
+                            ),
+                          });
+                          setJobIndex(0);
+                        } else {
+                          setAreaRestore({
+                            id: currentJob.id,
+                            area: structuredClone(currentJob.area),
+                          });
+                          edit({
+                            ...document,
+                            jobs: document.jobs.map((j) => ({
+                              ...j,
+                              area: { type: 'Polygon', coordinates: [] },
+                            })),
+                          });
+                          setClearedAreaId(currentJob.id);
+                        }
+                        setNotice('Участок удалён.');
+                      }}
+                      onAdd={() => {
+                        const id = `job-${crypto.randomUUID()}`;
+                        edit(appendEmptyArea(document, currentJob.id, id));
+                        setAreaRestore(null);
+                        setJobIndex(document.jobs.length);
+                        setClearedAreaId(id);
+                        startDrawing('area');
+                      }}
+                      onDraw={(tool) => {
+                        startDrawing('area');
+                        setMode('area');
+                        setDrawTool(tool);
+                      }}
+                      onImport={() => geoFile.current?.click()}
+                    />
+                  }
+                  onImportGeometry={() => geoFile.current?.click()}
+                  onExample={(n) =>
+                    openPreview(demoMission(n), `Контрольный сценарий ${n} км²`)
+                  }
+                  onDone={() => {
+                    if (!validation) void calculate();
+                    else setError(validation);
+                  }}
+                  onSave={() => void save()}
+                />
+              </>
             ) : (
               <div className="mw-flight-panel">
                 <div className="mw-flight-list">
@@ -3296,7 +3680,9 @@ export default function MissionWorkbench() {
               fit={fit}
               showTiles={showTiles}
               showTransit={showTransit}
-              workAreas={document.jobs.filter((j) => j.id !== clearedAreaId)}
+              workAreas={document.jobs.filter(
+                (j) => j.id !== clearedAreaId && j.area.coordinates[0]?.length,
+              )}
               activeJobId={currentJob.id}
               editable={
                 workspace === 'planning' &&
@@ -3306,6 +3692,7 @@ export default function MissionWorkbench() {
               drawTool={drawTool}
               onSelectArea={(id) => {
                 setJobIndex(document.jobs.findIndex((j) => j.id === id));
+                setTerritoryEditing(true);
               }}
               onVertex={(ring, vertex, point) => {
                 try {
@@ -3315,14 +3702,12 @@ export default function MissionWorkbench() {
                     vertex,
                     point,
                   );
-                  edit(
-                    parseMissionDocument({
-                      ...document,
-                      jobs: document.jobs.map((j) =>
-                        j.id === currentJob.id ? { ...j, area } : j,
-                      ),
-                    }),
-                  );
+                  edit({
+                    ...document,
+                    jobs: document.jobs.map((j) =>
+                      j.id === currentJob.id ? { ...j, area } : j,
+                    ),
+                  });
                   setError('');
                   setNotice('Граница участка изменена.');
                   return true;
@@ -3348,6 +3733,9 @@ export default function MissionWorkbench() {
                 }
               }}
               restrictions={safetySceneDocument.restrictions}
+              obstacleLayer={safetySceneDocument.obstacleLayer}
+              showObstacles={showObstacles}
+              obstacleFocus={obstacleFocus}
               missionStartAt={document.window.start}
               execution={workspace === 'execution'}
               playing={playing || recovering}
@@ -3467,71 +3855,6 @@ export default function MissionWorkbench() {
                 Активные запреты (проекция)
               </div>
             </details>
-            {mode && (
-              <div className="mw-map-draw">
-                <p>
-                  {mode === 'start' || mode === 'landing' || mode === 'reserve'
-                    ? 'Укажите точку на карте'
-                    : drawTool === 'polygon'
-                      ? `По точкам · ${draft.length} вершин`
-                      : drawTool === 'freehand'
-                        ? 'Свободный контур'
-                        : drawTool === 'circle'
-                          ? 'Круг'
-                          : 'Эллипс'}{' '}
-                  <InfoHint label="Рисование на карте">
-                    Для многоугольника отмечайте вершины и замкните контур на
-                    первую точку. Для свободной формы зажмите мышь и обведите
-                    участок; для круга или эллипса протяните между
-                    противоположными углами. Исходный контур остаётся до
-                    применения. Esc — отмена.
-                  </InfoHint>
-                </p>
-                {draft.length > 0 && (
-                  <details className="mw-draw-coordinates">
-                    <summary>Координаты вершин · WGS84</summary>
-                    <ol>
-                      {draft.map((p, i) => (
-                        <li key={i}>
-                          Широта {p[1].toFixed(6)} · долгота {p[0].toFixed(6)}
-                        </li>
-                      ))}
-                    </ol>
-                  </details>
-                )}
-                <div className="mw-actions">
-                  {!['start', 'landing', 'reserve'].includes(mode) && (
-                    <>
-                      <button
-                        className="mw-button primary small"
-                        disabled={draft.length < 3}
-                        onClick={() => finishDrawing()}
-                      >
-                        Применить контур
-                      </button>
-                      <button
-                        className="mw-button small"
-                        disabled={!draft.length}
-                        onClick={() =>
-                          setDraft((points) => points.slice(0, -1))
-                        }
-                      >
-                        Убрать точку
-                      </button>
-                    </>
-                  )}
-                  <button
-                    className="mw-button small"
-                    onClick={() => {
-                      setMode(null);
-                      setDraft([]);
-                    }}
-                  >
-                    Отмена
-                  </button>
-                </div>
-              </div>
-            )}
           </section>
           <aside className="mw-inspector">
             <div className="mw-panel-head">
@@ -3792,6 +4115,15 @@ export default function MissionWorkbench() {
                 не подтверждено
               </output>
             )}
+            {candidate && (
+              <button
+                className="mw-button primary"
+                onClick={() => void exportEvidenceZip()}
+                disabled={candidate.status !== 'feasible_model'}
+              >
+                <Download size={16} /> Скачать доказательства ZIP
+              </button>
+            )}
             <section
               className="mw-result-summary"
               id="result-panel-summary"
@@ -4051,15 +4383,9 @@ export default function MissionWorkbench() {
                 <div className="mw-actions">
                   <button
                     className="mw-button small"
-                    onClick={() => startDrawing('start')}
+                    onClick={() => setWorkspace('fleet')}
                   >
-                    Задать старт на карте
-                  </button>
-                  <button
-                    className="mw-button small"
-                    onClick={() => startDrawing('landing')}
-                  >
-                    Задать посадку
+                    Открыть парк БВС
                   </button>
                 </div>
                 <h2 style={{ marginTop: 20 }}>
@@ -4705,6 +5031,29 @@ export default function MissionWorkbench() {
             ) : undefined
           }
         >
+          <ObstacleLayerPanel
+            source={document.obstacleLayer}
+            visible={showObstacles}
+            onVisible={setShowObstacles}
+            onError={setError}
+            onFocus={(bounds) => {
+              setShowObstacles(true);
+              setObstacleFocus([...bounds]);
+              setModal(null);
+            }}
+            onChange={(source) => {
+              const next = { ...document };
+              if (source) next.obstacleLayer = source;
+              else delete next.obstacleLayer;
+              edit(next);
+              setWizard(true);
+              setNotice(
+                source
+                  ? 'Слой подключён. Пересчитайте миссию.'
+                  : 'Слой отключён от новой версии миссии.',
+              );
+            }}
+          />
           <div className="ms-file-actions">
             <button
               className="mw-button"
@@ -4775,7 +5124,7 @@ export default function MissionWorkbench() {
             </table>
           </div>
           {!layerPreview && !document.restrictions.length && (
-            <p className="mw-caption">Слоёв пока нет.</p>
+            <p className="mw-caption">Ручных объёмных ограничений нет.</p>
           )}
         </Modal>
       )}
@@ -4901,14 +5250,10 @@ export default function MissionWorkbench() {
               <option value="area">
                 Области работ — заменить выбранную / добавить части
               </option>
-              <option value="airspace">Граница полётов — заменить</option>
               <option value="exclusion">Постоянные запреты — добавить</option>
               <option value="obstacle">
                 Препятствия / возвышенности — добавить объёмы
               </option>
-              <option value="start">Старт выбранного БВС — заменить</option>
-              <option value="landing">Посадка выбранного БВС — заменить</option>
-              <option value="reserve">Резервные площадки — добавить</option>
             </select>
           </label>
           {geometryRole === 'obstacle' && (

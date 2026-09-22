@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:54.301Z",
+  "createdAt": "2026-09-22T14:21:25.706Z",
   "inputHash": "683d1920e338a6d9a93b551218a7a8e80518bab204437133ab4f9315e8f1fc9e",
-  "planHash": "03afa01be0f628bebe0e49bc50e605353e7958606683f34c9df0f7d02d93b707",
+  "planHash": "c20ffd590d00fea0e44b19e51cd4e75298d9882ab09b88784b8f4c957b9cdf5c",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -446,7 +446,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "683d1920e338a6d9a93b551218a7a8e80518bab204437133ab4f9315e8f1fc9e",
-      "createdAt": "2026-09-22T06:50:54.023Z",
+      "createdAt": "2026-09-22T14:21:25.281Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Три работы и смешанный флот",
@@ -2309,7 +2309,7 @@
           "detail": "Выбран минимум flightTimeSec среди 14 найденных и проверенных кандидатов обеих целей; глобальная оптимальность не доказана."
         }
       ],
-      "computationMs": 61.41690000000017
+      "computationMs": 111.79320000000007
     },
     "sorties": [
       {

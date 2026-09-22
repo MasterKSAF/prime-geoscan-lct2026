@@ -5,7 +5,7 @@
   "plan": {
     "engineVersion": "0.3.0",
     "inputHash": "b82d6ef2774753aaadf1be39addd903ed25b9eebe972d5d2f4c8eecbc46f5d8d",
-    "createdAt": "2026-09-22T06:50:54.845Z",
+    "createdAt": "2026-09-22T14:21:26.517Z",
     "scenario": {
       "schemaVersion": "1.0",
       "name": "LiDAR и геофизический подвес",
@@ -1158,7 +1158,7 @@
         "detail": "Выбран минимум makespanSec среди 14 найденных и проверенных кандидатов обеих целей; глобальная оптимальность не доказана."
       }
     ],
-    "computationMs": 30.922299999999723
+    "computationMs": 45.1917999999996
   },
   "sorties": [
     {

@@ -26,7 +26,7 @@ node --experimental-transform-types --test tests/acceptance/track5-readiness.tes
 node scripts/verify-submission.mjs
 ```
 
-Ожидаемый сохранённый срез: 483/483 модульных, 8/8 приёмочных. A8 обращается к API. Проверка комплекта сверяет хеши, состав и локальные ссылки; произвольная правка файла должна обнаруживаться.
+Ожидаемый сохранённый срез: 509/509 модульных, 8/8 приёмочных. A8 обращается к API. Проверка комплекта сверяет хеши, состав и локальные ссылки; произвольная правка файла должна обнаруживаться.
 
 ## 3. HTTP и экспорт
 
@@ -44,14 +44,21 @@ npm run verify:evidence -- output/expert-review/api/evidence-repeat-sorties.json
 
 ```powershell
 npx --yes --package @playwright/cli@0.1.20 playwright-cli -s=expert-main open http://127.0.0.1:3016/planner --browser=msedge
-npx --yes --package @playwright/cli@0.1.20 playwright-cli -s=expert-main run-code --filename=scripts/verify-dispatcher-browser.js
-npx --yes --package @playwright/cli@0.1.20 playwright-cli -s=expert-extra open http://127.0.0.1:3016/planner --browser=msedge
-npx --yes --package @playwright/cli@0.1.20 playwright-cli -s=expert-extra run-code --filename=scripts/verify-eight-points-browser.js
-npx --yes --package @playwright/cli@0.1.20 playwright-cli -s=expert-parallel open http://127.0.0.1:3016/planner --browser=msedge
-npx --yes --package @playwright/cli@0.1.20 playwright-cli -s=expert-parallel run-code --filename=scripts/verify-parallel-browser.js
+npx --yes --package @playwright/cli@0.1.20 playwright-cli -s=expert-main run-code --filename=scripts/verify-release-browser.js
 ```
 
-Результаты: output/playwright/dispatcher/browser-report.json (25), eight-points/report.json (18), eight-parallel/report.json (7). CLI может вернуть управление на модальном событии до окончания сценария: проверять свежий JSON со status=pass, а не только exit code CLI. Закрыть только собственные тестовые сессии командой close.
+Результат: output/playwright/release-obstacles/browser-report.json (20). CLI может вернуть управление на модальном событии до окончания сценария: проверять свежий JSON со status=pass, а не только exit code CLI. Закрыть только собственную сессию командой close. Старые verify-dispatcher/eight-points-browser описывают прежнюю структуру редактора и не входят в текущую браузерную приёмку.
+
+Для KML и архива:
+
+```powershell
+node --experimental-transform-types scripts/verify-obstacle-integration.ts
+node --experimental-transform-types scripts/verify-obstacle-http.ts
+node --experimental-transform-types scripts/verify-mission-archive.ts docs/planner/submission/evidence/browser/mission.evidence.zip
+python scripts/check-obstacle-archive-interop.py docs/planner/submission/evidence/browser/mission.evidence.zip
+```
+
+Последняя команда использует только стандартную библиотеку Python. Положительный статус ZIP-проверки: `passes-declared-model`. HTTP-тест может воспроизвести известный 503 после отказа по размеру, см. VERIFICATION.md. Не удалять неуспешный лог.
 
 ## 5. Сравнение алгоритмов
 

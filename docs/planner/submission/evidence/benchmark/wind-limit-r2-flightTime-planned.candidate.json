@@ -5,7 +5,7 @@
   "plan": {
     "engineVersion": "0.3.0",
     "inputHash": "d8d8d245454c7164698e36ad98300059a7643dba6ec2cd58a82a6531d1b191e8",
-    "createdAt": "2026-09-22T06:50:57.571Z",
+    "createdAt": "2026-09-22T14:21:30.307Z",
     "scenario": {
       "schemaVersion": "1.0",
       "name": "Отказ: ветер выше предела",
@@ -326,7 +326,7 @@
         "detail": "0 ограниченных попыток упаковки; baseline unsupported; оптимальность не доказана."
       }
     ],
-    "computationMs": 4.795399999999972
+    "computationMs": 8.305099999999584
   },
   "sorties": [],
   "checks": [

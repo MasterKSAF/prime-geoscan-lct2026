@@ -5,7 +5,7 @@
   "plan": {
     "engineVersion": "0.3.0",
     "inputHash": "b82d6ef2774753aaadf1be39addd903ed25b9eebe972d5d2f4c8eecbc46f5d8d",
-    "createdAt": "2026-09-22T06:50:54.630Z",
+    "createdAt": "2026-09-22T14:21:26.213Z",
     "scenario": {
       "schemaVersion": "1.0",
       "name": "LiDAR и геофизический подвес",
@@ -1158,7 +1158,7 @@
         "detail": "Выбран минимум flightTimeSec среди 14 найденных и проверенных кандидатов обеих целей; глобальная оптимальность не доказана."
       }
     ],
-    "computationMs": 31.01680000000033
+    "computationMs": 47.94279999999981
   },
   "sorties": [
     {

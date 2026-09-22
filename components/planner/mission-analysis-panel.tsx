@@ -174,7 +174,7 @@ export default function MissionAnalysisPanel({
     try {
       const response = await fetch('/api/planner/missions/analyze', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(document.obstacleLayer ? { 'x-prime-obstacles': '1' } : {}) },
         signal: controller.signal,
         body: JSON.stringify({ document, candidate }),
       });

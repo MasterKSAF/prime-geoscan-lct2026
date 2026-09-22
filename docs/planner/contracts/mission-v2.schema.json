@@ -867,6 +867,16 @@
           "inheritsFrom": {
             "type": "string",
             "pattern": "^[a-zA-Z0-9_-]{1,60}$"
+          },
+          "priority": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "workPriority": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
           }
         },
         "required": [
@@ -1557,6 +1567,49 @@
     "notes": {
       "type": "string",
       "maxLength": 2000
+    },
+    "obstacleLayer": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "const": "geoscan-kml-horizontal/1"
+        },
+        "filename": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "sourceText": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8388608
+        },
+        "bufferM": {
+          "type": "number",
+          "minimum": 2,
+          "maximum": 100
+        },
+        "lineHalfWidthM": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "policySource": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "version",
+        "filename",
+        "sourceText",
+        "bufferM",
+        "lineHalfWidthM",
+        "policySource"
+      ],
+      "additionalProperties": false
     }
   },
   "required": [

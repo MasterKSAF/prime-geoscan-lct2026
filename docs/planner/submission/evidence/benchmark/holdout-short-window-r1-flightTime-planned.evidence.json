@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:51:05.105Z",
+  "createdAt": "2026-09-22T14:21:40.054Z",
   "inputHash": "f7059302a61cf843fb992309a756e09b21b347df89b46f9b397e3e77a7461d20",
-  "planHash": "7ee98195b73920908f95e363b3d7b30d68156bffd5381084c8fa1663d39fcb0e",
+  "planHash": "0030e33ca1769c7df7729b03d22b9afc1ddd76a18b4aa15f41f61a40540ae8f8",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -337,7 +337,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "f7059302a61cf843fb992309a756e09b21b347df89b46f9b397e3e77a7461d20",
-      "createdAt": "2026-09-22T06:51:04.839Z",
+      "createdAt": "2026-09-22T14:21:39.760Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Автовыбор БВС: время и налёт",

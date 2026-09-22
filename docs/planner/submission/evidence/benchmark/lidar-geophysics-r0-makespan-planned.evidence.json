@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:54.479Z",
+  "createdAt": "2026-09-22T14:21:26.004Z",
   "inputHash": "b82d6ef2774753aaadf1be39addd903ed25b9eebe972d5d2f4c8eecbc46f5d8d",
-  "planHash": "d8c018ceff842776cbab6f764de98a49a1b118ea5ec71f34980835fecf914391",
+  "planHash": "8b919b4787e2d53bbb9ffb729d7f86c5d50aa1e31280afe6409195d5aae4d94a",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -328,7 +328,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "b82d6ef2774753aaadf1be39addd903ed25b9eebe972d5d2f4c8eecbc46f5d8d",
-      "createdAt": "2026-09-22T06:50:54.382Z",
+      "createdAt": "2026-09-22T14:21:25.826Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "LiDAR и геофизический подвес",
@@ -1481,7 +1481,7 @@
           "detail": "Выбран минимум makespanSec среди 14 найденных и проверенных кандидатов обеих целей; глобальная оптимальность не доказана."
         }
       ],
-      "computationMs": 29.52699999999959
+      "computationMs": 53.38979999999992
     },
     "sorties": [
       {

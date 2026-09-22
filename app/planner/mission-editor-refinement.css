@@ -1,0 +1,321 @@
+/* Compact, sky-blue editor. Operational warnings and safety checks remain visible. */
+.mission-workbench .mw-inline-mission-name {
+  flex: 0 1 360px;
+  min-width: 120px;
+  max-width: 36%;
+  padding: 7px 9px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--mw-ink);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+  font-family: inherit;
+  text-overflow: ellipsis;
+}
+.mission-workbench .mw-inline-mission-name:is(:hover, :focus) {
+  border-color: var(--mw-line);
+  background: var(--mw-surface-soft);
+}
+.mission-workbench[data-workspace='planning'] .mw-contextbar .mw-titlebar {
+  display: none;
+}
+.mission-workbench .me-editor {
+  padding: 8px 14px 14px;
+  font-size: 14px;
+}
+.mission-workbench
+  .me-editor
+  :is(.mw-field, .mw-checkbox, .mw-button, .me-local-tabs button) {
+  font-size: 13px;
+}
+.mission-workbench .me-editor .mw-field :is(input, select) {
+  font-size: 14px;
+}
+.me-works,
+.me-general {
+  border: 1px solid var(--mw-line);
+  overflow: visible;
+}
+.me-works[open],
+.me-general[open] {
+  border-color: var(--mw-focus);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--mw-focus) 20%, transparent);
+}
+.me-works > summary,
+.me-general > summary {
+  font-size: 14px;
+  font-weight: 650;
+  border-radius: 9px;
+  background: var(--mw-surface-soft);
+}
+.me-works[open] > summary,
+.me-general[open] > summary {
+  color: var(--mw-accent);
+  background: var(--mw-pale);
+  border-radius: 9px 9px 0 0;
+}
+.me-general-altitude {
+  padding: 10px 12px 0;
+}
+.me-work-selection {
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) auto auto minmax(110px, 0.7fr);
+  align-items: center;
+  gap: 7px;
+  padding: 10px 12px 4px;
+}
+.mission-workbench .me-work-selection select {
+  min-width: 0;
+  width: 100%;
+  padding: 7px;
+  border: 1px solid var(--mw-line);
+  border-radius: 7px;
+  color: var(--mw-ink);
+  background: var(--mw-surface);
+  font-size: 13px;
+}
+.me-work-picker-popover,
+.mt-area-popover {
+  box-sizing: border-box;
+  padding: 12px;
+  width: min(290px, calc(100vw - 24px));
+  max-height: min(350px, 80dvh);
+  overflow: auto;
+  color: var(--mw-ink);
+  background: var(--mw-surface);
+  border: 1px solid var(--mw-line);
+  border-radius: 12px;
+  box-shadow: var(--mw-shadow);
+}
+.me-work-picker-popover {
+  position: fixed;
+  margin: 0;
+  inset: auto;
+}
+.mt-area-popover {
+  position: fixed;
+  margin: 0;
+  inset: auto;
+}
+.me-work-picker-popover .me-type-picker {
+  display: grid;
+  gap: 12px;
+  padding: 4px 0 12px;
+  border: 0;
+}
+.me-work-picker-popover .me-type-picker label {
+  font-size: 14px;
+}
+.mt-area-popover :is(form, label) {
+  display: grid;
+  gap: 7px;
+  font-size: 13px;
+}
+.mt-area-popover form {
+  margin-bottom: 12px;
+}
+.mt-area-popover :is(input, select) {
+  width: 100%;
+  min-width: 0;
+  padding: 8px;
+  color: var(--mw-ink);
+  background: var(--mw-surface-soft);
+  border: 1px solid var(--mw-line);
+  border-radius: 7px;
+}
+.mt-area-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--mw-line);
+  border-radius: 9px;
+  background: var(--mw-surface);
+}
+.mt-area-row[data-selected='true'] {
+  border-color: var(--mw-focus);
+  background: var(--mw-pale);
+}
+.mt-area-row .mt-area-item {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+}
+.mt-area-row .mt-area-item > span:last-child {
+  min-width: 0;
+}
+.mt-area-item strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mt-area-row > button {
+  margin-right: 7px;
+  flex-shrink: 0;
+}
+.mt-shape-tools {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.mt-shape-tools .mw-button {
+  padding-inline: 6px;
+  gap: 5px;
+}
+.mt-save-row {
+  margin-top: 12px;
+}
+.mw-drawing-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--mw-line);
+  color: var(--mw-accent);
+  background: var(--mw-pale);
+  font-size: 13px;
+}
+.mw-drawing-toolbar > span {
+  margin-right: auto;
+}
+.mission-workbench .mw-modal-head {
+  justify-content: space-between;
+  text-align: left;
+}
+.mission-workbench .mw-modal-head .mw-heading-with-hint {
+  flex: 1;
+  justify-content: flex-start;
+  text-align: left;
+}
+.mission-workbench .mw-program-help [role='tablist'] {
+  justify-content: flex-start;
+  width: 100%;
+}
+.mission-workbench .mw-program-help .mw-definition dd {
+  text-align: left;
+  justify-self: stretch;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.mission-workbench .mw-program-help .mw-definition dt {
+  text-align: left;
+  font-weight: 600;
+  color: var(--mw-ink);
+}
+.mission-workbench .fw-roster article {
+  grid-template-columns: 36px minmax(160px, 1fr) 170px 140px 130px minmax(
+      170px,
+      1fr
+    );
+  gap: 12px;
+}
+.mission-workbench .fw-roster article > label {
+  flex-wrap: wrap;
+}
+.fw-base-actions {
+  display: flex;
+  gap: 5px;
+  width: 100%;
+}
+.fw-base-actions .small {
+  padding: 5px 8px;
+}
+.fw-assignment-list summary {
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--mw-accent);
+}
+.fw-assignment-list > div {
+  display: grid;
+  gap: 5px;
+  margin-top: 8px;
+}
+.fw-availability {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--mw-muted);
+}
+.fw-recalculations {
+  display: grid;
+  gap: 7px;
+  margin-top: 10px;
+}
+.fw-recalculations .mw-button {
+  justify-content: flex-start;
+  text-align: left;
+  white-space: normal;
+}
+.fw-base-dialog {
+  width: min(850px, calc(100vw - 30px));
+  max-height: 90dvh;
+  margin: auto;
+  padding: 0;
+  color: var(--mw-ink);
+  background: var(--mw-surface);
+  border: 1px solid var(--mw-line);
+  border-radius: 14px;
+  box-shadow: var(--mw-shadow);
+}
+.fw-base-dialog::backdrop {
+  background: #14293a77;
+}
+.fw-base-dialog :is(header, footer) {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  font-size: 14px;
+}
+.fw-base-dialog header button:last-child,
+.fw-base-dialog footer button {
+  margin-left: auto;
+}
+.fw-base-map {
+  height: min(55dvh, 480px);
+  min-height: 260px;
+  position: relative;
+}
+.fw-base-map .mission-map {
+  height: 100%;
+}
+@media (max-width: 1100px) {
+  .mission-workbench .fw-roster article {
+    grid-template-columns: 30px minmax(150px, 1fr) 165px minmax(110px, 1fr);
+  }
+  .mission-workbench .fw-roster article > .mb-status {
+    grid-column: 2;
+  }
+  .fw-assignment-list {
+    grid-column: 3 / -1;
+  }
+  .me-work-selection {
+    grid-template-columns: minmax(100px, 1fr) auto;
+  }
+  .me-work-selection > .mw-info {
+    grid-column: 1;
+  }
+  .mt-shape-tools {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 680px) {
+  .mission-workbench .mw-editor-top-tabs {
+    flex-wrap: wrap;
+    padding: 8px 12px;
+  }
+  .mission-workbench .mw-inline-mission-name {
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+  .mission-workbench .fw-roster article {
+    grid-template-columns: 30px minmax(0, 1fr);
+  }
+  .mission-workbench
+    .fw-roster
+    article
+    > :is(label, span:not(:first-child), .fw-assignment-list) {
+    grid-column: 2;
+  }
+}

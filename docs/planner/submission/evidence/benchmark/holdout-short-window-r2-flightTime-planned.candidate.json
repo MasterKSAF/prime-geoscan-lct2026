@@ -5,7 +5,7 @@
   "plan": {
     "engineVersion": "0.3.0",
     "inputHash": "f7059302a61cf843fb992309a756e09b21b347df89b46f9b397e3e77a7461d20",
-    "createdAt": "2026-09-22T06:51:05.130Z",
+    "createdAt": "2026-09-22T14:21:40.090Z",
     "scenario": {
       "schemaVersion": "1.0",
       "name": "Автовыбор БВС: время и налёт",

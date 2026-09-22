@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:54.515Z",
+  "createdAt": "2026-09-22T14:21:26.054Z",
   "inputHash": "b82d6ef2774753aaadf1be39addd903ed25b9eebe972d5d2f4c8eecbc46f5d8d",
-  "planHash": "06f2bece814c239df5515becabf10e5abd1b541da4289041d6bdfd708d0a3668",
+  "planHash": "461c625e325883ed31857e78d6c66f7a9ff2b575c3f2212dc72f3801d9be6e6c",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -328,7 +328,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "b82d6ef2774753aaadf1be39addd903ed25b9eebe972d5d2f4c8eecbc46f5d8d",
-      "createdAt": "2026-09-22T06:50:54.449Z",
+      "createdAt": "2026-09-22T14:21:25.958Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "LiDAR и геофизический подвес",
@@ -1473,7 +1473,7 @@
           "detail": "parallel-maximum-prefix-v1: исходный порядок работ/полос, максимальный допустимый пакет, жадное назначение по makespan; одновременные вылеты разрешены и проверяются. Без откатов/смены направления полос. Бюджет 1000 мс; 10 попыток. Это контрольный алгоритм, не глобальный оптимум."
         }
       ],
-      "computationMs": 4.010200000000168
+      "computationMs": 7.553299999999581
     },
     "sorties": [
       {

@@ -5,7 +5,7 @@
   "plan": {
     "engineVersion": "0.3.0",
     "inputHash": "d6e9a371c3a0332216638e13a66a5ab42b00daa58d5df7a9cbb1badd32a36b1c",
-    "createdAt": "2026-09-22T06:50:57.747Z",
+    "createdAt": "2026-09-22T14:21:30.613Z",
     "scenario": {
       "schemaVersion": "1.0",
       "name": "Автовыбор БВС: время и налёт",
@@ -1607,7 +1607,7 @@
         "detail": "Выбран минимум makespanSec среди 8 найденных и проверенных кандидатов обеих целей; глобальная оптимальность не доказана."
       }
     ],
-    "computationMs": 47.74789999999939
+    "computationMs": 71.59330000000045
   },
   "sorties": [
     {

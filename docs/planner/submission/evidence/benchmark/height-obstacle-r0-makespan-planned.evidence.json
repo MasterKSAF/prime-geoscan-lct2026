@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:56.361Z",
+  "createdAt": "2026-09-22T14:21:28.581Z",
   "inputHash": "6210df42fa00f0986657c3f2508b211aeffa9a92762646c5292b513dabb85993",
-  "planHash": "e52cc71e0d8ec251587843a889f1dd35827b90288abaef58aad66c3d449e5c1d",
+  "planHash": "30000d261e667ad6f3c408cfa5b74ce2333bc33761d351e0424cbf017418c8ac",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -276,7 +276,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "6210df42fa00f0986657c3f2508b211aeffa9a92762646c5292b513dabb85993",
-      "createdAt": "2026-09-22T06:50:56.302Z",
+      "createdAt": "2026-09-22T14:21:28.505Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Высотное препятствие под маршрутом",
@@ -1059,7 +1059,7 @@
           "detail": "Выбран минимум makespanSec среди 10 найденных и проверенных кандидатов обеих целей; глобальная оптимальность не доказана."
         }
       ],
-      "computationMs": 17.161399999999958
+      "computationMs": 21.82009999999991
     },
     "sorties": [
       {

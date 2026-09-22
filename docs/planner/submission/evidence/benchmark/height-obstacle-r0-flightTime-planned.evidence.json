@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:50:56.428Z",
+  "createdAt": "2026-09-22T14:21:28.667Z",
   "inputHash": "6210df42fa00f0986657c3f2508b211aeffa9a92762646c5292b513dabb85993",
-  "planHash": "3cb71734bd92e620b0010729e91f0ca52d2b745cb913da27a42732a378a0c9b7",
+  "planHash": "6c2198557dd637910415a053e7d2b402050795753e640e836a3b2f6a50765049",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -276,7 +276,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "6210df42fa00f0986657c3f2508b211aeffa9a92762646c5292b513dabb85993",
-      "createdAt": "2026-09-22T06:50:56.302Z",
+      "createdAt": "2026-09-22T14:21:28.505Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Высотное препятствие под маршрутом",
@@ -1059,7 +1059,7 @@
           "detail": "Выбран минимум flightTimeSec среди 10 найденных и проверенных кандидатов обеих целей; глобальная оптимальность не доказана."
         }
       ],
-      "computationMs": 17.161399999999958
+      "computationMs": 21.82009999999991
     },
     "sorties": [
       {

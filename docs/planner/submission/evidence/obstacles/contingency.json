@@ -1,0 +1,4949 @@
+{
+  "protocol": "controlled-abort-interval-v1",
+  "limits": {
+    "maxIntervalSec": 30,
+    "maxAnchors": 512,
+    "maxComputeMs": 5000
+  },
+  "inputHash": "6b4917e02269c539de82bc3d0c4cf8e4c88752c6c187ddd34e04c4839478074e",
+  "candidateHash": "9b61dd21ad013b7a04232059d4cabb4c53bfb5343a1db279c8a23e6d07b592c9",
+  "status": "certified_model",
+  "anchorCount": 56,
+  "checkedAnchors": 56,
+  "certifiedAnchors": 56,
+  "independentAnchors": 56,
+  "plannedCorridorAnchors": 0,
+  "maxResponseDelaySec": 28.694361633565762,
+  "minimumRemainingPct": 77.32464036045941,
+  "computationMs": 518.7858000000015,
+  "budgetExceeded": false,
+  "anchors": [
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 0,
+      "intervalStartSec": 60,
+      "anchorSec": 76.66666666666667,
+      "responseDelaySec": 16.66666666666667,
+      "coordinate": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "altitudeM": 50,
+      "batteryPct": 99.20634920634922,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 130.66666666666669,
+      "remainingPct": 96.63492063492065,
+      "route": [
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "turn",
+          "startSec": 76.66666666666667,
+          "endSec": 80.66666666666667,
+          "altitudeFromM": 50,
+          "altitudeToM": 50,
+          "batteryFromPct": 99.20634920634922,
+          "batteryToPct": 99.01587301587303,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 80.66666666666667,
+          "endSec": 130.66666666666669,
+          "altitudeFromM": 50,
+          "altitudeToM": 0,
+          "batteryFromPct": 99.01587301587303,
+          "batteryToPct": 96.63492063492065,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 0,
+      "intervalStartSec": 76.66666666666667,
+      "anchorSec": 93.33333333333334,
+      "responseDelaySec": 16.66666666666667,
+      "coordinate": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "altitudeM": 100,
+      "batteryPct": 98.41269841269842,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 197.33333333333334,
+      "remainingPct": 93.46031746031747,
+      "route": [
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "turn",
+          "startSec": 93.33333333333334,
+          "endSec": 97.33333333333334,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 98.41269841269842,
+          "batteryToPct": 98.22222222222223,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 97.33333333333334,
+          "endSec": 197.33333333333334,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 98.22222222222223,
+          "batteryToPct": 93.46031746031747,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 1,
+      "intervalStartSec": 93.33333333333334,
+      "anchorSec": 109.6784766339401,
+      "responseDelaySec": 16.34514330060675,
+      "coordinate": [
+        135.0969384442493,
+        44.33698212053334
+      ],
+      "altitudeM": 100,
+      "batteryPct": 97.63435825552666,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 240.76554263080303,
+      "remainingPct": 91.39211701758082,
+      "route": [
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "phase": "turn",
+          "startSec": 109.6784766339401,
+          "endSec": 113.6784766339401,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 97.63435825552666,
+          "batteryToPct": 97.44388206505047,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "return",
+          "startSec": 113.6784766339401,
+          "endSec": 140.76554263080303,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 97.44388206505047,
+          "batteryToPct": 96.15402177948557,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.01712465144975,
+          "distanceM": 162.98625254517023
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 140.76554263080303,
+          "endSec": 240.76554263080303,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 96.15402177948557,
+          "batteryToPct": 91.39211701758082,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 2,
+      "intervalStartSec": 109.6784766339401,
+      "anchorSec": 113.6784766339401,
+      "responseDelaySec": 4,
+      "coordinate": [
+        135.0969384442493,
+        44.33698212053334
+      ],
+      "altitudeM": 100,
+      "batteryPct": 97.44388206505047,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 244.76554263080303,
+      "remainingPct": 91.20164082710463,
+      "route": [
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "phase": "turn",
+          "startSec": 113.6784766339401,
+          "endSec": 117.6784766339401,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 97.44388206505047,
+          "batteryToPct": 97.25340587457428,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "return",
+          "startSec": 117.6784766339401,
+          "endSec": 144.76554263080303,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 97.25340587457428,
+          "batteryToPct": 95.96354558900939,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.01712465144975,
+          "distanceM": 162.98625254517023
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 144.76554263080303,
+          "endSec": 244.76554263080303,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 95.96354558900939,
+          "batteryToPct": 91.20164082710463,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 3,
+      "intervalStartSec": 113.6784766339401,
+      "anchorSec": 129.659655723701,
+      "responseDelaySec": 15.981179089760914,
+      "coordinate": [
+        135.09893605538565,
+        44.33684304963228
+      ],
+      "altitudeM": 100,
+      "batteryPct": 96.68287353696662,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 291.3194423234099,
+      "remainingPct": 88.98478846079001,
+      "route": [
+        {
+          "from": [
+            135.09893605538565,
+            44.33684304963228
+          ],
+          "to": [
+            135.09893605538565,
+            44.33684304963228
+          ],
+          "phase": "turn",
+          "startSec": 129.659655723701,
+          "endSec": 133.659655723701,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 96.68287353696662,
+          "batteryToPct": 96.49239734649043,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09893605538565,
+            44.33684304963228
+          ],
+          "to": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "phase": "return",
+          "startSec": 133.659655723701,
+          "endSec": 160.23237632656665,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 96.49239734649043,
+          "batteryToPct": 95.22702969873492,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.00706074647827,
+          "distanceM": 159.6239468606086
+        },
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "phase": "turn",
+          "startSec": 160.23237632656665,
+          "endSec": 164.23237632656665,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 95.22702969873492,
+          "batteryToPct": 95.03655350825873,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "return",
+          "startSec": 164.23237632656665,
+          "endSec": 191.31944232340987,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 95.03655350825873,
+          "batteryToPct": 93.74669322269477,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.017124651454126,
+          "distanceM": 162.98625254517023
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 191.31944232340987,
+          "endSec": 291.3194423234099,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 93.74669322269477,
+          "batteryToPct": 88.98478846079001,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 4,
+      "intervalStartSec": 129.659655723701,
+      "anchorSec": 133.659655723701,
+      "responseDelaySec": 4,
+      "coordinate": [
+        135.09893605538565,
+        44.33684304963228
+      ],
+      "altitudeM": 100,
+      "batteryPct": 96.49239734649043,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 295.3194423234099,
+      "remainingPct": 88.79431227031382,
+      "route": [
+        {
+          "from": [
+            135.09893605538565,
+            44.33684304963228
+          ],
+          "to": [
+            135.09893605538565,
+            44.33684304963228
+          ],
+          "phase": "turn",
+          "startSec": 133.659655723701,
+          "endSec": 137.659655723701,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 96.49239734649043,
+          "batteryToPct": 96.30192115601425,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09893605538565,
+            44.33684304963228
+          ],
+          "to": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "phase": "return",
+          "startSec": 137.659655723701,
+          "endSec": 164.23237632656665,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 96.30192115601425,
+          "batteryToPct": 95.03655350825873,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.00706074647827,
+          "distanceM": 159.6239468606086
+        },
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "phase": "turn",
+          "startSec": 164.23237632656665,
+          "endSec": 168.23237632656665,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 95.03655350825873,
+          "batteryToPct": 94.84607731778254,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "return",
+          "startSec": 168.23237632656665,
+          "endSec": 195.31944232340987,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 94.84607731778254,
+          "batteryToPct": 93.55621703221858,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.017124651454126,
+          "distanceM": 162.98625254517023
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 195.31944232340987,
+          "endSec": 295.3194423234099,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 93.55621703221858,
+          "batteryToPct": 88.79431227031382,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 5,
+      "intervalStartSec": 133.659655723701,
+      "anchorSec": 148.65965572406367,
+      "responseDelaySec": 15.000000000362661,
+      "coordinate": [
+        135.09893605538565,
+        44.33792223406878
+      ],
+      "altitudeM": 100,
+      "batteryPct": 95.77811163218743,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 307.22551592207526,
+      "remainingPct": 88.22735638466308,
+      "route": [
+        {
+          "from": [
+            135.09893605538565,
+            44.33792223406878
+          ],
+          "to": [
+            135.09893605538565,
+            44.33792223406878
+          ],
+          "phase": "turn",
+          "startSec": 148.65965572406367,
+          "endSec": 152.65965572406367,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 95.77811163218743,
+          "batteryToPct": 95.58763544171124,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09893605538565,
+            44.33792223406878
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "return",
+          "startSec": 152.65965572406367,
+          "endSec": 207.22551592207523,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 95.58763544171124,
+          "batteryToPct": 92.98926114656784,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.044995045964777,
+          "distanceM": 329.85035457578647
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 207.22551592207523,
+          "endSec": 307.22551592207526,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 92.98926114656784,
+          "batteryToPct": 88.22735638466308,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 6,
+      "intervalStartSec": 148.65965572406367,
+      "anchorSec": 152.65968026337123,
+      "responseDelaySec": 4.00002453930756,
+      "coordinate": [
+        135.0994390034885,
+        44.33792223406878
+      ],
+      "altitudeM": 100,
+      "batteryPct": 95.5876342731728,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 317.7585821358199,
+      "remainingPct": 87.7257818030562,
+      "route": [
+        {
+          "from": [
+            135.0994390034885,
+            44.33792223406878
+          ],
+          "to": [
+            135.0994390034885,
+            44.33792223406878
+          ],
+          "phase": "turn",
+          "startSec": 152.65968026337123,
+          "endSec": 156.65968026337123,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 95.5876342731728,
+          "batteryToPct": 95.3971580826966,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0994390034885,
+            44.33792223406878
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "return",
+          "startSec": 156.65968026337123,
+          "endSec": 217.7585821358199,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 95.3971580826966,
+          "batteryToPct": 92.48768656496095,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.035852084604708,
+          "distanceM": 368.7839342338777
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 217.7585821358199,
+          "endSec": 317.7585821358199,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 92.48768656496095,
+          "batteryToPct": 87.7257818030562,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 7,
+      "intervalStartSec": 152.65968026337123,
+      "anchorSec": 156.65968026337123,
+      "responseDelaySec": 4,
+      "coordinate": [
+        135.0994390034885,
+        44.33792223406878
+      ],
+      "altitudeM": 100,
+      "batteryPct": 95.3971580826966,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 321.7585821358199,
+      "remainingPct": 87.53530561258,
+      "route": [
+        {
+          "from": [
+            135.0994390034885,
+            44.33792223406878
+          ],
+          "to": [
+            135.0994390034885,
+            44.33792223406878
+          ],
+          "phase": "turn",
+          "startSec": 156.65968026337123,
+          "endSec": 160.65968026337123,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 95.3971580826966,
+          "batteryToPct": 95.20668189222042,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0994390034885,
+            44.33792223406878
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "return",
+          "startSec": 160.65968026337123,
+          "endSec": 221.7585821358199,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 95.20668189222042,
+          "batteryToPct": 92.29721037448476,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.035852084604708,
+          "distanceM": 368.7839342338777
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 221.7585821358199,
+          "endSec": 321.7585821358199,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 92.29721037448476,
+          "batteryToPct": 87.53530561258,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 8,
+      "intervalStartSec": 156.65968026337123,
+      "anchorSec": 171.6596802637339,
+      "responseDelaySec": 15.000000000362661,
+      "coordinate": [
+        135.0994390034885,
+        44.33684304963228
+      ],
+      "altitudeM": 100,
+      "batteryPct": 94.68287236839362,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 339.96735453941153,
+      "remainingPct": 86.66822121240897,
+      "route": [
+        {
+          "from": [
+            135.0994390034885,
+            44.33684304963228
+          ],
+          "to": [
+            135.0994390034885,
+            44.33684304963228
+          ],
+          "phase": "turn",
+          "startSec": 171.6596802637339,
+          "endSec": 175.6596802637339,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 94.68287236839362,
+          "batteryToPct": 94.49239617791743,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0994390034885,
+            44.33684304963228
+          ],
+          "to": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "phase": "return",
+          "startSec": 175.6596802637339,
+          "endSec": 208.88028854256834,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 94.49239617791743,
+          "batteryToPct": 92.91046245035388,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.004516395086119,
+          "distanceM": 199.4736870649951
+        },
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "phase": "turn",
+          "startSec": 208.88028854256834,
+          "endSec": 212.88028854256834,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 92.91046245035388,
+          "batteryToPct": 92.71998625987769,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "return",
+          "startSec": 212.88028854256834,
+          "endSec": 239.96735453941156,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 92.71998625987769,
+          "batteryToPct": 91.43012597431373,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.017124651454126,
+          "distanceM": 162.98625254517023
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 239.96735453941156,
+          "endSec": 339.96735453941153,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 91.43012597431373,
+          "batteryToPct": 86.66822121240897,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 9,
+      "intervalStartSec": 171.6596802637339,
+      "anchorSec": 175.65970480304145,
+      "responseDelaySec": 4.00002453930756,
+      "coordinate": [
+        135.09994195159135,
+        44.33684304963228
+      ],
+      "altitudeM": 100,
+      "batteryPct": 94.49239500937897,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 350.6215468445505,
+      "remainingPct": 86.16087872168806,
+      "route": [
+        {
+          "from": [
+            135.09994195159135,
+            44.33684304963228
+          ],
+          "to": [
+            135.09994195159135,
+            44.33684304963228
+          ],
+          "phase": "turn",
+          "startSec": 175.65970480304145,
+          "endSec": 179.65970480304145,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 94.49239500937897,
+          "batteryToPct": 94.30191881890278,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09994195159135,
+            44.33684304963228
+          ],
+          "to": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "phase": "return",
+          "startSec": 179.65970480304145,
+          "endSec": 219.53448084770727,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 94.30191881890278,
+          "batteryToPct": 92.40311995963297,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.003134352824605,
+          "distanceM": 239.37363788492104
+        },
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "phase": "turn",
+          "startSec": 219.53448084770727,
+          "endSec": 223.53448084770727,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 92.40311995963297,
+          "batteryToPct": 92.21264376915678,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "return",
+          "startSec": 223.53448084770727,
+          "endSec": 250.6215468445505,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 92.21264376915678,
+          "batteryToPct": 90.92278348359282,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.017124651454126,
+          "distanceM": 162.98625254517023
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 250.6215468445505,
+          "endSec": 350.6215468445505,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 90.92278348359282,
+          "batteryToPct": 86.16087872168806,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 10,
+      "intervalStartSec": 175.65970480304145,
+      "anchorSec": 179.65970480304145,
+      "responseDelaySec": 4,
+      "coordinate": [
+        135.09994195159135,
+        44.33684304963228
+      ],
+      "altitudeM": 100,
+      "batteryPct": 94.30191881890279,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 354.6215468445505,
+      "remainingPct": 85.97040253121189,
+      "route": [
+        {
+          "from": [
+            135.09994195159135,
+            44.33684304963228
+          ],
+          "to": [
+            135.09994195159135,
+            44.33684304963228
+          ],
+          "phase": "turn",
+          "startSec": 179.65970480304145,
+          "endSec": 183.65970480304145,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 94.30191881890279,
+          "batteryToPct": 94.1114426284266,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09994195159135,
+            44.33684304963228
+          ],
+          "to": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "phase": "return",
+          "startSec": 183.65970480304145,
+          "endSec": 223.53448084770727,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 94.1114426284266,
+          "batteryToPct": 92.2126437691568,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.003134352824605,
+          "distanceM": 239.37363788492104
+        },
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "phase": "turn",
+          "startSec": 223.53448084770727,
+          "endSec": 227.53448084770727,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 92.2126437691568,
+          "batteryToPct": 92.02216757868061,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "return",
+          "startSec": 227.53448084770727,
+          "endSec": 254.6215468445505,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 92.02216757868061,
+          "batteryToPct": 90.73230729311665,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.017124651454126,
+          "distanceM": 162.98625254517023
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 254.6215468445505,
+          "endSec": 354.6215468445505,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 90.73230729311665,
+          "batteryToPct": 85.97040253121189,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 11,
+      "intervalStartSec": 179.65970480304145,
+      "anchorSec": 194.6597048034041,
+      "responseDelaySec": 15.000000000362661,
+      "coordinate": [
+        135.09994195159135,
+        44.33792223406878
+      ],
+      "altitudeM": 100,
+      "batteryPct": 93.5876331045998,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 366.3175712569272,
+      "remainingPct": 85.41344898776538,
+      "route": [
+        {
+          "from": [
+            135.09994195159135,
+            44.33792223406878
+          ],
+          "to": [
+            135.09994195159135,
+            44.33792223406878
+          ],
+          "phase": "turn",
+          "startSec": 194.6597048034041,
+          "endSec": 198.6597048034041,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 93.5876331045998,
+          "batteryToPct": 93.39715691412361,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09994195159135,
+            44.33792223406878
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "return",
+          "startSec": 198.6597048034041,
+          "endSec": 266.3175712569272,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 93.39715691412361,
+          "batteryToPct": 90.17535374967014,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.029217129406472,
+          "distanceM": 407.9239673606769
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 266.3175712569272,
+          "endSec": 366.3175712569272,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 90.17535374967014,
+          "batteryToPct": 85.41344898776538,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 12,
+      "intervalStartSec": 194.6597048034041,
+      "anchorSec": 198.65972934271167,
+      "responseDelaySec": 4.00002453930756,
+      "coordinate": [
+        135.1004448996942,
+        44.33792223406878
+      ],
+      "altitudeM": 100,
+      "batteryPct": 93.39715574558515,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 376.89566152177053,
+      "remainingPct": 84.9097304037252,
+      "route": [
+        {
+          "from": [
+            135.1004448996942,
+            44.33792223406878
+          ],
+          "to": [
+            135.1004448996942,
+            44.33792223406878
+          ],
+          "phase": "turn",
+          "startSec": 198.65972934271167,
+          "endSec": 202.65972934271167,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 93.39715574558515,
+          "batteryToPct": 93.20667955510896,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.1004448996942,
+            44.33792223406878
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "return",
+          "startSec": 202.65972934271167,
+          "endSec": 276.89566152177053,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 93.20667955510896,
+          "batteryToPct": 89.67163516562997,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.024255884614822,
+          "distanceM": 447.2162512795624
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 276.89566152177053,
+          "endSec": 376.89566152177053,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 89.67163516562997,
+          "batteryToPct": 84.9097304037252,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 13,
+      "intervalStartSec": 198.65972934271167,
+      "anchorSec": 202.65972934271167,
+      "responseDelaySec": 4,
+      "coordinate": [
+        135.1004448996942,
+        44.33792223406878
+      ],
+      "altitudeM": 100,
+      "batteryPct": 93.20667955510896,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 380.89566152177053,
+      "remainingPct": 84.71925421324902,
+      "route": [
+        {
+          "from": [
+            135.1004448996942,
+            44.33792223406878
+          ],
+          "to": [
+            135.1004448996942,
+            44.33792223406878
+          ],
+          "phase": "turn",
+          "startSec": 202.65972934271167,
+          "endSec": 206.65972934271167,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 93.20667955510896,
+          "batteryToPct": 93.01620336463277,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.1004448996942,
+            44.33792223406878
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "return",
+          "startSec": 206.65972934271167,
+          "endSec": 280.89566152177053,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 93.01620336463277,
+          "batteryToPct": 89.48115897515378,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.024255884614822,
+          "distanceM": 447.2162512795624
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 280.89566152177053,
+          "endSec": 380.89566152177053,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 89.48115897515378,
+          "batteryToPct": 84.71925421324902,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 14,
+      "intervalStartSec": 202.65972934271167,
+      "anchorSec": 217.65972934307433,
+      "responseDelaySec": 15.000000000362661,
+      "coordinate": [
+        135.1004448996942,
+        44.33684304963228
+      ],
+      "altitudeM": 100,
+      "batteryPct": 92.49239384080597,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 399.27932721657334,
+      "remainingPct": 83.84384156111555,
+      "route": [
+        {
+          "from": [
+            135.1004448996942,
+            44.33684304963228
+          ],
+          "to": [
+            135.1004448996942,
+            44.33684304963228
+          ],
+          "phase": "turn",
+          "startSec": 217.65972934307433,
+          "endSec": 221.65972934307433,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 92.49239384080597,
+          "batteryToPct": 92.30191765032978,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.1004448996942,
+            44.33684304963228
+          ],
+          "to": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "phase": "return",
+          "startSec": 221.65972934307433,
+          "endSec": 268.1922612197301,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 92.30191765032978,
+          "batteryToPct": 90.08608279906046,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.002301406179379,
+          "distanceM": 279.3022815163377
+        },
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "phase": "turn",
+          "startSec": 268.1922612197301,
+          "endSec": 272.1922612197301,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 90.08608279906046,
+          "batteryToPct": 89.89560660858427,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "return",
+          "startSec": 272.1922612197301,
+          "endSec": 299.27932721657334,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 89.89560660858427,
+          "batteryToPct": 88.60574632302031,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.017124651454126,
+          "distanceM": 162.98625254517023
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 299.27932721657334,
+          "endSec": 399.27932721657334,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 88.60574632302031,
+          "batteryToPct": 83.84384156111555,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 15,
+      "intervalStartSec": 217.65972934307433,
+      "anchorSec": 240.92599528140158,
+      "responseDelaySec": 23.26626593832725,
+      "coordinate": [
+        135.09869167197175,
+        44.336912585082814
+      ],
+      "altitudeM": 100,
+      "batteryPct": 91.38447641517135,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 399.2793272165819,
+      "remainingPct": 83.84384156111516,
+      "route": [
+        {
+          "from": [
+            135.09869167197175,
+            44.336912585082814
+          ],
+          "to": [
+            135.09869167197175,
+            44.336912585082814
+          ],
+          "phase": "turn",
+          "startSec": 240.92599528140158,
+          "endSec": 244.92599528140158,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 91.38447641517135,
+          "batteryToPct": 91.19400022469516,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09869167197175,
+            44.336912585082814
+          ],
+          "to": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "phase": "return",
+          "startSec": 244.92599528140158,
+          "endSec": 268.19226121973867,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 91.19400022469516,
+          "batteryToPct": 90.08608279906007,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.002301406176066,
+          "distanceM": 139.651140758147
+        },
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "phase": "turn",
+          "startSec": 268.19226121973867,
+          "endSec": 272.19226121973867,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 90.08608279906007,
+          "batteryToPct": 89.89560660858388,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "return",
+          "startSec": 272.19226121973867,
+          "endSec": 299.2793272165819,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 89.89560660858388,
+          "batteryToPct": 88.60574632301991,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.017124651454126,
+          "distanceM": 162.98625254517023
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 299.2793272165819,
+          "endSec": 399.2793272165819,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 88.60574632301991,
+          "batteryToPct": 83.84384156111516,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 15,
+      "intervalStartSec": 240.92599528140158,
+      "anchorSec": 264.19226121972883,
+      "responseDelaySec": 23.26626593832725,
+      "coordinate": [
+        135.0969384442493,
+        44.33698212053334
+      ],
+      "altitudeM": 100,
+      "batteryPct": 90.27655898953672,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 395.27932721659175,
+      "remainingPct": 84.03431775159088,
+      "route": [
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "phase": "turn",
+          "startSec": 264.19226121972883,
+          "endSec": 268.19226121972883,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 90.27655898953672,
+          "batteryToPct": 90.08608279906053,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "return",
+          "startSec": 268.19226121972883,
+          "endSec": 295.27932721659175,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 90.08608279906053,
+          "batteryToPct": 88.79622251349564,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.01712465144975,
+          "distanceM": 162.98625254517023
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 295.27932721659175,
+          "endSec": 395.27932721659175,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 88.79622251349564,
+          "batteryToPct": 84.03431775159088,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 16,
+      "intervalStartSec": 264.19226121972883,
+      "anchorSec": 268.19226121972883,
+      "responseDelaySec": 4,
+      "coordinate": [
+        135.0969384442493,
+        44.33698212053334
+      ],
+      "altitudeM": 100,
+      "batteryPct": 90.08608279906053,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 399.27932721659175,
+      "remainingPct": 83.84384156111469,
+      "route": [
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "phase": "turn",
+          "startSec": 268.19226121972883,
+          "endSec": 272.19226121972883,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 90.08608279906053,
+          "batteryToPct": 89.89560660858434,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0969384442493,
+            44.33698212053334
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "return",
+          "startSec": 272.19226121972883,
+          "endSec": 299.27932721659175,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 89.89560660858434,
+          "batteryToPct": 88.60574632301945,
+          "airspeedMps": 8,
+          "groundSpeedMps": 6.01712465144975,
+          "distanceM": 162.98625254517023
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 299.27932721659175,
+          "endSec": 399.27932721659175,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 88.60574632301945,
+          "batteryToPct": 83.84384156111469,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 17,
+      "intervalStartSec": 268.19226121972883,
+      "anchorSec": 295.279327216572,
+      "responseDelaySec": 27.087065996843194,
+      "coordinate": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "altitudeM": 100,
+      "batteryPct": 88.79622251349657,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 399.279327216572,
+      "remainingPct": 83.84384156111562,
+      "route": [
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "turn",
+          "startSec": 295.279327216572,
+          "endSec": 299.279327216572,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 88.79622251349657,
+          "batteryToPct": 88.60574632302038,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 299.279327216572,
+          "endSec": 399.279327216572,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 88.60574632302038,
+          "batteryToPct": 83.84384156111562,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 18,
+      "intervalStartSec": 295.279327216572,
+      "anchorSec": 320.279327216572,
+      "responseDelaySec": 25,
+      "coordinate": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "altitudeM": 75,
+      "batteryPct": 87.60574632302038,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 399.279327216572,
+      "remainingPct": 83.84384156111562,
+      "route": [
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "turn",
+          "startSec": 320.279327216572,
+          "endSec": 324.279327216572,
+          "altitudeFromM": 75,
+          "altitudeToM": 75,
+          "batteryFromPct": 87.60574632302038,
+          "batteryToPct": 87.4152701325442,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 324.279327216572,
+          "endSec": 399.279327216572,
+          "altitudeFromM": 75,
+          "altitudeToM": 0,
+          "batteryFromPct": 87.4152701325442,
+          "batteryToPct": 83.84384156111562,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 18,
+      "intervalStartSec": 320.279327216572,
+      "anchorSec": 345.279327216572,
+      "responseDelaySec": 25,
+      "coordinate": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "altitudeM": 50,
+      "batteryPct": 86.4152701325442,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 399.279327216572,
+      "remainingPct": 83.84384156111562,
+      "route": [
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "turn",
+          "startSec": 345.279327216572,
+          "endSec": 349.279327216572,
+          "altitudeFromM": 50,
+          "altitudeToM": 50,
+          "batteryFromPct": 86.4152701325442,
+          "batteryToPct": 86.224793942068,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 349.279327216572,
+          "endSec": 399.279327216572,
+          "altitudeFromM": 50,
+          "altitudeToM": 0,
+          "batteryFromPct": 86.224793942068,
+          "batteryToPct": 83.84384156111562,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 18,
+      "intervalStartSec": 345.279327216572,
+      "anchorSec": 370.279327216572,
+      "responseDelaySec": 25,
+      "coordinate": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "altitudeM": 25,
+      "batteryPct": 85.224793942068,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 399.279327216572,
+      "remainingPct": 83.84384156111562,
+      "route": [
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "turn",
+          "startSec": 370.279327216572,
+          "endSec": 374.279327216572,
+          "altitudeFromM": 25,
+          "altitudeToM": 25,
+          "batteryFromPct": 85.224793942068,
+          "batteryToPct": 85.03431775159181,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "to": [
+            135.09491247056292,
+            44.33720277777778
+          ],
+          "phase": "landing",
+          "startSec": 374.279327216572,
+          "endSec": 399.279327216572,
+          "altitudeFromM": 25,
+          "altitudeToM": 0,
+          "batteryFromPct": 85.03431775159181,
+          "batteryToPct": 83.84384156111562,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-1",
+      "vehicleId": "demo-rgb",
+      "segmentIndex": 18,
+      "intervalStartSec": 370.279327216572,
+      "anchorSec": 395.279327216572,
+      "responseDelaySec": 25,
+      "coordinate": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "altitudeM": 0,
+      "batteryPct": 84.03431775159181,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33720277777778
+      ],
+      "landingSec": 395.279327216572,
+      "remainingPct": 84.03431775159181,
+      "route": [],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 0,
+      "intervalStartSec": 399.279327216572,
+      "anchorSec": 415.94599388323866,
+      "responseDelaySec": 16.666666666666657,
+      "coordinate": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "altitudeM": 49.999999999999915,
+      "batteryPct": 99.20634920634922,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 469.94599388323854,
+      "remainingPct": 96.63492063492065,
+      "route": [
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "turn",
+          "startSec": 415.94599388323866,
+          "endSec": 419.94599388323866,
+          "altitudeFromM": 49.999999999999915,
+          "altitudeToM": 49.999999999999915,
+          "batteryFromPct": 99.20634920634922,
+          "batteryToPct": 99.01587301587303,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 419.94599388323866,
+          "endSec": 469.94599388323854,
+          "altitudeFromM": 49.999999999999915,
+          "altitudeToM": 0,
+          "batteryFromPct": 99.01587301587303,
+          "batteryToPct": 96.63492063492065,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 0,
+      "intervalStartSec": 415.94599388323866,
+      "anchorSec": 432.61266054990534,
+      "responseDelaySec": 16.666666666666657,
+      "coordinate": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "altitudeM": 100,
+      "batteryPct": 98.41269841269842,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 536.6126605499053,
+      "remainingPct": 93.46031746031747,
+      "route": [
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "turn",
+          "startSec": 432.61266054990534,
+          "endSec": 436.61266054990534,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 98.41269841269842,
+          "batteryToPct": 98.22222222222223,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 436.61266054990534,
+          "endSec": 536.6126605499053,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 98.22222222222223,
+          "batteryToPct": 93.46031746031747,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 1,
+      "intervalStartSec": 432.61266054990534,
+      "anchorSec": 452.077065673932,
+      "responseDelaySec": 19.464405124026626,
+      "coordinate": [
+        135.09687037567755,
+        44.33792223406877
+      ],
+      "altitudeM": 100,
+      "batteryPct": 97.48582197822095,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 595.005875922066,
+      "remainingPct": 90.67968815688124,
+      "route": [
+        {
+          "from": [
+            135.09687037567755,
+            44.33792223406877
+          ],
+          "to": [
+            135.09687037567755,
+            44.33792223406877
+          ],
+          "phase": "turn",
+          "startSec": 452.077065673932,
+          "endSec": 456.077065673932,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 97.48582197822095,
+          "batteryToPct": 97.29534578774476,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09687037567755,
+            44.33792223406877
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 456.077065673932,
+          "endSec": 495.00587592206597,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 97.29534578774476,
+          "batteryToPct": 95.441592918786,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4,
+          "distanceM": 155.7152409925358
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 495.00587592206597,
+          "endSec": 595.005875922066,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 95.441592918786,
+          "batteryToPct": 90.67968815688124,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 1,
+      "intervalStartSec": 452.077065673932,
+      "anchorSec": 471.5414707979586,
+      "responseDelaySec": 19.464405124026626,
+      "coordinate": [
+        135.0988282807922,
+        44.33792223406878
+      ],
+      "altitudeM": 100,
+      "batteryPct": 96.5589455437435,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 653.3990912942265,
+      "remainingPct": 87.89905885344504,
+      "route": [
+        {
+          "from": [
+            135.0988282807922,
+            44.33792223406878
+          ],
+          "to": [
+            135.0988282807922,
+            44.33792223406878
+          ],
+          "phase": "turn",
+          "startSec": 471.5414707979586,
+          "endSec": 475.5414707979586,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 96.5589455437435,
+          "batteryToPct": 96.36846935326732,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0988282807922,
+            44.33792223406878
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 475.5414707979586,
+          "endSec": 553.3990912942265,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 96.36846935326732,
+          "batteryToPct": 92.6609636153498,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4,
+          "distanceM": 311.4304819850716
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 553.3990912942265,
+          "endSec": 653.3990912942265,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 92.6609636153498,
+          "batteryToPct": 87.89905885344504,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 2,
+      "intervalStartSec": 471.5414707979586,
+      "anchorSec": 475.5414707979586,
+      "responseDelaySec": 4,
+      "coordinate": [
+        135.0988282807922,
+        44.33792223406878
+      ],
+      "altitudeM": 100,
+      "batteryPct": 96.3684693532673,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 657.3990912942265,
+      "remainingPct": 87.70858266296884,
+      "route": [
+        {
+          "from": [
+            135.0988282807922,
+            44.33792223406878
+          ],
+          "to": [
+            135.0988282807922,
+            44.33792223406878
+          ],
+          "phase": "turn",
+          "startSec": 475.5414707979586,
+          "endSec": 479.5414707979586,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 96.3684693532673,
+          "batteryToPct": 96.17799316279111,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0988282807922,
+            44.33792223406878
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 479.5414707979586,
+          "endSec": 557.3990912942265,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 96.17799316279111,
+          "batteryToPct": 92.4704874248736,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4,
+          "distanceM": 311.4304819850716
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 557.3990912942265,
+          "endSec": 657.3990912942265,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 92.4704874248736,
+          "batteryToPct": 87.70858266296884,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 3,
+      "intervalStartSec": 475.5414707979586,
+      "anchorSec": 495.5414707984421,
+      "responseDelaySec": 20.00000000048351,
+      "coordinate": [
+        135.0988282807922,
+        44.33684304963228
+      ],
+      "altitudeM": 100,
+      "batteryPct": 95.41608840086333,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 685.2961288238417,
+      "remainingPct": 86.38015230441574,
+      "route": [
+        {
+          "from": [
+            135.0988282807922,
+            44.33684304963228
+          ],
+          "to": [
+            135.0988282807922,
+            44.33684304963228
+          ],
+          "phase": "turn",
+          "startSec": 495.5414707984421,
+          "endSec": 499.5414707984421,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 95.41608840086333,
+          "batteryToPct": 95.22561221038714,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0988282807922,
+            44.33684304963228
+          ],
+          "to": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "phase": "return",
+          "startSec": 499.5414707984421,
+          "endSec": 535.1738878571197,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 95.22561221038714,
+          "batteryToPct": 93.52883044568821,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4.137577231747331,
+          "distanceM": 147.4318775341094
+        },
+        {
+          "from": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "to": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "phase": "turn",
+          "startSec": 535.1738878571197,
+          "endSec": 539.1738878571197,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 93.52883044568821,
+          "batteryToPct": 93.33835425521202,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 539.1738878571197,
+          "endSec": 585.2961288238417,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 93.33835425521202,
+          "batteryToPct": 91.1420570663205,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4.060415927197995,
+          "distanceM": 187.27548181934208
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 585.2961288238417,
+          "endSec": 685.2961288238417,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 91.1420570663205,
+          "batteryToPct": 86.38015230441574,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 4,
+      "intervalStartSec": 495.5414707984421,
+      "anchorSec": 498.39863118366185,
+      "responseDelaySec": 2.8571603852197427,
+      "coordinate": [
+        135.0991156797081,
+        44.33684304963228
+      ],
+      "altitudeM": 100,
+      "batteryPct": 95.2800331444243,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 693.527996437944,
+      "remainingPct": 85.98815860850611,
+      "route": [
+        {
+          "from": [
+            135.0991156797081,
+            44.33684304963228
+          ],
+          "to": [
+            135.0991156797081,
+            44.33684304963228
+          ],
+          "phase": "turn",
+          "startSec": 498.39863118366185,
+          "endSec": 502.39863118366185,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 95.2800331444243,
+          "batteryToPct": 95.0895569539481,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0991156797081,
+            44.33684304963228
+          ],
+          "to": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "phase": "return",
+          "startSec": 502.39863118366185,
+          "endSec": 543.4057554712219,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 95.0895569539481,
+          "batteryToPct": 93.13683674977858,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4.103693468975619,
+          "distanceM": 168.28066812033194
+        },
+        {
+          "from": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "to": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "phase": "turn",
+          "startSec": 543.4057554712219,
+          "endSec": 547.4057554712219,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 93.13683674977858,
+          "batteryToPct": 92.94636055930239,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 547.4057554712219,
+          "endSec": 593.527996437944,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 92.94636055930239,
+          "batteryToPct": 90.75006337041087,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4.060415927197995,
+          "distanceM": 187.27548181934208
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 593.527996437944,
+          "endSec": 693.527996437944,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 90.75006337041087,
+          "batteryToPct": 85.98815860850611,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 5,
+      "intervalStartSec": 498.39863118366185,
+      "anchorSec": 502.39863118366185,
+      "responseDelaySec": 4,
+      "coordinate": [
+        135.0991156797081,
+        44.33684304963228
+      ],
+      "altitudeM": 100,
+      "batteryPct": 95.0895569539481,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 697.527996437944,
+      "remainingPct": 85.79768241802992,
+      "route": [
+        {
+          "from": [
+            135.0991156797081,
+            44.33684304963228
+          ],
+          "to": [
+            135.0991156797081,
+            44.33684304963228
+          ],
+          "phase": "turn",
+          "startSec": 502.39863118366185,
+          "endSec": 506.39863118366185,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 95.0895569539481,
+          "batteryToPct": 94.89908076347191,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0991156797081,
+            44.33684304963228
+          ],
+          "to": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "phase": "return",
+          "startSec": 506.39863118366185,
+          "endSec": 547.4057554712219,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 94.89908076347191,
+          "batteryToPct": 92.94636055930239,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4.103693468975619,
+          "distanceM": 168.28066812033194
+        },
+        {
+          "from": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "to": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "phase": "turn",
+          "startSec": 547.4057554712219,
+          "endSec": 551.4057554712219,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 92.94636055930239,
+          "batteryToPct": 92.7558843688262,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 551.4057554712219,
+          "endSec": 597.527996437944,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 92.7558843688262,
+          "batteryToPct": 90.55958717993468,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4.060415927197995,
+          "distanceM": 187.27548181934208
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 597.527996437944,
+          "endSec": 697.527996437944,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 90.55958717993468,
+          "batteryToPct": 85.79768241802992,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 6,
+      "intervalStartSec": 502.39863118366185,
+      "anchorSec": 522.3986311841454,
+      "responseDelaySec": 20.000000000483567,
+      "coordinate": [
+        135.0991156797081,
+        44.33792223406878
+      ],
+      "altitudeM": 100,
+      "batteryPct": 94.13717600154413,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 709.9705724506105,
+      "remainingPct": 85.20517879837914,
+      "route": [
+        {
+          "from": [
+            135.0991156797081,
+            44.33792223406878
+          ],
+          "to": [
+            135.0991156797081,
+            44.33792223406878
+          ],
+          "phase": "turn",
+          "startSec": 522.3986311841454,
+          "endSec": 526.3986311841454,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 94.13717600154413,
+          "batteryToPct": 93.94669981106794,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0991156797081,
+            44.33792223406878
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 526.3986311841454,
+          "endSec": 609.9705724506105,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 93.94669981106794,
+          "batteryToPct": 89.9670835602839,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4,
+          "distanceM": 334.2877650658604
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 609.9705724506105,
+          "endSec": 709.9705724506105,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 89.9670835602839,
+          "batteryToPct": 85.20517879837914,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 7,
+      "intervalStartSec": 522.3986311841454,
+      "anchorSec": 525.2557915693651,
+      "responseDelaySec": 2.857160385219686,
+      "coordinate": [
+        135.09940307862402,
+        44.33792223406878
+      ],
+      "altitudeM": 100,
+      "batteryPct": 94.0011207451051,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 718.5420536065925,
+      "remainingPct": 84.79701302904665,
+      "route": [
+        {
+          "from": [
+            135.09940307862402,
+            44.33792223406878
+          ],
+          "to": [
+            135.09940307862402,
+            44.33792223406878
+          ],
+          "phase": "turn",
+          "startSec": 525.2557915693651,
+          "endSec": 529.2557915693651,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 94.0011207451051,
+          "batteryToPct": 93.81064455462891,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09940307862402,
+            44.33792223406878
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 529.2557915693651,
+          "endSec": 618.5420536065925,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 93.81064455462891,
+          "batteryToPct": 89.55891779095141,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4,
+          "distanceM": 357.1450481489096
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 618.5420536065925,
+          "endSec": 718.5420536065925,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 89.55891779095141,
+          "batteryToPct": 84.79701302904665,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 8,
+      "intervalStartSec": 525.2557915693651,
+      "anchorSec": 529.2557915693651,
+      "responseDelaySec": 4,
+      "coordinate": [
+        135.09940307862402,
+        44.33792223406878
+      ],
+      "altitudeM": 100,
+      "batteryPct": 93.81064455462891,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 722.5420536065925,
+      "remainingPct": 84.60653683857046,
+      "route": [
+        {
+          "from": [
+            135.09940307862402,
+            44.33792223406878
+          ],
+          "to": [
+            135.09940307862402,
+            44.33792223406878
+          ],
+          "phase": "turn",
+          "startSec": 529.2557915693651,
+          "endSec": 533.2557915693651,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 93.81064455462891,
+          "batteryToPct": 93.62016836415272,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09940307862402,
+            44.33792223406878
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 533.2557915693651,
+          "endSec": 622.5420536065925,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 93.62016836415272,
+          "batteryToPct": 89.36844160047522,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4,
+          "distanceM": 357.1450481489096
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 622.5420536065925,
+          "endSec": 722.5420536065925,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 89.36844160047522,
+          "batteryToPct": 84.60653683857046,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 9,
+      "intervalStartSec": 529.2557915693651,
+      "anchorSec": 549.2557915698486,
+      "responseDelaySec": 20.00000000048351,
+      "coordinate": [
+        135.09940307862402,
+        44.33684304963228
+      ],
+      "altitudeM": 100,
+      "batteryPct": 92.85826360222494,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 749.8391070561786,
+      "remainingPct": 83.30667715049495,
+      "route": [
+        {
+          "from": [
+            135.09940307862402,
+            44.33684304963228
+          ],
+          "to": [
+            135.09940307862402,
+            44.33684304963228
+          ],
+          "phase": "turn",
+          "startSec": 549.2557915698486,
+          "endSec": 553.2557915698486,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 92.85826360222494,
+          "batteryToPct": 92.66778741174875,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09940307862402,
+            44.33684304963228
+          ],
+          "to": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "phase": "return",
+          "startSec": 553.2557915698486,
+          "endSec": 599.7168660894565,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 92.66778741174875,
+          "batteryToPct": 90.45535529176742,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4.080685533531665,
+          "distanceM": 189.5930346645007
+        },
+        {
+          "from": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "to": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "phase": "turn",
+          "startSec": 599.7168660894565,
+          "endSec": 603.7168660894565,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 90.45535529176742,
+          "batteryToPct": 90.26487910129123,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 603.7168660894565,
+          "endSec": 649.8391070561786,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 90.26487910129123,
+          "batteryToPct": 88.06858191239971,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4.060415927197995,
+          "distanceM": 187.27548181934208
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 649.8391070561786,
+          "endSec": 749.8391070561786,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 88.06858191239971,
+          "batteryToPct": 83.30667715049495,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 10,
+      "intervalStartSec": 549.2557915698486,
+      "anchorSec": 552.1129519550683,
+      "responseDelaySec": 2.857160385219686,
+      "coordinate": [
+        135.09969047753992,
+        44.33684304963228
+      ],
+      "altitudeM": 100,
+      "batteryPct": 92.72220834578589,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 758.2051798214944,
+      "remainingPct": 82.90829273309895,
+      "route": [
+        {
+          "from": [
+            135.09969047753992,
+            44.33684304963228
+          ],
+          "to": [
+            135.09969047753992,
+            44.33684304963228
+          ],
+          "phase": "turn",
+          "startSec": 552.1129519550683,
+          "endSec": 556.1129519550683,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 92.72220834578589,
+          "batteryToPct": 92.5317321553097,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09969047753992,
+            44.33684304963228
+          ],
+          "to": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "phase": "return",
+          "startSec": 556.1129519550683,
+          "endSec": 608.0829388547724,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 92.5317321553097,
+          "batteryToPct": 90.05697087437142,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4.06443633935965,
+          "distanceM": 211.22870331120203
+        },
+        {
+          "from": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "to": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "phase": "turn",
+          "startSec": 608.0829388547724,
+          "endSec": 612.0829388547724,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 90.05697087437142,
+          "batteryToPct": 89.86649468389523,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 612.0829388547724,
+          "endSec": 658.2051798214944,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 89.86649468389523,
+          "batteryToPct": 87.6701974950037,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4.060415927197995,
+          "distanceM": 187.27548181934208
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 658.2051798214944,
+          "endSec": 758.2051798214944,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 87.6701974950037,
+          "batteryToPct": 82.90829273309895,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 11,
+      "intervalStartSec": 552.1129519550683,
+      "anchorSec": 556.1129519550683,
+      "responseDelaySec": 4,
+      "coordinate": [
+        135.09969047753992,
+        44.33684304963228
+      ],
+      "altitudeM": 100,
+      "batteryPct": 92.5317321553097,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 762.2051798214944,
+      "remainingPct": 82.71781654262276,
+      "route": [
+        {
+          "from": [
+            135.09969047753992,
+            44.33684304963228
+          ],
+          "to": [
+            135.09969047753992,
+            44.33684304963228
+          ],
+          "phase": "turn",
+          "startSec": 556.1129519550683,
+          "endSec": 560.1129519550683,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 92.5317321553097,
+          "batteryToPct": 92.34125596483351,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09969047753992,
+            44.33684304963228
+          ],
+          "to": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "phase": "return",
+          "startSec": 560.1129519550683,
+          "endSec": 612.0829388547724,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 92.34125596483351,
+          "batteryToPct": 89.86649468389523,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4.06443633935965,
+          "distanceM": 211.22870331120203
+        },
+        {
+          "from": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "to": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "phase": "turn",
+          "startSec": 612.0829388547724,
+          "endSec": 616.0829388547724,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 89.86649468389523,
+          "batteryToPct": 89.67601849341904,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09716156323262,
+            44.337423435022224
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 616.0829388547724,
+          "endSec": 662.2051798214944,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 89.67601849341904,
+          "batteryToPct": 87.47972130452752,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4.060415927197995,
+          "distanceM": 187.27548181934208
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 662.2051798214944,
+          "endSec": 762.2051798214944,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 87.47972130452752,
+          "batteryToPct": 82.71781654262276,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 12,
+      "intervalStartSec": 556.1129519550683,
+      "anchorSec": 576.1129519555518,
+      "responseDelaySec": 20.00000000048351,
+      "coordinate": [
+        135.09969047753992,
+        44.33792223406878
+      ],
+      "altitudeM": 100,
+      "batteryPct": 91.57935120290573,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 775.1135347629764,
+      "remainingPct": 82.10313297398075,
+      "route": [
+        {
+          "from": [
+            135.09969047753992,
+            44.33792223406878
+          ],
+          "to": [
+            135.09969047753992,
+            44.33792223406878
+          ],
+          "phase": "turn",
+          "startSec": 576.1129519555518,
+          "endSec": 580.1129519555518,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 91.57935120290573,
+          "batteryToPct": 91.38887501242954,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09969047753992,
+            44.33792223406878
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 580.1129519555518,
+          "endSec": 675.1135347629764,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 91.38887501242954,
+          "batteryToPct": 86.86503773588551,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4,
+          "distanceM": 380.0023312296984
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 675.1135347629764,
+          "endSec": 775.1135347629764,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 86.86503773588551,
+          "batteryToPct": 82.10313297398075,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 13,
+      "intervalStartSec": 576.1129519555518,
+      "anchorSec": 578.9701123407715,
+      "responseDelaySec": 2.857160385219686,
+      "coordinate": [
+        135.09997787645582,
+        44.33792223406878
+      ],
+      "altitudeM": 100,
+      "batteryPct": 91.44329594646669,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 783.6850159183933,
+      "remainingPct": 81.69496720467518,
+      "route": [
+        {
+          "from": [
+            135.09997787645582,
+            44.33792223406878
+          ],
+          "to": [
+            135.09997787645582,
+            44.33792223406878
+          ],
+          "phase": "turn",
+          "startSec": 578.9701123407715,
+          "endSec": 582.9701123407715,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 91.44329594646669,
+          "batteryToPct": 91.2528197559905,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09997787645582,
+            44.33792223406878
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 582.9701123407715,
+          "endSec": 683.6850159183933,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 91.2528197559905,
+          "batteryToPct": 86.45687196657994,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4,
+          "distanceM": 402.85961431048725
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 683.6850159183933,
+          "endSec": 783.6850159183933,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 86.45687196657994,
+          "batteryToPct": 81.69496720467518,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 14,
+      "intervalStartSec": 578.9701123407715,
+      "anchorSec": 582.9701123407715,
+      "responseDelaySec": 4,
+      "coordinate": [
+        135.09997787645582,
+        44.33792223406878
+      ],
+      "altitudeM": 100,
+      "batteryPct": 91.2528197559905,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 787.6850159183933,
+      "remainingPct": 81.50449101419899,
+      "route": [
+        {
+          "from": [
+            135.09997787645582,
+            44.33792223406878
+          ],
+          "to": [
+            135.09997787645582,
+            44.33792223406878
+          ],
+          "phase": "turn",
+          "startSec": 582.9701123407715,
+          "endSec": 586.9701123407715,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 91.2528197559905,
+          "batteryToPct": 91.06234356551431,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09997787645582,
+            44.33792223406878
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 586.9701123407715,
+          "endSec": 687.6850159183933,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 91.06234356551431,
+          "batteryToPct": 86.26639577610375,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4,
+          "distanceM": 402.85961431048725
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 687.6850159183933,
+          "endSec": 787.6850159183933,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 86.26639577610375,
+          "batteryToPct": 81.50449101419899,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 15,
+      "intervalStartSec": 582.9701123407715,
+      "anchorSec": 602.970112341255,
+      "responseDelaySec": 20.00000000048351,
+      "coordinate": [
+        135.09997787645582,
+        44.33684304963228
+      ],
+      "altitudeM": 100,
+      "batteryPct": 90.30043880358653,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 810.6071975035106,
+      "remainingPct": 80.41295855776484,
+      "route": [
+        {
+          "from": [
+            135.09997787645582,
+            44.33684304963228
+          ],
+          "to": [
+            135.09997787645582,
+            44.33684304963228
+          ],
+          "phase": "turn",
+          "startSec": 602.970112341255,
+          "endSec": 606.970112341255,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 90.30043880358653,
+          "batteryToPct": 90.10996261311034,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09997787645582,
+            44.33684304963228
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 606.970112341255,
+          "endSec": 710.6071975035106,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 90.10996261311034,
+          "batteryToPct": 85.1748633196696,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4.05600057725707,
+          "distanceM": 420.352077243349
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 710.6071975035106,
+          "endSec": 810.6071975035106,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 85.1748633196696,
+          "batteryToPct": 80.41295855776484,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 16,
+      "intervalStartSec": 602.970112341255,
+      "anchorSec": 605.8272727264747,
+      "responseDelaySec": 2.857160385219686,
+      "coordinate": [
+        135.10026527537175,
+        44.33684304963228
+      ],
+      "altitudeM": 100,
+      "batteryPct": 90.1643835471475,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 819.0271852316054,
+      "remainingPct": 80.0120067611889,
+      "route": [
+        {
+          "from": [
+            135.10026527537175,
+            44.33684304963228
+          ],
+          "to": [
+            135.10026527537175,
+            44.33684304963228
+          ],
+          "phase": "turn",
+          "startSec": 605.8272727264747,
+          "endSec": 609.8272727264747,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 90.1643835471475,
+          "batteryToPct": 89.9739073566713,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.10026527537175,
+            44.33684304963228
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 609.8272727264747,
+          "endSec": 719.0271852316054,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 89.9739073566713,
+          "batteryToPct": 84.77391152309366,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4.05042737991426,
+          "distanceM": 442.30631549502294
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 719.0271852316054,
+          "endSec": 819.0271852316054,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 84.77391152309366,
+          "batteryToPct": 80.0120067611889,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 17,
+      "intervalStartSec": 605.8272727264747,
+      "anchorSec": 609.8272727264747,
+      "responseDelaySec": 4,
+      "coordinate": [
+        135.10026527537175,
+        44.33684304963228
+      ],
+      "altitudeM": 100,
+      "batteryPct": 89.9739073566713,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 823.0271852316054,
+      "remainingPct": 79.82153057071271,
+      "route": [
+        {
+          "from": [
+            135.10026527537175,
+            44.33684304963228
+          ],
+          "to": [
+            135.10026527537175,
+            44.33684304963228
+          ],
+          "phase": "turn",
+          "startSec": 609.8272727264747,
+          "endSec": 613.8272727264747,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 89.9739073566713,
+          "batteryToPct": 89.78343116619511,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.10026527537175,
+            44.33684304963228
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 613.8272727264747,
+          "endSec": 723.0271852316054,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 89.78343116619511,
+          "batteryToPct": 84.58343533261747,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4.05042737991426,
+          "distanceM": 442.30631549502294
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 723.0271852316054,
+          "endSec": 823.0271852316054,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 84.58343533261747,
+          "batteryToPct": 79.82153057071271,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 18,
+      "intervalStartSec": 609.8272727264747,
+      "anchorSec": 629.8272727269582,
+      "responseDelaySec": 20.00000000048351,
+      "coordinate": [
+        135.10026527537175,
+        44.33792223406878
+      ],
+      "altitudeM": 100,
+      "batteryPct": 89.02152640426733,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 840.2564970753423,
+      "remainingPct": 79.00108714958237,
+      "route": [
+        {
+          "from": [
+            135.10026527537175,
+            44.33792223406878
+          ],
+          "to": [
+            135.10026527537175,
+            44.33792223406878
+          ],
+          "phase": "turn",
+          "startSec": 629.8272727269582,
+          "endSec": 633.8272727269582,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 89.02152640426733,
+          "batteryToPct": 88.83105021379114,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.10026527537175,
+            44.33792223406878
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 633.8272727269582,
+          "endSec": 740.2564970753423,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 88.83105021379114,
+          "batteryToPct": 83.76299191148713,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4,
+          "distanceM": 425.71689739353644
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 740.2564970753423,
+          "endSec": 840.2564970753423,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 83.76299191148713,
+          "batteryToPct": 79.00108714958237,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 19,
+      "intervalStartSec": 629.8272727269582,
+      "anchorSec": 632.6844331121779,
+      "responseDelaySec": 2.857160385219686,
+      "coordinate": [
+        135.10055267428766,
+        44.33792223406878
+      ],
+      "altitudeM": 100,
+      "batteryPct": 88.88547114782828,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 848.8279782307592,
+      "remainingPct": 78.59292138027679,
+      "route": [
+        {
+          "from": [
+            135.10055267428766,
+            44.33792223406878
+          ],
+          "to": [
+            135.10055267428766,
+            44.33792223406878
+          ],
+          "phase": "turn",
+          "startSec": 632.6844331121779,
+          "endSec": 636.6844331121779,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 88.88547114782828,
+          "batteryToPct": 88.6949949573521,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.10055267428766,
+            44.33792223406878
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 636.6844331121779,
+          "endSec": 748.8279782307592,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 88.6949949573521,
+          "batteryToPct": 83.35482614218155,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4,
+          "distanceM": 448.5741804743252
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 748.8279782307592,
+          "endSec": 848.8279782307592,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 83.35482614218155,
+          "batteryToPct": 78.59292138027679,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 20,
+      "intervalStartSec": 632.6844331121779,
+      "anchorSec": 636.6844331121779,
+      "responseDelaySec": 4,
+      "coordinate": [
+        135.10055267428766,
+        44.33792223406878
+      ],
+      "altitudeM": 100,
+      "batteryPct": 88.69499495735211,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 852.8279782307592,
+      "remainingPct": 78.40244518980062,
+      "route": [
+        {
+          "from": [
+            135.10055267428766,
+            44.33792223406878
+          ],
+          "to": [
+            135.10055267428766,
+            44.33792223406878
+          ],
+          "phase": "turn",
+          "startSec": 636.6844331121779,
+          "endSec": 640.6844331121779,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 88.69499495735211,
+          "batteryToPct": 88.50451876687592,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.10055267428766,
+            44.33792223406878
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 640.6844331121779,
+          "endSec": 752.8279782307592,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 88.50451876687592,
+          "batteryToPct": 83.16434995170538,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4,
+          "distanceM": 448.5741804743252
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 752.8279782307592,
+          "endSec": 852.8279782307592,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 83.16434995170538,
+          "batteryToPct": 78.40244518980062,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 21,
+      "intervalStartSec": 636.6844331121779,
+      "anchorSec": 656.6844331126615,
+      "responseDelaySec": 20.000000000483624,
+      "coordinate": [
+        135.10055267428766,
+        44.33684304963228
+      ],
+      "altitudeM": 100,
+      "batteryPct": 87.74261400494812,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 875.4618796467746,
+      "remainingPct": 77.32464036046655,
+      "route": [
+        {
+          "from": [
+            135.10055267428766,
+            44.33684304963228
+          ],
+          "to": [
+            135.10055267428766,
+            44.33684304963228
+          ],
+          "phase": "turn",
+          "startSec": 656.6844331126615,
+          "endSec": 660.6844331126615,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 87.74261400494812,
+          "batteryToPct": 87.55213781447193,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.10055267428766,
+            44.33684304963228
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 660.6844331126615,
+          "endSec": 775.4618796467746,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 87.55213781447193,
+          "batteryToPct": 82.0865451223713,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4.045635476287936,
+          "distanceM": 464.34770957614984
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 775.4618796467746,
+          "endSec": 875.4618796467746,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 82.0865451223713,
+          "batteryToPct": 77.32464036046655,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 22,
+      "intervalStartSec": 656.6844331126615,
+      "anchorSec": 685.3787947462273,
+      "responseDelaySec": 28.694361633565762,
+      "coordinate": [
+        135.09914262335647,
+        44.3371128457414
+      ],
+      "altitudeM": 100,
+      "batteryPct": 86.37621583192119,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 875.4618796468036,
+      "remainingPct": 77.32464036046517,
+      "route": [
+        {
+          "from": [
+            135.09914262335647,
+            44.3371128457414
+          ],
+          "to": [
+            135.09914262335647,
+            44.3371128457414
+          ],
+          "phase": "turn",
+          "startSec": 685.3787947462273,
+          "endSec": 689.3787947462273,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 86.37621583192119,
+          "batteryToPct": 86.185739641445,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09914262335647,
+            44.3371128457414
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 689.3787947462273,
+          "endSec": 775.4618796468036,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 86.185739641445,
+          "batteryToPct": 82.08654512236993,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4.045635476287744,
+          "distanceM": 348.26078218206135
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 775.4618796468036,
+          "endSec": 875.4618796468036,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 82.08654512236993,
+          "batteryToPct": 77.32464036046517,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 22,
+      "intervalStartSec": 685.3787947462273,
+      "anchorSec": 714.0731563797931,
+      "responseDelaySec": 28.694361633565762,
+      "coordinate": [
+        135.0977325724253,
+        44.337382641850525
+      ],
+      "altitudeM": 100,
+      "batteryPct": 85.00981765889424,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 875.4618796468326,
+      "remainingPct": 77.32464036046379,
+      "route": [
+        {
+          "from": [
+            135.0977325724253,
+            44.337382641850525
+          ],
+          "to": [
+            135.0977325724253,
+            44.337382641850525
+          ],
+          "phase": "turn",
+          "startSec": 714.0731563797931,
+          "endSec": 718.0731563797931,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 85.00981765889424,
+          "batteryToPct": 84.81934146841805,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0977325724253,
+            44.337382641850525
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 718.0731563797931,
+          "endSec": 775.4618796468326,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 84.81934146841805,
+          "batteryToPct": 82.08654512236855,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4.0456354762873605,
+          "distanceM": 232.17385478797283
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 775.4618796468326,
+          "endSec": 875.4618796468326,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 82.08654512236855,
+          "batteryToPct": 77.32464036046379,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 22,
+      "intervalStartSec": 714.0731563797931,
+      "anchorSec": 742.7675180133588,
+      "responseDelaySec": 28.694361633565762,
+      "coordinate": [
+        135.0963225214941,
+        44.33765243795964
+      ],
+      "altitudeM": 100,
+      "batteryPct": 83.6434194858673,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 875.4618796468956,
+      "remainingPct": 77.32464036046079,
+      "route": [
+        {
+          "from": [
+            135.0963225214941,
+            44.33765243795964
+          ],
+          "to": [
+            135.0963225214941,
+            44.33765243795964
+          ],
+          "phase": "turn",
+          "startSec": 742.7675180133588,
+          "endSec": 746.7675180133588,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 83.6434194858673,
+          "batteryToPct": 83.45294329539111,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.0963225214941,
+            44.33765243795964
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "return",
+          "startSec": 746.7675180133588,
+          "endSec": 775.4618796468956,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 83.45294329539111,
+          "batteryToPct": 82.08654512236555,
+          "airspeedMps": 6,
+          "groundSpeedMps": 4.045635476288512,
+          "distanceM": 116.08692739408853
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 775.4618796468956,
+          "endSec": 875.4618796468956,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 82.08654512236555,
+          "batteryToPct": 77.32464036046079,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 22,
+      "intervalStartSec": 742.7675180133588,
+      "anchorSec": 771.4618796469246,
+      "responseDelaySec": 28.694361633565762,
+      "coordinate": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "altitudeM": 100,
+      "batteryPct": 82.27702131284036,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 875.4618796469246,
+      "remainingPct": 77.32464036045941,
+      "route": [
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "turn",
+          "startSec": 771.4618796469246,
+          "endSec": 775.4618796469246,
+          "altitudeFromM": 100,
+          "altitudeToM": 100,
+          "batteryFromPct": 82.27702131284036,
+          "batteryToPct": 82.08654512236417,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 775.4618796469246,
+          "endSec": 875.4618796469246,
+          "altitudeFromM": 100,
+          "altitudeToM": 0,
+          "batteryFromPct": 82.08654512236417,
+          "batteryToPct": 77.32464036045941,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 23,
+      "intervalStartSec": 771.4618796469246,
+      "anchorSec": 796.4618796469246,
+      "responseDelaySec": 25,
+      "coordinate": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "altitudeM": 75,
+      "batteryPct": 81.08654512236417,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 875.4618796469246,
+      "remainingPct": 77.32464036045941,
+      "route": [
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "turn",
+          "startSec": 796.4618796469246,
+          "endSec": 800.4618796469246,
+          "altitudeFromM": 75,
+          "altitudeToM": 75,
+          "batteryFromPct": 81.08654512236417,
+          "batteryToPct": 80.89606893188798,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 800.4618796469246,
+          "endSec": 875.4618796469246,
+          "altitudeFromM": 75,
+          "altitudeToM": 0,
+          "batteryFromPct": 80.89606893188798,
+          "batteryToPct": 77.32464036045941,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 23,
+      "intervalStartSec": 796.4618796469246,
+      "anchorSec": 821.4618796469246,
+      "responseDelaySec": 25,
+      "coordinate": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "altitudeM": 50,
+      "batteryPct": 79.89606893188798,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 875.4618796469246,
+      "remainingPct": 77.32464036045941,
+      "route": [
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "turn",
+          "startSec": 821.4618796469246,
+          "endSec": 825.4618796469246,
+          "altitudeFromM": 50,
+          "altitudeToM": 50,
+          "batteryFromPct": 79.89606893188798,
+          "batteryToPct": 79.70559274141179,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 825.4618796469246,
+          "endSec": 875.4618796469246,
+          "altitudeFromM": 50,
+          "altitudeToM": 0,
+          "batteryFromPct": 79.70559274141179,
+          "batteryToPct": 77.32464036045941,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 23,
+      "intervalStartSec": 821.4618796469246,
+      "anchorSec": 846.4618796469246,
+      "responseDelaySec": 25,
+      "coordinate": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "altitudeM": 25,
+      "batteryPct": 78.70559274141179,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 875.4618796469246,
+      "remainingPct": 77.32464036045941,
+      "route": [
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "turn",
+          "startSec": 846.4618796469246,
+          "endSec": 850.4618796469246,
+          "altitudeFromM": 25,
+          "altitudeToM": 25,
+          "batteryFromPct": 78.70559274141179,
+          "batteryToPct": 78.5151165509356,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        },
+        {
+          "from": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "to": [
+            135.09491247056292,
+            44.33792223406876
+          ],
+          "phase": "landing",
+          "startSec": 850.4618796469246,
+          "endSec": 875.4618796469246,
+          "altitudeFromM": 25,
+          "altitudeToM": 0,
+          "batteryFromPct": 78.5151165509356,
+          "batteryToPct": 77.32464036045941,
+          "airspeedMps": 0,
+          "groundSpeedMps": 0,
+          "distanceM": 0
+        }
+      ],
+      "reasons": []
+    },
+    {
+      "sortieId": "sortie-2",
+      "vehicleId": "demo-ms",
+      "segmentIndex": 23,
+      "intervalStartSec": 846.4618796469246,
+      "anchorSec": 871.4618796469246,
+      "responseDelaySec": 25,
+      "coordinate": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "altitudeM": 0,
+      "batteryPct": 77.5151165509356,
+      "status": "certified_model",
+      "mode": "independent-escape",
+      "landing": [
+        135.09491247056292,
+        44.33792223406876
+      ],
+      "landingSec": 871.4618796469246,
+      "remainingPct": 77.5151165509356,
+      "route": [],
+      "reasons": []
+    }
+  ],
+  "reasons": [],
+  "assumptions": [
+    "Сертификат только для управляемого прекращения одной работы: БВС исправен, ветер/коридор/батарея соответствуют исходной модели. Падение, внезапная потеря заряда, новый объект на остатке пути или усиление ветра этим сертификатом не покрываются.",
+    "Из любого момента проверенного интервала БВС прекращает съёмку, завершает оставшуюся часть того же движения и приходит в опорную точку в исходное время с тем же модельным зарядом. Затем выполняет проверенный уход. Это интервальное доказательство под указанными допущениями, не выборочная проверка только кадров симуляции.",
+    "Другие БВС продолжают исходное расписание. Все последующие вылеты прекращающего работу БВС отменяются; после его посадки площадка остаётся занятой до окончания остальных полётов. Одновременный отказ группы требует отдельного перерасчёта.",
+    "Если короткий отдельный уход не найден, допускается исходный проверенный коридор до посадки с выключенной съёмкой. Режим указан отдельно: он не обещает немедленную посадку и не является независимым аварийным маршрутом. Самолётные дуги/фазы не разрезаются: задержка до их концов может превышать заданный шаг и показывается фактически.",
+    "Число/расположение запасных площадок задаёт оператор. Не найденный путь не доказывает невозможность: рассматривается ограниченный набор маршрутов без ожиданий и изменения высоты, рельеф только явно плоский.",
+    "Все известные ограничения консервативно закрываются на всю высоту и время ухода; это может отказать в допустимом облёте сверху или после открытия зоны. Геометрия возврата не является командой автопилоту, разрешением полёта или гарантией физической надёжности."
+  ]
+}

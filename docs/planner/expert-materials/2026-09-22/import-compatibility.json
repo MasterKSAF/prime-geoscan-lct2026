@@ -1,0 +1,45 @@
+{
+  "executedAt": "2026-09-22T10:39:05.316Z",
+  "purpose": "Confirm incompatibility; passing rejection assertions does NOT mean successful support of expert data.",
+  "originalModified": false,
+  "appCodeModified": false,
+  "importer": "lib/planner/mission-io.ts importGeometryText",
+  "results": [
+    {
+      "name": "original-complete-file",
+      "importAccepted": false,
+      "expectedRejectionConfirmed": true,
+      "error": "Размер файла превышает 200 КиБ."
+    },
+    {
+      "name": "first-placemark-isolated-source-values-preserved",
+      "importAccepted": false,
+      "expectedRejectionConfirmed": true,
+      "error": "KML: объёмная экструзия пока не поддержана."
+    },
+    {
+      "name": "diagnostic-only-extrude-disabled-still-relative-height",
+      "importAccepted": false,
+      "expectedRejectionConfirmed": true,
+      "error": "KML: поддержан только clampToGround; абсолютные/относительные высоты требуют отдельного адаптера."
+    },
+    {
+      "name": "diagnostic-only-mode-changed-height-still-preserved",
+      "importAccepted": false,
+      "expectedRejectionConfirmed": true,
+      "error": "KML: ненулевые высоты не поддержаны в 2D-импорте; высота не будет молча отброшена."
+    },
+    {
+      "name": "original-first-linestring-isolated",
+      "importAccepted": false,
+      "expectedRejectionConfirmed": true,
+      "error": "KML: LineString не поддержан; внешние ресурсы и неподдержанные геометрии не загружаются."
+    },
+    {
+      "name": "diagnostic-only-first-absolute-extrude-disabled",
+      "importAccepted": false,
+      "expectedRejectionConfirmed": true,
+      "error": "KML: поддержан только clampToGround; абсолютные/относительные высоты требуют отдельного адаптера."
+    }
+  ]
+}

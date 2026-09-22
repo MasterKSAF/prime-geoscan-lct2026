@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<kml xmlns="http://www.opengis.net/kml/2.2"><Document><Placemark id="101138">
+            <name>HH76200001 OTHER:POWER_TRANSMISSION_PYLON</name>
+            <styleUrl>#99714</styleUrl>
+            <Polygon id="101137">
+                <extrude>1</extrude>
+                <altitudeMode>absolute</altitudeMode>
+                <outerBoundaryIs>
+                    <LinearRing id="101139">
+                        <coordinates>132.09779051039948,43.340772864715106,73.152 132.09748220801754,43.34093635410013,73.152 132.09710112531582,43.34093635410013,73.152 132.09679282293388,43.340772864715106,73.152 132.0966750619028,43.34050833333333,73.152 132.09679282293388,43.34024380195156,73.152 132.09710112531582,43.340080312566535,73.152 132.09748220801754,43.340080312566535,73.152 132.09779051039948,43.34024380195156,73.152 132.09790827143055,43.34050833333333,73.152 132.09779051039948,43.340772864715106,73.152</coordinates>
+                    </LinearRing>
+                </outerBoundaryIs>
+            </Polygon>
+        </Placemark>
+        </Document></kml>

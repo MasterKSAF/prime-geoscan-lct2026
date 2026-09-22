@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:51:02.151Z",
+  "createdAt": "2026-09-22T14:21:36.263Z",
   "inputHash": "60f110b1e867f3b6171db3b9f9e5e8ee086b77a199ac7a9b644a7594c1807650",
-  "planHash": "f9065477afaeefe1452e1a2de093ce01f19891676dc8761d827f0eea2b4be7f8",
+  "planHash": "0f8b3973bfb0715398f5c0e52e1987a2454d7c557fd8adb4257c9aa5518abd41",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -337,7 +337,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "60f110b1e867f3b6171db3b9f9e5e8ee086b77a199ac7a9b644a7594c1807650",
-      "createdAt": "2026-09-22T06:51:01.990Z",
+      "createdAt": "2026-09-22T14:21:36.092Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Автовыбор БВС: время и налёт",
@@ -1846,7 +1846,7 @@
           "detail": "Выбран минимум makespanSec среди 10 найденных и проверенных кандидатов обеих целей; глобальная оптимальность не доказана."
         }
       ],
-      "computationMs": 62.64220000000023
+      "computationMs": 70.53900000000067
     },
     "sorties": [
       {

@@ -2,7 +2,7 @@
   "schemaVersion": "2.0",
   "engineVersion": "0.3.0",
   "inputHash": "dc497c1068263d82fb84b31af62622ac21bf5485e2f24cbc2d4497e2bb832eb1",
-  "createdAt": "2026-09-22T07:08:14.720Z",
+  "createdAt": "2026-09-22T14:21:00.232Z",
   "document": {
     "schemaVersion": "2.0",
     "id": "demo-1km2",
@@ -282,7 +282,7 @@
       "plan": {
         "engineVersion": "0.3.0",
         "inputHash": "dc497c1068263d82fb84b31af62622ac21bf5485e2f24cbc2d4497e2bb832eb1",
-        "createdAt": "2026-09-22T07:08:14.720Z",
+        "createdAt": "2026-09-22T14:21:00.232Z",
         "scenario": {
           "schemaVersion": "1.0",
           "name": "Учебная съёмка · 1 км²",
@@ -1801,7 +1801,7 @@
             "detail": "519 ограниченных попыток упаковки; baseline partial; оптимальность не доказана."
           }
         ],
-        "computationMs": 156
+        "computationMs": 1344
       },
       "sorties": [
         {
@@ -3422,7 +3422,7 @@
       "plan": {
         "engineVersion": "0.3.0",
         "inputHash": "dc497c1068263d82fb84b31af62622ac21bf5485e2f24cbc2d4497e2bb832eb1",
-        "createdAt": "2026-09-22T07:08:14.720Z",
+        "createdAt": "2026-09-22T14:21:00.232Z",
         "scenario": {
           "schemaVersion": "1.0",
           "name": "Учебная съёмка · 1 км²",
@@ -4941,7 +4941,7 @@
             "detail": "519 ограниченных попыток упаковки; baseline partial; оптимальность не доказана."
           }
         ],
-        "computationMs": 269
+        "computationMs": 1970
       },
       "sorties": [
         {
@@ -6556,7 +6556,7 @@
       ]
     }
   ],
-  "computationMs": 269,
+  "computationMs": 1972,
   "warnings": [
     "Полный допустимый план не получен. Частичные/неподдержанные результаты нельзя подтверждать как готовое выполнение задания.",
     "Модельная проверка не является разрешением реального полёта; внешние БВС, актуальные воздушные запреты и реальные свойства оборудования не установлены автоматически."

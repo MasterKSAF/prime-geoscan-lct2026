@@ -20,7 +20,7 @@ export function fleetRegistryTemplate(
       vehicles: structuredClone(input.scenario.vehicles),
     },
     batteries: structuredClone(input.batteries),
-    ...(input.bases ? { bases: structuredClone(input.bases) } : {}),
+    bases: fleetBases(input),
     jobs: template.jobs.map((j) => ({ ...j, assignedVehicleIds: [] })),
   });
 }
@@ -31,7 +31,9 @@ export type FleetRegistry = {
   updatedAt: string;
   document: MissionDocument;
 };
-export function fleetBases(document: MissionDocument) {
+export function fleetBases(
+  document: Pick<MissionDocument, 'scenario' | 'bases'>,
+) {
   const points = new Map<
     string,
     { id: string; name: string; coordinate: Coordinate }

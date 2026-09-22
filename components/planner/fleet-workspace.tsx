@@ -1,6 +1,13 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { Plane, Drone, Save, RefreshCw } from 'lucide-react';
+import { Plane, Drone, Save, RefreshCw, MapPin, X } from 'lucide-react';
+import MissionMap from './mission-map';
+import {
+  baseChangeBlocker,
+  vehicleAssignments,
+} from '@/lib/planner/fleet-availability';
+import type { MissionOperation } from '@/lib/planner/mission-operations';
+import type { Coordinate } from '@/lib/planner/schema';
 import type { MissionDocument } from '@/lib/planner/mission-schema';
 import {
   type FleetRegistry,
@@ -31,6 +38,10 @@ export default function FleetWorkspace({
   onNotice,
   onReport,
   onApply,
+  operations = [],
+  onOpenOperation,
+  recalculations = [],
+  onOpenRecalculation,
 }: {
   registry: FleetRegistry | null;
   seed: MissionDocument;
@@ -41,8 +52,25 @@ export default function FleetWorkspace({
   onNotice: (s: string) => void;
   onReport: (r: FleetReport) => Promise<FleetState>;
   onApply: () => void;
+  operations?: readonly MissionOperation[];
+  onOpenOperation?: (row: MissionOperation) => void;
+  recalculations?: { id: string; name: string; status: string }[];
+  onOpenRecalculation?: (id: string) => void;
 }) {
   const [draft, setDraft] = useState<MissionDocument | null>(null);
+  const [baseSelection, setBaseSelection] = useState<Record<string, string>>(
+    {},
+  );
+  const [mapVehicleId, setMapVehicleId] = useState<string | null>(null);
+  const [mapPoint, setMapPoint] = useState<Coordinate | null>(null);
+  const baseDialog = useRef<HTMLDialogElement>(null);
+  const baseClose = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (mapVehicleId) {
+      baseDialog.current?.showModal();
+      baseClose.current?.focus({ preventScroll: true });
+    } else baseDialog.current?.close();
+  }, [mapVehicleId]);
   useEffect(() => {
     if (!draft) return;
     const warn = (e: BeforeUnloadEvent) => e.preventDefault();
@@ -86,6 +114,24 @@ export default function FleetWorkspace({
           )}
         </div>
       </div>
+      {!!recalculations.length && (
+        <details className="fw-config">
+          <summary>
+            Пересчёт после изменения парка · {recalculations.length}
+          </summary>
+          <div className="fw-recalculations">
+            {recalculations.map((r) => (
+              <button
+                className="mw-button"
+                key={r.id}
+                onClick={() => onOpenRecalculation?.(r.id)}
+              >
+                {r.name} · {r.status}
+              </button>
+            ))}
+          </div>
+        </details>
+      )}
       <div className="fw-summary">
         {d
           ? `${d.scenario.vehicles.length} БВС · ${bases.length} баз${draft ? ' · есть изменения' : ''}`
@@ -177,6 +223,8 @@ export default function FleetWorkspace({
           <div className="fw-roster">
             {d.scenario.vehicles.map((v) => {
               const state = states.find((s) => s.id === v.id);
+              const assignments = vehicleAssignments(v.id, operations, state);
+              const blocker = baseChangeBlocker(v.id, operations, state);
               const base = bases.find(
                 (b) => b.coordinate.join(',') === v.start.join(','),
               );
@@ -199,14 +247,40 @@ export default function FleetWorkspace({
                     База
                     <select
                       aria-label={`База: ${v.name}`}
-                      value={base?.id ?? ''}
-                      onChange={(e) => {
-                        const chosen = bases.find(
-                          (b) => b.id === e.target.value,
-                        );
-                        if (chosen)
-                          setDraft({
+                      value={baseSelection[v.id] ?? base?.id ?? ''}
+                      disabled={busy || !!blocker}
+                      title={blocker ?? 'Выберите базу и нажмите «Применить»'}
+                      onChange={(e) =>
+                        setBaseSelection({
+                          ...baseSelection,
+                          [v.id]: e.target.value,
+                        })
+                      }
+                    >
+                      {bases.map((b) => (
+                        <option key={b.id} value={b.id}>
+                          {b.name}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="fw-base-actions">
+                      <button
+                        className="mw-button small"
+                        disabled={
+                          busy ||
+                          !!draft ||
+                          !!blocker ||
+                          !baseSelection[v.id] ||
+                          baseSelection[v.id] === base?.id
+                        }
+                        onClick={() => {
+                          const chosen = bases.find(
+                            (b) => b.id === baseSelection[v.id],
+                          );
+                          if (!chosen) return;
+                          void onSave({
                             ...d,
+                            bases,
                             scenario: {
                               ...d.scenario,
                               vehicles: d.scenario.vehicles.map((x) =>
@@ -219,15 +293,36 @@ export default function FleetWorkspace({
                                   : x,
                               ),
                             },
+                          }).then((ok) => {
+                            if (ok)
+                              setBaseSelection((old) => {
+                                const next = { ...old };
+                                delete next[v.id];
+                                return next;
+                              });
                           });
-                      }}
-                    >
-                      {bases.map((b) => (
-                        <option key={b.id} value={b.id}>
-                          {b.name}
-                        </option>
-                      ))}
-                    </select>
+                        }}
+                      >
+                        Применить
+                      </button>
+                      <button
+                        className="mw-button small"
+                        aria-label={`Указать базу на карте: ${v.name}`}
+                        title={blocker ?? 'Указать базу на карте'}
+                        disabled={busy || !!draft || !!blocker}
+                        onClick={() => {
+                          setMapPoint(null);
+                          setMapVehicleId(v.id);
+                        }}
+                      >
+                        <MapPin size={15} />
+                      </button>
+                    </div>
+                    {blocker && (
+                      <InfoHint label={`Почему нельзя сменить базу ${v.name}`}>
+                        {blocker}
+                      </InfoHint>
+                    )}
                   </label>
                   <span>
                     {state?.vehicle.batteryPct ?? v.batteryPct}%
@@ -246,6 +341,34 @@ export default function FleetWorkspace({
                         ? 'Готовность заявлена'
                         : 'Требует проверки'}
                   </span>
+                  <div className="fw-assignment-list">
+                    <details>
+                      <summary>
+                        Миссии {assignments.assigned.length} · активные{' '}
+                        {assignments.active.length}
+                      </summary>
+                      <div>
+                        {assignments.assigned.map((o) => (
+                          <button
+                            className="mw-button small"
+                            key={o.id}
+                            onClick={() => onOpenOperation?.(o)}
+                          >
+                            {o.document.name} ·{' '}
+                            {o.status === 'scheduled'
+                              ? 'В плане'
+                              : o.status === 'paused'
+                                ? 'Пауза'
+                                : 'Выполняется'}
+                          </button>
+                        ))}
+                        {!assignments.assigned.length && (
+                          <span>Нет назначенных миссий</span>
+                        )}
+                      </div>
+                    </details>
+                    <span className="fw-availability">{assignments.label}</span>
+                  </div>
                 </article>
               );
             })}
@@ -375,6 +498,106 @@ export default function FleetWorkspace({
           </details>
         </>
       )}
+      <dialog
+        ref={baseDialog}
+        className="fw-base-dialog"
+        onCancel={() => setMapVehicleId(null)}
+      >
+        <header>
+          <strong>База аппарата</strong>
+          <InfoHint label="Размещение БВС на базе">
+            Выбор базы — заявление оператора о наземном положении, не команда
+            перелёта и не телеметрия. Заряд не меняется. После применения
+            связанные черновики пересчитываются; запуска автоматически не будет.
+          </InfoHint>
+          <button
+            className="mw-button small"
+            aria-label="Закрыть карту баз"
+            ref={baseClose}
+            onClick={() => setMapVehicleId(null)}
+          >
+            <X size={18} />
+          </button>
+        </header>
+        {d && mapVehicleId && (
+          <div className="fw-base-map">
+            <MissionMap
+              scenario={{
+                ...d.scenario,
+                vehicles: d.scenario.vehicles.map((v) =>
+                  v.id === mapVehicleId && mapPoint
+                    ? { ...v, start: mapPoint, landing: mapPoint }
+                    : v,
+                ),
+              }}
+              bases={bases}
+              plan={null}
+              time={0}
+              selected={mapVehicleId}
+              draft={[]}
+              mode="start"
+              onPoint={setMapPoint}
+              fit={0}
+              showTiles
+              showTransit={false}
+              workAreas={[]}
+              showAirspace={false}
+            />
+          </div>
+        )}
+        <footer>
+          <span>
+            {mapPoint
+              ? `${mapPoint[1].toFixed(6)}, ${mapPoint[0].toFixed(6)}`
+              : 'Выберите точку на карте'}
+          </span>
+          <button
+            className="mw-button primary"
+            disabled={!mapPoint || busy}
+            onClick={() => {
+              if (!d || !mapPoint || !mapVehicleId) return;
+              const blocker = baseChangeBlocker(
+                mapVehicleId,
+                operations,
+                states.find((s) => s.id === mapVehicleId),
+              );
+              if (blocker) {
+                onNotice(blocker);
+                return;
+              }
+              const chosen = bases.find(
+                (b) => b.coordinate.join(',') === mapPoint.join(','),
+              );
+              const next = {
+                ...d,
+                bases: chosen
+                  ? bases
+                  : [
+                      ...bases,
+                      {
+                        id: 'base-' + crypto.randomUUID(),
+                        name: `База ${bases.length + 1}`,
+                        coordinate: mapPoint,
+                      },
+                    ],
+                scenario: {
+                  ...d.scenario,
+                  vehicles: d.scenario.vehicles.map((v) =>
+                    v.id === mapVehicleId
+                      ? { ...v, start: mapPoint, landing: mapPoint }
+                      : v,
+                  ),
+                },
+              };
+              void onSave(next).then((ok) => {
+                if (ok) setMapVehicleId(null);
+              });
+            }}
+          >
+            Применить базу
+          </button>
+        </footer>
+      </dialog>
     </section>
   );
 }

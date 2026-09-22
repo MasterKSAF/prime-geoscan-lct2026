@@ -5,7 +5,7 @@
   "plan": {
     "engineVersion": "0.3.0",
     "inputHash": "c7e2bf8ee05f201da729daf5f719c8593a89da62b77b4c8d00525a547e8152bd",
-    "createdAt": "2026-09-22T06:50:57.640Z",
+    "createdAt": "2026-09-22T14:21:30.427Z",
     "scenario": {
       "schemaVersion": "1.0",
       "name": "Отказ: недостаточный ресурс",
@@ -324,7 +324,7 @@
         "detail": "5 ограниченных попыток упаковки; baseline not_found; оптимальность не доказана."
       }
     ],
-    "computationMs": 5.5733000000000175
+    "computationMs": 9.517099999999118
   },
   "sorties": [],
   "checks": [

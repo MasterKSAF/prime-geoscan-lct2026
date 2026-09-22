@@ -7,6 +7,7 @@ import {
 import type { MissionDocument, MissionRestriction } from './mission-schema.ts';
 import {
   checkTextSize,
+  checkMissionSize,
   importGeometryText,
   parseStructuredText,
 } from './mission-io.ts';
@@ -83,7 +84,7 @@ export function appendRestrictionLayer(
     ...document,
     restrictions: [...document.restrictions, ...checked.restrictions],
   });
-  checkTextSize(JSON.stringify(next));
+  checkMissionSize(next);
   return next;
 }
 

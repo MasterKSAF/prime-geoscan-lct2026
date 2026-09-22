@@ -7,6 +7,8 @@ import { demoMission } from '../lib/planner/mission-demo.ts';
 import type { Coordinate, Plan } from '../lib/planner/schema.ts';
 import { ellipseDrawing } from '../lib/planner/territory-editing.ts';
 import * as vehicleLabels from '../lib/planner/mission-vehicle-label.ts';
+import * as obstacleLayer from '../lib/planner/obstacle-layer.ts';
+import * as geometry from '../lib/planner/geometry.ts';
 
 type Props = Parameters<
   (typeof import('../components/planner/mission-map.tsx'))['default']
@@ -260,6 +262,8 @@ function harness(failInitialization = false, initiallyHidden = false) {
       if (name === 'leaflet') return leaflet;
       if (name === '@/lib/planner/territory-editing') return { ellipseDrawing };
       if (name === '@/lib/planner/mission-vehicle-label') return vehicleLabels;
+      if (name === '@/lib/planner/obstacle-layer') return obstacleLayer;
+      if (name === '@/lib/planner/geometry') return geometry;
       if (name.endsWith('.css')) return {};
       throw new Error(`Unexpected runtime import: ${name}`);
     },

@@ -3,7 +3,8 @@ import { distance } from './geometry.ts';
 import { fixedWingSegmentKinematics } from './fixed-wing-mission.ts';
 import { missionJobContext, missionLegSpeed } from './mission-engine.ts';
 import type { JobContext } from './mission-engine.ts';
-import { assertSafeTree, checkTextSize } from './mission-io.ts';
+import { assertSafeTree, checkTextSize, checkMissionSize } from './mission-io.ts';
+import { MAX_OBSTACLE_MISSION_BYTES } from './obstacle-layer.ts';
 import {
   missionDocumentSchema,
   parseMissionDocument,
@@ -471,10 +472,11 @@ export async function analyzeMissionRobustness(
 ): Promise<MissionRobustnessReport> {
   const started = performance.now();
   assertSafeTree(value);
-  checkTextSize(JSON.stringify(value), MAX_ROBUSTNESS_REQUEST_BYTES);
+  checkTextSize(JSON.stringify(value), MAX_OBSTACLE_MISSION_BYTES + MAX_ROBUSTNESS_REQUEST_BYTES);
   const request = requestSchema.parse(value);
   const document = parseMissionDocument(request.document);
-  checkTextSize(JSON.stringify(document));
+  checkMissionSize(document);
+  checkTextSize(JSON.stringify({ ...request, document: { ...document, obstacleLayer: undefined } }), MAX_ROBUSTNESS_REQUEST_BYTES);
   const candidate: MissionCandidate = request.candidate;
   const perturbations =
     request.perturbations ?? DEFAULT_ROBUSTNESS_PERTURBATIONS;

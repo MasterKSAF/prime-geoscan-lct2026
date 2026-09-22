@@ -5,7 +5,7 @@
   "plan": {
     "engineVersion": "0.3.0",
     "inputHash": "1d5142b9c484ce504df170258a99747e5b34f22a8d183e6b5847c5faf1e9dd1a",
-    "createdAt": "2026-09-22T06:50:58.703Z",
+    "createdAt": "2026-09-22T14:21:31.903Z",
     "scenario": {
       "schemaVersion": "1.0",
       "name": "Автовыбор БВС: время и налёт",
@@ -1435,7 +1435,7 @@
         "detail": "228 ограниченных попыток упаковки; baseline not_found; оптимальность не доказана."
       }
     ],
-    "computationMs": 54.334100000000035
+    "computationMs": 65.1802000000007
   },
   "sorties": [
     {

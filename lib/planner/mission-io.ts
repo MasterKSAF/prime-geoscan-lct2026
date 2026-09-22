@@ -1,4 +1,5 @@
 import { DOMParser } from '@xmldom/xmldom';
+import { MAX_OBSTACLE_MISSION_BYTES } from './obstacle-layer.ts';
 import {
   isAlias,
   isMap,
@@ -101,7 +102,9 @@ export function parseMissionText(
   text: string,
   format: 'auto' | 'json' | 'yaml' = 'auto',
 ): MissionDocument {
-  const value = parseStructuredText(text, format);
+  const value = parseStructuredText(text, format, MAX_OBSTACLE_MISSION_BYTES);
+  if (!value || typeof value !== 'object' || !('obstacleLayer' in value))
+    checkTextSize(text);
   const document =
     value &&
     typeof value === 'object' &&
@@ -111,8 +114,17 @@ export function parseMissionText(
       : parseMissionDocument(value);
   // YAML, legacy migration and short numeric literals can expand on normalization.
   // Accept only documents that retain a lossless, importable JSON representation.
-  checkTextSize(canonicalMissionJson(document));
+  checkMissionSize(document);
   return document;
+}
+
+export function checkMissionSize(document: MissionDocument): void {
+  const { obstacleLayer, ...core } = document;
+  checkTextSize(JSON.stringify(core));
+  checkTextSize(
+    JSON.stringify(document),
+    obstacleLayer ? MAX_OBSTACLE_MISSION_BYTES : MAX_MISSION_FILE_BYTES,
+  );
 }
 
 function ordered(value: unknown): unknown {
@@ -134,23 +146,26 @@ export function canonicalMissionJson(document: MissionDocument): string {
 /** Validate a composed mission before committing an import to editor state. */
 export function parseSizedMissionDocument(value: unknown): MissionDocument {
   const document = parseMissionDocument(value);
-  checkTextSize(canonicalMissionJson(document));
+  checkMissionSize(document);
   return document;
 }
 
 export function serializeMissionJson(document: MissionDocument): string {
   const compact = canonicalMissionJson(document);
-  checkTextSize(compact);
+  checkMissionSize(document);
   const pretty = JSON.stringify(JSON.parse(compact), null, 2) + '\n';
   // Whitespace must not prevent saving a document accepted by the import boundary.
-  return new TextEncoder().encode(pretty).length <= MAX_MISSION_FILE_BYTES
+  return new TextEncoder().encode(pretty).length <=
+    (document.obstacleLayer
+      ? MAX_OBSTACLE_MISSION_BYTES
+      : MAX_MISSION_FILE_BYTES)
     ? pretty
     : compact;
 }
 
 export function serializeMissionYaml(document: MissionDocument): string {
   const compact = canonicalMissionJson(document);
-  checkTextSize(compact);
+  checkMissionSize(document);
   const text =
     '# PRIME · задача миссии, не команда реальному БВС\n' +
     stringify(JSON.parse(compact), {
@@ -159,7 +174,12 @@ export function serializeMissionYaml(document: MissionDocument): string {
       defaultStringType: 'QUOTE_DOUBLE',
       defaultKeyType: 'PLAIN',
     });
-  checkTextSize(text);
+  checkTextSize(
+    text,
+    document.obstacleLayer
+      ? MAX_OBSTACLE_MISSION_BYTES
+      : MAX_MISSION_FILE_BYTES,
+  );
   return text;
 }
 
@@ -195,7 +215,9 @@ export function missionSummaryMarkdown(document: MissionDocument): string {
     `- Критерий: ${scenario.objective === 'flightTime' ? 'меньше суммарного налёта' : 'раньше завершить работы'}`,
     `- Доступных БВС: ${vehicles.filter((v) => v.enabled).length} из ${vehicles.length}`,
     `- Резерв: ${markdown(scenario.reservePct)}%`,
-    doc.planning.batteryPolicy ? '- Батарея каждого БВС: текущий заряд; повторные вылеты на остатке, без прогнозируемой замены.' : `- Архивная ресурсная модель; неизвестный ресурс батарей: ${doc.batteries.filter((b) => b.cycles === null).length}`,
+    doc.planning.batteryPolicy
+      ? '- Батарея каждого БВС: текущий заряд; повторные вылеты на остатке, без прогнозируемой замены.'
+      : `- Архивная ресурсная модель; неизвестный ресурс батарей: ${doc.batteries.filter((b) => b.cycles === null).length}`,
     `- Дополнительных ограничений: ${doc.restrictions.length}; постоянных запретов: ${scenario.exclusions.length}`,
     `- Разнесение: ${doc.planning.separationHorizontalM} м по горизонтали, ${doc.planning.separationVerticalM} м по вертикали. Источник: ${markdown(doc.planning.separationSource)}`,
     `- Рельеф: ${doc.terrainModel.kind === 'unknown' ? 'неизвестен' : 'учебная плоскость'}; ${markdown(doc.terrainModel.source)}`,

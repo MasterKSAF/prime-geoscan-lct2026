@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<kml xmlns="http://www.opengis.net/kml/2.2"><Document><Placemark id="99726">
+            <name>UHHH100910 OTHER:COMMUNICATION_TOWER</name>
+            <styleUrl>#99714</styleUrl>
+            <Polygon id="99725">
+                <extrude>1</extrude>
+                <altitudeMode>relativeToGround</altitudeMode>
+                <outerBoundaryIs>
+                    <LinearRing id="99727">
+                        <coordinates>134.3023691630165,46.67254015604517,69.4944 134.30226461452267,46.67259244202323,69.4944 134.30213538547733,46.67259244202323,69.4944 134.3020308369835,46.67254015604517,69.4944 134.30199090301232,46.67245555555555,69.4944 134.3020308369835,46.67237095506593,69.4944 134.30213538547733,46.67231866908787,69.4944 134.30226461452267,46.67231866908787,69.4944 134.3023691630165,46.67237095506593,69.4944 134.30240909698767,46.67245555555555,69.4944 134.3023691630165,46.67254015604517,69.4944</coordinates>
+                    </LinearRing>
+                </outerBoundaryIs>
+            </Polygon>
+        </Placemark>
+        </Document></kml>

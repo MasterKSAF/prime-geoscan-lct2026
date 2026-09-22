@@ -1,0 +1,322 @@
+{
+  "source": "https://disk.360.yandex.ru/d/HjUEBhOJAzMAaw",
+  "sourceSha256": "58b7fc12f8870ac434d2ae3f3a4dd0627878aa41e5afc862c5fd74da22f420a8",
+  "bytes": 3228559,
+  "xmlElementCount": 28717,
+  "tagCounts": {
+    "kml": 1,
+    "Document": 1,
+    "Style": 2,
+    "LineStyle": 2,
+    "color": 4,
+    "colorMode": 4,
+    "PolyStyle": 2,
+    "fill": 2,
+    "outline": 2,
+    "Placemark": 3201,
+    "name": 3201,
+    "styleUrl": 3201,
+    "Polygon": 3145,
+    "extrude": 3201,
+    "altitudeMode": 3201,
+    "outerBoundaryIs": 3145,
+    "LinearRing": 3145,
+    "coordinates": 3201,
+    "LineString": 56
+  },
+  "placemarks": 3201,
+  "polygons": 3145,
+  "lineStrings": 56,
+  "rings": 3145,
+  "coordinateTuplesIncludingClosure": 34641,
+  "ringVertexCountDistribution": {
+    "4": 13,
+    "6": 2,
+    "11": 3130
+  },
+  "ringStructureIssues": [
+    {
+      "placemarkId": "112358",
+      "issue": "short-or-open-ring"
+    },
+    {
+      "placemarkId": "112362",
+      "issue": "short-or-open-ring"
+    },
+    {
+      "placemarkId": "112366",
+      "issue": "short-or-open-ring"
+    },
+    {
+      "placemarkId": "112370",
+      "issue": "short-or-open-ring"
+    },
+    {
+      "placemarkId": "112374",
+      "issue": "short-or-open-ring"
+    },
+    {
+      "placemarkId": "112378",
+      "issue": "short-or-open-ring"
+    },
+    {
+      "placemarkId": "112382",
+      "issue": "short-or-open-ring"
+    },
+    {
+      "placemarkId": "112386",
+      "issue": "short-or-open-ring"
+    },
+    {
+      "placemarkId": "112390",
+      "issue": "short-or-open-ring"
+    },
+    {
+      "placemarkId": "112394",
+      "issue": "short-or-open-ring"
+    },
+    {
+      "placemarkId": "112398",
+      "issue": "short-or-open-ring"
+    },
+    {
+      "placemarkId": "112402",
+      "issue": "short-or-open-ring"
+    },
+    {
+      "placemarkId": "112406",
+      "issue": "short-or-open-ring"
+    },
+    {
+      "placemarkId": "112410",
+      "issue": "short-or-open-ring"
+    },
+    {
+      "placemarkId": "112414",
+      "issue": "short-or-open-ring"
+    }
+  ],
+  "boundsLonLat": [
+    130.46741951108874,
+    42.42157712864124,
+    138.7951882793662,
+    47.60056658950695
+  ],
+  "altitudeModes": {
+    "relativeToGround": 424,
+    "absolute": 2777
+  },
+  "altitudeStatsByMode": {
+    "absolute": {
+      "geometryCount": 2777,
+      "minZ": 2.7432000000000003,
+      "maxZ": 996.696
+    },
+    "relativeToGround": {
+      "geometryCount": 424,
+      "minZ": 7.010400000000001,
+      "maxZ": 358.14000000000004
+    }
+  },
+  "extrudeValues": {
+    "1": 3201
+  },
+  "minHeightValueM": 2.7432000000000003,
+  "maxHeightValueM": 996.696,
+  "nonPositiveHeightTuples": 0,
+  "placemarksWithVariableHeight": 13,
+  "duplicateXmlIds": [],
+  "duplicateNames": {
+    "UHHH103396                    ": 2,
+    "UHHH103423                    ": 2
+  },
+  "types": {
+    "OTHER:COMMUNICATION_TOWER": 295,
+    "BUILDING": 517,
+    "OTHER:MAST": 46,
+    "ANTENNA": 123,
+    "OTHER:CHIMNEY": 164,
+    "CRANE": 29,
+    "OTHER:CONSTRUCTION": 29,
+    "COOLING_TOWER": 1,
+    "GRAIN_ELEVATOR": 4,
+    "OTHER:RETRANSMITTER": 11,
+    "OTHER:POWER_TRANSMISSION_PYLON": 333,
+    "MONUMENT": 5,
+    "URBAN": 3,
+    "POLE": 21,
+    "OTHER:STORAGE_DEPOT": 3,
+    "OTHER:LIGHTNING_ROD": 30,
+    "TANK": 11,
+    "OTHER:BRIDGE_SUPERSTRUCTURE": 5,
+    "OTHER:LIGHT_SUPPORT_STRUCTURE": 199,
+    "TREE": 386,
+    "TOWER": 9,
+    "FENCE": 157,
+    "DAM": 6,
+    "OTHER:ANEMOMETER": 13,
+    "CONTROL_MONITORING_SYSTEM": 15,
+    "VEGETATION": 508,
+    "OTHER:WEATHERCOCK": 6,
+    "OTHER:AIRCRAFT": 20,
+    "CONTROL_TOWER": 8,
+    "BRIDGE": 3,
+    "SIGN": 72,
+    "OTHER:TRIANGULATION_TOWER": 9,
+    "OTHER:CHURCH": 1,
+    "NAVAID": 48,
+    "OTHER:SUBSTATION": 6,
+    "OTHER:COMMUNICATION_BUILDING": 14,
+    "OTHER:BRIDGE_TOWER": 6,
+    "OTHER:AERIAL_CABLE": 5,
+    "WATER_TOWER": 1,
+    "SPIRE": 1,
+    "ELECTRICAL_SYSTEM": 6,
+    "LIGHTHOUSE": 1,
+    "(no type label)": 71
+  },
+  "highestCoordinateValuesNotTallestObjects": [
+    {
+      "placemarkId": "110446",
+      "name": "W2W3200963 OTHER:COMMUNICATION_TOWER",
+      "maxHeightValueM": 996.696,
+      "boundsLonLat": [
+        133.34551432485685,
+        44.1110442594082,
+        133.34676345292095,
+        44.11190018503625
+      ],
+      "altitudeModes": [
+        "absolute"
+      ]
+    },
+    {
+      "placemarkId": "110422",
+      "name": "W2W3200957 OTHER:COMMUNICATION_TOWER",
+      "maxHeightValueM": 931.1640000000001,
+      "boundsLonLat": [
+        133.34470876198785,
+        44.11173870390487,
+        133.34595790467884,
+        44.112594629428465
+      ],
+      "altitudeModes": [
+        "absolute"
+      ]
+    },
+    {
+      "placemarkId": "110442",
+      "name": "W2W3200962 OTHER:COMMUNICATION_TOWER",
+      "maxHeightValueM": 907.6944000000001,
+      "boundsLonLat": [
+        133.34504210263464,
+        44.1110442594082,
+        133.34629123069874,
+        44.11190018503625
+      ],
+      "altitudeModes": [
+        "absolute"
+      ]
+    },
+    {
+      "placemarkId": "110438",
+      "name": "W2W3200961 OTHER:COMMUNICATION_TOWER",
+      "maxHeightValueM": 901.5984000000001,
+      "boundsLonLat": [
+        133.3448754336277,
+        44.111266481647135,
+        133.34612456637234,
+        44.112122407241756
+      ],
+      "altitudeModes": [
+        "absolute"
+      ]
+    },
+    {
+      "placemarkId": "110426",
+      "name": "W2W3200958 OTHER:COMMUNICATION_TOWER",
+      "maxHeightValueM": 900.6840000000001,
+      "boundsLonLat": [
+        133.3449865423985,
+        44.11148870388607,
+        133.34623567982374,
+        44.112344629447264
+      ],
+      "altitudeModes": [
+        "absolute"
+      ]
+    },
+    {
+      "placemarkId": "110382",
+      "name": "W2W3200947 VEGETATION",
+      "maxHeightValueM": 820.2168,
+      "boundsLonLat": [
+        133.3435142932609,
+        44.11404425963382,
+        133.34476348451687,
+        44.11490018481063
+      ],
+      "altitudeModes": [
+        "absolute"
+      ]
+    },
+    {
+      "placemarkId": "110402",
+      "name": "W2W3200952 VEGETATION",
+      "maxHeightValueM": 820.2168,
+      "boundsLonLat": [
+        133.3411254175376,
+        44.11279425953982,
+        133.34237458246244,
+        44.113650184904635
+      ],
+      "altitudeModes": [
+        "absolute"
+      ]
+    },
+    {
+      "placemarkId": "110362",
+      "name": "W2W3200940 VEGETATION",
+      "maxHeightValueM": 760.1712,
+      "boundsLonLat": [
+        133.34287538535358,
+        44.11584981532518,
+        133.34412461464643,
+        44.11670574023039
+      ],
+      "altitudeModes": [
+        "absolute"
+      ]
+    },
+    {
+      "placemarkId": "110346",
+      "name": "W2W3200935 VEGETATION",
+      "maxHeightValueM": 720.2424000000001,
+      "boundsLonLat": [
+        133.34231981545986,
+        44.11721092653865,
+        133.34356907342902,
+        44.118066851239135
+      ],
+      "altitudeModes": [
+        "absolute"
+      ]
+    },
+    {
+      "placemarkId": "110378",
+      "name": "W2W3200946 VEGETATION",
+      "maxHeightValueM": 720.2424000000001,
+      "boundsLonLat": [
+        133.3384865116796,
+        44.1144053707721,
+        133.33973571054264,
+        44.11526129589458
+      ],
+      "altitudeModes": [
+        "absolute"
+      ]
+    }
+  ],
+  "validationScope": "XML structure, coordinate values/ranges, closure, IDs and height modes; not self-intersection, geodetic accuracy or real-world completeness",
+  "plannerCompatibility": "Not a mission document or a planner restriction layer; heights retained in their original KML datum."
+}

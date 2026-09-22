@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-09-22T07:21:52.849Z",
+  "checkedAt": "2026-09-22T14:40:52.033Z",
   "status": "pass",
-  "selectedFiles": 1652,
-  "textFiles": 1570,
-  "bytes": 236702394,
+  "selectedFiles": 1708,
+  "textFiles": 1625,
+  "bytes": 298943056,
   "patterns": [
     "github-token",
     "openai-key",
@@ -18,32 +18,32 @@
       "bytes": 33766454
     },
     {
+      "file": "docs/planner/submission/evidence/browser/mission.evidence.zip",
+      "bytes": 19925140
+    },
+    {
+      "file": "docs/planner/submission/evidence/obstacles/expert-mission.evidence.zip",
+      "bytes": 19925110
+    },
+    {
       "file": "docs/planner/submission/evidence/benchmark/report.json",
-      "bytes": 11333544
+      "bytes": 11334333
     },
     {
       "file": "docs/planner/submission/presentation/prime-geoscan-lct2026.pptx",
-      "bytes": 11108392
+      "bytes": 10063779
+    },
+    {
+      "file": "docs/planner/expert-materials/2026-09-22/originals/sourcecraft-ai-code-analysis.pdf",
+      "bytes": 6997316
     },
     {
       "file": "docs/planner/submission/presentation/index.html",
-      "bytes": 5199497
+      "bytes": 5623028
     },
     {
-      "file": "docs/geoscan-track5-master-plan.html",
-      "bytes": 3229553
-    },
-    {
-      "file": "docs/geoscan-md/resources/download-manifest.json",
-      "bytes": 2699676
-    },
-    {
-      "file": "output/mission-showcase-0.3.0/api/result-10km2.json",
-      "bytes": 1980782
-    },
-    {
-      "file": "output/release-verification-2026-09-18/api/result-10km2.json",
-      "bytes": 1980778
+      "file": "docs/planner/submission/evidence/browser/run.report.html",
+      "bytes": 4185096
     }
   ],
   "claimBoundary": "Heuristic scan of selected paths, not a comprehensive secret scanner, malware scan or penetration test. No matched content emitted."

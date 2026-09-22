@@ -1,0 +1,36 @@
+[
+  {
+    "source": "https://disk.360.yandex.ru/d/HjUEBhOJAzMAaw",
+    "originalName": "высотные препятствия Приморский край.kml",
+    "localPath": "C:\\Users\\Misha\\Documents\\ChatGPT\\LCT\\docs\\planner\\expert-materials\\2026-09-22\\originals\\primorsky-obstacles.kml",
+    "bytes": 3228559,
+    "sha256": "58b7fc12f8870ac434d2ae3f3a4dd0627878aa41e5afc862c5fd74da22f420a8",
+    "sourceModifiedAt": "2026-09-18T12:29:37+03:00",
+    "downloadedAt": "2026-09-22T10:29:36.4195510+00:00",
+    "executed": false
+  },
+  {
+    "source": "https://disk.yandex.ru/i/BRotk294jvzFKw",
+    "originalName": "Анализ кода в эпоху ИИ.pdf",
+    "localPath": "C:\\Users\\Misha\\Documents\\ChatGPT\\LCT\\docs\\planner\\expert-materials\\2026-09-22\\originals\\sourcecraft-ai-code-analysis.pdf",
+    "bytes": 6997316,
+    "sha256": "9e60d07efd874861a7449e6cbc4cf1b321ebb8b4b9672d13a99319e00c63066c",
+    "sourceModifiedAt": "2026-09-22T13:17:29+03:00",
+    "downloadedAt": "2026-09-22T10:29:38.3150918+00:00",
+    "executed": false
+  },
+  {
+    "source": "https://disk.360.yandex.ru/d/2WJiEc2xiXcsvw",
+    "originalName": "GeoScanPlanner_2.5.2017.09.15955_x64.exe",
+    "localPath": "C:\\Users\\Misha\\Downloads\\GeoScanPlanner_2.5.2017.09.15955_x64-from-experts.exe",
+    "bytes": 200688776,
+    "sha256": "a7142d6afc726eb132a068281364d6fc39dd54ef4366b1b5487787cbb04ab602",
+    "sourceModifiedAt": "2023-11-22T21:57:14+03:00",
+    "downloadedAt": "2026-09-22T10:30:42.8268056+00:00",
+    "executed": false,
+    "signatureStatus": "Valid",
+    "signatureMessage": "Signature verified.",
+    "signer": "CN=Geoscan Ltd, O=Geoscan Ltd, STREET=Shatelena ulitsa 26, L=St. Petersburg, S=St. Petersburg, PostalCode=194021, C=RU",
+    "version": "2.5.2017.09.15955"
+  }
+]

@@ -1,5 +1,6 @@
 import { groundSpeed } from './engine.ts';
 import { missionAnalysisCandidateSchema } from './mission-robustness.ts';
+import { obstacleFootprints } from './obstacle-layer.ts';
 import {
   distance,
   inside,
@@ -208,9 +209,11 @@ export async function certifyMissionContingencies(
   try {
     const scene = {
       ...d.scenario,
+      clearanceM: Math.max(d.scenario.clearanceM, d.obstacleLayer?.bufferM ?? 0),
       exclusions: [
         ...d.scenario.exclusions,
         ...d.restrictions.map((r) => r.geometry),
+        ...obstacleFootprints(d),
       ],
     };
     let geometry = prepareGeometry(

@@ -32,6 +32,8 @@ export function appendMissionWork(
     assignedVehicleIds: [],
   };
   delete next.inheritsFrom;
+  delete next.priority;
+  delete next.workPriority;
   return { ...d, jobs: [...d.jobs, next] };
 }
 
@@ -87,4 +89,57 @@ export function synchronizeWorkSettings(d: MissionDocument): MissionDocument {
 /** Presentation alias only; persisted vehicle names and identifiers remain intact. */
 export function vehicleCallsign(index: number): string {
   return `БВС ${String(index + 1).padStart(2, '0')}`;
+}
+
+/** A new area has no geometry until the operator draws/imports it. */
+export function appendEmptyArea(
+  d: MissionDocument,
+  selectedId: string,
+  id: string,
+): MissionDocument {
+  if (d.jobs.length >= 8)
+    throw new Error('В миссии может быть не больше 8 участков.');
+  if (d.jobs.some((j) => !j.area.coordinates[0]?.length))
+    throw new Error('Сначала задайте территорию нового участка.');
+  if (!id || d.jobs.some((j) => j.id === id))
+    throw new Error('Нужен новый ID участка.');
+  const source = d.jobs.find((j) => j.id === selectedId) ?? d.jobs[0];
+  const next = {
+    ...structuredClone(source),
+    id,
+    name: `Участок ${d.jobs.length + 1}`,
+    area: { type: 'Polygon' as const, coordinates: [] },
+  };
+  delete next.inheritsFrom;
+  delete next.priority;
+  return { ...d, jobs: [...d.jobs, next] };
+}
+
+export function setWorkPriority(
+  d: MissionDocument,
+  type: MissionJob['job']['type'],
+  priority?: number,
+): MissionDocument {
+  return {
+    ...d,
+    jobs: d.jobs.map((j) => {
+      if (j.job.type !== type) return j;
+      const next = { ...j };
+      if (priority === undefined) delete next.workPriority;
+      else next.workPriority = priority;
+      return next;
+    }),
+  };
+}
+
+/** Explicit preferences order allocation, never bypass safety or enforce idle waiting. */
+export function prioritizeMissionJobs(
+  jobs: readonly MissionJob[],
+): MissionJob[] {
+  return [...jobs].sort(
+    (a, b) =>
+      (a.workPriority ?? Infinity) - (b.workPriority ?? Infinity) ||
+      (a.priority ?? Infinity) - (b.priority ?? Infinity) ||
+      0,
+  );
 }

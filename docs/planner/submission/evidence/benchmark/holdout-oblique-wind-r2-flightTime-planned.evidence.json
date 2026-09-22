@@ -2,9 +2,9 @@
   "schemaVersion": "2.0",
   "evidenceKind": "model-calculation",
   "flightReady": false,
-  "createdAt": "2026-09-22T06:51:02.260Z",
+  "createdAt": "2026-09-22T14:21:36.387Z",
   "inputHash": "60f110b1e867f3b6171db3b9f9e5e8ee086b77a199ac7a9b644a7594c1807650",
-  "planHash": "13d8bdf9d0fdbf6f4713c2e3d52d77461e67a408841e5f0f690b5a25818cae24",
+  "planHash": "ef5c950ccb9a32ba12a621cc92cec7e34f3f90cd682611a9c45d7d7e006e873e",
   "approval": null,
   "document": {
     "schemaVersion": "2.0",
@@ -337,7 +337,7 @@
     "plan": {
       "engineVersion": "0.3.0",
       "inputHash": "60f110b1e867f3b6171db3b9f9e5e8ee086b77a199ac7a9b644a7594c1807650",
-      "createdAt": "2026-09-22T06:51:01.990Z",
+      "createdAt": "2026-09-22T14:21:36.092Z",
       "scenario": {
         "schemaVersion": "1.0",
         "name": "Автовыбор БВС: время и налёт",
@@ -1846,7 +1846,7 @@
           "detail": "Выбран минимум flightTimeSec среди 10 найденных и проверенных кандидатов обеих целей; глобальная оптимальность не доказана."
         }
       ],
-      "computationMs": 62.64220000000023
+      "computationMs": 70.53900000000067
     },
     "sorties": [
       {

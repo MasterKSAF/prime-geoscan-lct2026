@@ -215,7 +215,9 @@ export async function missionEvidence(
     reproduce: {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      path: '/api/planner/missions/solve',
+      path: result.document.obstacleLayer
+        ? '/api/planner/missions/solve-with-obstacles'
+        : '/api/planner/missions/solve',
       body: result.document,
     },
     limitations: [

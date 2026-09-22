@@ -4,11 +4,11 @@ import {
   MAX_MISSION_FILE_BYTES,
 } from '@/lib/planner/mission-schema';
 import {
-  canonicalMissionJson,
-  checkTextSize,
   parseStructuredText,
 } from '@/lib/planner/mission-io';
 import { ZodError } from 'zod';
+import { MAX_OBSTACLE_MISSION_BYTES } from '@/lib/planner/obstacle-layer';
+import { checkMissionSize } from '@/lib/planner/mission-io';
 
 let active = false;
 const headers = {
@@ -58,7 +58,10 @@ async function discardRejectedBody(request: Request): Promise<void> {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: Request) { return solveRequest(request); }
+
+export async function solveRequest(request: Request, withObstacles = false) {
+  const bodyLimit = withObstacles ? MAX_OBSTACLE_MISSION_BYTES : MAX_MISSION_FILE_BYTES;
   const origin = request.headers.get('origin');
   if (origin && origin !== new URL(request.url).origin) {
     await discardRejectedBody(request);
@@ -102,10 +105,10 @@ export async function POST(request: Request) {
       const { done, value } = await Promise.race([reader.read(), timeout]);
       if (done) break;
       size += value.length;
-      if (size > MAX_MISSION_FILE_BYTES) {
+      if (size > bodyLimit) {
         await reader.cancel();
         return Response.json(
-          { code: 'SIZE', error: 'Задание больше 200 КиБ.' },
+          { code: 'SIZE', error: `Превышен предел запроса ${bodyLimit / 1024} КиБ.` },
           { status: 413, headers },
         );
       }
@@ -129,6 +132,7 @@ export async function POST(request: Request) {
       value = parseStructuredText(
         new TextDecoder('utf-8', { fatal: true }).decode(bytes),
         'json',
+        bodyLimit,
       );
     } catch {
       // Match file import's duplicate-key and unsafe-tree checks, before solving.
@@ -137,7 +141,7 @@ export async function POST(request: Request) {
     // This endpoint remains v2-only; file import's v1 migration is not implicit.
     const input = parseMissionDocument(value);
     try {
-      checkTextSize(canonicalMissionJson(input));
+      checkMissionSize(input);
     } catch {
       return Response.json(
         { code: 'SIZE', error: 'Нормализованное задание больше 200 КиБ.' },
