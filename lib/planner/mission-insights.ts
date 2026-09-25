@@ -2,13 +2,20 @@ import type { MissionCandidate, MissionDocument } from './mission-schema.ts';
 import { parseMissionDocument } from './mission-schema.ts';
 import { missionFleetHints } from './mission-guidance.ts';
 import { qualityForJob } from './quality.ts';
+import {
+  migrateMissionCameraBindings,
+  resolveVehicleCamera,
+} from './camera-profile.ts';
+import { modelCameraProfile } from './camera-catalog.ts';
 import { distance } from './geometry.ts';
+import { sortieHasJob } from './mission-sortie-jobs.ts';
 
 /** Facts about the selected result, not a post-hoc claim of global optimality. */
 export function explainMissionPlan(
   document: MissionDocument,
   candidate: MissionCandidate,
 ) {
+  document = migrateMissionCameraBindings(document).document;
   return document.scenario.vehicles.map((vehicle) => {
     const own = candidate.sorties.filter((s) => s.vehicleId === vehicle.id);
     const jobs = document.jobs.map((job) => {
@@ -24,21 +31,21 @@ export function explainMissionPlan(
       if (vehicle.batteryPct <= document.scenario.reservePct)
         reasons.push('Текущий заряд не превышает резерв миссии');
       reasons.push(
-        ...qualityForJob(job, vehicle)
+        ...qualityForJob(job, vehicle, document.flightEnvelope)
           .checks.filter((c) => c.status === 'fail')
           .map((c) => c.title),
       );
-      const assigned = own.some((s) => s.jobId === job.id);
+      const assigned = own.some((s) => sortieHasJob(s, job.id));
       return {
         jobId: job.id,
         name: job.name,
         assigned,
         reasons,
         message: assigned
-          ? 'Входит в выбранный маршрут; допустимость проверяется для всего плана.'
+          ? 'Выполняет эту работу в выбранном плане.'
           : reasons.length
             ? reasons.join(' · ')
-            : 'Предварительно подходит, но в этом плане не назначен. Это не доказательство, что аппарат лишний.',
+            : 'Подходит по основным параметрам, но в этот план не включён.',
       };
     });
     return {
@@ -99,6 +106,7 @@ export function missionImprovementTrials(
   document: MissionDocument,
   candidate: MissionCandidate,
 ): MissionTrial[] {
+  document = migrateMissionCameraBindings(document).document;
   const trials: MissionTrial[] = [];
   const add = (
     id: string,
@@ -129,10 +137,76 @@ export function missionImprovementTrials(
     candidate.status === 'feasible_model' &&
     !candidate.checks.some((c) => c.status === 'fail');
   if (!feasible) {
+    const disabledCompatible = document.scenario.vehicles.filter(
+      (v) =>
+        !v.enabled && document.jobs.some((j) => v.jobs.includes(j.job.type)),
+    );
+    if (disabledCompatible.length > 1)
+      add(
+        'enable-all-compatible',
+        'Активировать подходящие БВС',
+        `Включить в расчёт: ${disabledCompatible.map((v) => v.name).join(', ')}. Заряд, базы и оборудование не меняются.`,
+        'repair',
+        (d) => {
+          d.scenario.vehicles.forEach((v) => {
+            if (disabledCompatible.some((x) => x.id === v.id)) v.enabled = true;
+          });
+        },
+      );
+    for (const job of document.jobs) {
+      if (job.quality.altitudeMode === 'gsd' || job.quality.mode !== 'camera')
+        continue;
+      const vehicle = document.scenario.vehicles.find(
+        (v) =>
+          v.enabled &&
+          v.jobs.includes(job.job.type) &&
+          (!job.assignedVehicleIds.length ||
+            job.assignedVehicleIds.includes(v.id)) &&
+          resolveVehicleCamera(v, job.job.type).camera,
+      );
+      if (!vehicle) continue;
+      const effective = qualityForJob(
+        { ...job, quality: { ...job.quality, altitudeMode: 'gsd' } },
+        vehicle,
+        document.flightEnvelope,
+      );
+      if (
+        effective.checks.some((c) => c.status === 'fail') ||
+        effective.job.altitudeM === job.job.altitudeM
+      )
+        continue;
+      if (
+        job.job.altitudeM < 150 &&
+        !qualityForJob(job, vehicle, document.flightEnvelope).checks.some(
+          (c) => c.status === 'fail',
+        )
+      )
+        continue;
+      add(
+        `gsd-altitude-${job.id}`,
+        `Рассчитать высоту по GSD: ${job.name}`,
+        `${job.job.altitudeM} → ${effective.job.altitudeM} м AGL. Требование к качеству, запас батареи и ограничения не ослабляются; план будет рассчитан заново.`,
+        'repair',
+        (d) => {
+          d.jobs.find((j) => j.id === job.id)!.quality.altitudeMode = 'gsd';
+        },
+      );
+    }
     // An installed pack is one resource. Do not add imaginary spare packs,
     // predict replacement duration or reset charge in the live fleet.
     for (const vehicle of document.scenario.vehicles
-      .filter((v) => v.enabled && v.batteryPct < 100)
+      .filter(
+        (v) =>
+          v.enabled &&
+          v.batteryPct < 100 &&
+          document.jobs.some(
+            (j) =>
+              v.jobs.includes(j.job.type) &&
+              (!j.assignedVehicleIds.length ||
+                j.assignedVehicleIds.includes(v.id)),
+          ),
+      )
+      .sort((a, b) => a.batteryPct - b.batteryPct || a.id.localeCompare(b.id))
       .slice(0, 2)) {
       const installed = document.batteries.filter(
         (b) => b.vehicleId === vehicle.id,
@@ -141,7 +215,7 @@ export function missionImprovementTrials(
       add(
         `battery-full-${vehicle.id}`,
         `Заменить батарею: ${vehicle.name}`,
-        `${vehicle.id}: вместо текущих ${vehicle.batteryPct}% проверить 100% перед стартом. Будущая замена в полёте и время обслуживания не выдумываются.`,
+        `${vehicle.id}: вместо текущих ${Number(vehicle.batteryPct.toFixed(1))}% проверить 100% перед стартом. Будущая замена в полёте и время обслуживания не выдумываются.`,
         'repair',
         (d) => {
           d.scenario.vehicles.find((v) => v.id === vehicle.id)!.batteryPct =
@@ -165,7 +239,11 @@ export function missionImprovementTrials(
     for (const target of document.jobs) {
       if (
         document.scenario.vehicles.some(
-          (v) => v.enabled && v.jobs.includes(target.job.type),
+          (v) =>
+            v.enabled &&
+            v.jobs.includes(target.job.type) &&
+            (target.quality.mode !== 'camera' ||
+              resolveVehicleCamera(v, target.job.type).camera),
         )
       )
         continue;
@@ -190,22 +268,15 @@ export function missionImprovementTrials(
         (d) => {
           const v = d.scenario.vehicles.find((v) => v.id === vehicle.id)!;
           v.jobs = [fit.work];
+          const camera = modelCameraProfile(
+            fit.work === 'RGB' ? 'pf1b' : 'pollux',
+          );
+          v.cameraProfiles = [camera];
+          v.cameraIds = [camera.id];
           v.assumptions = [
             ...v.assumptions.slice(0, 8),
             'ГИПОТЕЗА смены комплектации: реальный подвес, нагрузка, период кадров и ресурс после замены требуют подтверждения.',
           ];
-          for (const j of d.jobs.filter((j) => j.job.type === fit.work)) {
-            j.quality = {
-              ...j.quality,
-              status: 'assumed',
-              sensorWidthMm: fit.width,
-              sensorHeightMm: fit.height,
-              focalLengthMm: fit.focal,
-              imageWidthPx: fit.pixelsX,
-              imageHeightPx: fit.pixelsY,
-              source: `Каталожная геометрия ${fit.name}; комплектация и эксплуатационный ресурс гипотетические. ${fit.source}`,
-            };
-          }
           d.notes =
             `ГИПОТЕЗА: смена камеры на ${vehicle.id}; исходный ресурс сохранён лишь как непроверенное допущение. Сверить комплектацию и реальный ресурс.\n${d.notes}`.slice(
               0,
@@ -219,6 +290,19 @@ export function missionImprovementTrials(
       );
       break;
     }
+    if (
+      document.planning.maxVehicles &&
+      document.planning.maxVehicles < document.scenario.vehicles.length
+    )
+      add(
+        'extra-aircraft',
+        'Проверить ещё один БВС',
+        'Увеличить лимит группы на один аппарат из имеющегося парка. Срок, заряд, сенсоры и интервалы безопасности не меняются.',
+        'repair',
+        (d) => {
+          d.planning.maxVehicles = document.planning.maxVehicles! + 1;
+        },
+      );
     if (document.jobs.some((j) => j.assignedVehicleIds.length))
       add(
         'auto-assignment',
@@ -350,7 +434,11 @@ export function missionImprovementTrials(
       );
     }
   }
-  return trials;
+  return trials.sort((a, b) => {
+    const rank = (id: string) =>
+      id.startsWith('enable-') ? 0 : id === 'auto-assignment' ? 1 : 2;
+    return rank(a.id) - rank(b.id);
+  });
 }
 
 export function compareMissionTrial(

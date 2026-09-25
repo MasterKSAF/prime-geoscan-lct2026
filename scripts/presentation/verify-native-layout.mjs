@@ -12,7 +12,9 @@ for(const s of d.slides){
  textBoxes+=text.length;
  for(const t of text)fit(s.slide,t,'box');
  for(const shape of s.shapes){
-  if(shape.type===14)issues.push({slide:s.slide,kind:'unused_placeholder',name:shape.name});
+  // PowerPoint type 14 denotes a placeholder, including filled title/body/number
+  // placeholders that must remain linked to the approved template.
+  if(shape.type===14&&!String(shape.text??'').trim()&&!shape.cells?.length)issues.push({slide:s.slide,kind:'unused_placeholder',name:shape.name});
   // PowerPoint returns table text bounds in a cell-local coordinate system,
   // unlike ordinary text boxes. Compare extents, not absolute positions.
   for(const cell of shape.cells??[]){

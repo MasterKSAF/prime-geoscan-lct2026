@@ -70,6 +70,9 @@ function fakeStore() {
     reportFleet: async () => {
       throw new Error('Fleet tested separately.');
     },
+    reportFleetBatch: async () => {
+      throw new Error('Fleet batches tested separately.');
+    },
     list: async () => {
       if (failNextList) {
         failNextList = false;
@@ -83,6 +86,9 @@ function fakeStore() {
     },
     get: async () => structuredClone(row),
     enqueue: async () => structuredClone(row),
+    removeDemo: async () => {
+      throw new Error('Demo deletion tested separately.');
+    },
     safetyChange: async () => {
       throw new Error('Safety is tested by its own store tests.');
     },

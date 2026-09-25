@@ -51,20 +51,40 @@ function largeFleet(sourceLength: number): MissionFleet {
 }
 const utf8Bytes = (text: string) => new TextEncoder().encode(text).length;
 
+// Keep the fixture on the byte boundary when real profile snapshots grow.
+// This changes only source padding, never the import limit or payload fields.
+function boundaryFleet(sizeOf: (fleet: MissionFleet) => number) {
+  let low = 1,
+    high = 400;
+  assert.ok(sizeOf(largeFleet(low)) <= MAX_FLEET_FILE_BYTES);
+  assert.ok(sizeOf(largeFleet(high)) > MAX_FLEET_FILE_BYTES);
+  while (low + 1 < high) {
+    const middle = Math.floor((low + high) / 2);
+    if (sizeOf(largeFleet(middle)) <= MAX_FLEET_FILE_BYTES) low = middle;
+    else high = middle;
+  }
+  return { fitting: largeFleet(low), overflowing: largeFleet(high) };
+}
+
 void test('fleet export falls back to compact JSON when formatting would exceed the import limit', () => {
   const original = demoMission(1);
-  const fleet = largeFleet(250);
-  const document = {
+  const withFleet = (fleet: MissionFleet) => ({
     ...original,
     scenario: { ...original.scenario, vehicles: fleet.vehicles },
     batteries: fleet.batteries,
-  };
+  });
+  const { fitting: fleet } = boundaryFleet((f) =>
+    utf8Bytes(canonicalMissionJson(withFleet(f))),
+  );
+  const document = withFleet(fleet);
   assert.ok(utf8Bytes(canonicalMissionJson(document)) <= MAX_FLEET_FILE_BYTES);
   assert.ok(utf8Bytes(JSON.stringify(fleet, null, 2)) > MAX_FLEET_FILE_BYTES);
   const exported = serializeMissionFleet(document);
   assert.ok(utf8Bytes(exported) <= MAX_FLEET_FILE_BYTES);
   assert.deepEqual(parseFleetText(exported), fleet);
-  const oversized = largeFleet(330);
+  const { overflowing: oversized } = boundaryFleet((f) =>
+    utf8Bytes(JSON.stringify(f)),
+  );
   assert.throws(
     () =>
       serializeMissionFleet({
@@ -79,7 +99,20 @@ void test('fleet export falls back to compact JSON when formatting would exceed 
 void test('import validates the complete normalized mission and its compact save size before returning', () => {
   const original = demoMission(1);
   const before = structuredClone(original);
-  const fitting = parseFleetText(JSON.stringify(largeFleet(250)));
+  const { fitting: fitInput, overflowing: largeInput } = boundaryFleet(
+    (fleet) =>
+      utf8Bytes(
+        canonicalMissionJson({
+          ...original,
+          scenario: {
+            ...original.scenario,
+            vehicles: [...original.scenario.vehicles, ...fleet.vehicles],
+          },
+          batteries: [...original.batteries, ...fleet.batteries],
+        }),
+      ),
+  );
+  const fitting = parseFleetText(JSON.stringify(fitInput));
   const accepted = importMissionFleet(original, fitting);
   assert.ok(utf8Bytes(canonicalMissionJson(accepted)) <= MAX_FLEET_FILE_BYTES);
   assert.ok(
@@ -89,7 +122,7 @@ void test('import validates the complete normalized mission and its compact save
     parseMissionText(serializeMissionJson(accepted), 'json'),
     accepted,
   );
-  const tooLarge = parseFleetText(JSON.stringify(largeFleet(275)));
+  const tooLarge = parseFleetText(JSON.stringify(largeInput));
   assert.ok(utf8Bytes(JSON.stringify(tooLarge)) <= MAX_FLEET_FILE_BYTES);
   assert.throws(() => importMissionFleet(original, tooLarge), /200 КиБ/);
   assert.deepEqual(original, before);

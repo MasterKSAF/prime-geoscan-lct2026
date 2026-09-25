@@ -103,7 +103,7 @@ async function unassignedState(id = 'unassigned'): Promise<FleetState> {
   return state;
 }
 
-test('running and paused missions reserve airspace even for disjoint vehicle IDs; own resume succeeds', async (t) => {
+void test('running and paused missions reserve airspace even for disjoint vehicle IDs; own resume succeeds', async (t) => {
   const { operations } = store();
   t.after(() => operations.close());
   let first = await operations.enqueue(await input('first'));
@@ -142,7 +142,7 @@ test('running and paused missions reserve airspace even for disjoint vehicle IDs
   assert.equal(resumed.progressSec, first.progressSec);
 });
 
-test('a completed operation releases the cross-operation reservation', async (t) => {
+void test('a completed operation releases the cross-operation reservation', async (t) => {
   const { operations } = store();
   t.after(() => operations.close());
   let first = await operations.enqueue(await input('first'));
@@ -157,7 +157,7 @@ test('a completed operation releases the cross-operation reservation', async (t)
   assert.deepEqual(getOperationStartBlockers(second, [first, second]), []);
 });
 
-test('an archived second paused execution also blocks uncoordinated protective routing', async (t) => {
+void test('an archived second paused execution also blocks uncoordinated protective routing', async (t) => {
   const factory = new IDBFactory();
   const { operations } = store(factory);
   t.after(() => operations.close());
@@ -183,7 +183,7 @@ test('an archived second paused execution also blocks uncoordinated protective r
   );
 });
 
-test('legacy safety snapshots remain readable but neither start nor resume', async (t) => {
+void test('legacy safety snapshots remain readable but neither start nor resume', async (t) => {
   const factory = new IDBFactory();
   const { operations } = store(factory);
   t.after(() => operations.close());
@@ -222,7 +222,7 @@ test('legacy safety snapshots remain readable but neither start nor resume', asy
   assert.deepEqual(await reopened.list(), [completed]);
 });
 
-test('fleet additions on the ground or in the air are rejected during running and paused operations', async (t) => {
+void test('fleet additions on the ground or in the air are rejected during running and paused operations', async (t) => {
   const { operations, tick } = store();
   t.after(() => operations.close());
   let active = await operations.enqueue(await input('first'));
@@ -250,7 +250,7 @@ test('fleet additions on the ground or in the air are rejected during running an
   assert.equal((await operations.listFleet()).length, initialFleet.length);
 });
 
-test('active operations reject unassigned fleet movement and airborne reports but permit stationary SOC updates', async (t) => {
+void test('active operations reject unassigned fleet movement and airborne reports but permit stationary SOC updates', async (t) => {
   const { operations, tick } = store();
   t.after(() => operations.close());
   const original = await operations.reportFleet({
@@ -326,7 +326,7 @@ test('active operations reject unassigned fleet movement and airborne reports bu
   );
 });
 
-test('a fleet addition after planning blocks the stale start until the whole fleet is captured and recalculated', async (t) => {
+void test('a fleet addition after planning blocks the stale start until the whole fleet is captured and recalculated', async (t) => {
   const { operations } = store();
   t.after(() => operations.close());
   const stale = await operations.enqueue(await input('first'));
@@ -379,4 +379,37 @@ test('a fleet addition after planning blocks the stale start until the whole fle
     (await operations.start(fresh.id, fresh.revision)).status,
     'running',
   );
+});
+
+void test('a grounded foreign-region aircraft does not block a local demo; local, airborne and assigned states still do', async () => {
+  const { operations } = store();
+  try {
+    const row = await operations.enqueue(await input('first'));
+    const local = await unassignedState();
+    assert.ok(getOperationStartBlockers(row, [row], [local]).length > 0);
+    const distant = structuredClone(local);
+    distant.vehicle.start = distant.vehicle.landing = [131.9, 43.1];
+    assert.deepEqual(getOperationStartBlockers(row, [row], [distant]), []);
+    assert.ok(
+      getOperationStartBlockers(
+        row,
+        [row],
+        [{ ...distant, grounded: false, ready: false }],
+      ).length > 0,
+    );
+    assert.ok(
+      getOperationStartBlockers(
+        row,
+        [row],
+        [{ ...distant, operationId: 'unknown-flight' }],
+      ).length > 0,
+    );
+    const landingNearby = structuredClone(distant);
+    landingNearby.vehicle.landing = local.vehicle.landing;
+    assert.ok(
+      getOperationStartBlockers(row, [row], [landingNearby]).length > 0,
+    );
+  } finally {
+    operations.close();
+  }
 });

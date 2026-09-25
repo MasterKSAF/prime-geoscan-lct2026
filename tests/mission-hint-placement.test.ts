@@ -166,7 +166,7 @@ void test('unknown terrain and unsupported aircraft remain visible conditional s
   assert.equal(condition.left.operand.getText(), 'eligibility.supported');
 });
 
-void test('approval still requires a checked acknowledgement and displays non-passing checks outside help', () => {
+void test('approval requires acknowledgement and provides a direct link to all checks outside help', () => {
   const dialogs = descendants(
     workbench,
     (node) =>
@@ -208,24 +208,23 @@ void test('approval still requires a checked acknowledgement and displays non-pa
       disabled.operator === ts.SyntaxKind.ExclamationToken,
   );
   assert.equal(disabled.operand.getText(), 'acknowledged');
-  const visibleChecks = descendants(
+  const checkSummary = descendants(
     dialog,
-    (node) =>
-      tag(node) === 'div' &&
-      stringAttribute(node, 'className') === 'mw-check unknown',
+    (node) => tag(node) === 'MissionSafetySummary',
   );
-  assert.equal(visibleChecks.length, 1);
+  assert.equal(checkSummary.length, 1);
   assert.equal(
-    ancestor(visibleChecks[0], (node) => tag(node) === 'InfoHint'),
+    ancestor(checkSummary[0], (node) => tag(node) === 'InfoHint'),
     undefined,
   );
-  assert.ok(
-    descendants(
-      visibleChecks[0],
-      (node) =>
-        ts.isPropertyAccessExpression(node) &&
-        node.expression.getText() === 'c' &&
-        node.name.text === 'detail',
-    ).length > 0,
+  assert.equal(
+    expressionAttribute(checkSummary[0], 'candidate')?.getText(),
+    'candidate',
   );
+  const openChecks = expressionAttribute(checkSummary[0], 'onOpenChecks');
+  assert.ok(openChecks);
+  const calls = descendants(openChecks, (node) =>
+    ts.isCallExpression(node),
+  ).map((node) => (node as ts.CallExpression).expression.getText());
+  assert.deepEqual(calls, ['onModalClose', 'revealChecks']);
 });

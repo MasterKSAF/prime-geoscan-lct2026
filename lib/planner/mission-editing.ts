@@ -22,6 +22,7 @@ export function appendMissionWork(
     throw new Error('Нужен новый идентификатор работы.');
   const source = d.jobs.find((j) => j.id === selectedId) ?? d.jobs[0];
   const quality = createDemoQuality(type);
+  if (quality.mode === 'camera') quality.altitudeMode = 'gsd';
   const next: MissionJob = {
     ...structuredClone(source),
     id,

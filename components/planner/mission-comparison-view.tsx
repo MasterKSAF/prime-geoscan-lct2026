@@ -3,14 +3,16 @@ import type {
   MissionResult,
 } from '@/lib/planner/mission-schema';
 import { InfoHint } from './mission-help';
+import { sortieJobIds } from '@/lib/planner/mission-sortie-jobs';
+import { flightTimeBreakdown } from '@/lib/planner/mission-resources';
 const number = (v: number) =>
   v.toLocaleString('ru-RU', { maximumFractionDigits: 1 });
 const title = (c: MissionCandidate) =>
   c.id === 'balanced'
-    ? 'Баланс'
+    ? 'Уложиться в срок'
     : c.objective === 'makespan'
-      ? 'Раньше завершить'
-      : 'Снизить общий налёт';
+      ? 'Быстрее закончить'
+      : 'Меньше налёт';
 export default function MissionComparisonView({
   result,
   selectedId,
@@ -22,11 +24,10 @@ export default function MissionComparisonView({
 }) {
   const rows = [
     ...result.candidates,
-    ...(result.recommendation && !result.recommendation.samePlan
-      ? [result.recommendation.candidate]
-      : []),
+    ...(result.recommendation ? [result.recommendation.candidate] : []),
   ];
   const selected = rows.find((c) => c.id === selectedId) ?? rows[0];
+  const breakdown = selected ? flightTimeBreakdown(selected) : null;
   const maxTime = Math.max(1, ...rows.map((c) => c.metrics.makespanSec)),
     maxFlight = Math.max(1, ...rows.map((c) => c.metrics.flightTimeSec));
   return (
@@ -38,13 +39,8 @@ export default function MissionComparisonView({
               <th>
                 Вариант
                 <InfoHint label="Как сравниваются варианты">
-                  Все варианты рассчитываются для одной миссии. «Раньше
-                  завершить» сокращает срок, «Снизить общий налёт» — суммарный
-                  налёт. «Баланс» ищет компромисс 50/50 среди найденных
-                  допустимых планов. Это ограниченный поиск, не доказанный
-                  лучший маршрут из всех возможных. Сначала проверяются
-                  выполнение всей задачи и ограничения. Безопасность и покрытие
-                  не обмениваются на минуты.
+                  Выбор между более ранним завершением и меньшим временем БВС в
+                  воздухе. Сравниваются найденные планы, прошедшие проверки.
                 </InfoHint>
               </th>
               <th>
@@ -68,15 +64,8 @@ export default function MissionComparisonView({
               <th>
                 Покрытие
                 <InfoHint label="Покрытие исходной миссии">
-                  Доля исходной площади всех работ, закрытая расчётными полосами
-                  съёмки. Вырезанная запретами часть не считается выполненной.
-                  Порог модели — 99%; это не оценка жюри и не подтверждение
-                  качества реальных снимков. Для камер проверяются заданная
-                  детализация, перекрытие, интервал кадров и смаз при наличии
-                  параметров. Для LiDAR — средняя плотность, для геофизики — шаг
-                  измерений и высота датчика. Качество — обязательное условие:
-                  нарушение порога не компенсируется выигрышем времени.
-                  Неизвестные параметры требуют отдельного подтверждения.
+                  Какая доля всей территории будет снята по расчёту. Требуется
+                  не менее 99%. Исключённые запретами части не засчитываются.
                 </InfoHint>
               </th>
               <th>БВС</th>
@@ -154,34 +143,90 @@ export default function MissionComparisonView({
         </table>
       </div>
       {result.recommendation ? (
-        <>
-          <h3>
-            Почему выбран баланс
-            <InfoHint label="Что означает оценка баланса">
-              Время завершения и налёт приводятся к шкале от 0 до 1 по найденным
-              допустимым кандидатам. Затем складываются с весами 0,5 и 0,5.
-              Меньшая оценка предпочтительнее в этом наборе. Одинаковые маршруты
-              не выдаются за разные альтернативы; безопасность и качество в эту
-              сумму не входят. {result.recommendation.explanation}
+        <details className="mw-details">
+          <summary>
+            Как уложиться в срок
+            <InfoHint label="Выбор под заданный срок">
+              Минимальный суммарный налёт среди найденных полных безопасных
+              планов, укладывающихся в срок и лимит БВС. Может совпасть с
+              «Меньше налёт».
             </InfoHint>
-          </h3>
+          </summary>
           <p>
             Допустимых кандидатов: {result.recommendation.poolSize} · разных
-            планов: {result.recommendation.distinctPlanCount} · оценка:{' '}
-            {result.recommendation.score.toFixed(4)}
+            планов: {result.recommendation.distinctPlanCount} · запас до срока:{' '}
+            {number(result.recommendation.slackSec / 60)} мин
           </p>
           {result.recommendation.samePlan && (
             <p className="ms-notice">Совпадает с основным вариантом.</p>
           )}
-        </>
+          <details>
+            <summary>Подробности выбора</summary>
+            <p>{result.recommendation.explanation}</p>
+          </details>
+        </details>
       ) : (
         <p className="ms-notice">
-          Баланс недоступен: нет полного допустимого плана.
+          Для сравнения нужен план, прошедший проверки.
         </p>
       )}
+      {result.resourceStudy && (
+        <details className="mw-details">
+          <summary>Сколько БВС нужно к сроку</summary>
+          <div className="ms-table-scroll">
+            <table className="ms-table">
+              <thead>
+                <tr>
+                  <th>Лимит группы</th>
+                  <th>Назначено</th>
+                  <th>Время завершения</th>
+                </tr>
+              </thead>
+              <tbody>
+                {result.resourceStudy.rows.map((r) => (
+                  <tr key={r.maxVehicles}>
+                    <td>До {r.maxVehicles} БВС</td>
+                    <td>{r.vehicleCount ?? '—'}</td>
+                    <td>
+                      {r.status === 'found'
+                        ? `${number(r.makespanSec! / 60)} мин · в срок`
+                        : r.status === 'not_found'
+                          ? 'Полный план пока не найден'
+                          : 'Не исследован в бюджете поиска'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p>
+            Сравнение в пределах текущего парка и срока. Отсутствие найденного
+            плана не означает невозможность.
+          </p>
+        </details>
+      )}
+      {breakdown && (
+        <details className="mw-details">
+          <summary>Из чего складывается налёт</summary>
+          <dl className="resource-time-breakdown">
+            <dt>Съёмка</dt>
+            <dd>{number(breakdown.surveySec / 60)} мин</dd>
+            <dt>Переходы и возврат</dt>
+            <dd>{number(breakdown.transitReturnSec / 60)} мин</dd>
+            <dt>Взлёт, посадка, манёвры</dt>
+            <dd>{number(breakdown.maneuversSec / 60)} мин</dd>
+            <dt>Ожидание в воздухе</dt>
+            <dd>{number(breakdown.airborneWaitingSec / 60)} мин</dd>
+          </dl>
+          <p>
+            Сумма по всем БВС. Ожидание на земле не входит в налёт, но
+            увеличивает время завершения.
+          </p>
+        </details>
+      )}
       {selected && (
-        <>
-          <h3>Распределение выбранного варианта</h3>
+        <details className="mw-details">
+          <summary>Какие работы выполняет каждый БВС</summary>
           <div className="ms-table-scroll">
             <table className="ms-table">
               <thead>
@@ -204,12 +249,14 @@ export default function MissionComparisonView({
                       <td>
                         {[
                           ...new Set(
-                            own.map(
-                              (s) =>
-                                result.document.jobs.find(
-                                  (j) => j.id === s.jobId,
-                                )?.name ?? s.jobId,
-                            ),
+                            own
+                              .flatMap(sortieJobIds)
+                              .map(
+                                (jobId) =>
+                                  result.document.jobs.find(
+                                    (j) => j.id === jobId,
+                                  )?.name ?? jobId,
+                              ),
                           ),
                         ].join(', ') || 'Не назначен'}
                       </td>
@@ -231,7 +278,7 @@ export default function MissionComparisonView({
               </tbody>
             </table>
           </div>
-        </>
+        </details>
       )}
     </>
   );

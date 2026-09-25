@@ -27,9 +27,11 @@ export type MissionNotificationInput = Omit<
 export function MissionNotificationCenter({
   entries,
   modalKey,
+  compact = false,
 }: {
   entries: MissionNotificationInput[];
   modalKey?: string | number | null;
+  compact?: boolean;
 }) {
   const panelId = useId();
   const trigger = useRef<HTMLButtonElement>(null);
@@ -141,7 +143,13 @@ export function MissionNotificationCenter({
     return () => window.clearInterval(timer);
   }, [state.history]);
 
-  const visible = open ? [] : visibleNotifications(state, clock);
+  const pending = open ? [] : visibleNotifications(state, clock);
+  // One toast in the expert workflow; warnings take precedence. Every message
+  // stays in the history and contributes to the unread count.
+  const visible =
+    compact && pending.length
+      ? [pending.find((entry) => entry.tone === 'warning') ?? pending[0]]
+      : pending;
   const hasLayer = open || visible.length > 0;
   useLayoutEffect(() => {
     const element = layer.current;

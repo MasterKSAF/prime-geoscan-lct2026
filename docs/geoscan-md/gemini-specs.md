@@ -1,6 +1,6 @@
 ---
 title: "Геоскан Gemini — технические характеристики"
-source: "tmp/geoscan-plan/gemini-specs.pdf"
+source: "docs/planner/references/manufacturers/gemini-specs.pdf"
 source_sha256: "a6876bfb869d4cdc22b88b29699e56e4eaaf966d181df9a6eed6ce103885d3a5"
 converted_at: "2026-09-15T15:25:32+00:00"
 source_status: "reference-snapshot"
@@ -9,7 +9,7 @@ extraction: "pdf-native-text-and-selective-ocr"
 
 # Геоскан Gemini — технические характеристики
 
-Источник: [gemini-specs.pdf](../../tmp/geoscan-plan/gemini-specs.pdf). [Каталог Markdown](README.md).
+Источник: [gemini-specs.pdf](../planner/references/manufacturers/gemini-specs.pdf). [Каталог Markdown](README.md).
 
 > Копия для поиска и парсинга, не новый нормативный документ. Сохранены физические номера страниц. Текст PDF дан в блоках `text`, чтобы не потерять расположение строк и колонок; схемы и подписи внутри изображений могут отсутствовать. OCR отмечен отдельно.
 
@@ -17,7 +17,7 @@ extraction: "pdf-native-text-and-selective-ocr"
 
 ## Страница 1
 
-[Оригинал, страница 1](../../tmp/geoscan-plan/gemini-specs.pdf#page=1)
+[Оригинал, страница 1](../planner/references/manufacturers/gemini-specs.pdf#page=1)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -57,7 +57,7 @@ Operating temperature                                           -15 to 40 °C   
 
 ## Страница 2
 
-[Оригинал, страница 2](../../tmp/geoscan-plan/gemini-specs.pdf#page=2)
+[Оригинал, страница 2](../planner/references/manufacturers/gemini-specs.pdf#page=2)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -102,7 +102,7 @@ Positioning accuracy                                                       horiz
 
 ## Страница 3
 
-[Оригинал, страница 3](../../tmp/geoscan-plan/gemini-specs.pdf#page=3)
+[Оригинал, страница 3](../planner/references/manufacturers/gemini-specs.pdf#page=3)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -146,7 +146,7 @@ Hyperfocal distance                                                       10.3 m
 
 ## Страница 4
 
-[Оригинал, страница 4](../../tmp/geoscan-plan/gemini-specs.pdf#page=4)
+[Оригинал, страница 4](../planner/references/manufacturers/gemini-specs.pdf#page=4)
 
 > Извлечение: `native-source-order`. Растровых объектов в PDF: 0.
 
@@ -232,7 +232,7 @@ Yes
 
 ## Страница 5
 
-[Оригинал, страница 5](../../tmp/geoscan-plan/gemini-specs.pdf#page=5)
+[Оригинал, страница 5](../planner/references/manufacturers/gemini-specs.pdf#page=5)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -276,7 +276,7 @@ Operating temperature                                         0 to 40 °C       
 
 ## Страница 6
 
-[Оригинал, страница 6](../../tmp/geoscan-plan/gemini-specs.pdf#page=6)
+[Оригинал, страница 6](../planner/references/manufacturers/gemini-specs.pdf#page=6)
 
 > Извлечение: `native-source-order`. Растровых объектов в PDF: 0.
 

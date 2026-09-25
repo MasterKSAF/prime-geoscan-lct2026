@@ -19,7 +19,7 @@ const document = SHOWCASE_SCENARIOS.find(
 )!.create();
 const solved = solveMissionDocument(document);
 
-test('explanations use actual assignments and do not invent optimality reasons', async () => {
+void test('explanations use actual assignments and do not invent optimality reasons', async () => {
   const candidate = (await solved).candidates[0];
   assert.equal(candidate.status, 'feasible_model');
   const rows = explainMissionPlan(document, candidate);
@@ -44,7 +44,7 @@ test('explanations use actual assignments and do not invent optimality reasons',
   assert.ok(!JSON.stringify(rows).includes('оптимальный'));
 });
 
-test('fleet trials disable assignment, retain physical occupancy and never mutate source', async () => {
+void test('fleet trials disable assignment, retain physical occupancy and never mutate source', async () => {
   const candidate = (await solved).candidates[0],
     before = canonicalStringify(document);
   const trials = missionImprovementTrials(document, candidate);
@@ -75,7 +75,7 @@ test('fleet trials disable assignment, retain physical occupancy and never mutat
   assert.equal(canonicalStringify(document), before);
 });
 
-test('repair trials preserve task area, weather, forbidden volumes and time restrictions', async () => {
+void test('repair trials preserve task area, weather, forbidden volumes and time restrictions', async () => {
   const input = structuredClone(document);
   input.jobs[0].assignedVehicleIds = [input.scenario.vehicles[0].id];
   const candidate = {
@@ -103,7 +103,7 @@ test('repair trials preserve task area, weather, forbidden volumes and time rest
   }
 });
 
-test('partial or invalid alternatives never receive a claimed time saving', async () => {
+void test('partial or invalid alternatives never receive a claimed time saving', async () => {
   const c = (await solved).candidates[0];
   for (const status of [
     'not_found',
@@ -128,7 +128,7 @@ test('partial or invalid alternatives never receive a claimed time saving', asyn
   );
 });
 
-test('coverage partitions original area and never represents model output as received imagery', async () => {
+void test('coverage partitions original area and never represents model output as received imagery', async () => {
   const candidate = (await solved).candidates[0],
     views = missionCoverageViews(document, candidate);
   assert.ok(views.every((v) => v.status === 'calculated' && v.coveredM2 > 0));
@@ -142,7 +142,7 @@ test('coverage partitions original area and never represents model output as rec
   assert.ok(views.some((v) => v.qualityStatus === 'unknown'));
 });
 
-test('no survey means original task fully missing, not zero target after exclusions', async () => {
+void test('no survey means original task fully missing, not zero target after exclusions', async () => {
   const candidate = { ...(await solved).candidates[0], sorties: [] };
   const views = missionCoverageViews(document, candidate);
   assert.ok(
@@ -150,7 +150,7 @@ test('no survey means original task fully missing, not zero target after exclusi
   );
 });
 
-test('coverage quality uses ground speed including tailwind, not the vehicle nominal airspeed', async () => {
+void test('coverage quality uses ground speed including tailwind, not the vehicle nominal airspeed', async () => {
   const d = structuredClone(document),
     c = structuredClone((await solved).candidates[0]);
   d.jobs[0].quality.status = 'documented';
@@ -162,7 +162,7 @@ test('coverage quality uses ground speed including tailwind, not the vehicle nom
   assert.ok(view.details.some((detail) => /камер|пиксел/.test(detail)));
 });
 
-test('coverage keeps holes and bounded complexity does not yield false green', async () => {
+void test('coverage keeps holes and bounded complexity does not yield false green', async () => {
   const d = SHOWCASE_SCENARIOS.find((s) => s.id === 'area-with-hole')!.create();
   const result = await solveMissionDocument(d),
     candidate = result.candidates[0];

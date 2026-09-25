@@ -30,10 +30,24 @@ import {
 } from './geometry.ts';
 import { groundSpeed } from './engine.ts';
 import { qualityForJob } from './quality.ts';
+import {
+  cameraGeometryKey,
+  migrateMissionCameraBindings,
+  resolveVehicleCamera,
+} from './camera-profile.ts';
+import { trackAltitudeCheck } from './altitude-policy.ts';
 import { buildMissionEvents } from './mission-events.ts';
 import { z } from 'zod';
+import { maintenanceChecks } from './mission-maintenance.ts';
 import { vehiclePlanningEligibility } from './fixed-wing-profile.ts';
 import { missionWeatherChecks } from './mission-weather.ts';
+import { isVehicleReserved } from './mission-resource-reservations.ts';
+import {
+  jobSurveySegments,
+  sortieJobIds,
+  sameFlightProfile,
+} from './mission-sortie-jobs.ts';
+import { effectiveMissionRestrictions } from './mission-catalog.ts';
 
 const EPS = 1e-7;
 const resultNumber = (min: number, max = 604800) =>
@@ -61,6 +75,7 @@ const resultSegmentSchema = z
     batteryFromPct: resultNumber(0, 100),
     batteryToPct: resultNumber(0, 100),
     stripId: resultNumber(0, 400).int().optional(),
+    jobId: resultId.optional(),
     fixedWing: fixedWingSegmentMetadataSchema.optional(),
   })
   .strict();
@@ -69,6 +84,7 @@ const resultSortieSchema = z
     id: resultId,
     jobId: resultId,
     batteryId: resultId,
+    cameraId: resultId.optional(),
     vehicleId: resultId,
     name: z.string().min(1).max(60),
     startSec: resultNumber(0),
@@ -342,7 +358,7 @@ export function compileRestrictions(
   const start = Date.parse(d.window.start),
     guard = d.planning.safetyPolicy ? d.planning.temporalBufferSec : 0;
   return [
-    ...d.restrictions.map((r) => {
+    ...effectiveMissionRestrictions(d).map((r) => {
       return {
         id: r.id,
         footprint: conservativeBuffer(
@@ -407,15 +423,34 @@ function guardSegments(s: Segment, guardSec: number): Segment[] {
   ];
 }
 
-export function sortiesConflict(
+export type SortieConflict = {
+  vehicleId: string;
+  otherVehicleId: string;
+  sortieId: string;
+  otherSortieId: string;
+  atSec: number;
+  coordinate: Coordinate;
+  otherCoordinate: Coordinate;
+  altitudeM: number;
+  otherAltitudeM: number;
+  horizontalDistanceM: number;
+  requiredHorizontalM: number;
+  requiredVerticalM: number;
+  phase: Segment['phase'];
+  otherPhase: Segment['phase'];
+  includesUncertainty: boolean;
+};
+
+/** Same continuous collision predicate, with a reproducible first witness. */
+export function firstSortieConflict(
   d: MissionDocument,
   a: ScheduledSortie,
   b: ScheduledSortie,
-): boolean {
-  if (a.vehicleId === b.vehicleId) return false;
+): SortieConflict | null {
+  if (a.vehicleId === b.vehicleId) return null;
   const guard = d.planning.temporalBufferSec;
   if (a.endSec + guard * 2 < b.startSec || b.endSec + guard * 2 < a.startSec)
-    return false;
+    return null;
   // The vertical occupied interval is [platform - suspension, platform].
   // Comparing interval centres with the sum of half-extents also covers cable
   // interiors, not just sensor endpoints. It is conservative near the ground
@@ -459,27 +494,62 @@ export function sortiesConflict(
       )
         continue;
       for (const aa of guardSegments(first, guard))
-        for (const bb of guardSegments(second, guard))
-          if (
-            segmentSeparation(
-              centred(aa, aOffset),
-              centred(bb, bOffset),
-              horizontal +
-                (aa.fixedWing?.tubeRadiusM ?? 0) +
-                (bb.fixedWing?.tubeRadiusM ?? 0),
-              vertical +
-                (aa.fixedWing?.tubeRadiusM ?? 0) +
-                (bb.fixedWing?.tubeRadiusM ?? 0),
-              projection(
-                d.planning.safetyPolicy
-                  ? d.scenario.area.coordinates[0][0]
-                  : aa.from,
-              ).forward,
-            )?.conflict
-          )
-            return true;
+        for (const bb of guardSegments(second, guard)) {
+          const requiredHorizontalM =
+            horizontal +
+            (aa.fixedWing?.tubeRadiusM ?? 0) +
+            (bb.fixedWing?.tubeRadiusM ?? 0);
+          const requiredVerticalM =
+            vertical +
+            (aa.fixedWing?.tubeRadiusM ?? 0) +
+            (bb.fixedWing?.tubeRadiusM ?? 0);
+          const hit = segmentSeparation(
+            centred(aa, aOffset),
+            centred(bb, bOffset),
+            horizontal +
+              (aa.fixedWing?.tubeRadiusM ?? 0) +
+              (bb.fixedWing?.tubeRadiusM ?? 0),
+            vertical +
+              (aa.fixedWing?.tubeRadiusM ?? 0) +
+              (bb.fixedWing?.tubeRadiusM ?? 0),
+            projection(
+              d.planning.safetyPolicy
+                ? d.scenario.area.coordinates[0][0]
+                : aa.from,
+            ).forward,
+          );
+          if (hit?.conflict) {
+            const pa = positionAt(aa, hit.atSec),
+              pb = positionAt(bb, hit.atSec);
+            return {
+              vehicleId: a.vehicleId,
+              otherVehicleId: b.vehicleId,
+              sortieId: a.id,
+              otherSortieId: b.id,
+              atSec: hit.atSec,
+              coordinate: pa.coordinate,
+              otherCoordinate: pb.coordinate,
+              altitudeM: pa.altitudeM,
+              otherAltitudeM: pb.altitudeM,
+              horizontalDistanceM: hit.distanceM,
+              requiredHorizontalM,
+              requiredVerticalM,
+              phase: aa.phase,
+              otherPhase: bb.phase,
+              includesUncertainty: guard > 0,
+            };
+          }
+        }
     }
-  return false;
+  return null;
+}
+
+export function sortiesConflict(
+  d: MissionDocument,
+  a: ScheduledSortie,
+  b: ScheduledSortie,
+): boolean {
+  return firstSortieConflict(d, a, b) !== null;
 }
 
 /** A parked aircraft does not disappear. Compare flights against all supplied
@@ -667,6 +737,7 @@ export function validateMissionCandidate(
   sorties: ScheduledSortie[],
   contexts: JobContext[],
 ): Check[] {
+  d = migrateMissionCameraBindings(d).document;
   const parsed = z.array(resultSortieSchema).max(300).safeParse(sorties);
   if (
     !parsed.success ||
@@ -685,7 +756,12 @@ export function validateMissionCandidate(
               .slice(0, 1000),
       },
     ];
-  const checks: Check[] = [],
+  const checks: Check[] = [
+      trackAltitudeCheck(
+        contexts.map((context) => context.scenario.job.altitudeM),
+        sorties.flatMap((s) => s.segments),
+      ),
+    ],
     contextById = new Map(contexts.map((c) => [c.job.id, c])),
     volumesByJob = new Map(
       contexts.map((c) => [
@@ -703,6 +779,14 @@ export function validateMissionCandidate(
       checks.push({ id, status: ok ? 'pass' : 'fail', title, detail }),
     begin = Date.parse(d.window.start),
     windowSec = (Date.parse(d.window.end) - begin) / 1000;
+  const usedCount = new Set(sorties.map((s) => s.vehicleId)).size;
+  push(
+    'FLEET_LIMIT',
+    usedCount <= (d.planning.maxVehicles ?? 20),
+    'Число БВС за всю миссию',
+    `Назначено ${usedCount}; лимит ${d.planning.maxVehicles ?? 'автоматически, в пределах парка'}. Повторные вылеты того же аппарата не увеличивают число БВС.`,
+  );
+  checks.push(...maintenanceChecks(d, sorties));
   const environmentChecks = missionEnvironmentChecks(
     d,
     sorties.flatMap((sortie) => sortie.segments),
@@ -748,10 +832,67 @@ export function validateMissionCandidate(
           .filter((s) => s.phase === 'survey')
           .map((s) => s.groundSpeedMps),
       ),
-      quality = qualityForJob(context.job, {
-        ...vehicle,
-        airspeedMps: maxSurveySpeed || vehicle.airspeedMps,
-      });
+      quality = qualityForJob(
+        context.job,
+        {
+          ...vehicle,
+          airspeedMps: maxSurveySpeed || vehicle.airspeedMps,
+        },
+        d.flightEnvelope,
+      );
+    const workIds = sortieJobIds(sortie);
+    if (context.job.quality.mode === 'camera') {
+      const camera = resolveVehicleCamera(
+        vehicle,
+        context.job.job.type,
+        sortie.cameraId,
+      );
+      const bound =
+        !!sortie.cameraId &&
+        !!camera.camera &&
+        !!context.cameraProfile &&
+        cameraGeometryKey(camera.camera) ===
+          cameraGeometryKey(context.cameraProfile);
+      compatibility &&= bound;
+      push(
+        `${sortie.id}:CAMERA_BINDING`,
+        bound,
+        'Оптика назначенного БВС',
+        bound
+          ? `${vehicle.id}: ${sortie.cameraId}; активная камера совпадает с оптикой сетки полос.`
+          : (camera.reason ??
+              'Камера вылета отсутствует или не совпадает с оптикой работы.'),
+      );
+    }
+    for (const workId of workIds) {
+      const workContext = contextById.get(workId);
+      const work = workContext?.job;
+      compatibility &&=
+        !!work &&
+        vehicle.jobs.includes(work.job.type) &&
+        (!work.assignedVehicleIds.length ||
+          work.assignedVehicleIds.includes(vehicle.id));
+      if (work?.quality.mode === 'camera') {
+        const active = resolveVehicleCamera(
+          vehicle,
+          work.job.type,
+          sortie.cameraId,
+        ).camera;
+        compatibility &&=
+          !!active &&
+          !!workContext?.cameraProfile &&
+          cameraGeometryKey(active) ===
+            cameraGeometryKey(workContext.cameraProfile);
+      }
+      if (workId !== sortie.jobId)
+        compatibility &&=
+          !!work &&
+          !!d.planning.areaTransferPolicy &&
+          !!d.planning.safetyPolicy &&
+          !!d.planning.batteryPolicy &&
+          vehicle.kind === 'multirotor' &&
+          sameFlightProfile(context.job, work);
+    }
     if (context.job.window) {
       const start = (Date.parse(context.job.window.start) - begin) / 1000;
       const end = (Date.parse(context.job.window.end) - begin) / 1000;
@@ -773,7 +914,10 @@ export function validateMissionCandidate(
             c.id.endsWith('CADENCE') ||
             c.id.endsWith('BLUR') ||
             c.id.endsWith('DENSITY') ||
-            c.id.endsWith('SAMPLES'),
+            c.id.endsWith('SAMPLES') ||
+            c.id.endsWith('_CAMERA') ||
+            c.id.endsWith('_CAMERA_SPEED') ||
+            c.id.endsWith('_SOURCE'),
         )
         .map((c) => ({ ...c, id: `${sortie.id}:${c.id}` })),
     );
@@ -1015,9 +1159,7 @@ export function validateMissionCandidate(
     for (let j = i + 1; j < sorties.length; j++)
       separation &&= !sortiesConflict(d, sorties[i], sorties[j]);
   for (const context of contexts) {
-    const segments = sorties
-        .filter((s) => s.jobId === context.job.id)
-        .flatMap((s) => s.segments.filter((x) => x.phase === 'survey')),
+    const segments = jobSurveySegments(sorties, context.job.id),
       ids = new Set<number>();
     strips &&= segments.length === context.strips.length;
     for (const segment of segments) {
@@ -1096,6 +1238,13 @@ export function validateMissionCandidate(
       ? 'Проверены текущая батарея, расход между повторными вылетами и запас на возвращение; автоматического восстановления заряда нет.'
       : 'Проверены ID, исходный заряд, доступность и последовательная модельная зарядка; заряд не восстанавливается без события.',
   );
+  if (d.resourceReservations?.length)
+    push(
+      'FLEET_RESERVATIONS',
+      sorties.every((sortie) => !isVehicleReserved(d, sortie.vehicleId)),
+      'Занятость БВС другими миссиями',
+      'БВС активных миссий и пересекающихся резервирований не назначаются повторно. Перед запуском состояние и межмиссионные конфликты проверяются заново.',
+    );
   push(
     'COMPATIBILITY',
     compatibility,
@@ -1113,8 +1262,8 @@ export function validateMissionCandidate(
     restrictions,
     'Четырёхмерные ограничения',
     d.planning.safetyPolicy
-      ? `Сегменты пересечены с полигоном, интервалом высоты и активным временем, расширенным на ±${d.planning.temporalBufferSec} с. Неизвестный верх закрывает весь столб.`
-      : 'Сегменты пересечены с полигоном, интервалом высоты и активным временем; неизвестный верх закрывает весь столб.',
+      ? `Проверены контур, высотный слой и время на всём маршруте, включая взлёт и посадку; временной запас ±${d.planning.temporalBufferSec} с. Неизвестная верхняя граница не отменяет известную нижнюю. Расписание без дат учитывается весь период миссии.`
+      : 'Проверены контур, высотный слой и время на всём маршруте, включая взлёт и посадку. Неизвестная верхняя граница не отменяет известную нижнюю.',
   );
   push(
     'SEPARATION',
@@ -1164,6 +1313,9 @@ export function validateMissionCandidate(
       phases &&
       restrictions &&
       envelope &&
+      !checks.some(
+        (check) => check.id === 'TRACK_ALTITUDE' && check.status === 'fail',
+      ) &&
       schedule &&
       (!d.planning.safetyPolicy ||
         (separation && groundConflicts.length === 0)) &&
@@ -1219,7 +1371,7 @@ export function validateMissionCandidate(
       status: 'unknown',
       title: 'Поиск высоты по предпочтению',
       detail:
-        'Применяется заданная высота работы; автоматический поиск ниже/выше ещё не реализован.',
+        'Применяется высота работы: заданная вручную или рассчитанная по GSD. Дополнительный поиск ниже/выше по предпочтению не реализован; качество и предел 150 м не ослабляются.',
     });
   return checks;
 }
@@ -1232,7 +1384,9 @@ export async function validateExportedCandidate(
   candidate: MissionCandidate,
 ): Promise<Check[]> {
   try {
-    const d = parseMissionDocument(document),
+    const d = migrateMissionCameraBindings(
+        parseMissionDocument(document),
+      ).document,
       hash = await sha256(d),
       checks: Check[] = [],
       contexts: JobContext[] = [];
@@ -1259,15 +1413,39 @@ export async function validateExportedCandidate(
         Number.isFinite(selected) &&
         allowed.some((x) => Math.abs(x - selected) < EPS);
       choices &&= valid;
+      const cameraVehicle = d.scenario.vehicles.find(
+          (v) => v.id === row?.cameraVehicleId,
+        ),
+        camera = cameraVehicle
+          ? resolveVehicleCamera(
+              cameraVehicle,
+              job.job.type,
+              row?.cameraProfileId,
+            )
+          : {};
+      if (job.quality.mode === 'camera')
+        checks.push({
+          id: `CAMERA_PROVENANCE_${job.id}`,
+          status: camera.camera && row?.cameraProfileId ? 'pass' : 'fail',
+          title: 'Происхождение оптики раскладки',
+          detail: camera.camera
+            ? `${cameraVehicle!.id}: ${camera.camera.id}; профиль заново прочитан из входного снимка установленной камеры.`
+            : 'Неизвестная или неактивная камера в метаданных раскладки.',
+        });
       contexts.push(
-        missionJobContext(d, {
-          ...job,
-          job: {
-            ...job.job,
-            bearingDeg: valid ? selected : job.job.bearingDeg,
-            autoBearing: false,
+        missionJobContext(
+          d,
+          {
+            ...job,
+            job: {
+              ...job.job,
+              bearingDeg: valid ? selected : job.job.bearingDeg,
+              autoBearing: false,
+            },
           },
-        }),
+          false,
+          cameraVehicle,
+        ),
       );
     }
     checks.push({
@@ -1296,9 +1474,7 @@ export async function validateExportedCandidate(
       target = 0,
       measured = 0;
     for (const context of contexts) {
-      const surveys = candidate.sorties
-          .filter((s) => s.jobId === context.job.id)
-          .flatMap((s) => s.segments.filter((x) => x.phase === 'survey')),
+      const surveys = jobSurveySegments(candidate.sorties, context.job.id),
         actual = surveys.length
           ? coveredArea(
               context.geometry,
@@ -1433,6 +1609,12 @@ export async function validateExportedCandidate(
               'BUDGET',
               'SEARCH',
               'SEARCH_STRATEGY',
+              'CAMERA_BINDING',
+              'SPATIAL_PARTITION',
+              'DIRECT_AREA_TRANSFER',
+              'SCHEDULE_COMPACTION',
+              'MAINTENANCE_REJECT',
+              'AREA_TRANSFER_BLOCKED',
               'JOB_PRIORITY_ORDER',
               'SEARCH_REPAIR',
               'PARALLEL_BASELINE_PROTOCOL',

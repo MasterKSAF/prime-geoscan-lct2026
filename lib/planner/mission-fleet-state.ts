@@ -136,7 +136,10 @@ export function applyFleetState(
     d.batteries.push({
       ...structuredClone(s.battery),
       readyAt: new Date(
-        Date.parse(d.window.start) + s.preparationRemainingSec * 1000,
+        // ISO timestamps have millisecond precision. Round availability up,
+        // never down: a fractional service remainder must not serialize as
+        // ready earlier than the same state checked at mission start.
+        Math.ceil(Date.parse(d.window.start) + s.preparationRemainingSec * 1000),
       ).toISOString(),
     });
   }
@@ -148,4 +151,18 @@ export function applyFleetState(
   const parsed = parseMissionDocument(d);
   checkMissionSize(parsed);
   return parsed;
+}
+
+/** A normal recalculation refreshes the mission's selected fleet only. Joining
+ * other aircraft is an explicit fleet/replanning action, not a side effect of
+ * opening a demo or importing a mission from a different region. */
+export function refreshMissionFleetState(
+  input: MissionDocument,
+  states: readonly FleetState[],
+): MissionDocument {
+  const ids = new Set(input.scenario.vehicles.map((v) => v.id));
+  return applyFleetState(
+    input,
+    states.filter((s) => ids.has(s.id)),
+  );
 }

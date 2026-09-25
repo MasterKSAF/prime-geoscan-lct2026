@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "status": "pass",
+  "engineVersion": "0.4.0",
+  "checkedAt": "2026-09-25T11:31:09.189Z",
+  "modelOnly": true,
+  "flightReady": false,
+  "published": false,
+  "build": {
+    "source": "autonomous-local-source-copy",
+    "tests": 706,
+    "passed": 706,
+    "failed": 0,
+    "skipped": 0,
+    "typescript": "pass",
+    "production": "pass",
+    "health": "pass",
+    "plannerHttp": 200,
+    "imageId": "sha256:2c4a199ef1ae6f749be17fd9113d831401a7a3d3c5bf3848af5be8ab517f470f",
+    "log": {
+      "path": "output/playwright/acceptance-2026-09-25/engine/package-docker-build.log",
+      "bytes": 100047,
+      "sha256": "a17ec6690178fb929d06f4b281025ee3d9d31e0a20752fcd7aa62f225f04231c"
+    },
+    "limitation": "Not a clean Git clone. Only app/page.tsx is transformed to redirect to /planner; runtime source equality is checked by final packager."
+  },
+  "browser": {
+    "assertions": 40,
+    "totalWithExportChecks": 51,
+    "downloads": 13,
+    "imageId": "sha256:610fd4a5c708e5de21d479a5e78dbd2aa0c0f94bbd30b35b1b2f737f347450a5",
+    "summary": {
+      "path": "output/playwright/acceptance-2026-09-25/ui/summary.json",
+      "bytes": 14035,
+      "sha256": "0d00133e83d81f3ff5e49e1fdd1789d48246c557bfd91e1aad6e48b594210588"
+    }
+  },
+  "demo1": {
+    "status": "passes-declared-model",
+    "checks": {
+      "pass": 52,
+      "fail": 0,
+      "unknown": 10
+    },
+    "protocol": {
+      "path": "output/playwright/video-demo1-20260925/take-03/archive-verification.json",
+      "bytes": 25330,
+      "sha256": "96c4bf51b1ba987da108e80e45da5f9d9825c9f9e44a7ad77fc23335a4d29ca4"
+    }
+  },
+  "benchmark": {
+    "cases": 21,
+    "runs": 63,
+    "status": "passes-declared-model",
+    "report": {
+      "path": "output/playwright/acceptance-2026-09-25/engine/benchmark/report.json",
+      "bytes": 13862077,
+      "sha256": "10387534ddd33e6cd6ff2ad17c32671cb5ec6ed60d4fe4b1defc4e1558c6c4b0"
+    },
+    "limitations": "Synthetic declared flat terrain and uncalibrated energy. Unknown checks retained. Exact exhaustive optimizer/global optimality not claimed; validators share geometry.",
+    "timingNote": "Observed on shared CPU alongside other checks; not a performance SLA."
+  },
+  "video": {
+    "path": "output/playwright/video-demo1-20260925/Planner-Demo1-PRIME-soft-voice.mp4",
+    "bytes": 52970952,
+    "sha256": "1aa7da6a47323eb348c28b1b5ff37f55bb7195157309f58de9cc86c5757f4431",
+    "durationSec": 492.2,
+    "status": "passed"
+  },
+  "passport": {
+    "path": "output/pdf/prime-planner-formular-0.4.0.pdf",
+    "bytes": 115062,
+    "sha256": "e8f5e43fe4a992fa54d49b1db6dd12a608e052dd10eb7fb800274ab397063dc6",
+    "pages": 7,
+    "visualInspection": "All seven pages reviewed; no overlapping or clipped text."
+  },
+  "checks": [
+    {
+      "name": "Autonomous source production build and 706 tests",
+      "pass": true
+    },
+    {
+      "name": "Fresh UI and independent exported artifact checks",
+      "pass": true
+    },
+    {
+      "name": "Demo 1 archive replay",
+      "pass": true
+    },
+    {
+      "name": "Complete benchmark corpus, including expected negative cases",
+      "pass": true
+    },
+    {
+      "name": "Approved video identity",
+      "pass": true
+    }
+  ],
+  "limitations": [
+    "Only declared model constraints, not physical flight certification.",
+    "Presentation and final package integrity have their own QA protocols.",
+    "External links and final submission are separate actions."
+  ]
+}

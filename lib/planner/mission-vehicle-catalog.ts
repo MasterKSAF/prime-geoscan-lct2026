@@ -1,11 +1,16 @@
 import type { Vehicle } from './schema.ts';
 import { GEOSCAN_201_MODEL_PROFILE } from './fixed-wing-profile.ts';
+import {
+  cameraProfilesForModel,
+  modelCameraProfile,
+} from './camera-catalog.ts';
 
 export type CatalogueModel = Exclude<Vehicle['model'], 'Custom'>;
 export type VehicleConfiguration = {
   id: string;
   name: string;
   jobs: Vehicle['jobs'];
+  cameraIds: string[];
   detail: string;
 };
 export type VehicleCatalogueEntry = {
@@ -36,13 +41,15 @@ export const MISSION_VEHICLE_CATALOG: VehicleCatalogueEntry[] = [
         id: 'rgb',
         name: 'RGB · PF1B',
         jobs: ['RGB'],
+        cameraIds: ['pf1b'],
         detail:
-          'Geoscan PF1B: матрица 23,5 × 15,6 мм, 6000 × 4000, объектив 20 мм. Параметры съёмки задаются в работе.',
+          'Geoscan PF1B: матрица 23,5 × 15,6 мм, 6000 × 4000, объектив 20 мм. Высота и покрытие рассчитываются по этой камере.',
       },
       {
         id: 'ms',
         name: 'Мультиспектр · Pollux',
         jobs: ['MS'],
+        cameraIds: ['pollux'],
         detail:
           'Geoscan Pollux: 5 каналов, 1440 × 1080 на канал, 8 мм. Выбрана мультиспектральная работа, не одновременно установленная PF1B.',
       },
@@ -61,8 +68,17 @@ export const MISSION_VEHICLE_CATALOG: VehicleCatalogueEntry[] = [
         id: 'rgb-ir',
         name: 'RGB + ИК · штатный подвес',
         jobs: ['RGB', 'IR'],
+        cameraIds: ['801-wide', '801-thermal'],
         detail:
           'Две камеры видимого спектра 12 Мп (4,35 и 16 мм), тепловизор 640 × 512 (9,1 мм). Автоматический полёт подтверждён брошюрой. Не заявляем синхронную съёмку или картографическую точность: параметры задания требуют отдельного профиля.',
+      },
+      {
+        id: 'tele-ir',
+        name: 'RGB 16 мм + тепловизор · штатный подвес',
+        jobs: ['RGB', 'IR'],
+        cameraIds: ['801-tele', '801-thermal'],
+        detail:
+          'Длиннофокусная RGB-камера 16 мм и тепловизор 9,1 мм. Точная геометрия матриц требует параметров установленной камеры; цифровой зум не подменяет оптику.',
       },
     ],
   },
@@ -80,22 +96,75 @@ export const MISSION_VEHICLE_CATALOG: VehicleCatalogueEntry[] = [
         id: 'rgb',
         name: 'RGB · фотокамера',
         jobs: ['RGB'],
+        cameraIds: [],
         detail:
-          'В руководстве перечислены Riebo R4/R6, Sony DSC-RX1RM2 и ZV-E10. Точную камеру и параметры качества нужно задать в работе — они зависят от комплектации.',
+          'Камера ещё не выбрана. Укажите конкретную комплектацию: Sony DSC-RX1RM2, Sony ZV-E10 с объективом или Riebo R4/R6.',
       },
       {
         id: 'ms',
         name: 'Мультиспектр · Pollux',
         jobs: ['MS'],
+        cameraIds: ['pollux'],
         detail:
           'Geoscan Pollux указан в руководстве как вариант полезной нагрузки. RGB-камера не считается установленной одновременно.',
       },
+      ...(['sony-rx1rm2', 'sony-zv-e10', 'riebo-r4', 'riebo-r6'] as const).map(
+        (id) => {
+          const camera = cameraProfilesForModel('201').find(
+            (c) => c.id === id,
+          )!;
+          return {
+            id,
+            name: `RGB · ${camera.name}`,
+            jobs: ['RGB'] as Vehicle['jobs'],
+            cameraIds: [id],
+            detail: camera.source,
+          };
+        },
+      ),
     ],
   },
 ];
 
 export function vehicleCatalogueEntry(model: Vehicle['model']) {
   return MISSION_VEHICLE_CATALOG.find((entry) => entry.model === model);
+}
+
+export function installedVehicleConfiguration(vehicle: Vehicle): string {
+  const configurations =
+    vehicleCatalogueEntry(vehicle.model)?.configurations ?? [];
+  if (vehicle.cameraIds !== undefined) {
+    const selected = [...vehicle.cameraIds].sort().join(',');
+    return (
+      configurations.find(
+        (c) =>
+          [...c.cameraIds].sort().join(',') === selected &&
+          [...c.jobs].sort().join(',') === [...vehicle.jobs].sort().join(','),
+      )?.id ?? ''
+    );
+  }
+  // Only legacy, unbound profiles may be matched by work type.
+  return (
+    configurations.find((c) => c.jobs.join(',') === vehicle.jobs.join(','))
+      ?.id ?? ''
+  );
+}
+
+export function catalogueCameraConfiguration(
+  model: CatalogueModel,
+  configurationId: string,
+): Pick<Vehicle, 'jobs' | 'cameraIds' | 'cameraProfiles'> {
+  const { configuration } = vehicleCatalogueConfiguration(
+    model,
+    configurationId,
+  );
+  return {
+    jobs: [...configuration.jobs],
+    cameraIds: [...configuration.cameraIds],
+    cameraProfiles: cameraProfilesForModel(model).map((c) =>
+      modelCameraProfile(c.id),
+    ),
+  };
 }
 
 export function vehicleCatalogueConfiguration(
@@ -132,6 +201,8 @@ export function createCatalogueVehicleProfile(
       descentMps: 1,
       turnSeconds: 4,
       jobs: ['RGB'],
+      cameraIds: [],
+      cameraProfiles: [],
       assumptions: [
         'Стартовые параметры — учебные допущения. Оператор должен задать ограничения своей комплектации.',
       ],
@@ -156,12 +227,12 @@ export function createCatalogueVehicleProfile(
     climbMps: model === '801' ? 2 : 3,
     descentMps: isWing ? 2 : 1,
     turnSeconds: isWing ? 0 : model === '801' ? 5 : 4,
-    jobs: [...configuration.jobs],
+    ...catalogueCameraConfiguration(model, configuration.id),
     assumptions: [
       `Расчётная комплектация: ${configuration.name}. Фактическую установку оборудования подтверждает оператор; создание профиля не является телеметрией.`,
       `${isWing ? 100 : model === '801' ? 25 : 28} мин — консервативный расчётный бюджет при полном заряде, не измеренная выносливость. Паспортный максимум — до ${entry.passport.maxFlightMin} мин при определённых условиях.`,
       '100% — стартовое значение нового модельного профиля. Укажите фактический текущий заряд; будущая замена батареи не прогнозируется.',
-      'Параметры оптики, экспозиции и покрытия задаются отдельно в работе и должны соответствовать выбранной камере.',
+      'Оптика берётся из установленной камеры БВС. Интервал 1 с и выдержка 1/1000 с — явный модельный режим, не паспортный предел; неполную геометрию камеры должен задать оператор.',
       isWing
         ? 'Включена упрощённая самолётная модель: крен, радиус и точность слежения — допущения. Нужны свободные коридоры запуска, разворотов и парашютной посадки; паспортный запас над препятствиями — 100 м.'
         : 'Скорости подъёма/снижения, манёвры и линейный расход энергии — модельные параметры; требуется калибровка по полётным логам.',

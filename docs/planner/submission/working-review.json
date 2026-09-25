@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "status": "working-review",
+  "frozen": false,
+  "submissionReady": false,
+  "engineVersion": "0.4.0",
+  "missionSchemaVersion": "2.0",
+  "updatedAt": "2026-09-25",
+  "historicalRelease": {
+    "id": "prime-geoscan-2026.09.22-r3",
+    "engineVersion": "0.3.0",
+    "commit": "3abfcd138fc0ab36ea5d7fe497ac7c55a6cec248",
+    "manifest": "docs/planner/submission/evidence/artifact-manifest.json"
+  },
+  "currentEvidence": "docs/planner/submission/evidence/acceptance-0.4.0.json",
+  "manualReview": "automated-and-artifact-checks-pass-owner-final-review-pending",
+  "presentation": "0.4.0-11-slides-pptx-pdf-visual-qa-pass",
+  "video": "approved-demo1-492.2sec-soft-voice",
+  "benchmark": "0.4.0-21-cases-63-runs-verified",
+  "repositoryAccess": "private-expert-read-access-required-before-submission",
+  "repositoryVersion": "0.4.0",
+  "publicPrototypeUrl": null,
+  "officialSubmission": "not-confirmed",
+  "deadline": {
+    "value": "2026-09-29T23:59:00+03:00",
+    "source": "organizer-message-pasted-by-user-2026-09-22",
+    "independentlyVerified": false
+  },
+  "notAuthorizedNow": [
+    "github-public-access",
+    "final-freeze",
+    "official-submission"
+  ],
+  "prototype": "video-instead-of-public-site",
+  "googleDrive": "anyone-reader-reverify-zip-and-checksum-after-each-rebuild"
+}

@@ -1,6 +1,6 @@
 'use client';
 
-import { BookOpen, Play } from 'lucide-react';
+import { BookOpen, Play, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { getOperationStartBlockers } from '@/lib/planner/mission-operations';
 import type { MissionOperation } from '@/lib/planner/mission-operations';
@@ -11,7 +11,7 @@ const examples = [
   { id: 'demo-02-expert-obstacles', name: 'Препятствия экспертов' },
 ] as const;
 
-function operationLabel(row: MissionOperation): string {
+export function operationLabel(row: MissionOperation): string {
   if (row.safety && row.status !== 'cancelled') {
     if (row.safety.stage === 'landed') return 'Возврат завершён';
     if (row.safety.stage === 'returning') return 'Возврат';
@@ -37,6 +37,8 @@ export default function MissionExecutionQueue({
   onOpenExample,
   onJournal,
   onOpenAll,
+  compact = false,
+  onDelete,
 }: {
   rows: readonly MissionOperation[];
   selectedId?: string | null;
@@ -47,6 +49,8 @@ export default function MissionExecutionQueue({
   onOpenExample: (id: string) => void;
   onJournal: (row: MissionOperation) => void;
   onOpenAll: () => void;
+  compact?: boolean;
+  onDelete?: (row: MissionOperation) => void;
 }) {
   const [examplesOpen, setExamplesOpen] = useState(false);
   const selected =
@@ -58,6 +62,34 @@ export default function MissionExecutionQueue({
       (row.status === 'scheduled' || row.status === 'paused'),
   );
   const shown = [...(selected ? [selected] : []), ...remaining].slice(0, 3);
+  if (compact)
+    return rows.length ? (
+      <section className="demo-run-picker" aria-label="Выполняемые миссии">
+        {rows.map((row) => (
+          <div key={row.id}>
+            <button
+              className="mw-button"
+              aria-pressed={row.id === selectedId}
+              disabled={busy}
+              onClick={() => onOpen(row)}
+            >
+              <span>{row.document.name}</span>
+              <small>{operationLabel(row)}</small>
+            </button>
+            {onDelete && (
+              <button
+                className="mw-button demo-delete"
+                disabled={busy}
+                aria-label={`Удалить из выполнения: ${row.document.name}`}
+                onClick={() => onDelete(row)}
+              >
+                <Trash2 size={16} />
+              </button>
+            )}
+          </div>
+        ))}
+      </section>
+    ) : null;
   return (
     <section className="meq-strip" aria-label="Выбор миссии для выполнения">
       <div className="meq-heading">
@@ -81,11 +113,11 @@ export default function MissionExecutionQueue({
               aria-pressed={examplesOpen}
               onClick={() => setExamplesOpen((value) => !value)}
             >
-              {examplesOpen ? 'К запускам' : 'Примеры'}
+              {examplesOpen ? 'К запускам' : 'Демо-миссии'}
             </button>
           )}
           <button type="button" className="meq-all" onClick={onOpenAll}>
-            Все миссии{rows.length ? ` · ${rows.length}` : ''}
+            Выбрать запуск{rows.length ? ` · ${rows.length}` : ''}
           </button>
         </div>
       </div>
@@ -161,7 +193,7 @@ export default function MissionExecutionQueue({
                     aria-label={`Открыть миссию: ${row.document.name}`}
                     aria-pressed={selectedRow}
                   >
-                    Открыть
+                    {selectedRow ? 'На карте' : 'Показать на карте'}
                   </button>
                   <button
                     type="button"

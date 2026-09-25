@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import {
   Activity,
   ArrowDownToLine,
@@ -22,7 +23,6 @@ import {
   Navigation,
   Pause,
   Play,
-  Plus,
   RotateCcw,
   Route,
   ShieldAlert,
@@ -187,8 +187,12 @@ export default function PlannerWorkspace() {
     }
   }
   useEffect(() => {
-    void calculate(demoScenario());
-    return () => pending.current?.abort();
+    // Initial network calculation starts outside React's render/effect commit.
+    const timer = setTimeout(() => void calculate(demoScenario()), 0);
+    return () => {
+      clearTimeout(timer);
+      pending.current?.abort();
+    };
   }, []); // Initial local demo only.
   useEffect(() => {
     if (!notice) return;
@@ -325,9 +329,9 @@ export default function PlannerWorkspace() {
           <b>Авиационные работы</b>
         </div>
         <span className="version-label">ЛЦТ / 05</span>
-        <a className="docs-link" href="/" title="Вернуться к обзору ЛЦТ">
+        <Link className="docs-link" href="/" title="Вернуться к обзору ЛЦТ">
           Обзор ЛЦТ
-        </a>
+        </Link>
       </header>
       <div className="project-bar">
         <div>
@@ -1270,7 +1274,7 @@ export default function PlannerWorkspace() {
         </button>
       </footer>
       {notice && (
-        <div className="planner-notice" role="status">
+        <output className="planner-notice">
           {notice}
           <button
             aria-label="Закрыть уведомление"
@@ -1278,7 +1282,7 @@ export default function PlannerWorkspace() {
           >
             <X size={16} />
           </button>
-        </div>
+        </output>
       )}
     </main>
   );

@@ -4,6 +4,7 @@ import type { MissionDocument } from './mission-schema.ts';
 import type { Coordinate, Polygon } from './schema.ts';
 import { projection } from './geometry.ts';
 import { createDemoQuality } from './quality.ts';
+import { migrateMissionCameraBindings } from './camera-profile.ts';
 export { createDemoQuality } from './quality.ts';
 
 /** Synthetic geometry at real coordinates: NOT a permitted real flight site. */
@@ -82,5 +83,5 @@ export function demoMission(areaKm2: 1 | 10 | 100 = 1): MissionDocument {
   }
   doc.notes =
     'Учебный сценарий. Координаты реальные; область, базы, допуски, ресурсы и плоская поверхность синтетические. 100 км² — нагрузочный вход: выполнимость и время расчёта не гарантируются.';
-  return parseMissionDocument(doc);
+  return parseMissionDocument(migrateMissionCameraBindings(doc).document);
 }

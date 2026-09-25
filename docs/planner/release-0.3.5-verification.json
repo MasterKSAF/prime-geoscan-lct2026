@@ -1,0 +1,57 @@
+{
+  "date": "2026-09-23",
+  "engineVersion": "0.3.5",
+  "status": "verified-working-slice",
+  "frozen": false,
+  "submissionReady": false,
+  "flightReady": false,
+  "runtime": {
+    "base": "http://127.0.0.1:3016",
+    "container": "lct-planner-1",
+    "healthy": true,
+    "sourceComparisonAt": "2026-09-23T16:02:45.156Z",
+    "sourceFiles": 265,
+    "mismatches": [],
+    "imageId": "sha256:71203efe5045417a2d73a2aefdd9289fe395164261866bffab2673c232683fd4"
+  },
+  "typecheck": "pass",
+  "scopedLint": "pass",
+  "productionBuild": "pass",
+  "unit": { "passed": 583, "failed": 0, "environments": ["Windows", "Docker Linux build"] },
+  "browser": {
+    "tool": "Playwright CLI 0.1.20",
+    "passed": 54,
+    "failed": 0,
+    "pageErrors": 0,
+    "runs": [
+      { "script": "scripts/checks/release35-browser.js", "passed": 27, "sha256": "b7f077f7e8b0d18ed3e9aed76d990c4688fc8cc0a71e0c40b5e817826bb065c3" },
+      { "script": "scripts/checks/release35-reset-browser.js", "passed": 19, "sha256": "9b507f83c239644b6dcd2ea3b2b5d9cfd3aeffdab90a05d21c135f195a2448f2" },
+      { "script": "scripts/checks/release35-completed-browser.js", "passed": 8, "sha256": "60ca17d56189a9c162fd48202234a8d56d3538d9b6a7e6f06760a4e24efd5e44" }
+    ]
+  },
+  "archive": {
+    "path": "output/playwright/0.3.5-demo2-evidence.zip",
+    "bytes": 43278849,
+    "sha256": "98bb821200c43e8001392eb07118ef5fa9669d8a4fdb7bf8fb0ae2af372e742b",
+    "independentVerification": "passes-declared-model",
+    "checks": 62,
+    "failed": 0,
+    "unknown": 9
+  },
+  "video": {
+    "path": "output/playwright/0.3.5-demo2.mp4",
+    "sha256": "50270ed9ac448e6e3adc164592101028ff6b13240295b601babb00218e51d029",
+    "bytes": 428865,
+    "codec": "h264",
+    "width": 1280,
+    "height": 720,
+    "durationSec": 16.581933,
+    "narration": false,
+    "simulated": true
+  },
+  "boundaries": [
+    "A new working version, not a final contest submission or jury score.",
+    "No real aircraft connected; model and evidence limitations retained.",
+    "No commit, push, public deployment or access changes."
+  ]
+}

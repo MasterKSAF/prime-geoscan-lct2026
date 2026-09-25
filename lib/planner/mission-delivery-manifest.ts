@@ -1,5 +1,8 @@
 import { MISSION_ENGINE_VERSION, sha256 } from './mission-schema.ts';
 import type { MissionCandidate, MissionDocument } from './mission-schema.ts';
+import { jobSurveySegments, sortieHasJob } from './mission-sortie-jobs.ts';
+import { qualityForJob } from './quality.ts';
+import { migrateMissionCameraBindings } from './camera-profile.ts';
 
 const materialNames = {
   RGB: 'Фотографии и координаты центров съёмки',
@@ -15,6 +18,7 @@ export function describeMissionDelivery(
   candidate: MissionCandidate,
   completed = false,
 ) {
+  document = migrateMissionCameraBindings(document).document;
   const feasible =
     candidate.status === 'feasible_model' &&
     candidate.metrics.grossCoveragePct >= 99 &&
@@ -34,7 +38,7 @@ export function describeMissionDelivery(
     transferPerformed: false as const,
     receivedFiles: [] as { name: string; sha256: string; sizeBytes: number }[],
     jobs: document.jobs.map((job) => {
-      const sorties = candidate.sorties.filter((s) => s.jobId === job.id);
+      const sorties = candidate.sorties.filter((s) => sortieHasJob(s, job.id));
       const coverage = candidate.jobCoverage.find(
         (row) => row.jobId === job.id,
       );
@@ -45,7 +49,31 @@ export function describeMissionDelivery(
         work: job.job.type,
         expectedMaterial: materialNames[job.job.type],
         expectedCaptureEvents: isCamera
-          ? sorties.reduce((sum, s) => sum + (s.shots ?? 0), 0)
+          ? sorties.reduce((sum, sortie) => {
+              const vehicle = document.scenario.vehicles.find(
+                (v) => v.id === sortie.vehicleId,
+              );
+              const quality = qualityForJob(
+                job,
+                vehicle,
+                document.flightEnvelope,
+                sortie.cameraId,
+              );
+              if (!vehicle || quality.checks.some((c) => c.status === 'fail'))
+                return sum;
+              return (
+                sum +
+                jobSurveySegments([sortie], job.id).reduce(
+                  (n, s) =>
+                    n +
+                    Math.floor(
+                      (s.distanceM + 1e-6) / quality.job.triggerDistanceM,
+                    ) +
+                    1,
+                  0,
+                )
+              );
+            }, 0)
           : null,
         captureCountMeaning: isCamera
           ? 'Planned camera triggers, not received files. A multispectral trigger may produce multiple files.'

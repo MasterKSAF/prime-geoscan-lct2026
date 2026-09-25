@@ -108,6 +108,7 @@ const EXACT_CHECK_CATEGORIES: Readonly<Record<string, MissionCheckCategory>> = {
   TIME: 'routes',
   ENDPOINTS: 'routes',
   FLIGHT_ENVELOPE: 'routes',
+  TRACK_ALTITUDE: 'routes',
   FOUR_DIMENSIONAL: 'routes',
   ALTERNATE_ESCAPE: 'routes',
   TERRAIN: 'routes',

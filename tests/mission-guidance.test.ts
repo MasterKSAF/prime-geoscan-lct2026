@@ -6,7 +6,7 @@ import {
 } from '../lib/planner/mission-guidance.ts';
 import { demoMission } from '../lib/planner/mission-demo.ts';
 
-test('wind direction distinguishes FROM meteorological bearing and TO arrow', () => {
+void test('wind direction distinguishes FROM meteorological bearing and TO arrow', () => {
   const west = describeMissionWind(2, 270);
   assert.equal(west.from, 'с запада');
   assert.equal(west.to, 'на восток');
@@ -15,7 +15,7 @@ test('wind direction distinguishes FROM meteorological bearing and TO arrow', ()
   assert.equal(describeMissionWind(0, 270).calm, true);
   assert.match(describeMissionWind(NaN, 0).text, /Проверьте/);
 });
-test('fleet hints are capability checks and retain explicit unsupported/wind/readiness causes', () => {
+void test('fleet hints are capability checks and retain explicit unsupported/wind/readiness causes', () => {
   const d = demoMission(1),
     id = d.jobs[0].id;
   assert.ok(missionFleetHints(d, id).every((v) => v.eligible));

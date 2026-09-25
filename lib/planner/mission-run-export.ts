@@ -7,6 +7,7 @@ import type { MissionOperation } from './mission-operations.ts';
 import { operationJournal } from './mission-operation-journal.ts';
 import { missionGeoJSON, missionKML } from './mission-export.ts';
 import { sha256, sha256Text, canonicalStringify } from './mission-schema.ts';
+import { missionResourceReport } from './mission-resources.ts';
 
 /** Immutable run, not the editor's latest input or the animation scrubber. */
 export async function missionRunReport(
@@ -26,7 +27,10 @@ export async function missionRunReport(
     const verified = await verifyMissionOperation(parent);
     if (verified.integrityHash !== cursor.integrityHash)
       throw new Error('Изменилась исходная версия пересмотра.');
-    assertRevisionBinding(history.at(-1)?.document ?? operation.document, verified);
+    assertRevisionBinding(
+      history.at(-1)?.document ?? operation.document,
+      verified,
+    );
     history.push(verified);
     visited.add(verified.id);
     cursor = verified.document.revisionSource;
@@ -42,6 +46,7 @@ export async function missionRunReport(
     journal: operationJournal(operation),
     vehicleStates: deriveOperationVehicleStates(operation),
     plannedArtifacts: { geojson, kml },
+    resources: missionResourceReport(operation.document, operation.candidate),
     artifactHashes: {
       geojson: await sha256(geojson),
       kml: await sha256Text(kml),

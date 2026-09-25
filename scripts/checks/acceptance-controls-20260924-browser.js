@@ -1,0 +1,74 @@
+/* oxlint-disable no-unused-expressions -- Playwright acceptance callback. */
+async (page) => {
+  const checks=[], errors=[], scope=[];
+  const check=(name,ok,detail)=>{checks.push({name,pass:!!ok,detail});if(!ok)throw Error(name);};
+  const b=name=>page.getByRole('button',{name,exact:true});
+  const nav=name=>page.getByRole('tablist',{name:'Разделы стенда'}).getByRole('tab',{name,exact:true});
+  const download=async(button,path)=>{const pending=page.waitForEvent('download');await button.click();const d=await pending;if(path)await d.saveAs('output/playwright/'+path);const stream=await d.createReadStream();stream.setEncoding('utf8');let raw='';for await(const c of stream)raw+=c;return raw;};
+  const input=async(label,name,raw)=>page.getByLabel(label,{exact:true}).evaluate((el,{name,raw})=>{const dt=new DataTransfer();dt.items.add(new File([raw],name,{type:name.endsWith('yaml')?'application/yaml':'application/json'}));el.files=dt.files;el.dispatchEvent(new Event('change',{bubbles:true}));},{name,raw});
+  page.on('pageerror',e=>errors.push(e.message));
+  await page.setViewportSize({width:1440,height:960});
+  await b('Настройки и справка').click();
+  await b('Справка по программе').click();
+  check('Built-in guide opens with readable content',(await page.getByRole('dialog',{name:'Справка по программе'}).innerText()).length>1000);
+  await b('Закрыть окно').click();
+  await b('Настройки и справка').click();
+  await page.evaluate(()=>{window.confirm=()=>false;});
+  await b('Начать с нуля').click();
+  check('Reset can be cancelled',await page.getByRole('dialog',{name:'Настройки и справка'}).isVisible());
+  await page.getByRole('combobox',{name:'Тема интерфейса'}).selectOption('light');await b('Закрыть окно').click();
+  const original=JSON.parse(await download(b('Скачать миссию: Демо 1 · Фотосъёмка квадрата')));
+  const copy={...original,id:'acceptance-yaml',name:'Приёмка YAML'};
+  const yaml=Object.entries(copy).map(([k,v])=>`${k}: ${JSON.stringify(v)}`).join('\n');
+  await input('Файл миссии','acceptance.mission.yaml',yaml);
+  await b('Открыть в редакторе').click();
+  check('YAML mission is opened with its identity',await page.getByRole('textbox',{name:'Название миссии',exact:true}).inputValue()===copy.name);
+  const hint=b('Пояснение: Выполняемые работы');await hint.click();
+  check('Info help is reachable without unfolding work section',await hint.getAttribute('aria-expanded')==='true'&&await page.locator('.me-works[open]').count()===0);
+  await page.keyboard.press('Escape');await page.locator('.me-works > summary').click();
+  await b('Виды работ').click();await page.getByRole('checkbox',{name:'Мультиспектр',exact:true}).check();await b('Готово').click();
+  check('Adding MS creates a separately selectable work',await page.getByRole('combobox',{name:'Выбранная работа',exact:true}).locator('option').count()===2);
+  const tabs=page.getByRole('tablist',{name:'Параметры выбранной работы'});
+  await tabs.getByRole('tab',{name:'Качество',exact:true}).click();await tabs.getByRole('tab',{name:'Качество',exact:true}).press('ArrowRight');
+  check('Work sub-tabs support keyboard',await tabs.getByRole('tab',{name:'БВС',exact:true}).getAttribute('aria-selected')==='true');
+  await page.locator('.me-work-body select').filter({has:page.locator('option[value=selected]')}).selectOption('selected');
+  check('Manual assignment shows compatible aircraft',await page.locator('.me-work-body input[type=checkbox]:checked').count()>0);
+  await page.locator('.me-work-body select').filter({has:page.locator('option[value=selected]')}).selectOption('auto');
+  await tabs.getByRole('tab',{name:'Время',exact:true}).click();await page.getByRole('checkbox',{name:'Свой период выполнения',exact:true}).check();
+  check('Individual work dates become editable',await page.getByLabel('Начало периода работы',{exact:true}).isEnabled());
+  await page.getByRole('checkbox',{name:'Свой период выполнения',exact:true}).uncheck();
+  await b('Виды работ').click();await page.evaluate(()=>{window.confirm=()=>true;});await page.getByRole('checkbox',{name:'Мультиспектр',exact:true}).uncheck();await b('Готово').click();
+  check('Removing MS leaves original RGB work',await page.getByRole('combobox',{name:'Выбранная работа',exact:true}).locator('option').count()===1);
+  await nav('Парк БВС').click();
+  const rows=page.locator('.demo-fleet-row');check('All three model families are visible',await rows.count()===3);
+  for(let i=0;i<3;i++){await rows.nth(i).getByRole('button',{name:'Возможности',exact:true}).click();check(`Model ${i+1} capabilities explain endurance and wind`,(await page.getByRole('dialog').innerText()).includes('ветер'));await b('Закрыть парк').click();}
+  await rows.first().getByRole('button',{name:'Паспорт',exact:true}).click();
+  await input('Паспорт PDF','invalid.pdf','not a pdf');
+  check('Invalid passport rejected',await page.getByRole('alert').filter({hasText:'Нужен PDF'}).isVisible());
+  await page.getByLabel('Паспорт PDF',{exact:true}).setInputFiles('docs/references/track5-geoscan-original.pdf');
+  check('Valid local PDF opens in an embedded viewer',(await page.locator('iframe[title^="Паспорт"]').getAttribute('src')).startsWith('blob:'));
+  await b('Закрыть парк').click();
+  await rows.first().getByRole('button',{name:'Доступность',exact:true}).click();
+  const available=page.getByRole('checkbox',{name:/^Доступен:/}).first();await available.click();await page.waitForFunction(()=>document.querySelector('.demo-fleet-dialog input[aria-label^="Доступен:"]').checked===false);check('Fleet availability can be disabled',!await available.isChecked());await available.click();await page.waitForFunction(()=>document.querySelector('.demo-fleet-dialog input[aria-label^="Доступен:"]').checked===true);check('Fleet availability can be restored',await available.isChecked());
+  const configuration=page.getByRole('combobox',{name:/^Комплектация:/}).first();const before=await configuration.inputValue();const options=await configuration.locator('option').evaluateAll(nodes=>nodes.map(n=>n.value));if(options.length>1){const value=options.find(x=>x!==before);await configuration.selectOption(value);await page.waitForFunction(v=>document.querySelector('.demo-fleet-dialog select[aria-label^="Комплектация:"]').value===v,value);check('Installed payload can be changed',await configuration.inputValue()!==before);await configuration.selectOption(before);await page.waitForFunction(v=>document.querySelector('.demo-fleet-dialog select[aria-label^="Комплектация:"]').value===v,before);}
+  await page.locator('.fleet-maintenance summary').first().click();
+  const flights=page.getByRole('spinbutton',{name:/^Наработка полётов:/}).first();const old=await flights.inputValue();await flights.fill('-1');
+  check('Invalid maintenance count cannot be saved',await b('Сохранить наработку').first().isDisabled());await flights.fill(old);await b('Закрыть парк').click();
+  await nav('Редактор').click();await b('Объекты карты').click();
+  const exported=JSON.parse(await download(b('Скачать данные миссии JSON'),'acceptance-controls.mission.json'));
+  check('YAML round trip preserves original work geometry',JSON.stringify(exported.jobs[0].area)===JSON.stringify(original.jobs[0].area));
+  const weather=b('Погода и условия');
+  if(await weather.isVisible()){
+    await weather.click();await page.route('**/api/planner/weather?*',route=>route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'Контрольный отказ метеосервиса'})}));
+    await b('Обновить прогноз').click();await page.getByRole('alert').filter({hasText:'Контрольный отказ'}).waitFor();
+    check('Weather failure is shown without replacing data',await b('Применить к заданию').isDisabled());await b('Закрыть погоду').click();await page.unroute('**/api/planner/weather?*');
+  }else scope.push('Online weather controls are not exposed in the minimal demo screen; weather adapter separately covered by unit/API tests.');
+  await page.getByRole('button',{name:/^Уведомления/}).click();check('Notification history opens',await page.getByRole('region',{name:'Центр уведомлений'}).isVisible());await b('Закрыть центр уведомлений').click();
+  await b('Настройки и справка').click();await page.evaluate(()=>{window.confirm=()=>true;});await b('Начать с нуля').click();
+  await page.getByRole('region',{name:'Миссии и загрузка'}).getByRole('button',{name:'Редактировать',exact:true}).first().waitFor();
+  check('Reset removes imported draft and restores exactly three default cards',await page.getByRole('region',{name:'Миссии и загрузка'}).locator('article').count()===4);
+  await nav('Отчёт').click();check('Reset removes calculations and journals',await page.getByRole('region',{name:'Отчёты миссий'}).getByText('Нет расчёта',{exact:true}).count()===3);
+  await b('Назад').click();check('Back returns to mission gallery',await nav('Миссии').getAttribute('aria-selected')==='true');
+  check('No unhandled page exceptions',errors.length===0,errors);
+  return {checks,errors,scope};
+}

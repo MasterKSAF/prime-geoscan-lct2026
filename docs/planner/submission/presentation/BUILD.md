@@ -1,37 +1,45 @@
-# Презентация
+# Сборка презентации Planner 0.4.0
 
-Редакция r3 от 22.09.2026 с KML экспертов и свежими доказательствами: [PPTX](prime-geoscan-lct2026.pptx), 12 слайдов, 16:9. [PDF](prime-geoscan-lct2026.pdf) и [автономный HTML](index.html) сохраняют вёрстку без зависимости от шрифтов. В HTML: стрелки переключают слайды, текст выступления раскрывается снизу, есть полноэкранный режим.
+Генератор [build-prime-pitch-20260925.mjs](../../../../scripts/presentation/build-prime-pitch-20260925.mjs) точечно редактирует одобренный 11-слайдовый pitch. Он не создаёт дизайн заново и не изменяет приложение.
 
-[Текст выступления](SPEAKER-NOTES.md). Текст и три таблицы внутри PPTX редактируются; скриншоты и фон — изображения. Сохранены фон, логотипы и Montserrat из [шаблона ЛЦТ 2026](../../../references/lct2026-presentation-template.pptx). Удалены пустые объекты шаблона, рамка обложки и линии таблиц. Текст сокращён, блоки выровнены, скриншоты увеличены.
+## Замкнутые входы
 
-## Проверка и воспроизведение
+Все непосредственные входы генератора находятся в [authoring/](authoring/README.md): одобренный PPTX, четыре исходных PNG, доказательства Демо 1, журнал 706 тестов и `evidence.json`. Полные архивы полётов не нужны для пересборки слайдов: их SHA-256 и происхождение записаны в паспорте. Библиотеки и Microsoft PowerPoint в исходный комплект не включаются.
 
-Итоговый PPTX экспортирован через **Microsoft PowerPoint 16.0**. Все 12 родных PNG просмотрены после экспорта. Проверены границы 86 текстовых объектов и размеры текста в 27 ячейках. На первом прогоне найдено наложение длинной подписи на слайде 8, подпись сокращена перед повторным экспортом. Проверка размеров ячеек не заменяет визуальный просмотр.
+Одобренный источник: `authoring/approved-source.pptx`, SHA-256 `69682c9f7f0e400d2f6b3d2d6252f11447ccb6154ff7a6fd81aad3cd0717f75a`. Это исторический вход генератора, не текущий файл для сдачи. Основа первых пяти страниц — обязательные слайды 7–11 [шаблона организаторов](../../../references/lct2026-presentation-template.pptx).
 
-Итоговый PDF также открыт, текст проверен на актуальные 509 тестов и KML, все 12 страниц повторно отрендерены и просмотрены. Наложений или потерянных символов не обнаружено.
+Тексты, контакты, логотипы и нативная таблица на слайде 11 сохранены редактируемыми; фактический UI представлен растровыми кадрами. Новые кадры обрезаются нативно и вписываются с сохранением пропорций. Области со сравнением критериев и результатами не дорисованы.
 
-[Структурная проверка](../evidence/checks/presentation-validation.json), [проверка PowerPoint и визуального просмотра](../evidence/checks/presentation-native-check.json).
+## Сборка
 
-Шрифт Montserrat не встроен в PPTX. На другом компьютере без него вёрстка может измениться; для стабильного показа используйте PDF или HTML. После любой правки PPTX повторите экспорт и просмотр всех страниц.
+Из корня репозитория нужны Node.js, Python и авторское окружение с `@oai/artifact-tool`. Переменные:
 
-Авторская сборка: [build-expert-deck.mjs](../../../../scripts/presentation/build-expert-deck.mjs). Нужны Node, @oai/artifact-tool, Python и утилиты навыка Presentations; они не требуются для работы стенда. Переменные: RUNTIME_NODE_MODULES, PRESENTATIONS_SKILL_DIR, PRESENTATIONS_PYTHON. Из корня проекта: `node scripts/presentation/build-expert-deck.mjs`. По умолчанию создаётся отдельный corrected.pptx; каталог и имя задаются DECK_OUTPUT_DIR и DECK_FILENAME.
-
-Проверка в установленном Microsoft PowerPoint на Windows, из корня проекта:
+| Переменная | Назначение |
+|---|---|
+| `RUNTIME_NODE_MODULES` | Каталог библиотек, содержащий `@oai/artifact-tool` |
+| `RUNTIME_PYTHON` | Python для валидаторов |
+| `PRESENTATIONS_SKILL_DIR` | Навык Presentations с `container_tools` |
+| `DECK_DRAFT_ONLY` | `1` — черновик; удалить для финализации |
+| `DECK_FILENAME` | Необязательное новое имя итогового PPTX |
 
 ```powershell
-pwsh -NoProfile -File scripts/presentation/render-native.ps1 -PresentationPath docs/planner/submission/presentation/prime-geoscan-lct2026.pptx -OutputDirectory tmp/deck-native -PdfOutputPath docs/planner/submission/presentation/prime-geoscan-lct2026.pdf
-node scripts/presentation/verify-native-layout.mjs tmp/deck-native/native-layout.json
-node scripts/presentation/build-native-preview.mjs tmp/deck-native
+node scripts/presentation/build-prime-pitch-20260925.mjs
 ```
 
-Экспорт открывает только собственный файл в режиме чтения, без окна; чужие открытые презентации не закрывает. PDF и HTML обновляются отдельно от PPTX. После проверки обновите контрольные суммы комплекта.
+Финализация запрещена без свежих Демо 2/3 в паспорте. Проверяются версия Демо 1, завершённая запись без ошибок, модельный результат архива и 706/706 тестов. Затем проверяются целостность PPTX, 11 слайдов, размер 12192000 × 6858000 EMU, все 11 исходных страниц, Montserrat и нативная таблица на слайде 11. Существующий итог не перезаписывается: для новой итерации выбрать другое `DECK_FILENAME`.
 
-## Состав
+Рабочие файлы: `output/presentation/prime-pitch-20260925/private/`. Итог: `output/presentation/prime-pitch-20260925/deliverables/prime-planner-0.4.0-pitch-20260925.pptx`.
 
-- prime-geoscan-lct2026.pptx — основной редактируемый файл.
-- prime-geoscan-lct2026.pdf — экспорт из Microsoft PowerPoint.
-- index.html — автономный показ с текстом выступления.
-- slides/01.png…12.png — изображения из Microsoft PowerPoint.
-- SPEAKER-NOTES.md — речь и доказательные источники.
+## Экспорт и проверка
 
-Источники чисел — сохранённый benchmark, изображений — assets инструкции. Генератор не обещает побайтовую идентичность экспорта в иной версии среды.
+PowerShell 7 и установленный Microsoft PowerPoint:
+
+```powershell
+pwsh -NoLogo -NoProfile -File scripts/presentation/render-native.ps1 -PresentationPath output/presentation/prime-pitch-20260925/deliverables/prime-planner-0.4.0-pitch-20260925.pptx -OutputDirectory output/presentation/prime-pitch-20260925/private/final-slides -PdfOutputPath output/presentation/prime-pitch-20260925/deliverables/prime-planner-0.4.0-pitch-20260925.pdf
+node scripts/presentation/check-native-bounds.mjs output/presentation/prime-pitch-20260925/private/final-slides/native-layout.json
+node scripts/presentation/verify-native-layout.mjs output/presentation/prime-pitch-20260925/private/final-slides/native-layout.json
+```
+
+Скрипт открывает PPTX только для чтения; пользовательские презентации не закрывает. PDF растрируется Poppler отдельно. Все 11 нативных PNG и 11 страниц PDF проверяются визуально, включая подписи снизу слайда 7. Автоматическая геометрия не заменяет визуальный просмотр UI. Итоги и хеши — [QA.md](QA.md).
+
+Публикация проверенной пары и превью выполняется [publish-prime-pitch-20260925.mjs](../../../../scripts/presentation/publish-prime-pitch-20260925.mjs). Исторические презентации этот скрипт не удаляет. Сборка презентации не запускает тесты приложения и не пересобирает общий ZIP решения.

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { cameraProfileSchema } from './camera-profile.ts';
 
 export const ENGINE_VERSION = '0.1.0';
 export const coordinate = z.tuple([
@@ -80,6 +81,14 @@ export const scenarioSchema = z
             airspeedMps: finite(2, 40),
             maxAirspeedMps: finite(2, 100).optional(),
             fixedWingProfile: fixedWingProfileSchema.optional(),
+            maintenance: z
+              .object({
+                flightsSinceService: finite(0, 1000000).int(),
+                flightSecondsSinceService: finite(0, 1000000000),
+                source: z.enum(['simulation', 'operator']),
+              })
+              .strict()
+              .optional(),
             maxWindMps: finite(0, 25),
             batteryPct: finite(0, 100),
             effectiveEnduranceMin: finite(1, 240),
@@ -92,6 +101,11 @@ export const scenarioSchema = z
               .array(z.enum(['RGB', 'MS', 'IR', 'LiDAR', 'Geophysics']))
               .min(1)
               .max(5),
+            cameraProfiles: z.array(cameraProfileSchema).max(12).optional(),
+            cameraIds: z
+              .array(z.string().regex(/^[a-zA-Z0-9_-]{1,60}$/))
+              .max(12)
+              .optional(),
             assumptions: z.array(z.string().min(1).max(400)).min(1).max(10),
             source: z.string().max(400),
           })
@@ -127,6 +141,8 @@ export type Segment = {
   batteryFromPct: number;
   batteryToPct: number;
   stripId?: number;
+  /** Work owning this segment in a multi-area flight; absent in legacy results. */
+  jobId?: string;
   fixedWing?: FixedWingSegmentMetadata;
 };
 export type Mission = {

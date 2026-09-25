@@ -13,6 +13,7 @@ import {
 } from '../lib/planner/mission-benchmark.ts';
 import { benchmarkCases } from '../scripts/benchmark-missions.ts';
 import { sha256 } from '../lib/planner/mission-schema.ts';
+import { migrateMissionCameraBindings } from '../lib/planner/camera-profile.ts';
 
 const fixture = (async () => {
   const document = SHOWCASE_SCENARIOS.find(
@@ -29,7 +30,10 @@ void test('benchmark: same complete input and full serial routes are independent
   assert.equal(result.comparable, true);
   assert.equal(result.planned.failures.length, 0);
   assert.equal(result.serial.failures.length, 0);
-  assert.equal(result.inputHash, await sha256(document));
+  assert.equal(
+    result.inputHash,
+    await sha256(migrateMissionCameraBindings(document).document),
+  );
   assert.equal(
     result.improvement!.absoluteSec,
     serial.metrics.makespanSec - planned.metrics.makespanSec,

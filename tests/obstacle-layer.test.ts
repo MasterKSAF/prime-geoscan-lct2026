@@ -31,12 +31,8 @@ import {
   saveObstacleSource,
 } from '../lib/planner/obstacle-store.ts';
 
-const source: string = JSON.parse(
-  readFileSync(
-    'public/planner/scenarios/demo-02-expert-obstacles.mission.json',
-    'utf8',
-  ),
-).obstacleLayer.sourceText;
+// Keep the original Primorsky regression fixture independent of the current Moscow showcase.
+const source = readFileSync('docs/planner/expert-materials/2026-09-22/originals/primorsky-obstacles.kml', 'utf8');
 const kml = (geometry: string) =>
   `<kml xmlns="http://www.opengis.net/kml/2.2"><Document><Placemark id="one"><name>test</name>${geometry}</Placemark></Document></kml>`;
 void test('expert source preserved, every polygon and line accounted for', () => {

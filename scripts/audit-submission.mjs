@@ -3,8 +3,11 @@
  * Never outputs matched credentials; a clean result is not a security guarantee.
  */
 import fs from 'node:fs/promises';
-import {execFileSync} from 'node:child_process';
-const files=execFileSync('git',['ls-files','-z'],{encoding:'utf8'}).split('\0').filter(Boolean);
+import {presentTrackedFiles,selectWorkingFiles} from './review-package-lib.mjs';
+if(process.argv.slice(2).some(a=>a!=='--working'))throw Error('Only --working is supported');
+const indexed=presentTrackedFiles();
+// Include selected new planner files, but still audit tracked sensitive names even if copying excludes them.
+const files=[...new Set([...indexed,...(process.argv.includes('--working')?selectWorkingFiles():[])])];
 const findings=[],patterns=[
  ['github-token',/\bgh[pousr]_[A-Za-z0-9]{30,}\b|\bgithub_pat_[A-Za-z0-9_]{50,}\b/g],
  ['openai-key',/\bsk-(?:proj-|svcacct-)?[A-Za-z0-9_-]{40,}\b/g],

@@ -9,6 +9,9 @@ import { ellipseDrawing } from '../lib/planner/territory-editing.ts';
 import * as vehicleLabels from '../lib/planner/mission-vehicle-label.ts';
 import * as obstacleLayer from '../lib/planner/obstacle-layer.ts';
 import * as geometry from '../lib/planner/geometry.ts';
+import * as missionBases from '../lib/planner/mission-bases.ts';
+import { restrictionMapLabel } from '../lib/planner/mission-catalog.ts';
+import * as playbackInterpolation from '../lib/planner/playback-interpolation.ts';
 
 type Props = Parameters<
   (typeof import('../components/planner/mission-map.tsx'))['default']
@@ -20,7 +23,21 @@ type Effect = {
 };
 class Element {
   className = '';
-  style = {};
+  style = {
+    setProperty: (name: string, value: string) => {
+      this.attributes[`style:${name}`] = value;
+    },
+  };
+  classList = {
+    toggle: (name: string, force: boolean) => {
+      const names = new Set(this.className.split(' ').filter(Boolean));
+      if (force) names.add(name);
+      else names.delete(name);
+      this.className = [...names].join(' ');
+    },
+  };
+  addEventListener(_event: string, _callback: () => void) {}
+  removeEventListener(_event: string, _callback: () => void) {}
   textContent = '';
   clientWidth = 800;
   clientHeight = 600;
@@ -45,6 +62,16 @@ class Element {
   }
 }
 class Layer {
+  element = new Element();
+  dragging = {
+    enabled: false,
+    enable: () => {
+      this.dragging.enabled = true;
+    },
+    disable: () => {
+      this.dragging.enabled = false;
+    },
+  };
   members = new Set<Layer>();
   handlers = new Map<string, (event: unknown) => void>();
   parent: Layer | null = null;
@@ -89,6 +116,19 @@ class Layer {
   }
   setLatLng(position: unknown) {
     this.position = position;
+    return this;
+  }
+  getElement() {
+    return this.element;
+  }
+  getLatLng() {
+    const p = this.position as number[];
+    return { lat: p[0], lng: p[1] };
+  }
+  closePopup() {
+    return this;
+  }
+  openPopup() {
     return this;
   }
 }
@@ -150,7 +190,8 @@ function harness(failInitialization = false, initiallyHidden = false) {
     pending: (() => void)[] = [];
   const maps: MapInstance[] = [],
     tiles: Layer[] = [];
-  const frames = new Map<number, () => void>();
+  const frames = new Map<number, (now: number) => void>();
+  let clockMs = 0;
   const observers: { callback: () => void; disconnected: boolean }[] = [];
   let index = 0,
     dirty = false,
@@ -233,8 +274,8 @@ function harness(failInitialization = false, initiallyHidden = false) {
     layerGroup: () => new Layer('group'),
     polygon: () => new Layer('polygon'),
     circleMarker: () => new Layer('circle'),
-    marker: (_position: unknown, options: { icon?: { html: Element } }) =>
-      new Layer('marker', options),
+    marker: (position: unknown, options: { icon?: { html: Element } }) =>
+      new Layer('marker', options).setLatLng(position),
     divIcon: (options: unknown) => options,
     polyline: () => new Layer('polyline'),
     latLngBounds: (points: unknown) => points,
@@ -255,6 +296,7 @@ function harness(failInitialization = false, initiallyHidden = false) {
     module: sandboxModule,
     exports: sandboxModule.exports,
     Promise,
+    performance: { now: () => clockMs },
     require(name: string) {
       if (name === 'react') return react;
       if (name === 'react/jsx-runtime')
@@ -264,6 +306,10 @@ function harness(failInitialization = false, initiallyHidden = false) {
       if (name === '@/lib/planner/mission-vehicle-label') return vehicleLabels;
       if (name === '@/lib/planner/obstacle-layer') return obstacleLayer;
       if (name === '@/lib/planner/geometry') return geometry;
+      if (name === '@/lib/planner/mission-bases') return missionBases;
+      if (name === '@/lib/planner/mission-catalog') return { restrictionMapLabel };
+      if (name === '@/lib/planner/playback-interpolation')
+        return playbackInterpolation;
       if (name.endsWith('.css')) return {};
       throw new Error(`Unexpected runtime import: ${name}`);
     },
@@ -288,7 +334,7 @@ function harness(failInitialization = false, initiallyHidden = false) {
         this.entry.disconnected = true;
       }
     },
-    requestAnimationFrame(callback: () => void) {
+    requestAnimationFrame(callback: (now: number) => void) {
       frames.set(++frameId, callback);
       return frameId;
     },
@@ -330,10 +376,11 @@ function harness(failInitialization = false, initiallyHidden = false) {
         if (dirty) render();
       }
     },
-    frame() {
+    frame(elapsedMs = 200) {
+      clockMs += elapsedMs;
       const callbacks = [...frames.values()];
       frames.clear();
-      callbacks.forEach((callback) => callback());
+      callbacks.forEach((callback) => callback(clockMs));
     },
     nodes: () => nodes(tree),
     unmount() {
@@ -480,6 +527,7 @@ void test('drone marker moves without replacement, stops pulse on pause, refresh
     ],
   } as unknown as Plan;
   app.render({ plan, time: 10, execution: true, playing: true });
+  app.frame();
   const markerLayer = [...app.maps[0].members].filter(
     (l) => l.kind === 'group',
   )[1];
@@ -489,6 +537,12 @@ void test('drone marker moves without replacement, stops pulse on pause, refresh
   assert.match(button.className, /moving/);
   app.render({ time: 20 });
   assert.equal([...markerLayer.members][0], marker);
+  assert.deepEqual(
+    marker.position,
+    position,
+    'A model tick does not jump the marker.',
+  );
+  app.frame(100);
   assert.notDeepEqual(marker.position, position);
   app.render({ playing: false });
   assert.doesNotMatch(button.className, /moving/);
@@ -554,6 +608,43 @@ void test('fit refreshes cached viewport before a queued resize frame; ordinary 
   assert.equal(map.lastInvalidation?.pan, true);
   assert.equal(map.lastInvalidation?.animate, false);
   assert.equal(map.fits, fits, 'Resize and playback must not reset user zoom.');
+  app.unmount();
+});
+
+void test('explicit fit includes editable flight boundary and an unassigned base without resetting operator zoom', async () => {
+  const app = harness();
+  await app.flush();
+  const boundary = {
+    type: 'Polygon' as const,
+    coordinates: [
+      [
+        [30.1, 60],
+        [30.6, 60],
+        [30.6, 60.2],
+        [30.1, 60.2],
+        [30.1, 60],
+      ] as Coordinate[],
+    ],
+  };
+  const bases = [
+    {
+      id: 'empty-base',
+      name: 'Unassigned base',
+      coordinate: [30.5, 60.15] as Coordinate,
+    },
+  ];
+  app.render({ fit: 3, editPolygon: boundary, bases });
+  const map = app.maps[0];
+  const bounds = JSON.parse(JSON.stringify(map.lastBounds)) as number[][];
+  assert.ok(bounds.some(([lat, lon]) => lat === 60.2 && lon === 30.6));
+  assert.ok(bounds.some(([lat, lon]) => lat === 60.15 && lon === 30.5));
+  const fits = map.fits;
+  app.render({ time: 10, bases: [...bases] });
+  assert.equal(
+    map.fits,
+    fits,
+    'New prop references and playback do not reset zoom.',
+  );
   app.unmount();
 });
 
@@ -645,7 +736,7 @@ void test('work areas and volume metadata remain distinct; model time changes ac
     first.some((item) => item.tooltip.includes('Работа 2: Second area')),
   );
   assert.ok(
-    first.some((item) => item.tooltip.includes('неактивно в модельное время')),
+    first.some((item) => item.tooltip.includes('вне указанного времени действия')),
   );
   app.render({ time: 30 });
   assert.deepEqual(
@@ -662,7 +753,61 @@ void test('work areas and volume metadata remain distinct; model time changes ac
     /<img>/,
     'Operator text is passed as textContent, not HTML.',
   );
-  assert.match(tooltip, /50 м, общий локальный уровень миссии/);
-  assert.match(tooltip, /· активно в модельное время/);
+  assert.match(tooltip, /0–50 м от поверхности модели/);
+  assert.match(tooltip, /интервал 2026-06-15T09:01:00Z — 2026-06-15T09:02:00Z/);
+  app.render({ time: 120 });
+  assert.match(
+    [...layer.members].find((item) => item.tooltip.includes('test volume'))!.tooltip,
+    /интервал /,
+    'The closed time interval includes its end, like the 4D validator.',
+  );
+  app.render({ time: 121 });
+  assert.match(
+    [...layer.members].find((item) => item.tooltip.includes('test volume'))!.tooltip,
+    /вне указанного времени действия/,
+  );
+  app.unmount();
+});
+
+void test('base markers drag without recreating the map, revert rejected moves and disable during drawing', async () => {
+  const app = harness();
+  await app.flush();
+  const bases = missionBases.missionBases(demoMission(1)),
+    calls: unknown[] = [];
+  app.render({
+    bases,
+    baseEditable: true,
+    onMoveBase: async (id, point) => {
+      calls.push({ id, point });
+      return false;
+    },
+  });
+  const layer = [...app.maps[0].members].find((l) => l.kind === 'group')!;
+  const marker = [...layer.members].find(
+    (m) => m.element.dataset.baseId === bases[0].id,
+  )!;
+  assert.ok(marker.dragging.enabled);
+  marker.setLatLng([60.04, 30.31]);
+  marker.handlers.get('dragend')?.({});
+  await app.flush();
+  assert.equal(
+    JSON.stringify(calls),
+    JSON.stringify([{ id: bases[0].id, point: [30.31, 60.04] }]),
+  );
+  assert.equal(
+    JSON.stringify(marker.position),
+    JSON.stringify([bases[0].coordinate[1], bases[0].coordinate[0]]),
+  );
+  app.render({ selectedBase: bases[0].id });
+  assert.match(marker.element.className, /is-selected/);
+  assert.ok(
+    layer.members.has(marker),
+    'Selecting must not replace the draggable marker.',
+  );
+  app.render({ mode: 'base' });
+  assert.equal(marker.dragging.enabled, false);
+  app.render({ mode: null, baseEditable: false });
+  assert.equal(marker.dragging.enabled, false);
+  assert.equal(app.maps.length, 1);
   app.unmount();
 });

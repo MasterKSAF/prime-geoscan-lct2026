@@ -54,6 +54,8 @@ void test('unknown terrain and incomplete camera never issue a pass', () => {
     plannedPhotoCoverage(d, []).every((r) => r.status === 'not_checked'),
   );
   d.terrainModel = { kind: 'flat', elevationM: 0, source: 'test' };
-  delete d.jobs[0].quality.sensorHeightMm;
+  for (const vehicle of d.scenario.vehicles)
+    for (const camera of vehicle.cameraProfiles ?? [])
+      delete camera.sensorHeightMm;
   assert.equal(plannedPhotoCoverage(d, [])[0].status, 'not_checked');
 });

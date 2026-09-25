@@ -2,7 +2,6 @@ import { parseMissionDocument, canonicalStringify } from './mission-schema.ts';
 import type { MissionDocument } from './mission-schema.ts';
 import type { MissionOperation } from './mission-operations.ts';
 import { installedBatteryDocument } from './mission-fleet-state.ts';
-import type { Coordinate } from './schema.ts';
 import { demoMission } from './mission-demo.ts';
 
 /** Fleet editing must not inherit invalid work geometry, dates or assignments. */
@@ -36,14 +35,19 @@ export function fleetBases(
 ) {
   const points = new Map<
     string,
-    { id: string; name: string; coordinate: Coordinate }
+    NonNullable<MissionDocument['bases']>[number]
   >();
   for (const base of document.bases ?? [])
     points.set(base.coordinate.join(','), structuredClone(base));
   for (const v of document.scenario.vehicles)
     for (const point of [v.start, v.landing]) {
       const id = point.join(',');
-      if (!points.has(id))
+      if (
+        !points.has(id) &&
+        ![...points.values()].some((b) =>
+          b.landingPads?.some((p) => p.coordinate.join(',') === id),
+        )
+      )
         points.set(id, {
           id: `base-${point[0]}-${point[1]}`
             .replaceAll('.', '_')

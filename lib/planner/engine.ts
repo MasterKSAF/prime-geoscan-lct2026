@@ -1,4 +1,5 @@
 import { ENGINE_VERSION, parseScenario } from './schema.ts';
+import { trackAltitudeCheck, trackAltitudeAllowed } from './altitude-policy.ts';
 import type {
   Check,
   Mission,
@@ -265,7 +266,12 @@ export function validatePlan(
   expectedStrips: number,
   g = prepareGeometry(s),
 ): { checks: Check[]; coveragePct: number } {
-  const checks: Check[] = [],
+  const checks: Check[] = [
+      trackAltitudeCheck(
+        [s.job.altitudeM],
+        missions.flatMap((m) => m.segments),
+      ),
+    ],
     segments = missions.flatMap((m) => m.segments),
     surveys = segments.filter((x) => x.phase === 'survey');
   const check = (id: string, ok: boolean, title: string, detail: string) =>
@@ -405,6 +411,20 @@ export function solve(input: unknown): Omit<Plan, 'inputHash' | 'createdAt'> {
   const begin = performance.now(),
     s = parseScenario(input),
     active = s.vehicles.filter((v) => v.enabled);
+  if (!trackAltitudeAllowed(s.job.altitudeM))
+    throw new PlanningError(
+      'TRACK_ALTITUDE',
+      'Предел трека: высота должна быть ниже 150 м над поверхностью.',
+    );
+  if (
+    active.some(
+      (v) => v.cameraProfiles !== undefined || v.cameraIds !== undefined,
+    )
+  )
+    throw new PlanningError(
+      'CAMERA_BINDING_V2',
+      'Установленные камеры рассчитываются в миссии v2 с требованиями GSD и перекрытий. Старый геометрический API не применяет и не подменяет их оптику.',
+    );
   if (!active.length)
     throw new PlanningError('FLEET', 'Выберите хотя бы один БВС.');
   if (active.some((v) => v.kind === 'fixedWing' || v.model === '201'))

@@ -56,6 +56,7 @@ next-env.d.ts
 # Local tooling, captured sessions and temporary downloads are not deliverables.
 /tmp/
 /.playwright-cli/
+/.playwright-mcp/
 *.tsbuildinfo
 *.local
 *.key

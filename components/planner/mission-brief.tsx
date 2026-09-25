@@ -1,4 +1,5 @@
 import type { MissionDocument } from '@/lib/planner/mission-schema';
+import { qualityForJob } from '@/lib/planner/quality';
 import { jobNames } from './mission-wizard';
 import { InfoHint } from './mission-help';
 
@@ -111,7 +112,10 @@ export default function MissionBrief({
                     {jobNames[j.job.type]} · {j.id}
                   </small>
                 </td>
-                <td>{j.job.altitudeM} м</td>
+                <td>
+                  {qualityForJob(j, undefined, d.flightEnvelope).job.altitudeM}{' '}
+                  м
+                </td>
                 <td>{j.area.coordinates.length} контуров</td>
                 <td>
                   {j.assignedVehicleIds.length

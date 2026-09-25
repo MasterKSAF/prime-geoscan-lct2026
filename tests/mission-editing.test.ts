@@ -7,7 +7,7 @@ import {
 } from '../lib/planner/mission-editing.ts';
 import { parseMissionDocument } from '../lib/planner/mission-schema.ts';
 
-test('multi-work addition preserves independent same-type areas, IDs, quality and assignments', () => {
+void test('multi-work addition preserves independent same-type areas, IDs, quality and assignments', () => {
   const d = demoMission(1);
   d.jobs.push({
     ...structuredClone(d.jobs[0]),
@@ -26,19 +26,19 @@ test('multi-work addition preserves independent same-type areas, IDs, quality an
   assert.deepEqual(next.jobs[2].assignedVehicleIds, []);
   assert.equal(next.jobs[2].quality.status, 'assumed');
 });
-test('all five types coexist in a schema-valid editable document', () => {
+void test('all five types coexist in a schema-valid editable document', () => {
   let d = demoMission(1);
   for (const type of ['MS', 'IR', 'LiDAR', 'Geophysics'] as const)
     d = appendMissionWork(d, d.jobs[0].id, type, `work-${type}`);
   assert.equal(parseMissionDocument(d).jobs.length, 5);
 });
-test('removing work uses ID, leaves sibling data intact and protects the last work', () => {
+void test('removing work uses ID, leaves sibling data intact and protects the last work', () => {
   const d = demoMission(1);
   const next = appendMissionWork(d, d.jobs[0].id, 'RGB', 'second');
   assert.deepEqual(removeMissionWorks(next, ['second']), d);
   assert.throws(() => removeMissionWorks(d, [d.jobs[0].id]), /хотя бы одну/);
 });
-test('work editor rejects duplicate identifiers and ninth work', () => {
+void test('work editor rejects duplicate identifiers and ninth work', () => {
   let d = demoMission(1);
   assert.throws(
     () => appendMissionWork(d, d.jobs[0].id, 'MS', d.jobs[0].id),

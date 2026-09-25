@@ -13,7 +13,8 @@ await writeFile(
   `${directory}/mission-v2.schema.json`,
   JSON.stringify(z.toJSONSchema(missionDocumentSchema), null, 2),
 );
-for (const area of [1, 10, 100] as const) {
+const areas = process.argv.includes('--schema-only') ? [] : ([1, 10, 100] as const);
+for (const area of areas) {
   const mission = installedBatteryDocument(demoMission(area));
   await writeFile(
     `${directory}/example-${area}km2.json`,
@@ -28,4 +29,4 @@ for (const area of [1, 10, 100] as const) {
     missionSummaryMarkdown(mission),
   );
 }
-console.log(`Schema and 1/10/100 km² examples generated in ${directory}.`);
+console.log(`Schema${areas.length ? ' and 1/10/100 km² examples' : ''} generated in ${directory}.`);

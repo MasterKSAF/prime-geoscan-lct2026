@@ -1,0 +1,39 @@
+{
+  "status": "pass",
+  "results": [
+    {
+      "path": "/api/planner/missions/solve",
+      "status": 413,
+      "code": "SIZE",
+      "ms": 500.09519999999975
+    },
+    {
+      "path": "/api/planner/missions/solve-with-obstacles",
+      "status": 403,
+      "code": "ORIGIN",
+      "ms": 21.32569999999987
+    },
+    {
+      "path": "/api/planner/missions/solve-with-obstacles",
+      "status": 200,
+      "ms": 7339.916099999999
+    },
+    {
+      "path": "/api/planner/missions/contingency",
+      "status": 413,
+      "code": "SIZE",
+      "ms": 92.09929999999986
+    },
+    {
+      "path": "/api/planner/missions/contingency",
+      "status": 200,
+      "result": "certified_model",
+      "ms": 2320.3233
+    },
+    {
+      "path": "/api/planner/missions/analyze",
+      "status": 200,
+      "ms": 2787.657799999999
+    }
+  ]
+}

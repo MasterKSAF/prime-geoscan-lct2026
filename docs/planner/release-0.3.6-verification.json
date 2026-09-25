@@ -1,0 +1,108 @@
+{
+  "date": "2026-09-23",
+  "engineVersion": "0.3.6",
+  "status": "verified-working-slice",
+  "frozen": false,
+  "submissionReady": false,
+  "flightReady": false,
+  "runtime": {
+    "base": "http://127.0.0.1:3016",
+    "container": "lct-planner-1",
+    "healthy": true,
+    "sourceFilesCompared": 223,
+    "sourceMismatches": 0,
+    "imageId": "sha256:3aa6228ebe4786a67711a1cf1385b115598df008eec5a59f2a4bccd100117502"
+  },
+  "typecheck": "pass",
+  "scopedLint": "pass",
+  "fullRepositoryLint": {
+    "status": "pre-existing-errors",
+    "files": [
+      "scripts/checks/release35-completed-browser.js: prefer-string-ends-with",
+      "scripts/vehicle_single_csv_checks.js: no-unused-expressions"
+    ]
+  },
+  "productionBuild": "pass",
+  "unit": {
+    "passed": 590,
+    "failed": 0,
+    "environments": ["Windows", "Docker Linux build"],
+    "logs": ["output/recovery-0.3.6-tests-final.log", "output/recovery-0.3.6-docker-build.log"]
+  },
+  "browser": {
+    "tool": "Playwright CLI",
+    "target": "Docker production build on port 3016",
+    "passed": 22,
+    "failed": 0,
+    "pageErrors": 0,
+    "runs": [
+      {
+        "scenario": "RGB + multispectral, four-aircraft coordinated return after wind event",
+        "script": "scripts/checks/recovery36-browser.js",
+        "passed": 7,
+        "log": "output/playwright/0.3.6-browser-docker.log"
+      },
+      {
+        "scenario": "Wind above supported limit, visible rejection and working diagnostics download",
+        "script": "scripts/checks/recovery36-browser.js",
+        "urlMarker": "blocked",
+        "passed": 7,
+        "log": "output/playwright/0.3.6-blocked-browser-docker.log"
+      },
+      {
+        "scenario": "Demo 2 with expert obstacles, completed mission, report/checks/ZIP/MP4 export",
+        "script": "scripts/checks/recovery36-completed-browser.js",
+        "passed": 8,
+        "log": "output/playwright/0.3.6-completed-browser-docker.log"
+      }
+    ]
+  },
+  "incidentArchives": [
+    {
+      "path": "output/playwright/0.3.6-returned.incident.zip",
+      "bytes": 653396,
+      "sha256": "80aa4822dca68a2a661fa3acee691b7ceebdeb94a5a2e2a9ee71b09fd4161ecb",
+      "stage": "landed",
+      "verification": "incident-diagnostic-reproduced",
+      "verifiedOn": ["Windows", "Docker Linux"],
+      "files": 18
+    },
+    {
+      "path": "output/playwright/0.3.6-blocked.incident.zip",
+      "bytes": 374335,
+      "sha256": "871b38ce43b7454f028785d7f14f356a8cf8cb565835a1cdb7e308507223b497",
+      "stage": "blocked",
+      "verification": "incident-diagnostic-reproduced",
+      "verifiedOn": ["Windows"],
+      "files": 18
+    }
+  ],
+  "completedMissionArchive": {
+    "path": "output/playwright/0.3.6-demo2-evidence.zip",
+    "bytes": 43281363,
+    "sha256": "5f06ee418fa63ae367e41426b3b625f1676487b3535d26970537200e15ec4180",
+    "verification": "passes-declared-model",
+    "checks": 62,
+    "passed": 53,
+    "failed": 0,
+    "unknown": 9,
+    "log": "output/playwright/0.3.6-demo2-archive-verification.log"
+  },
+  "video": {
+    "path": "output/playwright/0.3.6-demo2.mp4",
+    "bytes": 356226,
+    "sha256": "90e52a2d3940e80577bd353f27cc43c571d48619bdf0051d47f240f2bcd1ba98",
+    "codec": "h264",
+    "width": 1280,
+    "height": 720,
+    "durationSec": 20.558833,
+    "narration": false,
+    "simulated": true
+  },
+  "boundaries": [
+    "The original short incident JSON lacks input and trajectories; its exact run was not replayed. A corresponding crossing/low-takeoff regression and real browser multi-aircraft runs were tested.",
+    "Bounded return search and sampled preflight are not a proof of global feasibility or safety under every possible event.",
+    "Nine checks concerning external/physical data remain unknown; they are not silently counted as passed.",
+    "No physical aircraft, real flight tests, commit, push or public deployment."
+  ]
+}

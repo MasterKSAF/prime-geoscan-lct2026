@@ -44,6 +44,25 @@ export function fixedWingFixture(wind = 2) {
       start: p.inverse([-1000, -1000]),
       landing: p.inverse([-1000, -1000]),
       fixedWingProfile: { ...GEOSCAN_201_MODEL_PROFILE },
+      cameraIds: ['test-201-geometry'],
+      cameraProfiles: [
+        {
+          id: 'test-201-geometry',
+          name: 'Synthetic camera for kinematic regression',
+          type: 'RGB',
+          status: 'assumed',
+          source:
+            'Synthetic optical geometry; not an actual Geoscan payload or passport.',
+          supportedModels: ['201'],
+          sensorWidthMm: 30,
+          sensorHeightMm: 15,
+          focalLengthMm: 18,
+          imageWidthPx: 6000,
+          imageHeightPx: 3000,
+          minimumIntervalSec: 0.1,
+          shutterSec: 0.0001,
+        },
+      ],
     },
   ];
   d.batteries = [
@@ -71,9 +90,13 @@ export function fixedWingFixture(wind = 2) {
         bearingDeg: 0,
       },
       quality: {
-        mode: 'manual',
+        mode: 'camera',
         status: 'assumed',
-        source: 'Тестовый модельный профиль',
+        source:
+          'Требования синтетического теста, не паспорт полезной нагрузки.',
+        maximumGsdCm: 5,
+        forwardOverlap: 0.8,
+        maximumBlurPx: 1,
       },
     },
   ];

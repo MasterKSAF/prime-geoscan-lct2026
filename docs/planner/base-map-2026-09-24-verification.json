@@ -1,0 +1,330 @@
+{
+  "date": "2026-09-24",
+  "engine": "0.3.8",
+  "scope": "Base map drag, compact base editor, reassignment and folded expert catalogs",
+  "image": "sha256:a0742c0005b8eafe4e1e493df007750cce0b3c6995524daf45479d45317283cd",
+  "endpoint": "http://127.0.0.1:3016/planner",
+  "health": "healthy",
+  "build": {
+    "typecheck": "pass",
+    "tests": 626,
+    "passed": 626,
+    "failed": 0,
+    "build": "pass",
+    "log": "output/planner-base-build-final-20260924.log"
+  },
+  "browser": {
+    "passed": 58,
+    "suites": [
+      {
+        "log": "output/playwright/base-drag-prod-20260924.log",
+        "passed": 24,
+        "checks": [
+          {
+            "name": "Base click opens compact card",
+            "pass": true
+          },
+          {
+            "name": "Coordinates and assignments hidden by default",
+            "pass": true
+          },
+          {
+            "name": "Real mouse drag commits coordinates without Save",
+            "pass": true
+          },
+          {
+            "name": "Drag keeps battery and same aircraft",
+            "pass": true
+          },
+          {
+            "name": "Selected marker remains on the map",
+            "pass": true
+          },
+          {
+            "name": "Undo restores original endpoints and bases",
+            "pass": true
+          },
+          {
+            "name": "Move then map click applies without hidden Save",
+            "pass": true
+          },
+          {
+            "name": "Invalid coordinates produce clear error and preserve map",
+            "pass": true
+          },
+          {
+            "name": "Occupied base cannot be removed without destination",
+            "pass": true
+          },
+          {
+            "name": "Deletion removes real marker and base, no Start ghost",
+            "pass": true
+          },
+          {
+            "name": "Deletion preserves all aircraft and charge",
+            "pass": true
+          },
+          {
+            "name": "Empty base can be created without assigning aircraft",
+            "pass": true
+          },
+          {
+            "name": "Empty base deletion needs no destination",
+            "pass": true
+          },
+          {
+            "name": "Empty base deletion preserves other bases",
+            "pass": true
+          },
+          {
+            "name": "Assigned UAV can be reassigned, not a disabled checkbox",
+            "pass": true
+          },
+          {
+            "name": "Removing assignment requires a safe destination",
+            "pass": true
+          },
+          {
+            "name": "Base can be left empty; aircraft remains in fleet",
+            "pass": true
+          },
+          {
+            "name": "Catalog source controls are collapsed",
+            "pass": true
+          },
+          {
+            "name": "Expert catalogs reveal sources and controls together",
+            "pass": true
+          },
+          {
+            "name": "Compact base card and inline name in dark",
+            "pass": true,
+            "detail": {
+              "card": 196,
+              "heading": 34
+            }
+          },
+          {
+            "name": "Compact base card and inline name in light",
+            "pass": true,
+            "detail": {
+              "card": 196,
+              "heading": 34
+            }
+          },
+          {
+            "name": "Delete from focused map reveals its confirmation panel",
+            "pass": true
+          },
+          {
+            "name": "Narrow display has no horizontal page overflow",
+            "pass": true
+          },
+          {
+            "name": "No runtime errors",
+            "pass": true,
+            "detail": []
+          }
+        ],
+        "errors": []
+      },
+      {
+        "log": "output/playwright/base-queue-prod-20260924.log",
+        "passed": 34,
+        "checks": [
+          {
+            "name": "Three defaults plus a permanent upload card",
+            "pass": true
+          },
+          {
+            "name": "Import preserves custom ID and wind 1",
+            "pass": true
+          },
+          {
+            "name": "Import preserves work geometry 1",
+            "pass": true
+          },
+          {
+            "name": "Import preserves custom ID and wind 2",
+            "pass": true
+          },
+          {
+            "name": "Import preserves work geometry 2",
+            "pass": true
+          },
+          {
+            "name": "Import preserves custom ID and wind 3",
+            "pass": true
+          },
+          {
+            "name": "Import preserves work geometry 3",
+            "pass": true
+          },
+          {
+            "name": "Import preserves custom ID and wind 4",
+            "pass": true
+          },
+          {
+            "name": "Import preserves work geometry 4",
+            "pass": true
+          },
+          {
+            "name": "Import preserves custom ID and wind 5",
+            "pass": true
+          },
+          {
+            "name": "Import preserves work geometry 5",
+            "pass": true
+          },
+          {
+            "name": "Five imports create eight independent missions and upload card",
+            "pass": true
+          },
+          {
+            "name": "Broken import keeps existing cards",
+            "pass": true
+          },
+          {
+            "name": "Duplicate ID requires explicit choice",
+            "pass": true
+          },
+          {
+            "name": "Cancel duplicate preserves all cards",
+            "pass": true
+          },
+          {
+            "name": "Duplicate can create an independent copy",
+            "pass": true
+          },
+          {
+            "name": "Delete one copy preserves neighbours",
+            "pass": true
+          },
+          {
+            "name": "Missing boundary disables calculation",
+            "pass": true
+          },
+          {
+            "name": "Restore exact boundary",
+            "pass": true
+          },
+          {
+            "name": "Boundary editing exposes map vertex handles",
+            "pass": true
+          },
+          {
+            "name": "Boundary vertices fit inside the map",
+            "pass": true
+          },
+          {
+            "name": "Dragging a boundary vertex changes the saved geometry",
+            "pass": true
+          },
+          {
+            "name": "Cancel boundary editing restores exact original geometry",
+            "pass": true
+          },
+          {
+            "name": "Map selection fills base coordinates",
+            "pass": true
+          },
+          {
+            "name": "Cancelled base does not change input",
+            "pass": true
+          },
+          {
+            "name": "Shared base has separate explicit pads",
+            "pass": true
+          },
+          {
+            "name": "Base move preserves battery charge",
+            "pass": true
+          },
+          {
+            "name": "Shared-base placement has a feasible fully rechecked plan",
+            "pass": true,
+            "detail": [
+              {
+                "status": "feasible_model",
+                "checks": []
+              },
+              {
+                "status": "feasible_model",
+                "checks": []
+              }
+            ]
+          },
+          {
+            "name": "Other draft sees shared UAV base change",
+            "pass": true
+          },
+          {
+            "name": "Cannot delete occupied base without reassignment",
+            "pass": true
+          },
+          {
+            "name": "Delete with reassignment removes only base",
+            "pass": true
+          },
+          {
+            "name": "Zone import does not default to replacing work area",
+            "pass": true
+          },
+          {
+            "name": "No page-wide horizontal overflow on narrow display",
+            "pass": true
+          },
+          {
+            "name": "No browser runtime errors",
+            "pass": true,
+            "detail": []
+          }
+        ],
+        "errors": []
+      }
+    ]
+  },
+  "sourceHashes": [
+    {
+      "sha256": "094b2d65f984309fa1166ccd60c414b3cc8d6dac22e34083e2c0169bf6057f0c",
+      "path": "components/planner/mission-base-editor.tsx"
+    },
+    {
+      "sha256": "e0e8f6b5700286f300017c20062bf8dc3e78d4cae7c20167459519d0163fb940",
+      "path": "components/planner/mission-map-objects.tsx"
+    },
+    {
+      "sha256": "a43d3f8099e4442a6e5dbdb83770ca2990bf0871d90f0d5e6af9d936beed0b70",
+      "path": "components/planner/mission-map.tsx"
+    },
+    {
+      "sha256": "1a34c3e78d0eb90ee78c24ef088ec2f4ab83678ea7fa997d35a1f34c5e0c5bcf",
+      "path": "components/planner/mission-data-panel.tsx"
+    },
+    {
+      "sha256": "e7e5e6b3340145e0b2070bd9c9cbd18cfe1fc7bebb28e9fd119998ef05b681ec",
+      "path": "components/planner/mission-workbench.tsx"
+    },
+    {
+      "sha256": "8b68ef4c8e0446b0df6131652563c8ebd3f6c44bf01184a202f8bb6a367d9cf4",
+      "path": "lib/planner/mission-bases.ts"
+    },
+    {
+      "sha256": "b37572400eb68e9708f22507b856950de187243f9b2a11fe9b760732db0298b9",
+      "path": "app/planner/mission-expert.css"
+    },
+    {
+      "sha256": "5175d8e263188bea3a94637b119ffb64e5d8f46a5c615256840616c549d6ba30",
+      "path": "tests/mission-session-objects.test.ts"
+    },
+    {
+      "sha256": "1096adb1e19f57d0d0441d8e3831f4485c2f84ef0c0f4932d4173ec7478cc7d8",
+      "path": "tests/mission-map-lifecycle.test.ts"
+    }
+  ],
+  "limitations": [
+    "Simulation, not physical flight validation",
+    "Previous broader archive/mission verification has its own dated report; not counted as re-run here",
+    "No commit, push or submission freeze"
+  ]
+}

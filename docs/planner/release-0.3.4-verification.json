@@ -1,0 +1,415 @@
+{
+  "runtime": {
+    "files": 261,
+    "status": "pass",
+    "imageId": "sha256:b1732ea9cc8533241b522068f14aca10970cc93921da9c724dc6844b106e7aa1",
+    "health": {
+      "status": "ok",
+      "engineVersion": "0.1.0",
+      "missionEngineVersion": "0.3.4",
+      "missionSchemaVersion": "2.0",
+      "safetyValidationPolicy": "continuous-occupancy-v1",
+      "mode": "engineering-preview",
+      "flightReady": false
+    }
+  },
+  "http": {
+    "at": "2026-09-23T14:45:28.907Z",
+    "base": "http://127.0.0.1:3016",
+    "status": "pass",
+    "retries": 0,
+    "results": [
+      {
+        "name": "round 1: oversized /api/planner/missions/solve then valid solve, no retry",
+        "pass": true
+      },
+      {
+        "name": "round 1: oversized /api/planner/missions/contingency then valid solve, no retry",
+        "pass": true
+      },
+      {
+        "name": "round 1: oversized /api/planner/missions/analyze then valid solve, no retry",
+        "pass": true
+      },
+      {
+        "name": "round 2: oversized /api/planner/missions/solve then valid solve, no retry",
+        "pass": true
+      },
+      {
+        "name": "round 2: oversized /api/planner/missions/contingency then valid solve, no retry",
+        "pass": true
+      },
+      {
+        "name": "round 2: oversized /api/planner/missions/analyze then valid solve, no retry",
+        "pass": true
+      },
+      {
+        "name": "round 3: oversized /api/planner/missions/solve then valid solve, no retry",
+        "pass": true
+      },
+      {
+        "name": "round 3: oversized /api/planner/missions/contingency then valid solve, no retry",
+        "pass": true
+      },
+      {
+        "name": "round 3: oversized /api/planner/missions/analyze then valid solve, no retry",
+        "pass": true
+      },
+      {
+        "name": "round 4: oversized /api/planner/missions/solve then valid solve, no retry",
+        "pass": true
+      },
+      {
+        "name": "round 4: oversized /api/planner/missions/contingency then valid solve, no retry",
+        "pass": true
+      },
+      {
+        "name": "round 4: oversized /api/planner/missions/analyze then valid solve, no retry",
+        "pass": true
+      },
+      {
+        "name": "round 5: oversized /api/planner/missions/solve then valid solve, no retry",
+        "pass": true
+      },
+      {
+        "name": "round 5: oversized /api/planner/missions/contingency then valid solve, no retry",
+        "pass": true
+      },
+      {
+        "name": "round 5: oversized /api/planner/missions/analyze then valid solve, no retry",
+        "pass": true
+      },
+      {
+        "name": "chunked oversize then valid solve",
+        "pass": true
+      },
+      {
+        "name": "extended endpoint still refuses above 12 MiB",
+        "pass": true
+      },
+      {
+        "name": "slow upload timeout then valid solve",
+        "pass": true
+      },
+      {
+        "name": "ORIGIN then valid solve",
+        "pass": true
+      },
+      {
+        "name": "TYPE then valid solve",
+        "pass": true
+      },
+      {
+        "name": "malformed JSON then valid solve",
+        "pass": true
+      }
+    ]
+  },
+  "flightReady": false,
+  "frozen": false,
+  "version": "0.3.4",
+  "video": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1280,
+        "height": 720
+      }
+    ],
+    "format": {
+      "duration": "15.820300",
+      "size": "223496"
+    }
+  },
+  "at": "2026-09-23T14:47:55.8352380Z",
+  "archive": {
+    "status": "pass",
+    "checker": "Python stdlib zipfile/hashlib",
+    "files": 36,
+    "sourceSha256": "43e32fe63eb715194d7c43f2eb36066523105433c81613a57f21aadd62520ed1",
+    "flightSafetyChecked": false
+  },
+  "browserSuites": [
+    {
+      "name": "production",
+      "checks": 30,
+      "items": [
+        {
+          "name": "На старте только три предустановленные миссии",
+          "pass": true
+        },
+        {
+          "name": "Парк — таблица с тремя моделями",
+          "pass": true
+        },
+        {
+          "name": "Шрифт парка увеличен",
+          "pass": true
+        },
+        {
+          "name": "Статус доступности заметен",
+          "pass": true
+        },
+        {
+          "name": "Главные разделы крупнее",
+          "pass": true
+        },
+        {
+          "name": "Назад без яркой светлой заливки",
+          "pass": true
+        },
+        {
+          "name": "Ширина парка совпадает с отчётом",
+          "pass": true,
+          "detail": {
+            "fleetBox": {
+              "x": 50,
+              "y": 85,
+              "width": 1340,
+              "height": 423
+            },
+            "reportBox": {
+              "x": 50,
+              "y": 85,
+              "width": 1340,
+              "height": 406.5
+            }
+          }
+        },
+        {
+          "name": "Отчёт читается крупнее",
+          "pass": true
+        },
+        {
+          "name": "Таблица отчёта помещается без обрезки",
+          "pass": true
+        },
+        {
+          "name": "Возврат с отчёта работает",
+          "pass": true
+        },
+        {
+          "name": "В Демо 2 подключены оба новых каталога",
+          "pass": true
+        },
+        {
+          "name": "Полный каталог 696 участков прочитан",
+          "pass": true
+        },
+        {
+          "name": "Полный каталог 341 зоны прочитан",
+          "pass": true
+        },
+        {
+          "name": "API расчёта: HTTP 200",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "name": "Новый Демо 2 проходит расчёт",
+          "pass": true
+        },
+        {
+          "name": "Два участка за один вылет",
+          "pass": true
+        },
+        {
+          "name": "Резерв батареи сохранён",
+          "pass": true
+        },
+        {
+          "name": "Нет искусственных дублей; меньше трёх планов объяснено",
+          "pass": true,
+          "detail": 1
+        },
+        {
+          "name": "Учитываются препятствия и разделение БВС",
+          "pass": true
+        },
+        {
+          "name": "Карта справа от панели вариантов",
+          "pass": true
+        },
+        {
+          "name": "Совместный вылет завершён без ошибки снимка",
+          "pass": true
+        },
+        {
+          "name": "Выгрузка: output/playwright/0.3.4-demo2-evidence.zip",
+          "pass": true
+        },
+        {
+          "name": "Выгрузка: output/playwright/0.3.4-demo2.mp4",
+          "pass": true
+        },
+        {
+          "name": "Выгрузка: output/playwright/0.3.4-demo2-checks.json",
+          "pass": true
+        },
+        {
+          "name": "Назад из просмотра отчёта",
+          "pass": true
+        },
+        {
+          "name": "API расчёта: HTTP 200",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "name": "Первый сценарий сохранил три варианта",
+          "pass": true
+        },
+        {
+          "name": "API расчёта: HTTP 200",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "name": "Третий сценарий честно отклонён",
+          "pass": true
+        },
+        {
+          "name": "Ошибок браузера нет",
+          "pass": true,
+          "detail": []
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "return",
+      "checks": 19,
+      "items": [
+        {
+          "name": "отмена вернула название",
+          "pass": true
+        },
+        {
+          "name": "повтор вернул правку",
+          "pass": true
+        },
+        {
+          "name": "из отчёта вернулись в редактор",
+          "pass": true
+        },
+        {
+          "name": "расчёт 200",
+          "pass": true
+        },
+        {
+          "name": "в первом сценарии три разных плана",
+          "pass": true
+        },
+        {
+          "name": "из проверок вернулись к вариантам",
+          "pass": true
+        },
+        {
+          "name": "запись началась автоматически",
+          "pass": true
+        },
+        {
+          "name": "ветер вызвал реальный возврат за 12 с",
+          "pass": true
+        },
+        {
+          "name": "назад во время возврата не отменяет его",
+          "pass": true
+        },
+        {
+          "name": "группа вернулась",
+          "pass": true
+        },
+        {
+          "name": "MP4 скачан",
+          "pass": true
+        },
+        {
+          "name": "архив прерванной миссии скачан",
+          "pass": true
+        },
+        {
+          "name": "расчёт 200",
+          "pass": true
+        },
+        {
+          "name": "планы второго сценария показаны без искусственных дублей",
+          "pass": true
+        },
+        {
+          "name": "если вариантов меньше трёх, есть объяснение",
+          "pass": true
+        },
+        {
+          "name": "расчёт 200",
+          "pass": true
+        },
+        {
+          "name": "третий сценарий блокирует запуск",
+          "pass": true
+        },
+        {
+          "name": "третий сценарий предлагает проверяемые исправления",
+          "pass": true
+        },
+        {
+          "name": "нет ошибок браузера",
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "sensor",
+      "checks": 4,
+      "items": [
+        {
+          "name": "отказ сенсора: предлагается выбор оператора",
+          "pass": true
+        },
+        {
+          "name": "после минуты возврат включился вне экрана миссии",
+          "pass": true
+        },
+        {
+          "name": "возврат после тайм-аута завершился посадкой",
+          "pass": true
+        },
+        {
+          "name": "нет ошибок браузера",
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "wind",
+      "checks": 4,
+      "items": [
+        {
+          "name": "экстремальный ветер: явная причина, не зависание",
+          "pass": true
+        },
+        {
+          "name": "интерфейс отвечает после критического события",
+          "pass": true
+        },
+        {
+          "name": "отказной сценарий тоже заканчивает видеозапись",
+          "pass": true
+        },
+        {
+          "name": "нет ошибок браузера",
+          "pass": true
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "unitTests": {
+    "total": 575,
+    "passed": 575
+  }
+}

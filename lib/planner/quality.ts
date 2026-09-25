@@ -1,15 +1,94 @@
 import type { MissionJob, QualityProfile } from './mission-schema.ts';
 import type { Check, Scenario, Vehicle } from './schema.ts';
+import { AUTO_ALTITUDE_CEILING_M } from './altitude-policy.ts';
+import { resolveVehicleCamera, qualityWithCamera } from './camera-profile.ts';
+
+/** Both pixel axes must satisfy the requested MAXIMUM ground sampling distance. */
+export function cameraAltitudeForGsd(q: QualityProfile): number | null {
+  const values = [
+    q.sensorWidthMm,
+    q.sensorHeightMm,
+    q.focalLengthMm,
+    q.imageWidthPx,
+    q.imageHeightPx,
+    q.maximumGsdCm,
+  ];
+  if (
+    q.mode !== 'camera' ||
+    values.some((n) => n === undefined || !Number.isFinite(n) || n <= 0)
+  )
+    return null;
+  return (
+    (q.maximumGsdCm! / 100) *
+    q.focalLengthMm! *
+    Math.min(
+      q.imageWidthPx! / q.sensorWidthMm!,
+      q.imageHeightPx! / q.sensorHeightMm!,
+    )
+  );
+}
 
 /** Nominal nadir-camera/scan geometry, not a certificate of delivered survey quality. */
 export function qualityForJob(
   input: MissionJob,
   vehicle?: Vehicle,
+  envelope?: { maxAltitudeM: number; minSurveyAltitudeM: number },
+  cameraId?: string,
 ): { job: Scenario['job']; checks: Check[]; assumptions: string[] } {
   const job = { ...input.job },
-    q = input.quality,
     checks: Check[] = [],
     assumptions: string[] = [];
+  let q = input.quality;
+  if (['RGB', 'MS', 'IR'].includes(input.job.type) && q.mode !== 'camera')
+    return {
+      job,
+      checks: [
+        {
+          id: `QUALITY_${input.id}_CAMERA_REQUIREMENTS`,
+          status: 'fail',
+          title: 'Требования камерной работы',
+          detail:
+            'RGB/MS/ИК требуют камерную модель и явный выбор установленной оптики; ручная полоса не доказывает возможности камеры.',
+        },
+      ],
+      assumptions: [],
+    };
+  if (q.mode === 'camera' && vehicle) {
+    const resolved = resolveVehicleCamera(vehicle, input.job.type, cameraId);
+    if (!resolved.camera)
+      return {
+        job,
+        checks: [
+          {
+            id: `QUALITY_${input.id}_CAMERA`,
+            status: 'fail',
+            title: 'Установленная камера',
+            detail: resolved.reason!,
+          },
+        ],
+        assumptions: [],
+      };
+    q = qualityWithCamera(q, resolved.camera);
+    checks.push({
+      id: `QUALITY_${input.id}_CAMERA`,
+      status: 'pass',
+      title: 'Установленная камера',
+      detail: `${resolved.camera.id}: ${resolved.camera.name}; модель ${vehicle.model}. Оптика из снимка камеры, не из требований работы.`,
+    });
+    if (
+      resolved.camera.maximumSpeedMps !== undefined &&
+      vehicle.airspeedMps > resolved.camera.maximumSpeedMps
+    )
+      checks.push({
+        id: `QUALITY_${input.id}_CAMERA_SPEED`,
+        status: 'fail',
+        title: 'Скорость камеры',
+        detail: `${vehicle.airspeedMps} м/с превышает предел камеры ${resolved.camera.maximumSpeedMps} м/с.`,
+      });
+    assumptions.push(
+      `Камера ${resolved.camera.id}: одна активная оптика ${resolved.camera.type}; ${resolved.camera.status === 'documented' ? 'паспортные параметры' : 'параметры оператора/предположение'}, фактическая установка и калибровка требуют подтверждения.`,
+    );
+  }
   const check = (id: string, ok: boolean, title: string, detail: string) =>
     checks.push({
       id: `QUALITY_${input.id}_${id}`,
@@ -17,6 +96,29 @@ export function qualityForJob(
       title,
       detail,
     });
+  if (q.altitudeMode === 'gsd') {
+    const maximum = cameraAltitudeForGsd(q);
+    if (maximum !== null) {
+      // Round downward: rounding up may violate GSD or the operator's corridor.
+      job.altitudeM =
+        Math.floor(
+          Math.min(
+            maximum,
+            AUTO_ALTITUDE_CEILING_M,
+            envelope?.maxAltitudeM ?? AUTO_ALTITUDE_CEILING_M,
+          ) * 1000,
+        ) / 1000;
+    }
+    check(
+      'ALTITUDE_GSD',
+      maximum !== null &&
+        job.altitudeM >= Math.max(10, envelope?.minSurveyAltitudeM ?? 10),
+      'Высота по GSD',
+      maximum === null
+        ? 'Нужны положительные параметры камеры и целевой GSD. Режим по GSD не применим к LiDAR/геофизике.'
+        : `По двум осям камеры H ≤ ${maximum.toFixed(3)} м; принято ${job.altitudeM} м AGL с учётом потолка. Минимум ${Math.max(10, envelope?.minSurveyAltitudeM ?? 10)} м. GSD — верхний предел: более мелкий пиксель допустим. При несовместимых пределах измените требования или камеру, качество автоматически не ухудшается.`,
+    );
+  }
   if (q.status === 'unknown')
     checks.push({
       id: `QUALITY_${input.id}_SOURCE`,

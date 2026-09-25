@@ -1,6 +1,10 @@
 import { z } from 'zod';
 import { assertRevisionBinding } from './mission-revision-binding.ts';
-import { independentOperations } from './mission-coordination.ts';
+import { maintenanceAtProgress } from './mission-maintenance.ts';
+import {
+  independentOperations,
+  distantGroundedFleetState,
+} from './mission-coordination.ts';
 import {
   MISSION_ENGINE_VERSION,
   parseMissionDocument,
@@ -23,6 +27,7 @@ import {
   safetySchema,
 } from './mission-safety.ts';
 import type { IncidentKind, SafetySession } from './mission-safety.ts';
+import { recoveryPreflight } from './mission-recovery-preflight.ts';
 import {
   FLEET_STATE_STORE,
   parseFleetState,
@@ -65,6 +70,7 @@ export type EnqueueMissionOperation = Pick<
   'id' | 'document' | 'candidate' | 'approval'
 >;
 export type MissionOperationsOptions = {
+  demoSession?: boolean;
   indexedDB?: IDBFactory;
   dbName?: string;
   now?: () => Date;
@@ -281,12 +287,16 @@ function checkSize(value: unknown) {
     'document' in value &&
     value.document &&
     typeof value.document === 'object' &&
-    'obstacleLayer' in value.document;
+    ('obstacleLayer' in value.document || 'catalogLayers' in value.document);
   if (attached) {
     const record = value as { document: MissionDocument };
     const core = {
       ...record,
-      document: { ...record.document, obstacleLayer: undefined },
+      document: {
+        ...record.document,
+        obstacleLayer: undefined,
+        catalogLayers: undefined,
+      },
     };
     if (
       new TextEncoder().encode(JSON.stringify(core)).length >
@@ -309,8 +319,14 @@ async function seal(
   return { ...value, integrityHash: await sha256(value) };
 }
 
+// Only successful static proofs are retained, never documents, live state or
+// persisted pass flags. The bound prevents arbitrary imports growing the cache.
+const staticValidationCache = new Set<string>();
+const MAX_STATIC_VALIDATIONS = 32;
+
 /** Hashes bind a local snapshot; they are not a signature or a flight clearance.
- * Saved pass flags are not trusted: every read/mutation reruns model validation.
+ * Every read recomputes integrity/input/plan hashes and checks live state. A
+ * static model proof is reusable only for those exact computed hashes/version.
  */
 export async function verifyMissionOperation(
   value: unknown,
@@ -318,7 +334,9 @@ export async function verifyMissionOperation(
   const raw = await checkedMetadata(value);
   const document = parseMissionDocument(raw.document);
   serializeMissionJson(document);
-  const candidate = raw.candidate as MissionCandidate;
+  // z.unknown preserves references: detach the candidate before asynchronous
+  // hashing so a caller cannot mutate the object between the hash and proof.
+  const candidate = structuredClone(raw.candidate) as MissionCandidate;
   if (
     raw.engineVersion !== MISSION_ENGINE_VERSION ||
     !candidate ||
@@ -343,13 +361,21 @@ export async function verifyMissionOperation(
     raw.approval.candidateId !== candidate.id
   )
     throw new Error('Подтверждение или хеши не соответствуют снимку миссии.');
-  const checks = await validateExportedCandidate(document, candidate);
+  const staticKey = `${MISSION_ENGINE_VERSION}:${inputHash}:${planHash}`;
+  const checks = staticValidationCache.has(staticKey)
+    ? []
+    : await validateExportedCandidate(document, candidate);
   const failedChecks = [
     ...checks,
     ...candidate.checks,
     ...candidate.plan.checks,
   ].filter((check) => check.status === 'fail');
   if (failedChecks.length) throw new ModelRevalidationError(failedChecks);
+  // Refresh insertion order for a bounded LRU of successful static proofs.
+  staticValidationCache.delete(staticKey);
+  staticValidationCache.add(staticKey);
+  if (staticValidationCache.size > MAX_STATIC_VALIDATIONS)
+    staticValidationCache.delete(staticValidationCache.values().next().value!);
   const duration = candidate.metrics.makespanSec;
   if (raw.safety) {
     const s = raw.safety;
@@ -517,6 +543,7 @@ export function getOperationStartBlockers(
       const vehicle = row.document.scenario.vehicles.find(
         (v) => v.id === state.id,
       );
+      if (!vehicle && distantGroundedFleetState(row, state)) continue;
       if (
         !vehicle ||
         !state.grounded ||
@@ -962,6 +989,12 @@ export function createMissionOperations(
     if (!next.startedAt || !next.document.planning.batteryPolicy) return fleet;
     const updated = structuredClone(fleet);
     const states = deriveOperationVehicleStates(next);
+    const returnOption =
+      next.safety && ['returning', 'landed'].includes(next.safety.stage)
+        ? recoveryOptions(next.document, next.candidate, next.safety).find(
+            (o) => o.policy === next.safety!.policy && o.valid,
+          )
+        : undefined;
     for (const id of new Set(next.candidate.sorties.map((s) => s.vehicleId))) {
       const index = updated.findIndex((s) => s.id === id);
       const previous =
@@ -1015,6 +1048,17 @@ export function createMissionOperations(
         ),
         vehicle: {
           ...next.document.scenario.vehicles.find((v) => v.id === id)!,
+          maintenance: maintenanceAtProgress(
+            next.document.scenario.vehicles.find((v) => v.id === id)!,
+            next.candidate.sorties,
+            next.safety?.modelTimeSec ?? next.progressSec,
+            returnOption
+              ? {
+                  sorties: returnOption.sorties,
+                  progressSec: next.safety!.progressSec,
+                }
+              : undefined,
+          ),
           start: location,
           batteryPct: battery.initialPct,
         },
@@ -1060,7 +1104,27 @@ export function createMissionOperations(
         );
       if (inserting && current.length >= MAX_MISSION_OPERATIONS)
         throw new Error(
-          'Лимит журнала — 20 выполнений. Старые записи не удаляются автоматически.',
+          'Лимит журнала — 20 выполнений. Скачайте доказательства и удалите ненужные запуски.',
+        );
+      if (
+        inserting &&
+        options.demoSession &&
+        (current as MissionOperation[]).filter(
+          (r) => !['completed', 'cancelled'].includes(r.status),
+        ).length >= 3
+      )
+        throw new Error(
+          'Одновременно можно запланировать или выполнять три миссии. Завершите либо отмените одну; карточки и завершённая история не занимают этот лимит.',
+        );
+      if (
+        inserting &&
+        options.demoSession &&
+        (current as MissionOperation[]).some(
+          (r) => r.document?.id === next.document.id,
+        )
+      )
+        throw new Error(
+          'Эта миссия уже есть в выполнении. Удалите её прежний запуск перед повтором.',
         );
       await request(inserting ? store.add(next) : store.put(next));
       for (const state of executionFleet(next, fleet))
@@ -1251,6 +1315,15 @@ export function createMissionOperations(
       const blockers = getOperationStartBlockers(row, rows, fleet);
       if (blockers.length)
         throw new Error(blockers.map((b) => b.detail).join(' '));
+      if (!row.startedAt) {
+        const guard = recoveryPreflight(row.document, row.candidate);
+        if (!guard.valid) {
+          const failed = guard.samples.find((s) => !s.valid);
+          throw new Error(
+            `Предпусковая проверка возврата: ${failed ? `на ${Math.round(failed.timeSec)}-й секунде ${failed.reasons.join(' ')}` : 'нет проверенных контрольных моментов'}. Пересчитайте миссию с другими площадками или составом БВС.`,
+          );
+        }
+      }
       next.status = 'running';
       next.startedAt ??= timestamp;
     } else if (action === 'cancel') {
@@ -1386,84 +1459,113 @@ export function createMissionOperations(
     await verifyMissionOperation(next);
     return commit(raw, next, false, fleet);
   }
-  async function reportFleet(input: FleetReport) {
+  async function reportFleetBatch(inputs: FleetReport[]) {
     const { raw, rows, rejected, fleet } = await readVerified();
     requireNoUnverifiedExecution(rejected);
-    const s = parseFleetState(input.state),
-      old = fleet.find((x) => x.id === s.id);
-    if (fleet.some((x) => x.id !== s.id && x.battery.id === s.battery.id))
-      throw new Error('ID текущей батареи уже занят другим БВС.');
-    if ((old?.revision ?? 0) !== input.expectedRevision)
-      throw new Error('Устаревшее сообщение: обновите состояние парка.');
-    if (s.source !== 'operator' || s.operationId !== null)
-      throw new Error(
-        'Внешний ввод стенда должен быть помечен как данные оператора.',
-      );
-    if (old && Date.parse(s.observedAt) <= Date.parse(old.observedAt))
-      throw new Error('Повторное или устаревшее время наблюдения.');
-    if (Math.abs(Date.parse(s.observedAt) - now().getTime()) > 300000)
-      throw new Error(
-        'Сообщение должно быть не старше 5 минут, без будущего времени.',
-      );
-    if (Date.parse(s.observedAt) > now().getTime() + 1000)
-      throw new Error('Время сообщения находится в будущем.');
     if (
-      rows.some(
-        (r) =>
-          r.startedAt &&
-          !['completed', 'cancelled'].includes(r.status) &&
-          r.candidate.sorties.some((f) => f.vehicleId === s.id),
+      !inputs.length ||
+      inputs.length > 20 ||
+      new Set(inputs.map((i) => i.state.id)).size !== inputs.length
+    )
+      throw new Error('Обновление парка: нужны от 1 до 20 разных БВС.');
+    const batch: FleetState[] = [];
+    for (const input of inputs) {
+      const s = parseFleetState(input.state),
+        old = fleet.find((x) => x.id === s.id);
+      if (fleet.some((x) => x.id !== s.id && x.battery.id === s.battery.id))
+        throw new Error('ID текущей батареи уже занят другим БВС.');
+      if ((old?.revision ?? 0) !== input.expectedRevision)
+        throw new Error('Устаревшее сообщение: обновите состояние парка.');
+      if (
+        (s.source !== 'operator' &&
+          !(options.demoSession && s.source === 'simulation')) ||
+        s.operationId !== null
       )
-    )
-      throw new Error(
-        'БВС занят выполнением. Сначала безопасная посадка и завершение/отмена снимка.',
-      );
-    if (
-      rows.some(
-        (r) =>
-          r.startedAt !== null &&
-          !['completed', 'cancelled'].includes(r.status),
-      ) &&
-      (!old ||
-        !old.grounded ||
-        !s.grounded ||
-        canonicalStringify(old.vehicle.start) !==
-          canonicalStringify(s.vehicle.start) ||
-        canonicalStringify(old.vehicle.landing) !==
-          canonicalStringify(s.vehicle.landing))
-    )
-      throw new Error(
-        'Во время незавершённой миссии нельзя добавлять БВС, менять точки старта/посадки или воздушное состояние парка. Перепланирование выполняющейся миссии по обновлениям парка пока не поддерживается; сначала безопасно завершите или отмените её.',
-      );
-    if (old && !old.grounded && (input.replacement || s.ready))
-      throw new Error(
-        'Сначала подтвердите отдельным сообщением посадку без готовности и без замены.',
-      );
-    if (
-      old &&
-      (s.battery.id !== old.battery.id ||
-        s.battery.initialPct > old.battery.initialPct + 0.001) &&
-      !input.replacement
-    )
-      throw new Error(
-        'Новая батарея или рост заряда требуют явного события замены.',
-      );
-    if (input.replacement && !s.grounded)
-      throw new Error('Замена возможна только на земле.');
-    const replacements = [...(old?.replacements ?? [])];
-    if (input.replacement)
-      replacements.push({
-        at: s.observedAt,
-        fromId: old?.battery.id ?? s.battery.id,
-        toId: s.battery.id,
-        pct: s.battery.initialPct,
+        throw new Error(
+          'Внешний ввод стенда должен быть помечен как данные оператора.',
+        );
+      if (old && Date.parse(s.observedAt) <= Date.parse(old.observedAt))
+        throw new Error('Повторное или устаревшее время наблюдения.');
+      if (
+        input.replacement &&
+        old?.vehicle.maintenance &&
+        canonicalStringify(s.vehicle.maintenance) !==
+          canonicalStringify(old.vehicle.maintenance)
+      )
+        throw new Error(
+          'Замена батареи не меняет наработку аппарата. ТО оформляется отдельно.',
+        );
+      if (Math.abs(Date.parse(s.observedAt) - now().getTime()) > 300000)
+        throw new Error(
+          'Сообщение должно быть не старше 5 минут, без будущего времени.',
+        );
+      if (Date.parse(s.observedAt) > now().getTime() + 1000)
+        throw new Error('Время сообщения находится в будущем.');
+      if (
+        rows.some(
+          (r) =>
+            r.startedAt &&
+            !['completed', 'cancelled'].includes(r.status) &&
+            r.candidate.sorties.some((f) => f.vehicleId === s.id),
+        )
+      )
+        throw new Error(
+          'БВС занят выполнением. Сначала безопасная посадка и завершение/отмена снимка.',
+        );
+      if (
+        rows.some(
+          (r) =>
+            r.startedAt !== null &&
+            !['completed', 'cancelled'].includes(r.status),
+        ) &&
+        (!old ||
+          !old.grounded ||
+          !s.grounded ||
+          canonicalStringify(old.vehicle.start) !==
+            canonicalStringify(s.vehicle.start) ||
+          canonicalStringify(old.vehicle.landing) !==
+            canonicalStringify(s.vehicle.landing))
+      )
+        throw new Error(
+          'Во время незавершённой миссии нельзя добавлять БВС, менять точки старта/посадки или воздушное состояние парка. Перепланирование выполняющейся миссии по обновлениям парка пока не поддерживается; сначала безопасно завершите или отмените её.',
+        );
+      if (old && !old.grounded && (input.replacement || s.ready))
+        throw new Error(
+          'Сначала подтвердите отдельным сообщением посадку без готовности и без замены.',
+        );
+      if (
+        old &&
+        (s.battery.id !== old.battery.id ||
+          s.battery.initialPct > old.battery.initialPct + 0.001) &&
+        !input.replacement
+      )
+        throw new Error(
+          'Новая батарея или рост заряда требуют явного события замены.',
+        );
+      if (input.replacement && !s.grounded)
+        throw new Error('Замена возможна только на земле.');
+      const replacements = [...(old?.replacements ?? [])];
+      if (input.replacement)
+        replacements.push({
+          at: s.observedAt,
+          fromId: old?.battery.id ?? s.battery.id,
+          toId: s.battery.id,
+          pct: s.battery.initialPct,
+        });
+      const next = parseFleetState({
+        ...s,
+        revision: (old?.revision ?? 0) + 1,
+        replacements,
       });
-    const next = parseFleetState({
-      ...s,
-      revision: (old?.revision ?? 0) + 1,
-      replacements,
-    });
-    if (!old && fleet.length >= 20) throw new Error('Парк ограничен 20 БВС.');
+      batch.push(next);
+    }
+    const merged = [
+      ...fleet.filter((s) => !batch.some((n) => n.id === s.id)),
+      ...batch,
+    ];
+    if (merged.length > 20) throw new Error('Парк ограничен 20 БВС.');
+    if (new Set(merged.map((s) => s.battery.id)).size !== merged.length)
+      throw new Error('ID текущей батареи уже занят другим БВС.');
     const db = await open(),
       tx = db.transaction([OPERATIONS_STORE, FLEET_STATE_STORE], 'readwrite'),
       done = complete(tx);
@@ -1476,9 +1578,58 @@ export function createMissionOperations(
         canonicalStringify(current) !== canonicalStringify(fleet)
       )
         throw new Error('Парк или выполнение изменены другой вкладкой.');
-      await request(fs.put(next));
+      for (const next of batch) await request(fs.put(next));
       await done;
-      return next;
+      return batch;
+    } catch (e) {
+      try {
+        tx.abort();
+      } catch {}
+      await done.catch(() => undefined);
+      throw friendly(e);
+    }
+  }
+  async function reportFleet(input: FleetReport) {
+    return (await reportFleetBatch([input]))[0];
+  }
+  async function removeDemo(operationId: string, revision: number) {
+    if (!options.demoSession)
+      throw new Error(
+        'Удаление запусков доступно только в демонстрационной сессии.',
+      );
+    const { raw, rows, fleet, rejected } = await readVerified();
+    const row = requireRow(rows, rejected, operationId);
+    if (row.revision !== revision)
+      throw new Error('Ревизия запуска изменилась.');
+    if (
+      rows.some((r) => r.document.revisionSource?.operationId === operationId)
+    )
+      throw new Error('Сначала удалите связанные пересмотры этой миссии.');
+    const db = await open(),
+      tx = db.transaction([OPERATIONS_STORE, FLEET_STATE_STORE], 'readwrite'),
+      done = complete(tx);
+    try {
+      const store = tx.objectStore(OPERATIONS_STORE),
+        fs = tx.objectStore(FLEET_STATE_STORE);
+      if (
+        canonicalStringify(await request(store.getAll())) !==
+          canonicalStringify(raw) ||
+        canonicalStringify(await request(fs.getAll())) !==
+          canonicalStringify(fleet)
+      )
+        throw new Error('Сессия изменилась; повторите удаление.');
+      await request(store.delete(operationId));
+      // Demo disposal is not a landing command. Discard only the mock state
+      // owned by this run; no real vehicle or unrelated history is changed.
+      for (const s of fleet)
+        if (
+          s.operationId === operationId ||
+          (row.status === 'completed' &&
+            row.candidate.sorties.some((f) => f.vehicleId === s.id) &&
+            !s.operationId)
+        )
+          await request(fs.delete(s.id));
+      await done;
     } catch (e) {
       try {
         tx.abort();
@@ -1494,6 +1645,7 @@ export function createMissionOperations(
     opening = undefined;
   }
   return {
+    removeDemo,
     enqueue,
     safetyChange,
     list,
@@ -1503,6 +1655,7 @@ export function createMissionOperations(
     archiveRejected,
     listFleet,
     reportFleet,
+    reportFleetBatch,
     get,
     start: (operationId: string, revision: number) =>
       change(operationId, revision, 'start'),

@@ -6,7 +6,7 @@ import {
   vehicleDisplayName,
 } from '../lib/planner/mission-vehicle-label.ts';
 
-test('all TZ models are explicit in names and map labels', () => {
+void test('all TZ models are explicit in names and map labels', () => {
   for (const model of ['Gemini', '801', '201'] as const) {
     const vehicle = { model, name: 'БВС 03' };
     assert.match(vehicleDisplayName(vehicle), new RegExp(`Геоскан ${model}`));
@@ -18,7 +18,7 @@ test('all TZ models are explicit in names and map labels', () => {
     );
   }
 });
-test('custom profiles never acquire a manufacturer label', () => {
+void test('custom profiles never acquire a manufacturer label', () => {
   const vehicle = { model: 'Custom' as const, name: 'Учебный аппарат' };
   assert.equal(vehicleModelLabel(vehicle), 'Свой профиль БВС');
   assert.doesNotMatch(vehicleDisplayName(vehicle), /Геоскан|Gemini/);

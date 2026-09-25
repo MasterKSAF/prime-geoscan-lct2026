@@ -4,6 +4,7 @@ import { createDemoQuality } from './quality.ts';
 import { parseMissionDocument } from './mission-schema.ts';
 import type { MissionDocument, MissionJob } from './mission-schema.ts';
 import type { Coordinate, Polygon, Vehicle } from './schema.ts';
+import { migrateMissionCameraBindings } from './camera-profile.ts';
 
 export type ShowcaseScenario = {
   id: string;
@@ -15,6 +16,18 @@ export type ShowcaseScenario = {
   walkthrough?: string[];
   create: () => MissionDocument;
 };
+
+/** These are new synthetic inputs, not archived documents: bind only after all
+ * fixture jobs and aircraft have been configured. Legacy files keep their hashes. */
+function defineShowcases(entries: ShowcaseScenario[]): ShowcaseScenario[] {
+  return entries.map((entry) => ({
+    ...entry,
+    create: () =>
+      parseMissionDocument(
+        migrateMissionCameraBindings(entry.create()).document,
+      ),
+  }));
+}
 
 const origin = projection([30.3, 60.035]);
 const point = (x: number, y: number) => origin.inverse([x, y]);
@@ -89,6 +102,8 @@ function setFleet(
     name: `${profile.model ?? 'Custom'} · ${profile.id}`,
     model: profile.model ?? 'Custom',
     jobs: profile.jobs,
+    cameraProfiles: undefined,
+    cameraIds: undefined,
     start: point(profile.x, -100),
     landing: point(profile.x, -100),
     airspeedMps: profile.speed ?? 8,
@@ -134,7 +149,7 @@ function job(
   };
 }
 
-export const SHOWCASE_SCENARIOS: ShowcaseScenario[] = [
+export const SHOWCASE_SCENARIOS: ShowcaseScenario[] = defineShowcases([
   {
     id: 'automatic-tradeoff',
     title: 'Автовыбор БВС: время, налёт и баланс',
@@ -249,7 +264,7 @@ export const SHOWCASE_SCENARIOS: ShowcaseScenario[] = [
           jobs: ['IR'],
           x: 680,
           speed: 6,
-          model: '801',
+          model: 'Custom',
         },
       ]);
       d.scenario.area = rectangle(0, 0, 780, 180);
@@ -421,10 +436,10 @@ export const SHOWCASE_SCENARIOS: ShowcaseScenario[] = [
       return parseMissionDocument(d);
     },
   },
-];
+]);
 
 /** Three short presentation stories. Legacy acceptance examples retain their IDs. */
-export const DEMONSTRATION_SCENARIOS: ShowcaseScenario[] = [
+export const DEMONSTRATION_SCENARIOS: ShowcaseScenario[] = defineShowcases([
   {
     id: 'demo-01-survey',
     title: '1. Съёмка участка — от задания до результата',
@@ -578,4 +593,4 @@ export const DEMONSTRATION_SCENARIOS: ShowcaseScenario[] = [
       return parseMissionDocument(d);
     },
   },
-];
+]);

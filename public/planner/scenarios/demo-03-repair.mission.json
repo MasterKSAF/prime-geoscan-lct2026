@@ -13,9 +13,9 @@
     }
   ],
   "flightEnvelope": {
-    "maxAltitudeM": 500,
+    "maxAltitudeM": 149,
     "minSurveyAltitudeM": 10,
-    "source": "Учебный диапазон сценария, не разрешение воздушного пространства."
+    "source": "Предел трека ниже 150 м AGL; потолок 149 м включает модельный запас 1 м. Не разрешение на полёт."
   },
   "id": "demo-03-repair",
   "jobs": [
@@ -182,6 +182,28 @@
           "Числа скорости, ресурса и совместимости заданы для синтетического теста."
         ],
         "batteryPct": 26,
+        "cameraIds": [
+          "pf1b"
+        ],
+        "cameraProfiles": [
+          {
+            "focalLengthMm": 20,
+            "id": "pf1b",
+            "imageHeightPx": 4000,
+            "imageWidthPx": 6000,
+            "minimumIntervalSec": 1,
+            "name": "PF1B (миграция)",
+            "sensorHeightMm": 15.6,
+            "sensorWidthMm": 23.5,
+            "shutterSec": 0.001,
+            "source": "Миграция legacy-camera-binding-v1: перенесена оптика старой работы; фактическую установку подтверждает оператор. PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры.",
+            "status": "assumed",
+            "supportedModels": [
+              "Gemini"
+            ],
+            "type": "RGB"
+          }
+        ],
         "climbMps": 3,
         "descentMps": 1,
         "effectiveEnduranceMin": 28,

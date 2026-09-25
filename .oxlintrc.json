@@ -29,7 +29,25 @@
     "build/**",
     "dist/**",
     "coverage/**",
+    "output/**",
+    "tmp/**",
+    "docs/**",
+    "submission/**",
+    "experiments/**",
+    "vehicle/**",
+    "training/**",
+    "notebooks/**",
+    "data/**",
+    "scripts/vehicle_browser_checks.js",
     "next-env.d.ts"
+  ],
+  "overrides": [
+    {
+      "files": ["components/ui/**"],
+      "rules": {
+        "jsx-a11y/prefer-tag-over-role": "off"
+      }
+    }
   ],
   "rules": {
     "no-array-constructor": "error",

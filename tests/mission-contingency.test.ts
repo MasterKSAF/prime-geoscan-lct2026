@@ -114,9 +114,13 @@ void test('contingency: obstacle demonstration certifies actual independent rout
 });
 
 void test('contingency: planned-corridor fallback is counted separately and cannot pretend to be a shortcut', async () => {
-  const document = DEMONSTRATION_SCENARIOS.find(
-    (x) => x.id === 'demo-01-survey',
-  )!.create();
+  // Fixed-wing emergency turns are not synthesized by this certificate. Unlike
+  // a particular optimizer choice in demo 1, this fixture necessarily exercises
+  // the original-corridor fallback, even when the main search improves.
+  const { d: document } = fixedWingFixture();
+  document.planning.safetyPolicy = 'continuous-occupancy-v1';
+  document.planning.batteryPolicy = 'installed-current-v1';
+  document.planning.maxComputeMs = 10000;
   const candidate = (await solveMissionDocument(document)).candidates[0];
   const c = await certifyMissionContingencies(document, candidate, {
     maxComputeMs: 15000,

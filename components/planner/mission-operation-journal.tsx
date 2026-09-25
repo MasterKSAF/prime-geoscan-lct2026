@@ -6,6 +6,7 @@ import type { MissionOperation } from '@/lib/planner/mission-operations';
 import { operationJournal } from '@/lib/planner/mission-operation-journal';
 import { vehicleDisplayName } from '@/lib/planner/mission-vehicle-label';
 import { InfoHint } from './mission-help';
+import { expertEventText } from '@/lib/planner/expert-presentation';
 
 export default function MissionOperationJournal({
   row,
@@ -18,6 +19,7 @@ export default function MissionOperationJournal({
   const stamp = (sec: number) =>
     new Date(Date.parse(row.document.window.start) + sec * 1000).toLocaleString(
       'ru-RU',
+      { timeZone: row.document.window.timezone },
     );
   const name = (id: string) => {
     const vehicle = row.document.scenario.vehicles.find(
@@ -90,7 +92,11 @@ export default function MissionOperationJournal({
                 <time>{stamp(event.timeSec)}</time>
                 <div>
                   <strong>{name(event.vehicleId)}</strong>
-                  <p>{event.detail}</p>
+                  <p>{expertEventText(event, row.document, row.candidate)}</p>
+                  <details>
+                    <summary>Техническая запись</summary>
+                    <p>{event.detail}</p>
+                  </details>
                 </div>
               </li>
             ))

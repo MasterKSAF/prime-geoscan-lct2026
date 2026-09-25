@@ -212,7 +212,7 @@ export default function MissionHome(p: MissionHomeProps) {
                       ? ['completed', 'cancelled'].includes(op.status)
                         ? 'Отчёт'
                         : 'Наблюдать'
-                      : 'Открыть'}
+                      : 'Редактировать'}
                   </button>
                   <button
                     className="mw-button square small"

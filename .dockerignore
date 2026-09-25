@@ -26,4 +26,14 @@
 !scripts/verify-mission-robustness.ts
 !scripts/verify-mission-contingency.ts
 !scripts/create-geometry-overflow-fixtures.ts
+!scripts/start-planner.mjs
+!docs
+!docs/planner
+!docs/planner/expert-materials
+!docs/planner/expert-materials/2026-09-22
+!docs/planner/expert-materials/2026-09-22/originals
+!docs/planner/expert-materials/2026-09-22/originals/primorsky-obstacles.kml
+!docs/planner/expert-materials/2026-09-23
+!docs/planner/expert-materials/2026-09-23/originals
+!docs/planner/expert-materials/2026-09-23/originals/*.kml
 !Dockerfile.planner

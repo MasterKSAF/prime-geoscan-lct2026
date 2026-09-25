@@ -6,6 +6,7 @@ import type {
   EnqueueMissionOperation,
   MissionOperation,
   MissionOperations,
+  MissionOperationsOptions,
   RejectedMissionOperation,
 } from '../lib/planner/mission-operations.ts';
 import type {
@@ -335,7 +336,22 @@ export function createMissionOperationsController(
         emit({ fleet: await store.listFleet() });
         return saved;
       }),
+    reportFleetBatch: (inputs: FleetReport[]) =>
+      schedule(async () => {
+        const saved = await store.reportFleetBatch(structuredClone(inputs));
+        emit({ fleet: await store.listFleet() });
+        return saved;
+      }),
     enqueue,
+    removeDemo: (id: string) =>
+      schedule(async () => {
+        const row = get(id);
+        if (!row) throw new Error('Запуск не найден.');
+        await store.removeDemo(id, row.revision);
+        const inspected = await store.inspect();
+        replaceRows(inspected.rows);
+        emit({ rejected: inspected.rejected, fleet: await store.listFleet() });
+      }),
     safetyChange,
     start: (id: string) => mutate('start', id),
     pause: (id: string, progressSec?: number) =>
@@ -354,14 +370,15 @@ const notMounted = () =>
  * Every command rejects on failure AND sets error. UI callers must handle rejection.
  * checkpoint() returns null when throttled; pause() always persists the supplied time.
  */
-export function useMissionOperations() {
+export function useMissionOperations(options: MissionOperationsOptions = {}) {
+  const initialOptions = useRef(options);
   const [state, setState] =
     useState<MissionOperationsSnapshot>(initialSnapshot);
   const controller = useRef<Controller | null>(null);
 
   useEffect(() => {
     const current = createMissionOperationsController(
-      createMissionOperations(),
+      createMissionOperations(initialOptions.current),
       setState,
     );
     controller.current = current;
@@ -457,12 +474,17 @@ export function useMissionOperations() {
     get,
     enqueue,
     reportFleet,
+    reportFleetBatch: (inputs: FleetReport[]) =>
+      controller.current?.reportFleetBatch(inputs) ??
+      Promise.reject(notMounted()),
     listFleet,
     start,
     pause,
     checkpoint,
     cancel,
     safetyChange,
+    removeDemo: (id: string) =>
+      controller.current?.removeDemo(id) ?? Promise.reject(notMounted()),
   };
 }
 

@@ -1,5 +1,8 @@
 import { z } from 'zod';
-import type { MissionDocument } from './mission-schema.ts';
+import { qualityForJob } from './quality.ts';
+import { AUTO_ALTITUDE_CEILING_M } from './altitude-policy.ts';
+import { vehiclePlanningEligibility } from './fixed-wing-profile.ts';
+import type { MissionCandidate, MissionDocument } from './mission-schema.ts';
 import type { Check, Coordinate } from './schema.ts';
 
 const instant = z.iso.datetime({ offset: true });
@@ -88,8 +91,77 @@ export function weatherPoints(d: MissionDocument): Coordinate[] {
     [a, e],
   ];
 }
-export function weatherHeight(d: MissionDocument): 10 | 80 | 120 | 180 {
-  const h = Math.max(...d.jobs.map((j) => j.job.altitudeM));
+type WeatherCameraBindings = Pick<MissionCandidate, 'jobCoverage'>;
+
+/** Potential camera heights before assignment; a bound candidate never falls back
+ * to a different camera or to the legacy optical fields on the work item. */
+export function weatherAltitudeRange(
+  d: MissionDocument,
+  bound?: WeatherCameraBindings,
+): {
+  minimumM: number | null;
+  maximumM: number | null;
+  unresolvedJobIds: string[];
+} {
+  const heights: number[] = [],
+    unresolvedJobIds: string[] = [];
+  for (const job of d.jobs) {
+    if (job.quality.altitudeMode !== 'gsd') {
+      heights.push(job.job.altitudeM);
+      continue;
+    }
+    const binding = bound?.jobCoverage.find((row) => row.jobId === job.id);
+    const vehicles = d.scenario.vehicles.filter(
+      (v) =>
+        v.enabled &&
+        v.jobs.includes(job.job.type) &&
+        (!job.assignedVehicleIds.length ||
+          job.assignedVehicleIds.includes(v.id)) &&
+        vehiclePlanningEligibility(v).supported &&
+        (!bound ||
+          (!!binding?.cameraProfileId && v.id === binding.cameraVehicleId)),
+    );
+    const alternatives = vehicles.flatMap((v) => {
+      const quality = qualityForJob(
+        job,
+        v,
+        d.flightEnvelope,
+        binding?.cameraProfileId,
+      );
+      return job.quality.mode === 'camera' &&
+        quality.checks.some(
+          (c) => c.id.endsWith('_CAMERA') && c.status === 'pass',
+        ) &&
+        quality.checks.some(
+          (c) => c.id.endsWith('_ALTITUDE_GSD') && c.status === 'pass',
+        ) &&
+        Number.isFinite(quality.job.altitudeM)
+        ? [quality.job.altitudeM]
+        : [];
+    });
+    if (alternatives.length) heights.push(...alternatives);
+    else unresolvedJobIds.push(job.id);
+  }
+  return {
+    minimumM: heights.length ? Math.min(...heights) : null,
+    maximumM: heights.length ? Math.max(...heights) : null,
+    unresolvedJobIds,
+  };
+}
+
+export function weatherHeight(
+  d: MissionDocument,
+  bound?: WeatherCameraBindings,
+): 10 | 80 | 120 | 180 {
+  const range = weatherAltitudeRange(d, bound);
+  // Keep rendering/request construction possible for incomplete drafts. This
+  // conservative request ceiling is NOT an inferred camera height or a pass.
+  const h = Math.max(
+    range.maximumM ?? 0,
+    range.unresolvedJobIds.length
+      ? Math.min(d.flightEnvelope.maxAltitudeM, AUTO_ALTITUDE_CEILING_M)
+      : 0,
+  );
   return h <= 40 ? 10 : h <= 100 ? 80 : h <= 150 ? 120 : 180;
 }
 export function weatherMatches(
@@ -103,6 +175,7 @@ export function weatherMatches(
     return false;
   }
   return (
+    weatherAltitudeRange(d).unresolvedJobIds.length === 0 &&
     weatherFootprint(d) === s.footprint &&
     Date.parse(d.window.start) === Date.parse(s.start) &&
     Date.parse(d.window.end) === Date.parse(s.end) &&
@@ -160,6 +233,7 @@ export function applyMissionWeather(
 export function missionWeatherChecks(
   d: MissionDocument,
   usedIds: string[],
+  bound?: WeatherCameraBindings,
 ): Check[] {
   if (!d.weather) return [];
   const { snapshot: s, limits: l } = d.weather,
@@ -173,6 +247,7 @@ export function missionWeatherChecks(
   const used = d.scenario.vehicles.filter((v) =>
     usedIds.length ? usedIds.includes(v.id) : v.enabled,
   );
+  const heights = weatherAltitudeRange(d, bound);
   return [
     check(
       'FORECAST_SCOPE',
@@ -187,12 +262,19 @@ export function missionWeatherChecks(
       'Ветер расчёта соответствует снимку',
       'В ядре постоянный ветер: наибольшая скорость в выборке и направление в этот час. Это не полная динамическая модель атмосферы.',
     ),
-    check(
-      'FORECAST_HEIGHT',
-      Math.max(...d.jobs.map((j) => j.job.altitudeM)) <= 180,
-      'Диапазон высот погодного адаптера',
-      'Доступны опорные уровни 10/80/120/180 м. Выше 180 м выполнение по этому прогнозу не подтверждается.',
-    ),
+    {
+      id: 'FORECAST_HEIGHT',
+      status:
+        heights.unresolvedJobIds.length || heights.maximumM === null
+          ? 'unknown'
+          : heights.maximumM <= 180
+            ? 'pass'
+            : 'fail',
+      title: 'Диапазон высот погодного адаптера',
+      detail: heights.unresolvedJobIds.length
+        ? `Высота по камере не определена для работ: ${heights.unresolvedJobIds.join(', ')}. Старые оптические поля работы не используются; соответствие высоте не подтверждено.`
+        : `Расчётные высоты ${bound ? 'назначенных камер' : 'потенциальных совместимых камер'}: ${heights.minimumM}–${heights.maximumM} м. Доступны опорные уровни 10/80/120/180 м; выше 180 м прогноз не подтверждает выполнение. Один опорный уровень не доказывает профиль ветра во всём диапазоне высот.`,
+    },
     check(
       'FORECAST_WIND_LIMIT',
       used.length > 0 &&

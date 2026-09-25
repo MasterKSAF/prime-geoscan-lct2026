@@ -42,9 +42,9 @@
     "visibilityM": 5000
   },
   "flightEnvelope": {
-    "maxAltitudeM": 500,
+    "maxAltitudeM": 149,
     "minSurveyAltitudeM": 10,
-    "source": "Учебный диапазон сценария, не разрешение воздушного пространства."
+    "source": "Предел трека ниже 150 м AGL; потолок 149 м включает модельный запас 1 м. Не разрешение на полёт."
   },
   "id": "demo-01-survey",
   "jobs": [
@@ -217,6 +217,28 @@
           "Все три учебных мультиротора совместимы с RGB. Скорость, ресурс и доступность АКБ заданы оператором для стенда."
         ],
         "batteryPct": 100,
+        "cameraIds": [
+          "legacy-rgb"
+        ],
+        "cameraProfiles": [
+          {
+            "focalLengthMm": 20,
+            "id": "legacy-rgb",
+            "imageHeightPx": 4000,
+            "imageWidthPx": 6000,
+            "minimumIntervalSec": 1,
+            "name": "Ручная RGB (миграция)",
+            "sensorHeightMm": 15.6,
+            "sensorWidthMm": 23.5,
+            "shutterSec": 0.001,
+            "source": "Миграция legacy-camera-binding-v1: перенесена оптика старой работы; фактическую установку подтверждает оператор. PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры.",
+            "status": "assumed",
+            "supportedModels": [
+              "Custom"
+            ],
+            "type": "RGB"
+          }
+        ],
         "climbMps": 3,
         "descentMps": 1,
         "effectiveEnduranceMin": 26,
@@ -248,6 +270,28 @@
           "Все три учебных мультиротора совместимы с RGB. Скорость, ресурс и доступность АКБ заданы оператором для стенда."
         ],
         "batteryPct": 100,
+        "cameraIds": [
+          "legacy-rgb"
+        ],
+        "cameraProfiles": [
+          {
+            "focalLengthMm": 20,
+            "id": "legacy-rgb",
+            "imageHeightPx": 4000,
+            "imageWidthPx": 6000,
+            "minimumIntervalSec": 1,
+            "name": "Ручная RGB (миграция)",
+            "sensorHeightMm": 15.6,
+            "sensorWidthMm": 23.5,
+            "shutterSec": 0.001,
+            "source": "Миграция legacy-camera-binding-v1: перенесена оптика старой работы; фактическую установку подтверждает оператор. PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры.",
+            "status": "assumed",
+            "supportedModels": [
+              "Custom"
+            ],
+            "type": "RGB"
+          }
+        ],
         "climbMps": 3,
         "descentMps": 1,
         "effectiveEnduranceMin": 30,
@@ -279,6 +323,28 @@
           "Все три учебных мультиротора совместимы с RGB. Скорость, ресурс и доступность АКБ заданы оператором для стенда."
         ],
         "batteryPct": 100,
+        "cameraIds": [
+          "legacy-rgb"
+        ],
+        "cameraProfiles": [
+          {
+            "focalLengthMm": 20,
+            "id": "legacy-rgb",
+            "imageHeightPx": 4000,
+            "imageWidthPx": 6000,
+            "minimumIntervalSec": 1,
+            "name": "Ручная RGB (миграция)",
+            "sensorHeightMm": 15.6,
+            "sensorWidthMm": 23.5,
+            "shutterSec": 0.001,
+            "source": "Миграция legacy-camera-binding-v1: перенесена оптика старой работы; фактическую установку подтверждает оператор. PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры.",
+            "status": "assumed",
+            "supportedModels": [
+              "Custom"
+            ],
+            "type": "RGB"
+          }
+        ],
         "climbMps": 3,
         "descentMps": 1,
         "effectiveEnduranceMin": 22,

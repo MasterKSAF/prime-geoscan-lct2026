@@ -1,76 +1,64 @@
-# Чек-лист эксперта
+# Как повторить проверки
 
-Проверять в отдельном профиле браузера, без подключения реальных БВС. Изменения демо не должны затрагивать рабочую библиотеку пользователя.
+Команды — из корня проекта, PowerShell 7, Node.js 24 после `npm ci`. Полные проверочные данные находятся в `evidence/` распакованного комплекта. Не запускать сценарии в пользовательском профиле с несохранёнными миссиями.
 
-## 1. Чистый запуск
-
-```powershell
-git clone https://github.com/MasterKSAF/prime-geoscan-lct2026.git
-cd prime-geoscan-lct2026
-docker compose -f compose.planner.yaml up -d --build
-docker compose -f compose.planner.yaml ps
-Invoke-RestMethod http://127.0.0.1:3016/api/planner/health
-```
-
-Для закрытого репозитория требуется предоставленный владельцем доступ. Альтернатива — распаковать переданный архив коммита. Если 3016 занят, согласовать остановку прежнего стенда. Успех: контейнер healthy, health `status=ok`, `flightReady=false`.
-
-## 2. Типы и тесты
-
-Для этих команд нужен Node 24 и npm. Docker-сборка уже выполняет типы и модульные тесты, но их можно повторить отдельно.
+## Сборка и документация
 
 ```powershell
-npm ci
 npm run typecheck
 npm run test:planner
-node --experimental-transform-types --test tests/acceptance/track5-readiness.test.ts
-node scripts/verify-submission.mjs
+npm run build
+node scripts/verify-submission.mjs --docs-only
+node --test scripts/checks/review-package.test.mjs scripts/checks/documentation.test.mjs scripts/checks/submission-package.test.mjs
 ```
 
-Ожидаемый сохранённый срез: 509/509 модульных, 8/8 приёмочных. A8 обращается к API. Проверка комплекта сверяет хеши, состав и локальные ссылки; произвольная правка файла должна обнаруживаться.
+Или выполните Docker-сборку по корневому README. Она запускает TypeScript, тесты и production build. Проверьте `/api/planner/health`: версия ядра 0.4.0. Сборка образа без перезапуска контейнера не обновляет уже открытый стенд.
 
-## 3. HTTP и экспорт
+## Свежий браузерный набор 25 сентября
+
+Нужен запущенный стенд на 3016 и отдельный профиль Playwright CLI:
 
 ```powershell
-node --experimental-transform-types scripts/verify-missions.ts http://127.0.0.1:3016 output/expert-review/api
-node --experimental-transform-types scripts/verify-mission-run-report.ts docs/planner/submission/evidence/browser/run.report.json
-npm run verify:evidence -- output/expert-review/api/evidence-repeat-sorties.json output/expert-review/api/check.json
+npm install --prefix tmp/acceptance-tools --no-save @playwright/cli@0.1.20
+$env:PLAYWRIGHT_CLI_ENTRY = Join-Path (Get-Location) 'tmp/acceptance-tools/node_modules/@playwright/cli/playwright-cli.js'
+node $env:PLAYWRIGHT_CLI_ENTRY -s=acceptance-20260925-camera open http://127.0.0.1:3016/planner
+New-Item -ItemType Directory -Force output/playwright/acceptance-2026-09-25/engine
+Copy-Item ../evidence/engine/dense-real-ui.input.json output/playwright/acceptance-2026-09-25/engine/dense-real-ui.input.json
+node scripts/checks/run-acceptance-ui-20260925.mjs demo2-20260925-browser demo3-20260925-browser dense-20260925-browser camera-20260925-browser
+node --experimental-transform-types scripts/checks/verify-acceptance-downloads-20260925.ts
 ```
 
-Ожидаются 11 проверок API и отсутствие fail в проверяемом положительном пакете. Статус 100 км² может оставаться not_found. Все unknown сохраняются.
+При первом получении CLI нужен интернет и доступный браузер. Команда копирования рассчитана на запуск из `source/` распакованной поставки и берёт проверенный вход плотного района из соседнего `evidence/`. Результаты сохраняются в `output/playwright/acceptance-2026-09-25/`. Повторный запуск перезаписывает одноимённые результаты: предварительно сохраните нужный прошлый прогон.
 
-## 4. Браузер
+Проверяйте JSON и вывод, а не только exit code CLI: все `checks[].pass` истинны, нет `### Error`, итоговый статус `pass`. В Демо 3 исходный отказ ожидается; положительный результат относится к явно исправленному входу. [Точное покрытие](VERIFICATION.md).
 
-Нужен установленный Edge, CLI Playwright — отдельный инструмент проверки. Каждый сценарий запускается в новом именованном профиле.
+## Доказательства отдельной миссии
 
 ```powershell
-npx --yes --package @playwright/cli@0.1.20 playwright-cli -s=expert-main open http://127.0.0.1:3016/planner --browser=msedge
-npx --yes --package @playwright/cli@0.1.20 playwright-cli -s=expert-main run-code --filename=scripts/verify-release-browser.js
+node --experimental-transform-types scripts/verify-mission-archive.ts "путь/миссия.evidence.zip"
+node --experimental-transform-types scripts/verify-mission-run-report.ts "путь/запуск.report.json"
+python scripts/check-obstacle-archive-interop.py "путь/миссия.evidence.zip"
 ```
 
-Результат: output/playwright/release-obstacles/browser-report.json (20). CLI может вернуть управление на модальном событии до окончания сценария: проверять свежий JSON со status=pass, а не только exit code CLI. Закрыть только собственную сессию командой close. Старые verify-dispatcher/eight-points-browser описывают прежнюю структуру редактора и не входят в текущую браузерную приёмку.
+Первая команда — основной проверщик ZIP. Вторая нужна для отдельного JSON запуска; третья проверяет совместимость структуры. Положительная модель: код 0, `passes-declared-model`. Исходный Демо 3: код 1, `diagnostic-only-not-flight-approved`. Это не повреждение архива. [Состав файлов](EXPERT-FILES.md).
 
-Для KML и архива:
+## Сравнительный корпус
 
 ```powershell
-node --experimental-transform-types scripts/verify-obstacle-integration.ts
-node --experimental-transform-types scripts/verify-obstacle-http.ts
-node --experimental-transform-types scripts/verify-mission-archive.ts docs/planner/submission/evidence/browser/mission.evidence.zip
-python scripts/check-obstacle-archive-interop.py docs/planner/submission/evidence/browser/mission.evidence.zip
+node --experimental-transform-types scripts/benchmark-missions.ts output/mission-benchmark/recheck 3
+node --experimental-transform-types scripts/benchmark-missions.ts --verify output/mission-benchmark/recheck/report.json
 ```
 
-Последняя команда использует только стандартную библиотеку Python. Положительный статус ZIP-проверки: `passes-declared-model`. HTTP-тест может воспроизвести известный 503 после отказа по размеру, см. VERIFICATION.md. Не удалять неуспешный лог.
+Храните весь корпус, включая отказы, версии, бюджет и аппаратную среду. Числа времени и найденные планы могут отличаться при ограниченном по времени поиске. [Ручной лист](MANUAL-REVIEW.md).
 
-## 5. Сравнение алгоритмов
+## Целостность комплекта
+
+Из корня распакованного ZIP:
 
 ```powershell
-node --experimental-transform-types scripts/benchmark-missions.ts output/mission-benchmark/expert-review 3
-node --experimental-transform-types scripts/benchmark-missions.ts --verify output/mission-benchmark/expert-review/report.json
+node source/scripts/build-submission-package.mjs --verify .
 ```
 
-В наборе 21 задача, 3 повтора, два критерия. Сравнения только на полных парах, отрицательные случаи сохраняются. Папка вывода должна находиться под output/mission-benchmark. Тайминги могут отличаться по CPU и фоновой нагрузке. Не выдавать baseline за продукт конкурента или точный оптимум.
+Это проверка хешей, структуры, обязательных артефактов и ссылок; не подмена повторного выполнения алгоритма.
 
-## 6. Ручная демонстрация и фиксация
-
-Пройти [три сценария](DEMO-SCRIPT.md). Отметить сохранение миссии, смену сенсора, ошибочный импорт, независимость журналов, блокировку конфликтующего запуска и выгрузку отчёта. Сверить карту и выбранный ID запуска.
-
-Сохранить входы, результаты, хеш коммита, Node/Docker, дату и все неизвестные/отказные проверки. Презентация не подменяет работающий стенд. Доступ эксперта и официальная подача требуют отдельного подтверждения владельца.
+Датированные инструменты 24 сентября и `verify-submission.mjs` без `--docs-only` относятся к историческим срезам. Не перезаписывайте старый реестр ради зелёного результата. Область lint отдельно описана в [инструкции](../lint-scope.md).

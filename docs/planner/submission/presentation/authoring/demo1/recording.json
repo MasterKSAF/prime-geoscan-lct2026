@@ -1,0 +1,180 @@
+{
+  "complete": true,
+  "segments": [
+    {
+      "id": "01-home",
+      "durationSec": 21.0218979,
+      "voiceDurationSec": 19.344,
+      "started": "2026-09-25T08:48:01.173Z",
+      "reusedFrom": "take-02",
+      "sameRun": true
+    },
+    {
+      "id": "02-fleet",
+      "durationSec": 31.172920100000002,
+      "voiceDurationSec": 29.544,
+      "started": "2026-09-25T08:48:22.197Z",
+      "reusedFrom": "take-02",
+      "sameRun": true
+    },
+    {
+      "id": "03-preview",
+      "durationSec": 18.582079300000004,
+      "voiceDurationSec": 16.824,
+      "started": "2026-09-25T08:48:55.339Z",
+      "reusedFrom": "take-02",
+      "sameRun": true
+    },
+    {
+      "id": "04-editor",
+      "durationSec": 23.156744999999994,
+      "voiceDurationSec": 21,
+      "started": "2026-09-25T08:49:15.738Z",
+      "reusedFrom": "take-02",
+      "sameRun": true
+    },
+    {
+      "id": "05-quality",
+      "durationSec": 24.5208067,
+      "voiceDurationSec": 21.24,
+      "started": "2026-09-25T08:49:38.897Z",
+      "reusedFrom": "take-02",
+      "sameRun": true
+    },
+    {
+      "id": "06-assignment",
+      "durationSec": 23.84204770000001,
+      "voiceDurationSec": 20.304,
+      "started": "2026-09-25T08:50:03.418Z",
+      "reusedFrom": "take-02",
+      "sameRun": true
+    },
+    {
+      "id": "08-map",
+      "durationSec": 21.415683499999986,
+      "voiceDurationSec": 18.816,
+      "started": "2026-09-25T08:50:29.163Z",
+      "reusedFrom": "take-02",
+      "sameRun": true
+    },
+    {
+      "id": "09-calculate",
+      "durationSec": 21.406418800000015,
+      "voiceDurationSec": 19.296,
+      "started": "2026-09-25T08:50:50.580Z",
+      "reusedFrom": "take-02",
+      "sameRun": true
+    },
+    {
+      "id": "10-plans",
+      "durationSec": 25.28479999999999,
+      "voiceDurationSec": 22.92,
+      "started": "2026-09-25T08:51:11.991Z",
+      "reusedFrom": "take-02",
+      "sameRun": true
+    },
+    {
+      "id": "11-checks",
+      "durationSec": 22.067571100000002,
+      "voiceDurationSec": 20.448,
+      "started": "2026-09-25T08:51:37.275Z",
+      "reusedFrom": "take-02",
+      "sameRun": true
+    },
+    {
+      "id": "12-confirm",
+      "durationSec": 18.85230979999999,
+      "voiceDurationSec": 16.992,
+      "started": "2026-09-25T08:51:59.344Z",
+      "reusedFrom": "take-02",
+      "sameRun": true
+    },
+    {
+      "id": "13-flight",
+      "durationSec": 70.07956699999998,
+      "voiceDurationSec": 34.992,
+      "started": "2026-09-25T08:52:18.197Z",
+      "reusedFrom": "take-02",
+      "sameRun": true
+    },
+    {
+      "id": "14-completed",
+      "durationSec": 17.069605299999996,
+      "voiceDurationSec": 12.744,
+      "started": "2026-09-25T08:53:28.277Z",
+      "reusedFrom": "take-02",
+      "sameRun": true
+    },
+    {
+      "id": "15-report",
+      "durationSec": 19.78466220000002,
+      "voiceDurationSec": 18.312,
+      "started": "2026-09-25T08:53:45.347Z",
+      "reusedFrom": "take-02",
+      "sameRun": true
+    },
+    {
+      "id": "16-download",
+      "durationSec": 20.238370400000015,
+      "voiceDurationSec": 18.36,
+      "started": "2026-09-25T08:54:05.133Z",
+      "reusedFrom": "take-02",
+      "sameRun": true
+    },
+    {
+      "id": "17-archive",
+      "durationSec": 24.557362599999994,
+      "voiceDurationSec": 21.792,
+      "started": "2026-09-25T08:54:33.314Z",
+      "reusedFrom": "take-02",
+      "sameRun": true
+    },
+    {
+      "id": "18-html",
+      "durationSec": 21.0477948,
+      "voiceDurationSec": 19.272,
+      "started": "2026-09-25T08:58:04.848Z",
+      "reusedFrom": "take-02",
+      "sameRun": true
+    },
+    {
+      "id": "19-json",
+      "durationSec": 22.5526385,
+      "voiceDurationSec": 18.696,
+      "started": "2026-09-25T08:58:25.935Z",
+      "reusedFrom": "take-02",
+      "sameRun": true
+    },
+    {
+      "id": "20-routes",
+      "durationSec": 24.704952900000002,
+      "voiceDurationSec": 21.336,
+      "started": "2026-09-25T08:58:48.528Z",
+      "reusedFrom": "take-02",
+      "sameRun": true
+    },
+    {
+      "id": "22-close",
+      "durationSec": 14.6961897,
+      "voiceDurationSec": 11.664,
+      "started": "2026-09-25T09:00:32.011Z"
+    }
+  ],
+  "errors": [],
+  "source": "http://127.0.0.1:3016/planner",
+  "simulationRate": 10,
+  "selectedCandidate": "makespan",
+  "missionId": "demo-01-survey",
+  "metrics": {
+    "makespanSec": 670.7034417962279,
+    "flightTimeSec": 1714.0538276196876,
+    "distanceM": 11029.648197396264,
+    "sortieCount": 3,
+    "vehicleCount": 3,
+    "coveragePct": 99.99999999367931,
+    "grossCoveragePct": 99.99999999367931,
+    "batteryChanges": 0,
+    "minimumRemainingPct": 63.648604654986435
+  },
+  "recovery": "Tail re-recorded from the identical downloaded files; no mission rerun or altered results."
+}

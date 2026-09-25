@@ -55,7 +55,9 @@ function inRing(p: Point, r: Point[]) {
 export function inside(p: Point, m: Multi): boolean {
   return m.some(
     (poly) =>
-      inRing(p, poly[0]) >= 0 && poly.slice(1).every((r) => inRing(p, r) <= 0),
+      !!poly[0]?.length &&
+      inRing(p, poly[0]) >= 0 &&
+      poly.slice(1).every((r) => inRing(p, r) <= 0),
   );
 }
 function intersections(a: Point, b: Point, c: Point, d: Point): number[] {
@@ -130,12 +132,12 @@ function assertPolygon(p: Polygon, project: (p: Coordinate) => Point) {
 }
 
 /** Validate editor geometry before replacing a valid contour. */
-export function validatePolygonTopology(p: Polygon): void {
+export function validatePolygonTopology(p: Polygon, maxCoordinates = 70): void {
   if (
     !p.coordinates.length ||
-    p.coordinates.some((r) => r.length < 4 || r.length > 70)
+    p.coordinates.some((r) => r.length < 4 || r.length > maxCoordinates)
   )
-    throw new Error('Контур: от 3 до 69 вершин.');
+    throw new Error(`Контур: от 3 до ${maxCoordinates - 1} вершин.`);
   assertPolygon(p, projection(p.coordinates[0][0]).forward);
 }
 
@@ -158,7 +160,11 @@ export function segmentClearance(a: Point, b: Point, obstacle: Multi): number {
 }
 
 /** Distance to polygon rings only, so points inside an airspace remain measurable. */
-function segmentBoundaryClearance(a: Point, b: Point, boundary: Multi): number {
+export function segmentBoundaryClearance(
+  a: Point,
+  b: Point,
+  boundary: Multi,
+): number {
   let minimum = Infinity;
   for (const polygon of boundary)
     for (const ring of polygon) {

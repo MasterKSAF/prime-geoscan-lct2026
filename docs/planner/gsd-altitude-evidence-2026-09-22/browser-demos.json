@@ -1,0 +1,88 @@
+{
+  "at": "2026-09-22T18:22:41.433Z",
+  "base": "http://127.0.0.1:3016/planner",
+  "checks": [
+    {
+      "name": "catalog Gemini",
+      "pass": true
+    },
+    {
+      "name": "catalog 801",
+      "pass": true
+    },
+    {
+      "name": "catalog 201",
+      "pass": true
+    },
+    {
+      "name": "HTTP /api/planner/missions/solve",
+      "pass": true
+    },
+    {
+      "name": "Demo 1 feasible",
+      "pass": true
+    },
+    {
+      "name": "HTTP /api/planner/missions/solve",
+      "pass": true
+    },
+    {
+      "name": "Demo 3 refuses unavailable resource",
+      "pass": true
+    },
+    {
+      "name": "mission title present",
+      "pass": true
+    },
+    {
+      "name": "map visible after import",
+      "pass": true
+    },
+    {
+      "name": "HTTP /api/planner/missions/solve-with-obstacles",
+      "pass": true
+    },
+    {
+      "name": "full source remains attached",
+      "pass": true
+    },
+    {
+      "name": "Demo 2 both criteria feasible",
+      "pass": true
+    },
+    {
+      "name": "Demo 2 checks no failures",
+      "pass": true
+    },
+    {
+      "name": "uncertainty remains explicit",
+      "pass": true
+    },
+    {
+      "name": "model acknowledgement required",
+      "pass": true
+    },
+    {
+      "name": "map remains visible during run",
+      "pass": true
+    },
+    {
+      "name": "report export available",
+      "pass": true
+    },
+    {
+      "name": "completed mission survives reload",
+      "pass": true
+    },
+    {
+      "name": "mobile list does not overflow",
+      "pass": true
+    },
+    {
+      "name": "no page exceptions",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "status": "pass"
+}

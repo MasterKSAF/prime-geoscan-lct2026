@@ -18,13 +18,17 @@ import { benchmarkCases } from '../scripts/benchmark-missions.ts';
 import { canonicalStringify, sha256 } from '../lib/planner/mission-schema.ts';
 import { validateExportedCandidate } from '../lib/planner/mission-validation.ts';
 import { projection } from '../lib/planner/geometry.ts';
+import { migrateMissionCameraBindings } from '../lib/planner/camera-profile.ts';
 
 void test('search: unchanged north-wind input uses viable pass orientation, without inventing airspeed', async () => {
   const d = benchmarkCases().find((x) => x.id === 'parameter-grid-1')!.document;
   const before = canonicalStringify(d),
     result = await solveMissionDocument(d);
   assert.equal(canonicalStringify(d), before);
-  assert.equal(result.inputHash, await sha256(d));
+  assert.equal(
+    result.inputHash,
+    await sha256(migrateMissionCameraBindings(d).document),
+  );
   for (const c of result.candidates) {
     assert.equal(c.status, 'feasible_model');
     assert.ok(c.metrics.grossCoveragePct >= 99.99);

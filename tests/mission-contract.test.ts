@@ -4,6 +4,7 @@ import { demoMission } from '../lib/planner/mission-demo.ts';
 import { parseMissionDocument, sha256 } from '../lib/planner/mission-schema.ts';
 import { qualityForJob, createDemoQuality } from '../lib/planner/quality.ts';
 import { area, prepareGeometry } from '../lib/planner/geometry.ts';
+import { migrateMissionCameraBindings } from '../lib/planner/camera-profile.ts';
 
 void test('v2 examples have exact nominal areas and explicit synthetic sources', () => {
   for (const size of [1, 10, 100] as const) {
@@ -41,14 +42,14 @@ void test('canonical hashes ignore key ordering but invalidate changed constrain
   assert.notEqual(await sha256(d), await sha256(changed));
 });
 void test('camera formulas derive physical footprint and detect insufficient capture interval', () => {
-  const d = demoMission(),
+  const d = migrateMissionCameraBindings(demoMission()).document,
     j = d.jobs[0],
     v = d.scenario.vehicles[0];
   const q = qualityForJob(j, v);
   assert.ok(Math.abs(q.job.swathM - 117.5) < 1e-8);
   assert.ok(Math.abs(q.job.triggerDistanceM - 23.4) < 1e-8);
   assert.ok(!q.checks.some((c) => c.status === 'fail'));
-  j.quality.minimumIntervalSec = 10;
+  v.cameraProfiles![0].minimumIntervalSec = 10;
   assert.ok(
     qualityForJob(j, v).checks.some(
       (c) => c.id.endsWith('CADENCE') && c.status === 'fail',
@@ -61,7 +62,17 @@ void test('five work models are explicit and sensor-specific; missing sensor nev
     const j = structuredClone(d.jobs[0]);
     j.job.type = type;
     j.quality = createDemoQuality(type);
-    const r = qualityForJob(j, d.scenario.vehicles[0]);
+    const v = structuredClone(d.scenario.vehicles[0]);
+    v.model = 'Custom';
+    v.jobs = [type];
+    delete v.cameraProfiles;
+    delete v.cameraIds;
+    const configured = migrateMissionCameraBindings({
+      ...d,
+      jobs: [j],
+      scenario: { ...d.scenario, vehicles: [v] },
+    }).document.scenario.vehicles[0];
+    const r = qualityForJob(j, configured);
     assert.ok(
       !r.checks.some((c) => c.status === 'fail'),
       `${type}: ${JSON.stringify(r.checks)}`,

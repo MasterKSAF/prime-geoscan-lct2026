@@ -1,6 +1,7 @@
 import { groundSpeed } from './engine.ts';
 import { missionAnalysisCandidateSchema } from './mission-robustness.ts';
 import { obstacleFootprints } from './obstacle-layer.ts';
+import { restrictionsInEnvelope } from './mission-catalog.ts';
 import {
   distance,
   inside,
@@ -69,7 +70,7 @@ const ASSUMPTIONS = [
   'Другие БВС продолжают исходное расписание. Все последующие вылеты прекращающего работу БВС отменяются; после его посадки площадка остаётся занятой до окончания остальных полётов. Одновременный отказ группы требует отдельного перерасчёта.',
   'Если короткий отдельный уход не найден, допускается исходный проверенный коридор до посадки с выключенной съёмкой. Режим указан отдельно: он не обещает немедленную посадку и не является независимым аварийным маршрутом. Самолётные дуги/фазы не разрезаются: задержка до их концов может превышать заданный шаг и показывается фактически.',
   'Число/расположение запасных площадок задаёт оператор. Не найденный путь не доказывает невозможность: рассматривается ограниченный набор маршрутов без ожиданий и изменения высоты, рельеф только явно плоский.',
-  'Все известные ограничения консервативно закрываются на всю высоту и время ухода; это может отказать в допустимом облёте сверху или после открытия зоны. Геометрия возврата не является командой автопилоту, разрешением полёта или гарантией физической надёжности.',
+  'Для отдельного ухода контуры ограничений, пересекающих высотный диапазон от земли до потолка миссии и её временное окно с заданными запасами, консервативно закрываются на всём маршруте. Высокий слой вне этого диапазона не становится запретом от земли. Каждый полученный сегмент дополнительно проверяется по высоте и времени. Такой поиск может отказать в допустимом облёте сверху или после открытия зоны. Геометрия возврата не является командой автопилоту, разрешением полёта или гарантией физической надёжности.',
 ];
 
 const uniqueTargets = (d: MissionDocument, v: Vehicle) =>
@@ -209,10 +210,15 @@ export async function certifyMissionContingencies(
   try {
     const scene = {
       ...d.scenario,
-      clearanceM: Math.max(d.scenario.clearanceM, d.obstacleLayer?.bufferM ?? 0),
+      clearanceM: Math.max(
+        d.scenario.clearanceM,
+        d.obstacleLayer?.bufferM ?? 0,
+      ),
       exclusions: [
         ...d.scenario.exclusions,
-        ...d.restrictions.map((r) => r.geometry),
+        ...restrictionsInEnvelope(d, 0, d.flightEnvelope.maxAltitudeM).map(
+          (r) => r.geometry,
+        ),
         ...obstacleFootprints(d),
       ],
     };
@@ -500,7 +506,12 @@ export async function certifyMissionContingencies(
                     ...original.segments.slice(index + 1),
                   ]
                 : original.segments.slice(index + 1);
-            const combined = { ...original, segments: [...prefix, ...tail] };
+            // Motion is unchanged in this fallback. Check the original unsplit
+            // trajectory: splitting at an audit anchor would invent a new phase
+            // boundary and an extra uncertainty hold at an interior point.
+            // Subsequent sorties of this UAV remain cancelled, so ground
+            // occupancy is still recomputed, not inherited from the old check.
+            const combined = original;
             if (
               !others.some((other) => sortiesConflict(d, combined, other)) &&
               !groundSeparationConflicts(d, [...prior, combined, ...others])

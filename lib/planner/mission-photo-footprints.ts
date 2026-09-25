@@ -4,6 +4,12 @@ import type { Multi, Point } from './geometry.ts';
 import type { MissionDocument, ScheduledSortie } from './mission-schema.ts';
 import type { Check } from './schema.ts';
 import { qualityForJob } from './quality.ts';
+import { segmentJobId } from './mission-sortie-jobs.ts';
+import {
+  migrateMissionCameraBindings,
+  resolveVehicleCamera,
+  qualityWithCamera,
+} from './camera-profile.ts';
 
 export type PhotoCoverage = {
   jobId: string;
@@ -26,18 +32,21 @@ export function plannedPhotoCoverage(
   d: MissionDocument,
   sorties: ScheduledSortie[],
 ): PhotoCoverage[] {
+  d = migrateMissionCameraBindings(d).document;
   const p = projection(d.scenario.area.coordinates[0][0]);
   return d.jobs
     .filter((j) => j.quality.mode === 'camera')
     .map((j) => {
-      const q = j.quality,
-        model = qualityForJob(j).job;
+      const q = j.quality;
       const requested: Multi = [
         j.area.coordinates.map((r) => r.map(p.forward)),
       ];
       const requestedM2 = area(requested),
         checks: Check[] = [];
-      const unavailable = (reason: string): PhotoCoverage => ({
+      const unavailable = (
+        reason: string,
+        status: Check['status'] = 'unknown',
+      ): PhotoCoverage => ({
         jobId: j.id,
         status: 'not_checked',
         plannedFrames: 0,
@@ -49,7 +58,7 @@ export function plannedPhotoCoverage(
         checks: [
           {
             id: `PHOTO_${j.id}_MODEL`,
-            status: 'unknown',
+            status,
             title: 'Ожидаемые отпечатки кадров',
             detail: reason,
           },
@@ -59,24 +68,71 @@ export function plannedPhotoCoverage(
         return unavailable(
           'Нужен подтверждённый режим плоской поверхности; DEM и наклон камеры этой моделью не проверяются.',
         );
-      const width = model.swathM,
-        length =
-          (j.job.altitudeM * (q.sensorHeightMm ?? 0)) / (q.focalLengthMm ?? 1),
-        step = model.triggerDistanceM;
-      if (!(width > 0 && length > 0 && step && step > 0 && step <= length))
+      const survey = sorties.flatMap((sortie) =>
+        sortie.segments
+          .filter(
+            (seg) =>
+              seg.phase === 'survey' && segmentJobId(sortie, seg) === j.id,
+          )
+          .map((seg) => ({ sortie, seg })),
+      );
+      if (
+        !survey.length &&
+        !d.scenario.vehicles.some(
+          (v) =>
+            v.enabled &&
+            v.jobs.includes(j.job.type) &&
+            (!j.assignedVehicleIds.length ||
+              j.assignedVehicleIds.includes(v.id)) &&
+            resolveVehicleCamera(v, j.job.type).camera,
+        )
+      )
         return unavailable(
-          'Не хватает геометрии камеры или шаг кадров превышает длину отпечатка.',
+          'Нет полной активной камеры для проверки ожидаемых снимков.',
+          'fail',
         );
-      const survey = sorties
-        .filter((s) => s.jobId === j.id)
-        .flatMap((s) => s.segments.filter((x) => x.phase === 'survey'));
       if (survey.length > 1200)
         return unavailable(
           'Превышен проверяемый лимит 1200 съёмочных проходов.',
         );
       let plannedFrames = 0;
+      let minimumOverlap = 1;
       const footprints: Multi = [];
-      for (const seg of survey) {
+      for (const { sortie, seg } of survey) {
+        const vehicle = d.scenario.vehicles.find(
+          (v) => v.id === sortie.vehicleId,
+        );
+        const resolved =
+          vehicle && resolveVehicleCamera(vehicle, j.job.type, sortie.cameraId);
+        if (!vehicle || !sortie.cameraId || !resolved?.camera)
+          return unavailable(
+            resolved?.reason ??
+              'У вылета отсутствует однозначно привязанная установленная камера.',
+            'fail',
+          );
+        const actual = qualityWithCamera(q, resolved.camera),
+          calculated = qualityForJob(
+            j,
+            { ...vehicle, airspeedMps: seg.groundSpeedMps },
+            d.flightEnvelope,
+            sortie.cameraId,
+          ),
+          model = calculated.job,
+          width = model.swathM,
+          length =
+            (model.altitudeM * actual.sensorHeightMm!) / actual.focalLengthMm!,
+          step = model.triggerDistanceM;
+        if (
+          calculated.checks.some((c) => c.status === 'fail') ||
+          Math.abs(seg.altitudeFromM - model.altitudeM) > 1e-6 ||
+          Math.abs(seg.altitudeToM - model.altitudeM) > 1e-6 ||
+          !(width > 0 && length > 0 && step > 0 && step <= length)
+        )
+          return unavailable(
+            'Параметры установленной камеры, высота сегмента или частота кадров не соответствуют работе.',
+            'fail',
+          );
+        minimumOverlap = Math.min(minimumOverlap, 1 - step / length);
         const a = p.forward(seg.from),
           b = p.forward(seg.to),
           len = distance(a, b);
@@ -120,7 +176,7 @@ export function plannedPhotoCoverage(
           title: 'Покрытие ожидаемыми кадрами',
           detail: `${plannedFrames} модельных экспозиций; непокрыто ${missingM2.toFixed(2)} из ${requestedM2.toFixed(2)} м². Проверяются исходный контур, отверстия, края и стыки. Камера вниз, плоская поверхность; реальные фото не получены.`,
         });
-        const overlap = 1 - step / length;
+        const overlap = minimumOverlap;
         checks.push({
           id: `PHOTO_${j.id}_OVERLAP`,
           status: overlap + 1e-8 >= (q.forwardOverlap ?? 0) ? 'pass' : 'fail',

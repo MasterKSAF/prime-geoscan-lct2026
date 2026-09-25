@@ -5,6 +5,8 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
+// This historical collector has fixed r3 paths and must not silently replace current evidence.
+if(!process.argv.includes('--legacy-r3'))throw Error('Historical r3 collector. Use the working review workflow; --legacy-r3 is only for deliberate historical reconstruction.');
 const root=process.cwd(), target=path.join(root,'docs/planner/submission/evidence');
 const read=async p=>JSON.parse(await fs.readFile(p,'utf8'));
 const checks=[
@@ -53,4 +55,4 @@ const generatedAt=new Date().toISOString();
 await fs.mkdir(path.join(target,'licenses'),{recursive:true});
 await fs.writeFile(path.join(target,'licenses/dependencies.json'),JSON.stringify({schemaVersion:1,generatedAt,source:'package-lock.json',entries:inventory},null,2)+'\n');
 await fs.writeFile(path.join(target,'licenses/installed-license-texts.json'),JSON.stringify({schemaVersion:1,generatedAt,claimBoundary:'Top-level LICENSE/COPYING/NOTICE files found locally; not a legal compatibility certification.',entries:notices},null,2)+'\n');
-console.log(JSON.stringify({copied:true,dependencyEntries:inventory.length,licenseTexts:notices.length,licenses:[...new Set(inventory.map(p=>p.license))].sort()},null,2));
+console.log(JSON.stringify({copied:true,dependencyEntries:inventory.length,licenseTexts:notices.length,licenses:[...new Set(inventory.map(p=>p.license))].sort((a,b)=>String(a).localeCompare(String(b)))},null,2));

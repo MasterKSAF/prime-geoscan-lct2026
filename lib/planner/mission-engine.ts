@@ -15,6 +15,9 @@ import type {
 import { buildMissionEvents } from './mission-events.ts';
 import { weatherEnvelope, missionWeatherChecks } from './mission-weather.ts';
 import { buildMissionRecommendation } from './mission-comparison.ts';
+import { buildResourceStudy } from './mission-resources.ts';
+import { maintenanceProjection } from './mission-maintenance.ts';
+import { isVehicleReserved } from './mission-resource-reservations.ts';
 import { vehiclePlanningEligibility } from './fixed-wing-profile.ts';
 import { buildFixedWingSortie } from './fixed-wing-mission.ts';
 import type {
@@ -38,6 +41,13 @@ import {
 import type { Geometry, Point, Strip } from './geometry.ts';
 import { qualityForJob } from './quality.ts';
 import {
+  cameraGeometryKey,
+  migrateMissionCameraBindings,
+  resolveVehicleCamera,
+} from './camera-profile.ts';
+import type { CameraProfile } from './camera-profile.ts';
+import { trackAltitudeAllowed } from './altitude-policy.ts';
+import {
   compileRestrictions,
   findSortieConflicts,
   validateMissionCandidate,
@@ -46,6 +56,17 @@ import {
   groundSeparationConflicts,
 } from './mission-validation.ts';
 import type { CompiledRestriction } from './mission-validation.ts';
+import { jobSurveySegments } from './mission-sortie-jobs.ts';
+import { joinAreaFlights } from './mission-chain.ts';
+import {
+  effectiveMissionRestrictions,
+  catalogRestrictions,
+} from './mission-catalog.ts';
+import {
+  betterMission,
+  compactMissionSchedule,
+  missionJobOrders,
+} from './mission-schedule-search.ts';
 
 const EPS = 1e-6;
 type Route = ReturnType<typeof router>;
@@ -58,6 +79,8 @@ export type JobContext = {
   checks: Check[];
   assumptions: string[];
   restrictions: CompiledRestriction[];
+  cameraProfile?: CameraProfile;
+  cameraVehicleId?: string;
 };
 type BatteryState = {
   id: string;
@@ -75,7 +98,13 @@ type VehicleState = {
   lastBatteryId?: string;
   chargerReadySec: number;
 };
-type Budget = { deadline: number; candidates: number; exhausted: boolean };
+type Budget = {
+  deadline: number;
+  candidates: number;
+  exhausted: boolean;
+  contexts?: Map<string, JobContext>;
+  preciseStarts?: boolean;
+};
 type SearchStrategy = {
   name: string;
   reverseStrips?: boolean;
@@ -86,6 +115,12 @@ type SearchStrategy = {
   wholeJobsOnly?: boolean;
   assignments?: Record<string, string>;
   jobOrder?: string[];
+  // Explicit spatial splitting avoids the end-time-per-strip heuristic always
+  // assigning an entire job to one aircraft. All normal gates still apply.
+  partitionCount?: number;
+  maxVehicles?: number;
+  preciseStarts?: boolean;
+  cameraIndex?: number;
 };
 const GREEDY_STRATEGY: SearchStrategy = {
   name: 'parallel-maximum-prefix-v1',
@@ -96,16 +131,53 @@ const overBudget = (budget: Budget) => {
   return budget.exhausted;
 };
 
+function cachedContext(
+  d: MissionDocument,
+  job: MissionJob,
+  perpendicular: boolean,
+  budget: Budget,
+  vehicle?: Vehicle,
+) {
+  const key = `${job.id}:${perpendicular}:${vehicle?.id ?? 'auto'}`;
+  const saved = budget.contexts?.get(key);
+  if (saved) return saved;
+  const context = missionJobContext(d, job, perpendicular, vehicle);
+  budget.contexts?.set(key, context);
+  return context;
+}
+
 export function missionJobContext(
   d: MissionDocument,
   job: MissionJob,
   perpendicular = false,
+  cameraVehicle?: Vehicle,
 ): JobContext {
-  const quality = qualityForJob(job),
+  d = migrateMissionCameraBindings(d).document;
+  cameraVehicle ??= d.scenario.vehicles.find(
+    (v) =>
+      v.enabled &&
+      v.jobs.includes(job.job.type) &&
+      (!job.assignedVehicleIds.length ||
+        job.assignedVehicleIds.includes(v.id)) &&
+      resolveVehicleCamera(v, job.job.type).camera,
+  );
+  const resolvedCamera =
+      job.quality.mode === 'camera' && cameraVehicle
+        ? resolveVehicleCamera(cameraVehicle, job.job.type).camera
+        : undefined,
+    quality = qualityForJob(
+      job,
+      job.quality.mode === 'camera'
+        ? cameraVehicle
+          ? { ...cameraVehicle, airspeedMps: 0 }
+          : d.scenario.vehicles[0]
+        : undefined,
+      d.flightEnvelope,
+    ),
     altitude = quality.job.altitudeM,
     sensorOffset =
       job.quality.mode === 'geophysics' ? (job.quality.sensorOffsetM ?? 0) : 0,
-    permanent = d.restrictions.filter(
+    permanent = effectiveMissionRestrictions(d).filter(
       (r) =>
         r.startAt === null &&
         altitude >= r.minAltitudeM - d.scenario.clearanceM &&
@@ -165,8 +237,28 @@ export function missionJobContext(
     route: router(routingGeometry),
     strips,
     checks: quality.checks,
-    assumptions: quality.assumptions,
+    assumptions: [
+      ...quality.assumptions,
+      ...new Set(
+        catalogRestrictions(d).flatMap((r) => [
+          ...(r.catalog?.model ? [r.catalog.model] : []),
+          ...(r.catalog?.timePolicy === 'unknown'
+            ? [
+                'У зон без расписания учитывается весь период миссии в указанном высотном слое.',
+              ]
+            : []),
+          ...(r.catalog?.altitudePolicy !== 'declared-datum'
+            ? [
+                `${r.name}: неполные высотные данные, неразрешённая часть диапазона закрыта консервативно.`,
+              ]
+            : []),
+        ]),
+      ),
+    ],
     restrictions: compileRestrictions(d, geometry, sensorOffset),
+    ...(resolvedCamera
+      ? { cameraProfile: resolvedCamera, cameraVehicleId: cameraVehicle!.id }
+      : {}),
   };
 }
 
@@ -297,10 +389,14 @@ function buildSortie(
             const path = route(pos, a);
             if (!path) return [];
             const speed = missionLegSpeed(a, b, v, s, d, true);
-            const quality = qualityForJob(context.job, {
-              ...v,
-              airspeedMps: speed.ground,
-            });
+            const quality = qualityForJob(
+              context.job,
+              {
+                ...v,
+                airspeedMps: speed.ground,
+              },
+              d.flightEnvelope,
+            );
             if (quality.checks.some((check) => check.status === 'fail'))
               return [];
             const seconds = path
@@ -350,19 +446,26 @@ function buildSortie(
   const remainingPct =
     battery.pct - (elapsed / (v.effectiveEnduranceMin * 60)) * 100;
   if (remainingPct < d.scenario.reservePct - EPS) return null;
-  const quality = qualityForJob(context.job, {
-    ...v,
-    airspeedMps: Math.max(
-      ...segments
-        .filter((s) => s.phase === 'survey')
-        .map((s) => s.groundSpeedMps),
-    ),
-  });
+  const quality = qualityForJob(
+    context.job,
+    {
+      ...v,
+      airspeedMps: Math.max(
+        ...segments
+          .filter((s) => s.phase === 'survey')
+          .map((s) => s.groundSpeedMps),
+      ),
+    },
+    d.flightEnvelope,
+  );
   if (quality.checks.some((c) => c.status === 'fail')) return null;
   return {
     id,
     jobId: context.job.id,
     batteryId: battery.id,
+    ...(context.cameraProfile
+      ? { cameraId: resolveVehicleCamera(v, context.job.job.type).camera?.id }
+      : {}),
     vehicleId: v.id,
     name: v.name,
     startSec: 0,
@@ -452,7 +555,12 @@ function findStart(
       );
     if (conflicts.permanent) return null;
     if (conflicts.nextStartSec > at + EPS) {
-      at = conflicts.nextStartSec;
+      // Search local launch offsets; do not serialize complete flights for a
+      // short-lived encounter. Legacy baselines retain their original policy.
+      at =
+        budget.preciseStarts && existing.length
+          ? Math.min(conflicts.nextStartSec, at + 1)
+          : conflicts.nextStartSec;
       continue;
     }
     if (
@@ -513,11 +621,15 @@ function candidateFromSorties(
   unsupported: string[],
   notFound: boolean,
 ): MissionCandidate {
+  // Job search order must not change canonical exported check ordering.
+  contexts = [...contexts].sort(
+    (a, b) =>
+      d.jobs.findIndex((j) => j.id === a.job.id) -
+      d.jobs.findIndex((j) => j.id === b.job.id),
+  );
   const validation = validateMissionCandidate(d, sorties, contexts),
     jobCoverage = contexts.map((context) => {
-      const surveys = sorties
-          .filter((x) => x.jobId === context.job.id)
-          .flatMap((x) => x.segments.filter((s) => s.phase === 'survey')),
+      const surveys = jobSurveySegments(sorties, context.job.id),
         measured = surveys.length
           ? coveredArea(
               context.geometry,
@@ -533,6 +645,12 @@ function candidateFromSorties(
         target = area(context.geometry.target);
       return {
         jobId: context.job.id,
+        ...(context.cameraProfile
+          ? {
+              cameraProfileId: context.cameraProfile.id,
+              cameraVehicleId: context.cameraVehicleId,
+            }
+          : {}),
         bearingDeg: context.scenario.job.bearingDeg,
         grossAreaHa: gross / 10000,
         targetAreaHa: target / 10000,
@@ -568,13 +686,9 @@ function candidateFromSorties(
     assignmentsComplete =
       contexts.length === d.jobs.length &&
       contexts.every((context) => {
-        const actual = sorties
-          .filter((s) => s.jobId === context.job.id)
-          .flatMap((s) =>
-            s.segments
-              .filter((x) => x.phase === 'survey')
-              .map((x) => x.stripId),
-          );
+        const actual = jobSurveySegments(sorties, context.job.id).map(
+          (x) => x.stripId,
+        );
         return (
           actual.length === context.strips.length &&
           new Set(actual).size === context.strips.length
@@ -695,6 +809,7 @@ function schedule(
   createdAt: string,
   strategy: SearchStrategy = { name: 'adaptive-packs-repair-v2', repair: true },
 ): MissionCandidate {
+  budget.preciseStarts = strategy.preciseStarts ?? false;
   const sorties: ScheduledSortie[] = [],
     contexts: JobContext[] = [],
     unsupported: string[] = [],
@@ -708,7 +823,23 @@ function schedule(
       rechargeSec: b.rechargeSec,
       used: 0,
     })),
-    fleet = d.scenario.vehicles.filter((v) => v.enabled);
+    vehicleLimit = Math.min(
+      d.planning.maxVehicles ?? 20,
+      strategy.maxVehicles ?? 20,
+    ),
+    fleet = d.scenario.vehicles.filter(
+      (v) =>
+        v.enabled &&
+        !isVehicleReserved(d, v.id) &&
+        // A one-aircraft mission must use a configuration capable of every job.
+        (vehicleLimit !== 1 ||
+          d.jobs.every(
+            (j) =>
+              v.jobs.includes(j.job.type) &&
+              (!j.assignedVehicleIds.length ||
+                j.assignedVehicleIds.includes(v.id)),
+          )),
+    );
   let notFound = false;
   const jobs = [...d.jobs];
   if (strategy.jobOrder)
@@ -747,15 +878,6 @@ function schedule(
       break;
     }
     let context: JobContext;
-    try {
-      context = missionJobContext(d, job, perpendicular);
-      contexts.push(context);
-    } catch (error) {
-      unsupported.push(
-        `${job.name}: ${error instanceof Error ? error.message : String(error)}`,
-      );
-      continue;
-    }
     const eligible = fleet.filter(
       (v) =>
         v.jobs.includes(job.job.type) &&
@@ -763,6 +885,31 @@ function schedule(
         (!job.assignedVehicleIds.length ||
           job.assignedVehicleIds.includes(v.id)),
     );
+    const cameraVehicles = eligible.filter(
+      (v) => resolveVehicleCamera(v, job.job.type).camera,
+    );
+    const opticalChoices = cameraVehicles.filter(
+      (v, i) =>
+        cameraVehicles.findIndex(
+          (other) =>
+            cameraGeometryKey(
+              resolveVehicleCamera(other, job.job.type).camera!,
+            ) ===
+            cameraGeometryKey(resolveVehicleCamera(v, job.job.type).camera!),
+        ) === i,
+    );
+    const cameraVehicle = opticalChoices.length
+      ? opticalChoices[(strategy.cameraIndex ?? 0) % opticalChoices.length]
+      : undefined;
+    try {
+      context = cachedContext(d, job, perpendicular, budget, cameraVehicle);
+      contexts.push(context);
+    } catch (error) {
+      unsupported.push(
+        `${job.name}: ${error instanceof Error ? error.message : String(error)}`,
+      );
+      continue;
+    }
     // An unsupported aircraft in the registry is not evidence that the whole
     // job is unsupported: other compatible aircraft can still complete it.
     // The excluded aircraft remains in the physical ground-occupancy checks.
@@ -775,8 +922,23 @@ function schedule(
         });
     }
     const supported = eligible.filter(
-      (v) => vehiclePlanningEligibility(v).supported,
+      (v) =>
+        vehiclePlanningEligibility(v).supported &&
+        (job.quality.mode !== 'camera' ||
+          (!!context.cameraProfile &&
+            !!resolveVehicleCamera(v, job.job.type).camera &&
+            cameraGeometryKey(resolveVehicleCamera(v, job.job.type).camera!) ===
+              cameraGeometryKey(context.cameraProfile))),
     );
+    if (job.quality.mode === 'camera')
+      trace.push({
+        event: 'CAMERA_BINDING',
+        detail: context.cameraProfile
+          ? `${job.id}: ${context.cameraProfile.id}; полосы и высота этой оптики. Деление работы только между БВС с эквивалентной активной камерой; другие камеры сравниваются отдельными раскладками.`
+          : eligible
+              .map((v) => resolveVehicleCamera(v, job.job.type).reason)
+              .join(' ') || 'Нет установленной камеры.',
+      });
     const usable = supported.filter(
       (v) =>
         d.scenario.wind.speedMps <= v.maxWindMps &&
@@ -793,7 +955,7 @@ function schedule(
         continue;
       }
       unsupported.push(
-        `${job.name}: нет включённой совместимой и поддержанной конфигурации в пределах ветра/скорости.${supported.length ? '' : ` ${eligible.flatMap((v) => vehiclePlanningEligibility(v).reasons).join(' ')}`}`,
+        `${job.name}: нет включённой совместимой и поддержанной конфигурации в пределах ветра/скорости.${supported.length ? '' : ` ${eligible.flatMap((v) => [...vehiclePlanningEligibility(v).reasons, ...(job.quality.mode === 'camera' ? [resolveVehicleCamera(v, job.job.type).reason ?? ''] : [])]).join(' ')}`}`,
       );
       continue;
     }
@@ -804,11 +966,12 @@ function schedule(
       continue;
     }
     if (
-      job.job.altitudeM < d.flightEnvelope.minSurveyAltitudeM ||
-      job.job.altitudeM > d.flightEnvelope.maxAltitudeM
+      context.scenario.job.altitudeM < d.flightEnvelope.minSurveyAltitudeM ||
+      context.scenario.job.altitudeM > d.flightEnvelope.maxAltitudeM ||
+      !trackAltitudeAllowed(context.scenario.job.altitudeM)
     ) {
       unsupported.push(
-        `${job.name}: высота съёмки вне заданного разрешённого диапазона.`,
+        `${job.name}: высота съёмки вне коридора или не ниже 150 м AGL. Используйте высоту по GSD в допустимом диапазоне.`,
       );
       continue;
     }
@@ -855,6 +1018,19 @@ function schedule(
     });
     let remaining = context.strips.slice();
     if (strategy.reverseStrips) remaining.reverse();
+    const packLimit = strategy.partitionCount
+      ? Math.max(
+          1,
+          Math.ceil(
+            remaining.length / Math.min(strategy.partitionCount, usable.length),
+          ),
+        )
+      : remaining.length;
+    if (strategy.partitionCount)
+      trace.push({
+        event: 'SPATIAL_PARTITION',
+        detail: `${job.id}: группы до ${packLimit} соседних полос; назначение по ближайшему завершению вылета. БВС выбираются по совместимости, заряду и готовности; одновременность только после проверки разнесения.`,
+      });
     type Choice = {
       sortie: ScheduledSortie;
       state: VehicleState;
@@ -881,13 +1057,16 @@ function schedule(
       const choices: Choice[] = [];
       for (const state of states) {
         if (state.count >= d.planning.maxSortiesPerVehicle) continue;
+        const usedIds = new Set(sorties.map((s) => s.vehicleId));
+        if (!usedIds.has(state.vehicle.id) && usedIds.size >= vehicleLimit)
+          continue;
         for (const battery of batteries.filter(
           (b) =>
             b.vehicleId === state.vehicle.id && b.pct > d.scenario.reservePct,
         )) {
           if (overBudget(budget)) break;
           const packs: { flight: ScheduledSortie; count: number }[] = [];
-          for (let n = 1; n <= remaining.length; n++) {
+          for (let n = 1; n <= Math.min(remaining.length, packLimit); n++) {
             if (overBudget(budget)) break;
             const flight = buildSortie(
               d,
@@ -906,16 +1085,17 @@ function schedule(
             continue;
           // Maximum, half, quarter and one-strip packs give the scheduler a
           // chance to fit a time window, preserve scarce energy and parallelize.
-          const wanted = strategy.maximumPacksOnly
-            ? [packs.length]
-            : [
-                ...new Set([
-                  packs.length,
-                  Math.ceil(packs.length / 2),
-                  Math.ceil(packs.length / 4),
-                  1,
-                ]),
-              ];
+          const wanted =
+            strategy.maximumPacksOnly || strategy.partitionCount
+              ? [packs.length]
+              : [
+                  ...new Set([
+                    packs.length,
+                    Math.ceil(packs.length / 2),
+                    Math.ceil(packs.length / 4),
+                    1,
+                  ]),
+                ];
           for (const count of wanted) {
             const packed = packs[count - 1].flight;
             const earliest = Math.max(
@@ -928,6 +1108,30 @@ function schedule(
               ),
               placed = findStart(d, context, packed, earliest, sorties, budget);
             if (!placed) continue;
+            const prior = sorties.filter(
+              (s) => s.vehicleId === state.vehicle.id,
+            );
+            if (
+              maintenanceProjection(
+                state.vehicle,
+                prior.length + 1,
+                prior.reduce((n, s) => n + s.durationSec, 0) +
+                  placed.durationSec,
+              ).withinLimit === false
+            ) {
+              if (
+                !trace.some(
+                  (x) =>
+                    x.event === 'MAINTENANCE_REJECT' &&
+                    x.detail.startsWith(state.vehicle.id + ':'),
+                )
+              )
+                trace.push({
+                  event: 'MAINTENANCE_REJECT',
+                  detail: `${state.vehicle.id}: вылет превысил бы ресурс до ТО. Выберите другой БВС или проведите ТО и обновите наработку в парке.`,
+                });
+              continue;
+            }
             if (
               d.planning.safetyPolicy &&
               groundSeparationConflicts(d, [...sorties, placed]).length
@@ -945,8 +1149,9 @@ function schedule(
                 });
               continue;
             }
-            const score =
-              objective === 'makespan'
+            const score = strategy.partitionCount
+              ? placed.endSec
+              : objective === 'makespan'
                 ? placed.endSec / count
                 : placed.durationSec / count;
             choices.push({ sortie: placed, state, battery, count, score });
@@ -1002,7 +1207,10 @@ function schedule(
         notFound = true;
         trace.push({
           event: 'NO_ASSIGNMENT',
-          detail: `${job.id}: не назначено ${remaining.length} полос; ограниченный поиск, не доказательство невозможности.`,
+          detail: `${job.id}: не назначено ${remaining.length} полос; лимит группы ${vehicleLimit} БВС. ${trace
+            .filter((x) => x.event === 'MAINTENANCE_REJECT')
+            .map((x) => x.detail)
+            .join(' ')} Ограниченный поиск, не доказательство невозможности.`,
         });
         break;
       }
@@ -1066,7 +1274,7 @@ export async function solveMissionSerialBaseline(
   if (objective !== 'makespan' && objective !== 'flightTime')
     throw new Error('Неизвестный критерий сравнения.');
   const started = performance.now(),
-    d = parseMissionDocument(input),
+    d = migrateMissionCameraBindings(parseMissionDocument(input)).document,
     inputHash = await sha256(d),
     createdAt = new Date().toISOString(),
     budgetMs = d.planning.maxComputeMs / 2,
@@ -1102,7 +1310,7 @@ export async function solveMissionParallelBaseline(
   if (objective !== 'makespan' && objective !== 'flightTime')
     throw new Error('Неизвестный критерий сравнения.');
   const started = performance.now(),
-    d = parseMissionDocument(input),
+    d = migrateMissionCameraBindings(parseMissionDocument(input)).document,
     inputHash = await sha256(d),
     budgetMs = d.planning.maxComputeMs / 2,
     budget: Budget = {
@@ -1139,7 +1347,7 @@ export async function solveMissionSmallAssignmentOracle(
   if (objective !== 'makespan' && objective !== 'flightTime')
     throw new Error('Неизвестный критерий сравнения.');
   const started = performance.now(),
-    d = parseMissionDocument(input),
+    d = migrateMissionCameraBindings(parseMissionDocument(input)).document,
     fleet = d.scenario.vehicles.filter((v) => v.enabled),
     contexts = d.jobs.map((job) => missionJobContext(d, job));
   if (
@@ -1240,19 +1448,146 @@ export async function solveMissionDocument(
   input: unknown,
 ): Promise<MissionResult> {
   const started = performance.now(),
-    d = parseMissionDocument(input),
+    migration = migrateMissionCameraBindings(parseMissionDocument(input)),
+    d = migration.document,
     inputHash = await sha256(d),
     createdAt = new Date().toISOString(),
     candidates: MissionCandidate[] = [],
     pool: MissionCandidate[] = [],
-    warnings: string[] = [],
+    warnings: string[] = [...migration.warnings],
+    searchedCaps = new Set<number>(),
+    contextCache = new Map<string, JobContext>(),
     baselines = new Map<Scenario['objective'], Plan['baseline']>();
+  const consider = (original: MissionCandidate, budget: Budget) => {
+    if (original.status !== 'feasible_model') return original;
+    pool.push(original);
+    if (
+      !d.planning.areaTransferPolicy ||
+      !d.planning.batteryPolicy ||
+      !d.planning.safetyPolicy
+    )
+      return original;
+    let best = original;
+    const contexts = d.jobs.map((job) =>
+      cachedContext(
+        d,
+        job,
+        Math.abs(
+          (original.jobCoverage.find((j) => j.jobId === job.id)?.bearingDeg ??
+            job.job.bearingDeg) - job.job.bearingDeg,
+        ) > EPS,
+        budget,
+        d.scenario.vehicles.find(
+          (v) =>
+            v.id ===
+            original.jobCoverage.find((j) => j.jobId === job.id)
+              ?.cameraVehicleId,
+        ),
+      ),
+    );
+    for (const vehicle of d.scenario.vehicles) {
+      for (let attempt = 0; attempt < 64 && !overBudget(budget); attempt++) {
+        const own = best.sorties
+          .filter((s) => s.vehicleId === vehicle.id)
+          .sort((a, b) => a.startSec - b.startSec);
+        if (own.length < 2) break;
+        const a = own.at(-2)!,
+          b = own.at(-1)!;
+        const chainAttempt = joinAreaFlights(d, a, b, contexts),
+          combined = chainAttempt.flight;
+        if (!combined) {
+          best.trace.push({
+            event: 'AREA_TRANSFER_BLOCKED',
+            detail: `${vehicle.id}: возврат между участками сохранён. ${chainAttempt.reason}`,
+          });
+          break;
+        }
+        const proposed = candidateFromSorties(
+          d,
+          contexts,
+          best.sorties
+            .filter((s) => s.id !== b.id)
+            .map((s) => (s.id === a.id ? combined : s)),
+          original.objective,
+          original.id,
+          [
+            ...best.trace,
+            {
+              event: 'DIRECT_AREA_TRANSFER',
+              detail: `${vehicle.id}: участки объединены в один вылет; исключена промежуточная посадка. Полный маршрут повторно проверен с остальными БВС, ограничениями и остатком батареи.`,
+            },
+          ],
+          inputHash,
+          createdAt,
+          [],
+          false,
+        );
+        if (
+          proposed.status !== 'feasible_model' ||
+          proposed.metrics.makespanSec > best.metrics.makespanSec + EPS
+        ) {
+          best.trace.push({
+            event: 'AREA_TRANSFER_BLOCKED',
+            detail: `${vehicle.id}: прямой переход отклонён. ${
+              proposed.checks
+                .filter((c) => c.status === 'fail')
+                .slice(0, 2)
+                .map((c) => c.title)
+                .join('; ') || 'Не сокращает время завершения миссии.'
+            }`,
+          });
+          break;
+        }
+        best = proposed;
+        pool.push(best);
+      }
+    }
+    if (!overBudget(budget)) {
+      const compacted = compactMissionSchedule(d, best.sorties, contexts, () =>
+        overBudget(budget),
+      );
+      if (compacted !== best.sorties) {
+        const proposed = candidateFromSorties(
+          d,
+          contexts,
+          compacted,
+          original.objective,
+          original.id,
+          [
+            ...best.trace,
+            {
+              event: 'SCHEDULE_COMPACTION',
+              detail:
+                'Убрано наземное ожидание после объединения участков. Сетка стартов 1 с; все исходные ограничения проверены заново. Глобальный оптимум не заявляется.',
+            },
+          ],
+          inputHash,
+          createdAt,
+          [],
+          false,
+        );
+        if (
+          proposed.status === 'feasible_model' &&
+          betterMission(proposed, best, original.objective)
+        ) {
+          best = proposed;
+          pool.push(best);
+        }
+      }
+    }
+    return best;
+  };
   // Budget is shared across both objectives, never multiplied by fleet size.
   for (const objective of ['makespan', 'flightTime'] as const) {
     const deadline =
         started +
         d.planning.maxComputeMs * (objective === 'makespan' ? 0.5 : 1),
-      budget: Budget = { deadline, candidates: 0, exhausted: false },
+      budget: Budget = {
+        deadline,
+        candidates: 0,
+        exhausted: false,
+        contexts: contextCache,
+      },
       planned = schedule(
         d,
         objective,
@@ -1261,11 +1596,10 @@ export async function solveMissionDocument(
         budget,
         inputHash,
         createdAt,
-        GREEDY_STRATEGY,
+        { ...GREEDY_STRATEGY, constrainedJobsFirst: !!d.planning.maxVehicles },
       );
-    if (planned.status === 'feasible_model') pool.push(planned);
-    let best = planned;
-    const metric = objective === 'makespan' ? 'makespanSec' : 'flightTimeSec';
+    searchedCaps.add(d.planning.maxVehicles ?? d.scenario.vehicles.length);
+    let best = consider(planned, budget);
     let baseline: MissionCandidate | null = null;
     if (!overBudget(budget)) {
       baseline = schedule(
@@ -1278,15 +1612,92 @@ export async function solveMissionDocument(
         createdAt,
         GREEDY_STRATEGY,
       );
+      // Baseline intentionally retains independent base-to-base flights.
       if (baseline.status === 'feasible_model') pool.push(baseline);
       if (
         baseline.status === 'feasible_model' &&
         (best.status !== 'feasible_model' ||
-          baseline.metrics[metric] < best.metrics[metric] - EPS)
+          betterMission(baseline, best, objective))
       )
         best = baseline;
     }
     const strategies: { strategy: SearchStrategy; perpendicular: boolean }[] = [
+      // Each optical layout has its own height, footprint, strip grid and gates.
+      // Mixed-optics residual tiling is intentionally outside this bounded search.
+      ...Array.from(
+        { length: Math.min(12, d.scenario.vehicles.length) - 1 },
+        (_, i) => ({
+          strategy: {
+            ...GREEDY_STRATEGY,
+            name: `camera-layout-${i + 1}-v1`,
+            cameraIndex: i + 1,
+          },
+          perpendicular: false,
+        }),
+      ),
+      // Explore whole-job route orders cheaply before spending the budget on
+      // one-second start scans. Joining + compaction removes conservative waits.
+      ...(d.jobs.length > 1
+        ? missionJobOrders(d.jobs.map((j) => j.id)).map((order, i) => ({
+            strategy: {
+              name: `joint-order-${i}-coarse-v1`,
+              jobOrder: order,
+              maximumPacksOnly: true,
+            },
+            perpendicular: false,
+          }))
+        : []),
+      ...missionJobOrders(d.jobs.map((j) => j.id)).map((order, i) => ({
+        strategy: {
+          name: `joint-order-${i}-v1`,
+          jobOrder: order,
+          maximumPacksOnly: true,
+          preciseStarts: true,
+        },
+        perpendicular: false,
+      })),
+      ...(d.scenario.vehicles.filter((v) => v.enabled).length > 2 &&
+      (d.planning.maxVehicles ?? 20) > 2
+        ? missionJobOrders(d.jobs.map((j) => j.id)).map((order, i) => ({
+            strategy: {
+              name: `joint-order-${i}-cap-2-v1`,
+              jobOrder: order,
+              maximumPacksOnly: true,
+              preciseStarts: true,
+              maxVehicles: 2,
+            },
+            perpendicular: false,
+          }))
+        : []),
+      ...[1, 2, 3]
+        .filter(
+          (count) =>
+            count < (d.planning.maxVehicles ?? d.scenario.vehicles.length),
+        )
+        .map((count) => ({
+          strategy: {
+            name: `fleet-cap-${count}-v1`,
+            maxVehicles: count,
+            partitionCount: count,
+            constrainedJobsFirst: true,
+          },
+          perpendicular: false,
+        })),
+      ...[2, 3, 4]
+        .filter(
+          (count) =>
+            count <= d.scenario.vehicles.filter((v) => v.enabled).length,
+        )
+        .flatMap((count) =>
+          [false, true].map((reverseStrips) => ({
+            strategy: {
+              name: `spatial-partition-${count}${reverseStrips ? '-reverse' : ''}-v1`,
+              partitionCount: count,
+              reverseStrips,
+            },
+            perpendicular: false,
+          })),
+        ),
       {
         strategy: { name: 'adaptive-packs-repair-v2', repair: true },
         perpendicular: false,
@@ -1340,8 +1751,9 @@ export async function solveMissionDocument(
         ),
         candidates: 0,
         exhausted: false,
+        contexts: contextCache,
       };
-      const alternative = schedule(
+      const scheduled = schedule(
         d,
         objective,
         false,
@@ -1351,12 +1763,14 @@ export async function solveMissionDocument(
         createdAt,
         trial.strategy,
       );
+      if (trial.strategy.maxVehicles)
+        searchedCaps.add(trial.strategy.maxVehicles);
       budget.candidates += trialBudget.candidates;
-      if (alternative.status === 'feasible_model') pool.push(alternative);
+      const alternative = consider(scheduled, trialBudget);
       if (
         (alternative.status === 'feasible_model' &&
           (best.status !== 'feasible_model' ||
-            alternative.metrics[metric] < best.metrics[metric] - EPS)) ||
+            betterMission(alternative, best, objective))) ||
         (best.status !== 'feasible_model' &&
           alternative.status !== 'feasible_model' &&
           alternative.metrics.grossCoveragePct >
@@ -1390,8 +1804,7 @@ export async function solveMissionDocument(
     const objective = candidates[i].objective,
       metric = objective === 'makespan' ? 'makespanSec' : 'flightTimeSec',
       winner = pool.reduce<MissionCandidate | null>(
-        (best, c) =>
-          !best || c.metrics[metric] < best.metrics[metric] - EPS ? c : best,
+        (best, c) => (!best || betterMission(c, best, objective) ? c : best),
         null,
       );
     if (winner) {
@@ -1422,6 +1835,7 @@ export async function solveMissionDocument(
     createdAt,
     document: d,
     candidates,
+    resourceStudy: buildResourceStudy(d, pool, searchedCaps),
     ...(recommendation ? { recommendation } : {}),
     computationMs: performance.now() - started,
     warnings,

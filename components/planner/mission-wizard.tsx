@@ -22,10 +22,12 @@ import {
 import { Checkbox } from '@/components/ui/checkbox';
 import MissionFleetEditor from './mission-fleet-editor';
 import { qualityForJob } from '@/lib/planner/quality';
+import { AUTO_ALTITUDE_CEILING_M } from '@/lib/planner/altitude-policy';
 import { vehiclePlanningEligibility } from '@/lib/planner/fixed-wing-profile';
 import { vehicleModelLabel } from '@/lib/planner/mission-vehicle-label';
 import MissionWind from './mission-wind';
 import { InfoHint } from './mission-help';
+import { MissionDateField, MissionTimezoneField } from './mission-date-field';
 
 export const jobNames: Record<MissionJob['job']['type'], string> = {
   RGB: 'RGB · фотографии',
@@ -84,7 +86,7 @@ function NumberField({
       </span>
       <input
         type="number"
-        value={value}
+        value={disabled ? Number(value.toFixed(2)) : value}
         min={min}
         max={max}
         step={step}
@@ -133,7 +135,11 @@ export default function MissionWizard({
   };
   const workControlId = useId();
   const job = d.jobs[selectedJob] ?? d.jobs[0];
-  const derivedJob = qualityForJob(job).job;
+  // Before assignment, there is no single camera-derived height or swath.
+  const derivedJob =
+    job.quality.mode === 'camera'
+      ? job.job
+      : qualityForJob(job, undefined, d.flightEnvelope).job;
   const patch = (value: Partial<MissionDocument>) =>
     onChange({ ...d, ...value });
   const patchScenario = (value: Partial<MissionDocument['scenario']>) =>
@@ -458,35 +464,37 @@ export default function MissionWizard({
         {step === 2 && (
           <>
             <h3>
-              Время работы{' '}
+              Период выполнения{' '}
               <InfoHint label="Даты и время расчёта">
-                Расчёт и симуляция используют эти даты. Формат ISO 8601: дата T
-                время + смещение от UTC. Реальных команд на вылет нет.
+                Даты отображаются в часовом поясе миссии, а не компьютера. Смена
+                пояса меняет отображение, сохраняя момент времени. Расчёт и
+                симуляция используют этот период; реальных команд на вылет нет.
               </InfoHint>
             </h3>
-            <label className="mw-field">
-              Начало окна
-              <input
-                value={d.window.start}
-                onChange={(e) =>
-                  patch({ window: { ...d.window, start: e.target.value } })
-                }
-                placeholder="2026-09-24T10:00:00+03:00"
-              />
-            </label>
-            <label className="mw-field">
-              Конец окна
-              <input
-                value={d.window.end}
-                onChange={(e) =>
-                  patch({ window: { ...d.window, end: e.target.value } })
-                }
-                placeholder="2026-09-24T18:00:00+03:00"
-              />
-            </label>
-            <details className="mw-details mw-editor-detail">
+            <MissionDateField
+              label="Начало миссии"
+              timezone={d.window.timezone}
+              value={d.window.start}
+              onChange={(iso) => patch({ window: { ...d.window, start: iso } })}
+            />
+            <MissionDateField
+              label="Завершить миссию до"
+              timezone={d.window.timezone}
+              value={d.window.end}
+              onChange={(iso) => patch({ window: { ...d.window, end: iso } })}
+            />
+            <MissionTimezoneField
+              value={d.window.timezone}
+              onChange={(timezone) =>
+                patch({ window: { ...d.window, timezone } })
+              }
+            />
+            <details
+              className="mw-details mw-editor-detail"
+              hidden={section === 'conditions'}
+            >
               <summary>
-                Часовой пояс и освещённость{' '}
+                Освещённость выбранной работы{' '}
                 <InfoHint label="Часовой пояс и правила освещённости">
                   Смещение в дате определяет момент; пояс — отображение
                   расписания. Правило 15° относится к ясной погоде и
@@ -494,16 +502,6 @@ export default function MissionWizard({
                   ночных работ или разрешением полёта.
                 </InfoHint>
               </summary>
-              <label className="mw-field">
-                Часовой пояс
-                <input
-                  value={d.window.timezone}
-                  onChange={(e) =>
-                    patch({ window: { ...d.window, timezone: e.target.value } })
-                  }
-                  placeholder="Europe/Moscow"
-                />
-              </label>
               <label className="mw-field">
                 Освещённость для «{job.name}»
                 <select
@@ -610,7 +608,8 @@ export default function MissionWizard({
           </>
         )}
         {step === 2 && (
-          <>
+          <details className="mw-details expert-rules">
+            <summary>Расширенные ограничения и ручная погода</summary>
             <h3 className="mw-editor-section-title">Ветер и безопасность</h3>
             <MissionWind
               forecast={!!d.weather}
@@ -798,7 +797,10 @@ export default function MissionWizard({
                 />
               </label>
             </details>
-            <details className="mw-details mw-editor-detail">
+            <details
+              className="mw-details mw-editor-detail"
+              hidden={section === 'conditions'}
+            >
               <summary>
                 Запреты и препятствия ·{' '}
                 {d.restrictions.length + d.scenario.exclusions.length}{' '}
@@ -1010,7 +1012,7 @@ export default function MissionWizard({
                   label="Потолок"
                   unit="м"
                   min={10}
-                  max={6000}
+                  max={AUTO_ALTITUDE_CEILING_M}
                   value={d.flightEnvelope.maxAltitudeM}
                   onChange={(n) =>
                     patch({
@@ -1065,7 +1067,7 @@ export default function MissionWizard({
                 </label>
               </details>
             </details>
-          </>
+          </details>
         )}
         {(step === 0 || step === 4) && (
           <details
@@ -1138,38 +1140,90 @@ export default function MissionWizard({
                 <option value="higher">Выше, если качество допускает</option>
               </select>
             </label>
+            {job.quality.mode === 'camera' && (
+              <>
+                <label className="mw-field">
+                  <strong>
+                    Расчёт высоты{' '}
+                    <InfoHint label="Высота и GSD">
+                      GSD — размер пикселя на земле. Меньше — детальнее. В
+                      режиме «По GSD» высота считается по обеим осям матрицы и
+                      фокусному расстоянию; выбирается наибольшая высота, не
+                      ухудшающая требование, внутри заданного потолка и до 149 м
+                      AGL. Запас 1 м — параметр нашей модели. Предел трека:
+                      строго ниже 150 м во всех фазах. Плоская поверхность не
+                      заменяет DEM или измеренный AGL; это не разрешение на
+                      полёт.
+                    </InfoHint>
+                  </strong>
+                  <select
+                    aria-label="Расчёт высоты"
+                    value={job.quality.altitudeMode ?? 'fixed'}
+                    onChange={(e) =>
+                      patchJob({
+                        quality: {
+                          ...job.quality,
+                          altitudeMode: e.target.value as 'fixed' | 'gsd',
+                        },
+                        job: { ...job.job, altitudeM: derivedJob.altitudeM },
+                      })
+                    }
+                  >
+                    <option value="gsd">Автоматически по детализации</option>
+                    <option value="fixed">Заданная высота</option>
+                  </select>
+                </label>
+                <NumberField
+                  label="Детализация снимков"
+                  unit="см/пиксель"
+                  min={0.01}
+                  max={1000}
+                  step={0.1}
+                  value={job.quality.maximumGsdCm ?? 3}
+                  onChange={(n) =>
+                    patchJob({ quality: { ...job.quality, maximumGsdCm: n } })
+                  }
+                />
+              </>
+            )}
             <NumberField
-              label="Высота текущей работы"
+              label="Высота съёмки"
               unit="м"
               min={10}
-              max={500}
-              value={job.job.altitudeM}
+              max={AUTO_ALTITUDE_CEILING_M}
+              step={0.001}
+              disabled={job.quality.altitudeMode === 'gsd'}
+              value={derivedJob.altitudeM}
               onChange={(n) => patchJob({ job: { ...job.job, altitudeM: n } })}
             />
             <details className="mw-details">
               <summary>
-                Параметры покрытия / сенсора{' '}
+                Перекрытия и параметры покрытия{' '}
                 <InfoHint label="Откуда берутся полоса и шаг съёмки">
-                  При параметрической модели ядро пересчитает полосу из сенсора,
-                  высоты и качества. Источник и основание профиля задаются ниже.
+                  Перекрытия задают, насколько соседние снимки накладываются
+                  друг на друга. Оптика и интервал кадров берутся из камеры
+                  назначенного БВС в парке. Точные высота, полоса и шаг кадров
+                  появятся в рассчитанном плане.
                 </InfoHint>
               </summary>
               <div style={{ marginTop: 10 }}>
                 <div className="mw-field-row">
-                  <NumberField
-                    label="Полоса"
-                    unit="м"
-                    min={5}
-                    max={500}
-                    value={derivedJob.swathM}
-                    disabled={
-                      job.quality.mode !== 'manual' &&
-                      job.quality.mode !== 'geophysics'
-                    }
-                    onChange={(n) =>
-                      patchJob({ job: { ...job.job, swathM: n } })
-                    }
-                  />
+                  {job.quality.mode !== 'camera' && (
+                    <NumberField
+                      label="Ширина захвата"
+                      unit="м"
+                      min={5}
+                      max={500}
+                      value={derivedJob.swathM}
+                      disabled={
+                        job.quality.mode !== 'manual' &&
+                        job.quality.mode !== 'geophysics'
+                      }
+                      onChange={(n) =>
+                        patchJob({ job: { ...job.job, swathM: n } })
+                      }
+                    />
+                  )}
                   <NumberField
                     label="Перекрытие сбоку"
                     unit="%"
@@ -1180,67 +1234,61 @@ export default function MissionWizard({
                     }
                   />
                 </div>
-                <NumberField
-                  label="Шаг срабатывания"
-                  unit="м"
-                  min={1}
-                  max={200}
-                  step={0.1}
-                  value={derivedJob.triggerDistanceM}
-                  disabled={job.quality.mode === 'camera'}
-                  onChange={(n) =>
-                    patchJob({ job: { ...job.job, triggerDistanceM: n } })
-                  }
-                />
-                <p className="mw-caption">Режим профиля: {job.quality.mode}</p>
-                <label className="mw-field">
-                  Основание профиля
-                  <select
-                    value={job.quality.status}
-                    onChange={(e) =>
-                      patchJob({
-                        quality: {
-                          ...job.quality,
-                          status: e.target
-                            .value as MissionJob['quality']['status'],
-                        },
-                      })
-                    }
-                  >
-                    <option value="assumed">Учебное допущение</option>
-                    <option value="documented">
-                      Документировано для комплектации
-                    </option>
-                    <option value="unknown">Параметры неизвестны</option>
-                  </select>
-                </label>
-                <label className="mw-field">
-                  Источник параметров сенсора
-                  <textarea
-                    value={job.quality.source}
-                    maxLength={500}
-                    onChange={(e) =>
-                      patchJob({
-                        quality: { ...job.quality, source: e.target.value },
-                      })
+                {job.quality.mode !== 'camera' && (
+                  <NumberField
+                    label="Расстояние между кадрами"
+                    unit="м"
+                    min={1}
+                    max={200}
+                    step={0.1}
+                    value={derivedJob.triggerDistanceM}
+                    onChange={(n) =>
+                      patchJob({ job: { ...job.job, triggerDistanceM: n } })
                     }
                   />
-                </label>
+                )}
+                {job.quality.mode !== 'camera' && (
+                  <>
+                    <p className="mw-caption">
+                      Режим профиля: {job.quality.mode}
+                    </p>
+                    <label className="mw-field">
+                      Основание профиля
+                      <select
+                        value={job.quality.status}
+                        onChange={(e) =>
+                          patchJob({
+                            quality: {
+                              ...job.quality,
+                              status: e.target
+                                .value as MissionJob['quality']['status'],
+                            },
+                          })
+                        }
+                      >
+                        <option value="assumed">Учебное допущение</option>
+                        <option value="documented">
+                          Документировано для комплектации
+                        </option>
+                        <option value="unknown">Параметры неизвестны</option>
+                      </select>
+                    </label>
+                    <label className="mw-field">
+                      Источник параметров сенсора
+                      <textarea
+                        value={job.quality.source}
+                        maxLength={500}
+                        onChange={(e) =>
+                          patchJob({
+                            quality: { ...job.quality, source: e.target.value },
+                          })
+                        }
+                      />
+                    </label>
+                  </>
+                )}
                 {job.quality.mode === 'camera' && (
                   <>
-                    <NumberField
-                      label="Требуемый GSD"
-                      unit="см/пиксель"
-                      min={0.01}
-                      max={1000}
-                      step={0.1}
-                      value={job.quality.maximumGsdCm ?? 3}
-                      onChange={(n) =>
-                        patchJob({
-                          quality: { ...job.quality, maximumGsdCm: n },
-                        })
-                      }
-                    />
                     <NumberField
                       label="Продольное перекрытие"
                       unit="%"
@@ -1249,19 +1297,6 @@ export default function MissionWizard({
                       onChange={(n) =>
                         patchJob({
                           quality: { ...job.quality, forwardOverlap: n / 100 },
-                        })
-                      }
-                    />
-                    <NumberField
-                      label="Минимальный период кадров"
-                      unit="с"
-                      min={0.01}
-                      max={60}
-                      step={0.1}
-                      value={job.quality.minimumIntervalSec ?? 1}
-                      onChange={(n) =>
-                        patchJob({
-                          quality: { ...job.quality, minimumIntervalSec: n },
                         })
                       }
                     />
@@ -1329,7 +1364,9 @@ export default function MissionWizard({
               <h3>{d.name || 'Без названия'}</h3>
               {d.jobs.map((j) => (
                 <p className="mw-caption" key={j.id}>
-                  {j.name} · {jobNames[j.job.type]} · {j.job.altitudeM} м
+                  {j.name} · {jobNames[j.job.type]} ·{' '}
+                  {qualityForJob(j, undefined, d.flightEnvelope).job.altitudeM}{' '}
+                  м
                 </p>
               ))}
               <dl className="mw-definition">

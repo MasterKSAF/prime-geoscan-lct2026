@@ -197,7 +197,8 @@ void test('weather compatibility cannot promote partial jobs or bypass the exist
   document.environment = weather();
   const higher = structuredClone(document.jobs[0]);
   higher.id = 'higher';
-  higher.job.altitudeM = 200;
+  // Isolate weather rejection within the track's <150 m ceiling.
+  higher.job.altitudeM = 140;
   higher.quality.maximumGsdCm = 100;
   document.jobs.push(higher);
   const partial = await solveMissionDocument(document);

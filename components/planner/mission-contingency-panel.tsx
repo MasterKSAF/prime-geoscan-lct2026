@@ -25,7 +25,10 @@ export default function MissionContingencyPanel({
     try {
       const response = await fetch('/api/planner/missions/contingency', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...(document.obstacleLayer ? { 'x-prime-obstacles': '1' } : {}) },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(document.obstacleLayer || document.catalogLayers ? { 'x-prime-obstacles': '1' } : {}),
+        },
         body: JSON.stringify({ document, candidate }),
       });
       const result =
@@ -71,13 +74,11 @@ export default function MissionContingencyPanel({
       <summary>
         <span>Возврат из любой части маршрута</span>
         {report
-          ? ` · ${report.status === 'certified_model' ? 'проверен в модели' : 'не подтверждён полностью'}`
+          ? ` · ${report.status === 'certified_model' ? 'проверен в модели' : 'есть ограничения'}`
           : ''}
         <InfoHint label="Условия проверки возврата">
-          Проверка управляемого прекращения работы при исходном ветре и
-          исправном БВС. Остальная группа продолжает свои полёты. Внезапная
-          потеря тяги или изменение условий требуют отдельной реакции. Результат
-          относится только к проверенным интервалам и условиям отчёта.
+          Можно ли прервать работу и вернуться, пока остальные БВС продолжают
+          полёт. Проверяется исправный аппарат при заданном ветре.
         </InfoHint>
       </summary>
       <button
@@ -85,27 +86,33 @@ export default function MissionContingencyPanel({
         disabled={busy || candidate.status !== 'feasible_model'}
         onClick={() => void check()}
       >
-        {busy ? 'Проверяем пути…' : 'Проверить уход по всему маршруту'}
+        {busy ? 'Проверяем пути…' : 'Проверить возврат'}
       </button>
       {error && <p role="alert">{error}</p>}
       {report && (
         <>
           <output>
-            Проверено интервалов: {report.checkedAnchors}/{report.anchorCount}.
-            Подтверждено: {report.certifiedAnchors}. Отдельный выход:{' '}
-            {report.independentAnchors}; по исходному коридору без съёмки:{' '}
-            {report.plannedCorridorAnchors}.
+            Возврат проверен в {report.certifiedAnchors} из {report.anchorCount}{' '}
+            точек маршрута.
           </output>
           <p>
-            До опорной точки выхода: не более{' '}
-            {report.maxResponseDelaySec.toFixed(1)} с. Минимальный остаток при
-            посадке: {report.minimumRemainingPct?.toFixed(1) ?? '—'}%.
+            До начала возврата: не более {report.maxResponseDelaySec.toFixed(1)}{' '}
+            с. Минимальный остаток при посадке:{' '}
+            {report.minimumRemainingPct?.toFixed(1) ?? '—'}%.
           </p>
-          {report.reasons.map((reason, i) => (
-            <p key={i}>{reason}</p>
-          ))}
+          <details>
+            <summary>Подробности проверки</summary>
+            <p>
+              Проверено: {report.checkedAnchors}. Отдельный путь:{' '}
+              {report.independentAnchors}; по исходному маршруту:{' '}
+              {report.plannedCorridorAnchors}.
+            </p>
+            {report.reasons.map((reason, i) => (
+              <p key={i}>{reason}</p>
+            ))}
+          </details>
           <button className="mw-button" onClick={download}>
-            Отчёт ухода JSON
+            Скачать проверку возврата
           </button>
           <details>
             <summary>Границы проверки</summary>

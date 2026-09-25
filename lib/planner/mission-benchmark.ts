@@ -3,6 +3,7 @@ import { validateExportedCandidate } from './mission-validation.ts';
 import type { MissionCandidate, MissionDocument } from './mission-schema.ts';
 import type { Check } from './schema.ts';
 import { SHOWCASE_SCENARIOS } from './mission-showcase.ts';
+import { migrateMissionCameraBindings } from './camera-profile.ts';
 
 export const BENCHMARK_PROTOCOL = 'same-input-two-baselines-v2' as const;
 
@@ -101,6 +102,7 @@ export async function benchmarkCandidate(
   candidate: MissionCandidate,
   role: 'planned' | 'serial' | 'parallel',
 ) {
+  document = migrateMissionCameraBindings(document).document;
   const checks: Check[] = await validateExportedCandidate(document, candidate);
   checks.push({
     id: 'BENCHMARK_POLICY',
@@ -168,6 +170,7 @@ export async function compareBenchmarkCandidates(
   serial: MissionCandidate,
   baselineRole: 'serial' | 'parallel' = 'serial',
 ) {
+  document = migrateMissionCameraBindings(document).document;
   const inputHash = await sha256(document),
     proposed = await benchmarkCandidate(document, planned, 'planned'),
     baseline = await benchmarkCandidate(document, serial, baselineRole),

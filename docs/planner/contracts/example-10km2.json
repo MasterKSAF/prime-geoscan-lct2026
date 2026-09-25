@@ -122,6 +122,28 @@
           "RGB",
           "MS"
         ],
+        "cameraProfiles": [
+          {
+            "id": "pf1b",
+            "name": "PF1B (миграция)",
+            "type": "RGB",
+            "status": "assumed",
+            "source": "Миграция legacy-camera-binding-v1: перенесена оптика старой работы; фактическую установку подтверждает оператор. PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры.",
+            "supportedModels": [
+              "Gemini"
+            ],
+            "sensorWidthMm": 23.5,
+            "sensorHeightMm": 15.6,
+            "focalLengthMm": 20,
+            "imageWidthPx": 6000,
+            "imageHeightPx": 4000,
+            "minimumIntervalSec": 1,
+            "shutterSec": 0.001
+          }
+        ],
+        "cameraIds": [
+          "pf1b"
+        ],
         "assumptions": [
           "28 мин — расчётный бюджет учебной конфигурации, не измеренная выносливость.",
           "Скорость, развороты, набор/снижение и частота кадров требуют калибровки."
@@ -152,6 +174,28 @@
         "jobs": [
           "RGB",
           "MS"
+        ],
+        "cameraProfiles": [
+          {
+            "id": "pf1b",
+            "name": "PF1B (миграция)",
+            "type": "RGB",
+            "status": "assumed",
+            "source": "Миграция legacy-camera-binding-v1: перенесена оптика старой работы; фактическую установку подтверждает оператор. PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры.",
+            "supportedModels": [
+              "Gemini"
+            ],
+            "sensorWidthMm": 23.5,
+            "sensorHeightMm": 15.6,
+            "focalLengthMm": 20,
+            "imageWidthPx": 6000,
+            "imageHeightPx": 4000,
+            "minimumIntervalSec": 1,
+            "shutterSec": 0.001
+          }
+        ],
+        "cameraIds": [
+          "pf1b"
         ],
         "assumptions": [
           "28 мин — расчётный бюджет учебной конфигурации, не измеренная выносливость.",
@@ -184,6 +228,28 @@
           "RGB",
           "MS"
         ],
+        "cameraProfiles": [
+          {
+            "id": "pf1b",
+            "name": "PF1B (миграция)",
+            "type": "RGB",
+            "status": "assumed",
+            "source": "Миграция legacy-camera-binding-v1: перенесена оптика старой работы; фактическую установку подтверждает оператор. PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры.",
+            "supportedModels": [
+              "Gemini"
+            ],
+            "sensorWidthMm": 23.5,
+            "sensorHeightMm": 15.6,
+            "focalLengthMm": 20,
+            "imageWidthPx": 6000,
+            "imageHeightPx": 4000,
+            "minimumIntervalSec": 1,
+            "shutterSec": 0.001
+          }
+        ],
+        "cameraIds": [
+          "pf1b"
+        ],
         "assumptions": [
           "28 мин — расчётный бюджет учебной конфигурации, не измеренная выносливость.",
           "Скорость, развороты, набор/снижение и частота кадров требуют калибровки."
@@ -214,6 +280,28 @@
         "jobs": [
           "RGB",
           "MS"
+        ],
+        "cameraProfiles": [
+          {
+            "id": "pf1b",
+            "name": "PF1B (миграция)",
+            "type": "RGB",
+            "status": "assumed",
+            "source": "Миграция legacy-camera-binding-v1: перенесена оптика старой работы; фактическую установку подтверждает оператор. PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры.",
+            "supportedModels": [
+              "Gemini"
+            ],
+            "sensorWidthMm": 23.5,
+            "sensorHeightMm": 15.6,
+            "focalLengthMm": 20,
+            "imageWidthPx": 6000,
+            "imageHeightPx": 4000,
+            "minimumIntervalSec": 1,
+            "shutterSec": 0.001
+          }
+        ],
+        "cameraIds": [
+          "pf1b"
         ],
         "assumptions": [
           "28 мин — расчётный бюджет учебной конфигурации, не измеренная выносливость.",
@@ -356,8 +444,8 @@
   },
   "flightEnvelope": {
     "minSurveyAltitudeM": 10,
-    "maxAltitudeM": 500,
-    "source": "Учебный диапазон сценария, не разрешение воздушного пространства."
+    "maxAltitudeM": 149,
+    "source": "Предел трека ниже 150 м AGL; потолок 149 м включает модельный запас 1 м. Не разрешение на полёт."
   },
   "notes": "Учебный сценарий. Координаты реальные; область, базы, допуски, ресурсы и плоская поверхность синтетические. 100 км² — нагрузочный вход: выполнимость и время расчёта не гарантируются."
 }

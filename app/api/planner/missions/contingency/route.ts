@@ -94,7 +94,7 @@ export async function POST(request: Request) {
       .strict()
       .parse(value);
     checkMissionSize(payload.document);
-    checkTextSize(JSON.stringify({ ...payload, document: { ...payload.document, obstacleLayer: undefined } }), MAX_ROBUSTNESS_REQUEST_BYTES);
+    checkTextSize(JSON.stringify({ ...payload, document: { ...payload.document, obstacleLayer: undefined, catalogLayers: undefined } }), MAX_ROBUSTNESS_REQUEST_BYTES);
     return Response.json(
       await certifyMissionContingencies(
         payload.document,

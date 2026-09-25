@@ -1,5 +1,6 @@
 import type { MissionOperation } from './mission-operations.ts';
 import type { Coordinate } from './schema.ts';
+import type { FleetState } from './mission-fleet-state.ts';
 
 /** Conservative all-time horizontal reservation. Pauses, asynchronous clocks and
  * different altitude datums cannot make intersecting envelopes safe. */
@@ -49,5 +50,40 @@ export function independentOperations(
       y.east < x.west ||
       x.north < y.south ||
       y.north < x.south)
+  );
+}
+
+/** A stationary, unassigned aircraft in another region cannot occupy this
+ * model's flight envelope. Keep an intentionally conservative 50 km geographic
+ * guard (not a statutory separation norm). Airborne/assigned/unknown states
+ * and anything near the operation still require the existing full checks. */
+export function distantGroundedFleetState(
+  row: Pick<MissionOperation, 'document' | 'candidate'>,
+  state: FleetState,
+): boolean {
+  if (!state.grounded || state.operationId) return false;
+  const envelope = operationEnvelope(row);
+  if (!envelope) return false;
+  const points = [state.vehicle.start, state.vehicle.landing];
+  if (points.some((p) => !p.every(Number.isFinite) || Math.abs(p[1]) > 84))
+    return false;
+  const xs = points.map((p) => p[0]),
+    ys = points.map((p) => p[1]);
+  const west = Math.min(...xs),
+    east = Math.max(...xs);
+  if (Math.max(east, envelope.east) - Math.min(west, envelope.west) > 180)
+    return false;
+  const dy = 50000 / 110000;
+  const latitude = Math.max(
+    Math.abs(envelope.north),
+    Math.abs(envelope.south),
+    ...ys.map(Math.abs),
+  );
+  const dx = dy / Math.cos((latitude * Math.PI) / 180);
+  return (
+    east < envelope.west - dx ||
+    west > envelope.east + dx ||
+    Math.max(...ys) < envelope.south - dy ||
+    Math.min(...ys) > envelope.north + dy
   );
 }

@@ -23,9 +23,12 @@ import { GEOSCAN_201_MODEL_PROFILE } from '@/lib/planner/fixed-wing-profile';
 import {
   MISSION_VEHICLE_CATALOG,
   vehicleCatalogueEntry,
+  installedVehicleConfiguration,
+  catalogueCameraConfiguration,
 } from '@/lib/planner/mission-vehicle-catalog';
 import type { CatalogueModel } from '@/lib/planner/mission-vehicle-catalog';
 import { vehicleDisplayName } from '@/lib/planner/mission-vehicle-label';
+import { VehicleCameraEditor } from './vehicle-camera-editor';
 
 const workTypes: Record<Vehicle['jobs'][number], string> = {
   RGB: 'RGB',
@@ -702,6 +705,35 @@ export default function MissionFleetEditor({
                   физическую установку камеры. Оставьте хотя бы одну работу.
                 </InfoHint>
               </h4>
+              {catalogue && v.model !== 'Custom' && (
+                <label className="mw-field">
+                  Установленная камера
+                  <select
+                    aria-label={`Камера БВС: ${v.id}`}
+                    value={installedVehicleConfiguration(v)}
+                    onChange={(e) =>
+                      v.model !== 'Custom' &&
+                      patchVehicle(
+                        v.id,
+                        catalogueCameraConfiguration(v.model, e.target.value),
+                      )
+                    }
+                  >
+                    <option value="" disabled>
+                      Выберите комплектацию
+                    </option>
+                    {catalogue.configurations.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
+              <VehicleCameraEditor
+                vehicle={v}
+                onSave={(patch) => patchVehicle(v.id, patch)}
+              />
               {Object.entries(workTypes).map(([type, name]) => {
                 const work = type as Vehicle['jobs'][number];
                 return (
@@ -710,6 +742,7 @@ export default function MissionFleetEditor({
                       type="checkbox"
                       checked={v.jobs.includes(work)}
                       disabled={
+                        v.model !== 'Custom' ||
                         (v.jobs.length === 1 && v.jobs.includes(work)) ||
                         (!v.jobs.includes(work) &&
                           !!supportedWorks &&

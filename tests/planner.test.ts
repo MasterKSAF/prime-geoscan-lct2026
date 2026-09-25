@@ -14,13 +14,13 @@ import { evidenceBundle, toGeoJSON, toKML } from '../lib/planner/export.ts';
 import { parseScenario } from '../lib/planner/schema.ts';
 import type { Plan, Scenario } from '../lib/planner/schema.ts';
 
-test('coordinates: local projection round trip and metre scale', () => {
+void test('coordinates: local projection round trip and metre scale', () => {
   const p = projection([30, 60]);
   const v = p.inverse(p.forward([30.01, 60.01]));
   assert.ok(Math.abs(v[0] - 30.01) < 1e-10);
   assert.ok(Math.abs(p.forward([30.01, 60])[0] - 556) < 1);
 });
-test('wind: headwind, tailwind and crab correction', () => {
+void test('wind: headwind, tailwind and crab correction', () => {
   assert.equal(
     groundSpeed([0, 0], [0, 100], 10, { speedMps: 3, fromDeg: 0 }),
     7,
@@ -39,7 +39,7 @@ test('wind: headwind, tailwind and crab correction', () => {
     /ветер/,
   );
 });
-test('polygon crossing: vertices valid but segment through forbidden island is invalid', () => {
+void test('polygon crossing: vertices valid but segment through forbidden island is invalid', () => {
   const s = demoScenario(),
     g = prepareGeometry(s),
     hole = s.exclusions[0].coordinates[0];
@@ -53,7 +53,7 @@ test('polygon crossing: vertices valid but segment through forbidden island is i
     detour.slice(1).every((p, i) => segmentInside(detour[i], p, g.free)),
   );
 });
-test('demo: all strips, endpoints, time, reserve and geometric coverage checked', () => {
+void test('demo: all strips, endpoints, time, reserve and geometric coverage checked', () => {
   const p = solve(demoScenario());
   assert.equal(p.status, 'undetermined');
   assert.ok(p.missions.length >= 1);
@@ -63,20 +63,20 @@ test('demo: all strips, endpoints, time, reserve and geometric coverage checked'
   assert.ok(p.missions.every((m) => m.remainingPct >= p.scenario.reservePct));
   assert.ok(p.metrics.targetHa < p.metrics.areaHa);
 });
-test('deterministic result independent of wall-clock metadata', () => {
+void test('deterministic result independent of wall-clock metadata', () => {
   const a = solve(demoScenario()),
     b = solve(demoScenario());
   assert.deepEqual(a.metrics, b.metrics);
   assert.deepEqual(a.missions, b.missions);
 });
-test('two criteria both execute; sum-of-flight-times is not distance', () => {
+void test('two criteria both execute; sum-of-flight-times is not distance', () => {
   const s = demoScenario();
   s.objective = 'flightTime';
   const p = solve(s);
   assert.ok(p.metrics.flightTimeSec >= p.metrics.makespanSec);
   assert.ok(Math.abs(p.metrics.flightTimeSec - p.metrics.distanceM) > 1);
 });
-test('optimizer does not worsen a feasible baseline on selected criterion', () => {
+void test('optimizer does not worsen a feasible baseline on selected criterion', () => {
   const s = demoScenario();
   s.vehicles.forEach((v) => (v.effectiveEnduranceMin = 60));
   for (const criterion of ['flightTime', 'makespan'] as const) {
@@ -87,7 +87,7 @@ test('optimizer does not worsen a feasible baseline on selected criterion', () =
     assert.ok(p.metrics[k] <= p.baseline[k] + 1e-8);
   }
 });
-test('incompatible job, unsupported payload and fixed wing fail closed', () => {
+void test('incompatible job, unsupported payload and fixed wing fail closed', () => {
   const s = demoScenario();
   s.job.type = 'IR';
   assert.throws(() => solve(s), /не поддерживает/);
@@ -97,7 +97,7 @@ test('incompatible job, unsupported payload and fixed wing fail closed', () => {
   s.vehicles[3].enabled = true;
   assert.throws(() => solve(s), /201/);
 });
-test('battery, wind and empty fleet rejected', () => {
+void test('battery, wind and empty fleet rejected', () => {
   const s = demoScenario();
   s.vehicles[0].batteryPct = 10;
   assert.throws(() => solve(s), /заряд/);
@@ -108,12 +108,12 @@ test('battery, wind and empty fleet rejected', () => {
   s.vehicles.forEach((v) => (v.enabled = false));
   assert.throws(() => solve(s), /хотя бы/);
 });
-test('tiny endurance cannot produce a full mission', () => {
+void test('tiny endurance cannot produce a full mission', () => {
   const s = demoScenario();
   s.vehicles.forEach((v) => (v.effectiveEnduranceMin = 1));
   assert.throws(() => solve(s), /не найден/);
 });
-test('schema rejects malformed, excessive and unknown data', () => {
+void test('schema rejects malformed, excessive and unknown data', () => {
   assert.throws(() =>
     parseScenario({ ...demoScenario(), secret: 'not allowed' }),
   );
@@ -124,7 +124,7 @@ test('schema rejects malformed, excessive and unknown data', () => {
   s.vehicles[1].id = s.vehicles[0].id;
   assert.throws(() => parseScenario(s), /уникальны/);
 });
-test('self-intersection and distant coordinates rejected', () => {
+void test('self-intersection and distant coordinates rejected', () => {
   const s = demoScenario();
   s.area.coordinates = [
     [
@@ -140,12 +140,12 @@ test('self-intersection and distant coordinates rejected', () => {
   far.vehicles[0].start = [31, 61];
   assert.throws(() => solve(far), /15 км/);
 });
-test('start in no-fly zone rejected', () => {
+void test('start in no-fly zone rejected', () => {
   const s = demoScenario();
   s.vehicles[0].start = s.exclusions[0].coordinates[0][0];
   assert.throws(() => solve(s), /Точка старта/);
 });
-test('validator detects forged energy, time, endpoint and strip omissions', () => {
+void test('validator detects forged energy, time, endpoint and strip omissions', () => {
   const s = demoScenario(),
     p = solve(s),
     m = structuredClone(p.missions);
@@ -163,7 +163,7 @@ test('validator detects forged energy, time, endpoint and strip omissions', () =
   checked = validatePlan(s, p.missions.slice(1), p.metrics.stripCount);
   assert.equal(checked.checks.find((c) => c.id === 'STRIPS')?.status, 'fail');
 });
-test('GeoJSON round trip includes ordered phases and explicit non-geodetic heights', () => {
+void test('GeoJSON round trip includes ordered phases and explicit non-geodetic heights', () => {
   const p = {
     ...solve(demoScenario()),
     inputHash: 'test',
@@ -207,7 +207,7 @@ test('GeoJSON round trip includes ordered phases and explicit non-geodetic heigh
   assert.ok(toKML(p).includes('&lt;test &amp; &quot;quotes&quot;&gt;'));
   assert.equal(evidenceBundle(p).evidenceKind, 'model-calculation');
 });
-test('area and hole topology: excluded area cannot improve the gross coverage claim', () => {
+void test('area and hole topology: excluded area cannot improve the gross coverage claim', () => {
   const s = demoScenario(),
     g = prepareGeometry(s);
   assert.ok(area(g.target) < area(g.gross));

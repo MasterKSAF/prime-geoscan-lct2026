@@ -1,13 +1,12 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import Image from 'next/image';
 import {
   Archive,
   ArrowDownToLine,
-  CheckCircle2,
   ChevronRight,
   CircleHelp,
-  Compass,
   Crosshair,
   Download,
   FileCheck2,
@@ -29,8 +28,10 @@ import {
   Upload,
   Wind,
   X,
+  Trash2,
 } from 'lucide-react';
 import { demoMission } from '@/lib/planner/mission-demo';
+import { simulatedTrialFleetChanges } from '@/lib/planner/mission-demo-trial';
 import {
   canonicalStringify,
   parseMissionDocument,
@@ -71,15 +72,36 @@ import {
   missionKML,
 } from '@/lib/planner/mission-export';
 import MissionMap, { flightColors } from './mission-map';
+import MissionImportCard from './mission-import-card';
+import { missionPassportHtml } from '@/lib/planner/mission-passport';
 import ObstacleLayerPanel from './obstacle-layer-panel';
-import { buildMissionArchive } from '@/lib/planner/mission-archive';
+import {
+  buildMissionArchive,
+  buildMissionDiagnosticArchive,
+  buildIncidentArchive,
+  createStoredZip,
+} from '@/lib/planner/mission-archive';
 import {
   MAX_OBSTACLE_MISSION_BYTES,
   type Bounds,
 } from '@/lib/planner/obstacle-layer';
 import type { DrawMode } from './mission-map';
-import { jobNames } from './mission-wizard';
 import MissionEditor from './mission-editor';
+import MissionDataPanel from './mission-data-panel';
+import MissionMapObjects from './mission-map-objects';
+import {
+  changedBaseVehicles,
+  missionBases,
+  moveMissionBase,
+} from '@/lib/planner/mission-bases';
+import type { BaseAction } from './mission-base-editor';
+import {
+  upsertMission,
+  importedFleetConflicts,
+  reconcileImportedFleet,
+} from '@/lib/planner/mission-collection';
+import { alternativeLimitExplanation } from '@/lib/planner/mission-alternatives';
+import { effectiveMissionRestrictions } from '@/lib/planner/mission-catalog';
 import { prepareGroundRevision } from '@/lib/planner/mission-revision';
 import {
   appendEmptyArea,
@@ -89,15 +111,9 @@ import {
   missionRunReport,
   missionRunReportHtml,
 } from '@/lib/planner/mission-run-export';
-import FleetWorkspace from './fleet-workspace';
-import {
-  baseAssignmentReport,
-  refreshDraftFleet,
-} from '@/lib/planner/fleet-availability';
 import {
   createFleetRegistry,
   applyRegistryFleet,
-  assertRegistryChangesSafe,
   type FleetRegistry,
 } from '@/lib/planner/fleet-registry';
 import Link from 'next/link';
@@ -106,11 +122,28 @@ import MissionGallery from './mission-gallery';
 import MissionComparisonView from './mission-comparison-view';
 import MissionAnalysisPanel from './mission-analysis-panel';
 import MissionDataSummary from './mission-data-summary';
-import MissionContingencyPanel from './mission-contingency-panel';
 import { photoCoverageGeoJSON } from '@/lib/planner/mission-photo-footprints';
-import MissionHome from './mission-home';
 import { MissionSafetySummary } from './mission-safety-summary';
-import { groupMissionCandidates } from '@/lib/planner/mission-presentation';
+import { MissionCheckGroups } from './mission-check-details';
+import MissionFailedChecks from './mission-failed-checks';
+import { prepareSharedDemoFleet } from '@/lib/planner/demo-shared-fleet';
+import { withMissionReservations } from '@/lib/planner/mission-resource-reservations';
+import {
+  concurrentVehicleCount,
+  missionFleetLabel,
+} from '@/lib/planner/mission-alternatives';
+import { expertCandidateGroups } from '@/lib/planner/expert-presentation';
+import { EditorHistory } from '@/lib/planner/editor-history';
+import { useViewHistory } from '@/hooks/use-view-history';
+import { useMissionRecordings } from '@/hooks/use-mission-recordings';
+import { createRecoveryClock } from '@/lib/planner/mission-recovery-clock';
+import DemoMissionCards from './mission-session-cards';
+import DemoReportTable, { type DemoDownload } from './mission-session-report';
+import DemoFleet from './demo-fleet';
+import type { CameraPatch } from './vehicle-camera-editor';
+import { migrateMissionCameraBindings } from '@/lib/planner/camera-profile';
+import { DEMO_IDS, prepareDemoDocument } from '@/lib/planner/demo-session';
+import { catalogueCameraConfiguration } from '@/lib/planner/mission-vehicle-catalog';
 import {
   appendRestrictionLayer,
   parseRestrictionLayer,
@@ -126,7 +159,6 @@ import { deriveOperationVehicleStates } from '@/lib/planner/mission-operations';
 import type { MissionOperation } from '@/lib/planner/mission-operations';
 import { useMissionOperations } from '@/hooks/use-mission-operations';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import MissionWeatherPanel from './mission-weather-panel';
 import {
   vehicleDisplayName,
   vehicleMapLabel,
@@ -143,6 +175,7 @@ import {
   safetyMapPlan,
   incidentLabels,
   returnReserveAlert,
+  recoverySnapshot,
 } from '@/lib/planner/mission-safety';
 import type { IncidentKind } from '@/lib/planner/mission-safety';
 import { positionAt } from '@/lib/planner/mission-validation';
@@ -158,15 +191,17 @@ import MissionTerritoryEditor from './mission-territory-editor';
 import MissionFleetStatePanel from './mission-fleet-state-panel';
 import {
   applyFleetState,
+  refreshMissionFleetState,
   installedBatteryDocument,
+  fleetStateFromDocument,
 } from '@/lib/planner/mission-fleet-state';
 
 const candidateTitle = (c: MissionCandidate) =>
   c.id === 'balanced'
-    ? 'Баланс времени и ресурса'
+    ? 'Уложиться в срок'
     : c.objective === 'makespan'
-      ? 'Раньше завершить'
-      : 'Снизить общий налёт';
+      ? 'Быстрее закончить'
+      : 'Меньше налёт';
 
 const fmt = (n: number, digits = 1) =>
   Number.isFinite(n)
@@ -195,9 +230,9 @@ const phaseNames: Record<string, string> = {
 const candidateNames: Record<MissionCandidate['status'], string> = {
   feasible_model: 'Выполним в модели',
   invalid: 'Нарушены ограничения',
-  not_found: 'Не найден за бюджет',
-  partial: 'Частичное покрытие',
-  unsupported: 'Нужен другой профиль',
+  not_found: 'Полный маршрут не найден',
+  partial: 'Выполняется только часть работ',
+  unsupported: 'Эти параметры пока не поддерживаются',
 };
 function download(name: string, body: string, mime = 'application/json') {
   const a = window.document.createElement('a');
@@ -244,6 +279,7 @@ function Modal({
   onClose,
   wide = false,
   open = true,
+  className = '',
 }: {
   title: string;
   help?: ReactNode;
@@ -253,6 +289,7 @@ function Modal({
   error?: string;
   wide?: boolean;
   open?: boolean;
+  className?: string;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -268,7 +305,7 @@ function Modal({
   }, [open]);
   return (
     <dialog
-      className={`mw-modal ${wide ? 'ms-modal-wide' : ''}`}
+      className={`mw-modal ${wide ? 'ms-modal-wide' : ''} ${className}`}
       ref={ref}
       aria-label={title}
       onCancel={(e) => {
@@ -347,7 +384,45 @@ function mapPlan(
 }
 
 export default function MissionWorkbench() {
+  const [session, setSession] = useState<string | null>(null);
+  useEffect(() => {
+    const reset = () => setSession('prime-demo-session-' + crypto.randomUUID());
+    queueMicrotask(reset);
+    window.addEventListener('prime:reset-demo', reset);
+    return () => window.removeEventListener('prime:reset-demo', reset);
+  }, []);
+  useEffect(() => {
+    if (!session) return;
+    const cleanup = () => {
+      for (const suffix of ['-operations', '-library', '-fleet'])
+        indexedDB.deleteDatabase(session + suffix);
+    };
+    window.addEventListener('pagehide', cleanup);
+    return () => {
+      window.removeEventListener('pagehide', cleanup);
+      cleanup();
+    };
+  }, [session]);
+  return session ? (
+    <DemoWorkbench key={session} session={session} />
+  ) : (
+    <main>Подготовка трёх миссий…</main>
+  );
+}
+function DemoWorkbench({ session }: { session: string }) {
+  const [demoDocuments, setDemoDocuments] = useState<MissionDocument[]>([]);
+  const [demoResults, setDemoResults] = useState<Record<string, MissionResult>>(
+    {},
+  );
+  const [openedDemo, setOpenedDemo] = useState(false);
   const [workspace, setWorkspace] = useState('missions');
+  const editHistories = useRef(
+    new Map<string, EditorHistory<MissionDocument>>(),
+  );
+  const [historyVersion, setHistoryVersion] = useState(0);
+  const [editorTab, setEditorTab] = useState<
+    'area' | 'quality' | 'vehicles' | 'time'
+  >('area');
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => {
     let active = true;
@@ -363,16 +438,23 @@ export default function MissionWorkbench() {
     'summary' | 'analysis' | 'files'
   >('summary');
   const [flightDetails, setFlightDetails] = useState(false);
-  const [allChecksOpen, setAllChecksOpen] = useState(false);
+  const [exportBusy, setExportBusy] = useState(false);
+  const [reportPreview, setReportPreview] = useState('');
+  const [reviewMissionId, setReviewMissionId] = useState<string | null>(null);
+  const [demoSelection, setDemoSelection] = useState<Record<string, string>>(
+    {},
+  );
   const [incidentKind, setIncidentKind] = useState<IncidentKind>('obstacle');
-  const [incidentWind, setIncidentWind] = useState(8);
+  const [incidentWind, setIncidentWind] = useState(4);
   const [incidentBattery, setIncidentBattery] = useState(30);
   const [recoveryTime, setRecoveryTime] = useState(0);
   const [recovering, setRecovering] = useState(false);
   const [operatorSeconds, setOperatorSeconds] = useState(60);
   const incidentBusy = useRef(false);
   const safetyDecisionBusy = useRef(false);
-  const recoveryStop = useRef<() => Promise<void>>(async () => {});
+  const recoveryRunner = useRef<ReturnType<typeof createRecoveryClock> | null>(
+    null,
+  );
   const [editorSession, setEditorSession] = useState(0);
   const [planningStep, setPlanningStep] = useState<
     'task' | 'variants' | 'confirm'
@@ -384,11 +466,27 @@ export default function MissionWorkbench() {
     document.scenario.vehicles[index]
       ? vehicleMapLabel(document.scenario.vehicles[index], index)
       : 'БВС';
+  const mapBases = useMemo(() => missionBases(document), [document]);
   const [panelWidth, setPanelWidth] = useState(50);
   const [executionTab, setExecutionTab] = useState<
     'summary' | 'vehicles' | 'journal'
   >('summary');
   const [fleetView, setFleetView] = useState<'catalog' | 'state'>('catalog');
+  const navigation = useViewHistory(
+    { workspace, resultsTab, planningStep, editorTab, executionTab, fleetView },
+    (v) => {
+      setWorkspace(v.workspace);
+      setResultsTab(v.resultsTab);
+      setPlanningStep(v.planningStep);
+      setEditorTab(v.editorTab);
+      setExecutionTab(v.executionTab);
+      setFleetView(v.fleetView);
+      setMode(null);
+      setDraft([]);
+      setModal(null);
+    },
+    document.id,
+  );
   const [result, setResult] = useState<MissionResult | null>(null),
     [candidateId, setCandidateId] = useState('');
   const [approval, setApproval] = useState<MissionApproval | null>(null),
@@ -413,6 +511,26 @@ export default function MissionWorkbench() {
     'polygon' | 'freehand' | 'circle' | 'ellipse'
   >('polygon');
   const [territoryEditing, setTerritoryEditing] = useState(false);
+  const [boundaryEditing, setBoundaryEditing] = useState(false);
+  const [selectedBase, setSelectedBase] = useState<string | null>(null);
+  const [baseAction, setBaseAction] = useState<BaseAction | null>(null);
+  const [movingBaseId, setMovingBaseId] = useState<string | null>(null);
+  const [basePreview, setBasePreview] = useState<Coordinate | null>(null);
+  const [baseFeedback, setBaseFeedback] = useState<{
+    missionId: string;
+    text: string;
+    error?: boolean;
+  } | null>(null);
+  const [baseUndo, setBaseUndo] = useState<{
+    before: MissionDocument;
+    after: MissionDocument;
+  } | null>(null);
+  const baseChangeLock = useRef(false);
+  const [pickedMapPoint, setPickedMapPoint] = useState<{
+    kind: 'base' | 'reserve';
+    point: Coordinate;
+    key: number;
+  } | null>(null);
   const [time, setTime] = useState(0),
     [playing, setPlaying] = useState(false),
     [rate, setRate] = useState(40);
@@ -444,6 +562,7 @@ export default function MissionWorkbench() {
     | 'journal-review'
     | 'operation-journal'
     | 'telemetry'
+    | 'report-preview'
     | null
   >(null);
   const [copyId, setCopyId] = useState(''),
@@ -461,6 +580,12 @@ export default function MissionWorkbench() {
   const [preview, setPreview] = useState<MissionDocument | null>(null),
     [previewName, setPreviewName] = useState(''),
     [previewRevision, setPreviewRevision] = useState<number | undefined>();
+  const previewJobId = useRef<string | null>(null);
+  const previewTrialOrigin = useRef<MissionDocument | null>(null);
+  const [previewImport, setPreviewImport] = useState(false);
+  const [importFleetChoice, setImportFleetChoice] = useState(false);
+  const [importCopyChoice, setImportCopyChoice] = useState(false);
+  const requestedGeometryRole = useRef<GeometryRole>('area');
   const [geometry, setGeometry] = useState<{
       text: string;
       format: 'geojson' | 'kml';
@@ -472,26 +597,18 @@ export default function MissionWorkbench() {
     [archiveId, setArchiveId] = useState<string | null>(null),
     [exportVehicle, setExportVehicle] = useState('all'),
     [dirty, setDirty] = useState(false);
-  const operations = useMissionOperations();
+  const operations = useMissionOperations({
+    dbName: session + '-operations',
+    demoSession: true,
+  });
   const [fleetRegistry, setFleetRegistry] = useState<FleetRegistry | null>(
     null,
   );
-  const [registryBusy, setRegistryBusy] = useState(false);
-  const [fleetRecalculations, setFleetRecalculations] = useState<
-    {
-      id: string;
-      name: string;
-      status: string;
-      result?: MissionResult;
-      savedRevision?: number;
-    }[]
-  >([]);
-  const fleetRequest = useRef<AbortController | null>(null);
   const registryStore = useRef<ReturnType<typeof createFleetRegistry> | null>(
     null,
   );
   useEffect(() => {
-    const store = createFleetRegistry();
+    const store = createFleetRegistry(indexedDB, session + '-fleet');
     registryStore.current = store;
     let disposed = false;
     void store
@@ -507,246 +624,7 @@ export default function MissionWorkbench() {
       registryStore.current = null;
       void store.close();
     };
-  }, []);
-  async function refreshRegistry() {
-    try {
-      if (registryStore.current)
-        setFleetRegistry(await registryStore.current.read());
-      await operations.refresh();
-    } catch (e) {
-      setError(errorMessage(e));
-    }
-  }
-  async function saveRegistry(next: MissionDocument) {
-    if (!registryStore.current || registryBusy) return false;
-    const editorRevision = revision.current;
-    setRegistryBusy(true);
-    let registrySaved = false;
-    try {
-      const rows = await operations.refresh();
-      const before = fleetRegistry?.document ?? null;
-      assertRegistryChangesSafe(before, next, rows);
-      const states = await operations.listFleet();
-      const moved = next.scenario.vehicles.filter((v) => {
-        const old = before?.scenario.vehicles.find((x) => x.id === v.id);
-        return (
-          old &&
-          (canonicalStringify(old.start) !== canonicalStringify(v.start) ||
-            canonicalStringify(old.landing) !== canonicalStringify(v.landing))
-        );
-      });
-      // Preflight the whole set before writing; reportFleet rechecks reservations transactionally.
-      const reports = moved.map((v) =>
-        baseAssignmentReport(
-          next,
-          v.id,
-          states.find((s) => s.id === v.id),
-          rows,
-        ),
-      );
-      const saved = await registryStore.current.save(
-        next,
-        fleetRegistry?.revision ?? null,
-      );
-      registrySaved = true;
-      setFleetRegistry(saved);
-      for (const report of reports) await operations.reportFleet(report);
-      if (moved.length)
-        await recalculateFleetDrafts(before, saved.document, editorRevision);
-      else setNotice('Общий парк сохранён.');
-      return true;
-    } catch (e) {
-      setError(
-        `${registrySaved ? 'Каталог сохранён, но обновление состояния или пересчёт не завершены. Проверьте базы и состояние в парке; запуск автоматически не выполнялся. ' : ''}${errorMessage(e)}`,
-      );
-      if (registrySaved) {
-        setApproval(null);
-        setResult(null);
-        await operations.refresh().catch(() => undefined);
-      }
-      return false;
-    } finally {
-      setRegistryBusy(false);
-    }
-  }
-  async function recalculateFleetDrafts(
-    before: MissionDocument | null,
-    after: MissionDocument,
-    editorRevision: number,
-  ) {
-    const controller = new AbortController();
-    fleetRequest.current?.abort();
-    fleetRequest.current = controller;
-    const rows = await operations.refresh();
-    const locked = new Set(
-      rows
-        // Reports and previously launched missions are history, not drafts.
-        .filter(
-          (r) => r.startedAt || !['completed', 'cancelled'].includes(r.status),
-        )
-        .map((r) => r.document.id),
-    );
-    const saved = (await library.current?.list()) ?? [];
-    const sources: { document: MissionDocument; savedRevision?: number }[] =
-      saved
-        .filter((s) => !locked.has(s.id))
-        .map((s) => ({ document: s.document, savedRevision: s.revision }));
-    // Do not replace unsaved editor changes with the older library copy.
-    if (!locked.has(document.id) && revision.current === editorRevision) {
-      const index = sources.findIndex((s) => s.document.id === document.id);
-      if (index >= 0) sources.splice(index, 1);
-      sources.unshift({
-        document,
-        savedRevision: dirty ? undefined : savedRevision,
-      });
-    }
-    const affected = sources
-      .map((s) => ({
-        ...s,
-        next: refreshDraftFleet(s.document, before, after),
-      }))
-      .filter((s) => s.next !== s.document);
-    setFleetRecalculations(
-      affected.map((s) => ({
-        id: s.next.id,
-        name: s.next.name,
-        status: 'Ожидает расчёта',
-      })),
-    );
-    const states = await operations.listFleet();
-    let adoptedRevision = editorRevision;
-    for (const source of affected) {
-      if (controller.signal.aborted) return;
-      let storedRevision = source.savedRevision;
-      try {
-        // Never add unrelated aircraft to a mission implicitly.
-        const ids = new Set(source.next.scenario.vehicles.map((v) => v.id));
-        const input = applyFleetState(
-          source.next,
-          states.filter((s) => ids.has(s.id)),
-        );
-        if (
-          source.next.id === document.id &&
-          revision.current === editorRevision
-        ) {
-          edit(input);
-          adoptedRevision = revision.current;
-        }
-        if (storedRevision && library.current) {
-          const stored = await library.current.save(input, {
-            expectedRevision: storedRevision,
-          });
-          storedRevision = stored.revision;
-          if (
-            source.next.id === document.id &&
-            revision.current === adoptedRevision
-          ) {
-            setSavedRevision(stored.revision);
-            setDirty(false);
-          }
-        }
-        setFleetRecalculations((prev) =>
-          prev.map((r) =>
-            r.id === input.id ? { ...r, status: 'Считаем…' } : r,
-          ),
-        );
-        const response = await fetch(
-          input.obstacleLayer
-            ? '/api/planner/missions/solve-with-obstacles'
-            : '/api/planner/missions/solve',
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(input),
-            signal: controller.signal,
-          },
-        );
-        const data = (await response.json()) as MissionResult & {
-          error?: string;
-          details?: string[];
-        };
-        if (!response.ok)
-          throw new Error(
-            [data.error, ...(data.details ?? [])].filter(Boolean).join(' · ') ||
-              `Ошибка ${response.status}`,
-          );
-        if (controller.signal.aborted) return;
-        setFleetRecalculations((prev) =>
-          prev.map((r) =>
-            r.id === input.id
-              ? {
-                  ...r,
-                  result: data,
-                  savedRevision: storedRevision,
-                  status: data.candidates.some(
-                    (c) => c.status === 'feasible_model',
-                  )
-                    ? 'Варианты готовы'
-                    : 'Нужны изменения условий',
-                }
-              : r,
-          ),
-        );
-        if (
-          source.next.id === document.id &&
-          revision.current === adoptedRevision
-        ) {
-          setResult(data);
-          setCandidateId(data.candidates[0]?.id ?? '');
-        }
-      } catch (e) {
-        if (controller.signal.aborted) return;
-        setFleetRecalculations((prev) =>
-          prev.map((r) =>
-            r.id === source.next.id
-              ? { ...r, status: `Не пересчитана: ${errorMessage(e)}` }
-              : r,
-          ),
-        );
-      }
-    }
-    if (library.current) setLibraryRows(await library.current.list(true));
-    setNotice(
-      affected.length
-        ? 'База обновлена. Результаты автоматического пересчёта — в парке БВС. Подтверждение и запуск остаются ручными.'
-        : 'База обновлена. Связанных черновиков для пересчёта нет.',
-    );
-  }
-  async function openFleetRecalculation(id: string) {
-    const row = fleetRecalculations.find((r) => r.id === id);
-    if (!row?.result) return;
-    if (row.savedRevision) {
-      const stored = await library.current?.get(id);
-      if (!stored || stored.revision !== row.savedRevision) {
-        setError(
-          'Миссия уже изменена. Откройте актуальную версию и повторите расчёт.',
-        );
-        return;
-      }
-    }
-    if (
-      dirty &&
-      !window.confirm(
-        'Открыть пересчитанный вариант без сохранения текущих изменений?',
-      )
-    )
-      return;
-    edit(row.result.document);
-    setSavedRevision(row.savedRevision);
-    setDirty(!row.savedRevision);
-    setResult(row.result);
-    setCandidateId(row.result.candidates[0]?.id ?? '');
-    setJobIndex(0);
-    setSelected(row.result.document.scenario.vehicles[0].id);
-    setClearedAreaId(null);
-    setAreaRestore(null);
-    setMode(null);
-    setDraft([]);
-    setWizard(false);
-    setWorkspace('planning');
-    setPlanningStep('variants');
-    setFit((n) => n + 1);
-  }
+  }, [session]);
   async function applyGlobalFleet() {
     if (!fleetRegistry) return;
     if (
@@ -796,10 +674,26 @@ export default function MissionWorkbench() {
     backupFile = useRef<HTMLInputElement>(null),
     layerFile = useRef<HTMLInputElement>(null);
   const currentJob = document.jobs[jobIndex] ?? document.jobs[0];
-  const stale =
-    !!result &&
-    (!!clearedAreaId ||
-      canonicalStringify(result.document) !== canonicalStringify(document));
+  const previewConflicts = useMemo(
+    () =>
+      preview && previewImport
+        ? importedFleetConflicts(preview, demoDocuments, operations.fleet)
+        : [],
+    [preview, previewImport, demoDocuments, operations.fleet],
+  );
+  const previewDuplicate =
+    previewImport &&
+    !!preview &&
+    demoDocuments.some((d) => d.id === preview.id);
+  const resultDocument = result?.document;
+  const stale = useMemo(
+    () =>
+      !!resultDocument &&
+      (!!clearedAreaId ||
+        (resultDocument !== document &&
+          canonicalStringify(resultDocument) !== canonicalStringify(document))),
+    [resultDocument, document, clearedAreaId],
+  );
   const current = result && !stale ? result : null;
   const currentCandidates = current
     ? [
@@ -829,10 +723,28 @@ export default function MissionWorkbench() {
   const duration = candidate?.metrics.makespanSec ?? 0;
   const activeRun =
     operations.rows.find((row) => row.id === activeRunId) ?? null;
+  const reviewOperation = reviewMissionId
+    ? (operations.rows.find((row) => row.document.id === reviewMissionId) ??
+      null)
+    : activeRun;
+  const reviewResult = reviewMissionId ? demoResults[reviewMissionId] : current;
+  const reviewDocument = reviewOperation?.document ?? reviewResult?.document;
+  const reviewCandidate =
+    reviewOperation?.candidate ??
+    (reviewResult
+      ? ([
+          ...reviewResult.candidates,
+          ...(reviewResult.recommendation
+            ? [reviewResult.recommendation.candidate]
+            : []),
+        ].find(
+          (c) =>
+            c.id ===
+            (reviewMissionId ? demoSelection[reviewMissionId] : candidateId),
+        ) ?? reviewResult.candidates[0])
+      : null);
   const journalRun = operations.rows.find((row) => row.id === journalRunId);
   const safety = activeRun?.safety;
-  const safetyId = safety?.id,
-    safetyStage = safety?.stage;
   const recoveryChoices = useMemo(
     () =>
       safety && candidate ? recoveryOptions(document, candidate, safety) : [],
@@ -840,7 +752,6 @@ export default function MissionWorkbench() {
   );
   const recoveryChoice =
     recoveryChoices.find((o) => o.policy === safety?.policy) ?? null;
-  const recoveryEnd = recoveryChoice?.valid ? recoveryChoice.endSec : null;
   const safetySceneDocument = useMemo(
     () =>
       safety && candidate
@@ -851,6 +762,13 @@ export default function MissionWorkbench() {
   const safetyDisplayTime = safety
     ? Math.max(safety.progressSec, recoveryTime)
     : time;
+  const sceneRestrictions = useMemo(() => {
+    try {
+      return effectiveMissionRestrictions(safetySceneDocument);
+    } catch {
+      return safetySceneDocument.restrictions;
+    } // Invalid source blocks solving; keep the editor/map usable.
+  }, [safetySceneDocument]);
   const vehicleStates = useMemo(
     () =>
       activeRun && candidate
@@ -861,7 +779,7 @@ export default function MissionWorkbench() {
   const activeVehicleState = vehicleStates.find(
     (v) => v.vehicleId === activeVehicle.id,
   );
-  const activeRestrictionIds = document.restrictions
+  const activeRestrictionIds = sceneRestrictions
     .filter(
       (r) =>
         !r.startAt ||
@@ -883,16 +801,23 @@ export default function MissionWorkbench() {
       job: currentJob.job,
       exclusions: [
         ...document.scenario.exclusions,
-        ...document.restrictions
+        ...sceneRestrictions
           .filter((r) => activeRestrictionIds.split('|').includes(r.id))
           .map((r) => r.geometry),
       ],
     }),
-    [document, currentJob, activeRestrictionIds],
+    [document, currentJob, activeRestrictionIds, sceneRestrictions],
   );
   const scenePlan = useMemo(
     () => mapPlan(candidate, sceneScenario),
     [candidate, sceneScenario],
+  );
+  const visibleWorkAreas = useMemo(
+    () =>
+      document.jobs.filter(
+        (j) => j.id !== clearedAreaId && j.area.coordinates[0]?.length,
+      ),
+    [document.jobs, clearedAreaId],
   );
   const displayedPlan = useMemo(
     () =>
@@ -956,6 +881,8 @@ export default function MissionWorkbench() {
         : 'Не назначен';
   const validation = useMemo(() => {
     try {
+      if (!document.scenario.airspace.coordinates[0]?.length)
+        return 'Граница полётов удалена. Откройте «Данные миссии → Объекты карты → Граница полётов» и задайте новый контур.';
       const emptyArea = document.jobs.find(
         (j) => !j.area.coordinates[0]?.length || j.id === clearedAreaId,
       );
@@ -980,7 +907,7 @@ export default function MissionWorkbench() {
   }, [geometry, geometryRole]);
 
   useEffect(() => {
-    library.current = createMissionLibrary();
+    library.current = createMissionLibrary({ dbName: session + '-library' });
     void library.current
       .list(true)
       .then(setLibraryRows)
@@ -988,8 +915,32 @@ export default function MissionWorkbench() {
     return () => {
       library.current?.close();
       request.current?.abort();
-      fleetRequest.current?.abort();
     };
+  }, [session]);
+  useEffect(() => {
+    const controller = new AbortController();
+    void Promise.all(
+      DEMO_IDS.map(async (id) => {
+        const r = await fetch(`/planner/scenarios/${id}.mission.json`, {
+          signal: controller.signal,
+        });
+        if (!r.ok)
+          throw new Error(
+            'Не удалось загрузить три демо-миссии. Обновите страницу.',
+          );
+        return prepareDemoDocument(parseMissionText(await r.text()));
+      }),
+    )
+      .then((d) => {
+        const prepared = prepareSharedDemoFleet(d);
+        setDemoDocuments(prepared);
+        setDocument(prepared[0]);
+        setSelected(prepared[0].scenario.vehicles[0].id);
+      })
+      .catch((e) => {
+        if (!controller.signal.aborted) setError(errorMessage(e));
+      });
+    return () => controller.abort();
   }, []);
   useEffect(() => {
     if (!dirty) return;
@@ -1001,14 +952,39 @@ export default function MissionWorkbench() {
   }, [dirty]);
   const ownedRuns = useRef(new Set<string>());
   const modelClocks = useRef(new Map<string, number>());
+  const recordings = useMissionRecordings(() =>
+    operationsRef.current.rows.map((row) => ({
+      row,
+      rate: playbackRate.current,
+      time: row.safety
+        ? (recoveryRunner.current?.time(row) ?? row.safety.progressSec)
+        : Math.max(row.progressSec, modelClocks.current.get(row.id) ?? 0),
+    })),
+  );
   const selectedRunRef = useRef(activeRunId);
   const openRunRef = useRef<(row: MissionOperation) => Promise<void>>(
     async () => {},
   );
   useEffect(() => {
-    selectedRunRef.current = activeRunId;
-    openRunRef.current = openOperation;
-  });
+    const runner = createRecoveryClock({
+      rows: () => operationsRef.current.rows,
+      change: (id, action) => operationsRef.current.safetyChange(id, action),
+      rate: () => playbackRate.current,
+      frame: (row, time, running) => {
+        if (row.id === selectedRunRef.current) {
+          setRecoveryTime(time);
+          setRecovering(running);
+        }
+      },
+      error: (e) => setError(errorMessage(e)),
+    });
+    recoveryRunner.current = runner;
+    const timer = setInterval(runner.tick, 100);
+    return () => {
+      clearInterval(timer);
+      recoveryRunner.current = null;
+    };
+  }, []);
   useEffect(() => {
     const owners = ownedRuns.current,
       clocks = modelClocks.current;
@@ -1056,10 +1032,12 @@ export default function MissionWorkbench() {
               kind: 'reserve',
               vehicleId,
               windMps: row.document.scenario.wind.speedMps,
-              batteryPct: 100,
+              batteryPct: recoverySnapshot(row.document, row.candidate, t).find(
+                (v) => v.vehicleId === vehicleId,
+              )!.batteryPct,
             });
             await openRunRef.current(changed);
-            setError('Контроль возвратного запаса: требуется внимание.');
+            setError('Проверка безопасного возврата: требуется внимание.');
           } else {
             const changed = await operationsRef.current.checkpoint(id, t);
             if (changed?.status === 'completed') {
@@ -1090,19 +1068,21 @@ export default function MissionWorkbench() {
       owners.clear();
     };
   }, []);
-  playbackStop.current = async () => {
-    const id = selectedRunRef.current;
-    if (!id) return;
-    const row = operationsRef.current.get(id);
-    ownedRuns.current.delete(id);
-    if (row?.status === 'running')
-      await operationsRef.current.pause(
-        id,
-        modelClocks.current.get(id) ?? row.progressSec,
-      );
-    modelClocks.current.delete(id);
-    setPlaying(false);
-  };
+  useEffect(() => {
+    playbackStop.current = async () => {
+      const id = selectedRunRef.current;
+      if (!id) return;
+      const row = operationsRef.current.get(id);
+      ownedRuns.current.delete(id);
+      if (row?.status === 'running')
+        await operationsRef.current.pause(
+          id,
+          modelClocks.current.get(id) ?? row.progressSec,
+        );
+      modelClocks.current.delete(id);
+      setPlaying(false);
+    };
+  });
   useEffect(() => {
     if (!safety || safety.stage !== 'pending' || !activeRunId) return;
     const tick = () => {
@@ -1111,87 +1091,19 @@ export default function MissionWorkbench() {
         Math.ceil((Date.parse(safety.detectedAt) + 60_000 - Date.now()) / 1000),
       );
       setOperatorSeconds(left);
-      if (left === 0 && !safetyDecisionBusy.current) {
-        safetyDecisionBusy.current = true;
-        void operationsRef.current
-          .safetyChange(activeRunId, {
-            type: 'decide',
-            policy: safety.policy,
-            reason: 'timeout',
-          })
-          .then(() => setRecovering(true))
-          .catch((e) => setError(errorMessage(e)))
-          .finally(() => {
-            safetyDecisionBusy.current = false;
-          });
-      }
     };
     tick();
     const timer = setInterval(tick, 500);
     return () => clearInterval(timer);
   }, [safety, activeRunId]);
   useEffect(() => {
-    if (
-      !recovering ||
-      safetyStage !== 'returning' ||
-      !activeRunId ||
-      recoveryEnd === null
-    )
-      return;
-    const stored = operationsRef.current.get(activeRunId)?.safety;
-    if (!stored || stored.id !== safetyId) return;
-    let t = stored.progressSec,
-      previous = performance.now(),
-      saving = false,
-      stopped = false,
-      lastSave = previous;
-    let stopPromise: Promise<void> | null = null;
-    const end = recoveryEnd;
-    const timer = setInterval(() => {
-      const now = performance.now();
-      t = Math.min(end, t + ((now - previous) / 1000) * playbackRate.current);
-      previous = now;
-      setRecoveryTime(t);
-      if (!saving && (now - lastSave >= 2000 || t === end)) {
-        saving = true;
-        lastSave = now;
-        void operationsRef.current
-          .safetyChange(activeRunId, { type: 'advance', progressSec: t })
-          .then(() => {
-            if (!stopped && t === end) setRecovering(false);
-          })
-          .catch((e) => {
-            setRecovering(false);
-            setError(errorMessage(e));
-          })
-          .finally(() => {
-            saving = false;
-          });
-      }
-    }, 100);
-    const stop = () => {
-      if (stopPromise) return stopPromise;
-      stopped = true;
-      clearInterval(timer);
-      const latest = operationsRef.current.get(activeRunId)?.safety;
-      stopPromise =
-        latest?.stage === 'returning' && t > latest.progressSec
-          ? operationsRef.current
-              .safetyChange(activeRunId, { type: 'advance', progressSec: t })
-              .then(() => undefined)
-          : Promise.resolve();
-      return stopPromise;
-    };
-    recoveryStop.current = stop;
-    return () => {
-      void stop().catch((e) => setError(errorMessage(e)));
-    };
-  }, [recovering, safetyId, safetyStage, activeRunId, recoveryEnd]);
-  useEffect(() => {
     setRecoveryTime(
       operationsRef.current.get(activeRunId ?? '')?.safety?.progressSec ?? 0,
     );
-    setRecovering(false);
+    setRecovering(
+      operationsRef.current.get(activeRunId ?? '')?.safety?.stage ===
+        'returning',
+    );
   }, [activeRunId]);
   async function triggerIncident() {
     if (incidentBusy.current || !activeRunId) return;
@@ -1204,11 +1116,25 @@ export default function MissionWorkbench() {
       const row = operationsRef.current.get(activeRunId);
       if (!row || row.status !== 'paused')
         throw new Error('Запустите симуляцию и выберите летящий аппарат.');
+      const airborne = row.candidate.sorties.filter(
+        (s) => s.startSec <= row.progressSec && row.progressSec < s.endSec,
+      );
+      const vehicleId =
+        airborne.find((s) => s.vehicleId === displaySelected)?.vehicleId ??
+        airborne[0]?.vehicleId;
+      if (!vehicleId)
+        throw new Error(
+          'Сейчас нет БВС в воздухе. Продолжите выполнение до взлёта.',
+        );
+      setSelected(vehicleId);
+      await new Promise<void>((resolve) =>
+        requestAnimationFrame(() => setTimeout(resolve, 0)),
+      );
       const updated = await operationsRef.current.safetyChange(row.id, {
         type: 'detect',
         id: crypto.randomUUID(),
         kind: incidentKind,
-        vehicleId: displaySelected,
+        vehicleId,
         windMps:
           incidentKind === 'wind'
             ? incidentWind
@@ -1291,8 +1217,13 @@ export default function MissionWorkbench() {
       ) {
         setMode(null);
         setDraft([]);
+        setMovingBaseId(null);
+        setBasePreview(null);
         updateNotice({
-          text: 'Рисование отменено. Исходная область сохранена.',
+          text:
+            mode === 'base' || mode === 'reserve'
+              ? 'Выбор точки отменён.'
+              : 'Рисование отменено. Исходная область сохранена.',
           workspace: 'planning',
         });
       }
@@ -1300,22 +1231,32 @@ export default function MissionWorkbench() {
     window.addEventListener('keydown', escape);
     return () => window.removeEventListener('keydown', escape);
   }, [mode]);
-  function edit(next: MissionDocument) {
+  function edit(next: MissionDocument, record = true) {
     next = synchronizeWorkSettings(next);
-    if (activeRun && next.id === activeRun.document.id) {
-      setSavedRevision(undefined);
-      next = {
-        ...next,
-        id: `mission-${crypto.randomUUID()}`,
-        notes:
-          `Редакция выполнения ${activeRun.id}. Исходный план не изменён. ${next.notes}`.slice(
-            0,
-            2000,
-          ),
-      };
+    try {
+      upsertMission(demoDocuments, next);
+    } catch (e) {
+      setError(errorMessage(e));
+      return;
+    }
+    const existing = operations.rows.find((r) => r.document.id === next.id);
+    if (existing) {
+      setError(
+        'Сначала удалите запуск этой миссии из «Выполнения». Затем можно изменить и пересчитать её.',
+      );
+      return;
+    }
+    if (record && next.id === document.id) {
+      const history =
+        editHistories.current.get(next.id) ??
+        new EditorHistory<MissionDocument>();
+      history.record(document);
+      editHistories.current.set(next.id, history);
+      setHistoryVersion((n) => n + 1);
     }
     setRecovering(false);
     setPlanningStep('task');
+    setWizard(true);
     revision.current++;
     request.current?.abort();
     setBusy(false);
@@ -1327,12 +1268,37 @@ export default function MissionWorkbench() {
     setError('');
     setDirty(true);
     setDocument(next);
+    setDemoDocuments((ds) => upsertMission(ds, next));
+    // Keep the last checked input/plan in Reports, even while its draft changes.
+  }
+  function undoEdit(redo = false) {
+    if (operations.rows.some((r) => r.document.id === document.id)) return;
+    const history = editHistories.current.get(document.id);
+    const next = redo ? history?.redo(document) : history?.undo(document);
+    if (!next) return;
+    edit(next, false);
+    setClearedAreaId(null);
+    setAreaRestore(null);
+    setMode(null);
+    setDraft([]);
+    setJobIndex((i) => Math.min(i, next.jobs.length - 1));
+    setHistoryVersion((n) => n + 1);
   }
   function openPreview(
     next: MissionDocument,
     label: string,
     storedRevision?: number,
+    imported = false,
   ) {
+    previewTrialOrigin.current = null;
+    setPreviewImport(imported);
+    setImportFleetChoice(false);
+    setImportCopyChoice(false);
+    const existing = operations.rows.find((r) => r.document.id === next.id);
+    if (existing && !imported) {
+      void openOperation(existing);
+      return;
+    }
     setError('');
     setPreview(next);
     setPreviewName(label);
@@ -1340,12 +1306,83 @@ export default function MissionWorkbench() {
     setPlaying(false);
     setModal('preview');
   }
-  function acceptPreview() {
-    if (!preview) return;
+  async function acceptPreview() {
+    if (!preview || operationActionBusy) return;
+    let incoming = preview;
+    try {
+      if (previewDuplicate) {
+        if (!importCopyChoice)
+          throw new Error(
+            'Выберите создание копии или откройте существующую миссию.',
+          );
+        incoming = {
+          ...incoming,
+          id: `mission-${crypto.randomUUID().slice(0, 20)}`,
+          name: `${incoming.name.slice(0, 90)} · копия`,
+        };
+      }
+      if (previewConflicts.length) {
+        if (!importFleetChoice)
+          throw new Error(
+            'Параметры БВС отличаются от общего парка. Подтвердите использование общего парка либо отмените импорт и задайте другим аппаратам новые ID.',
+          );
+        incoming = reconcileImportedFleet(
+          incoming,
+          demoDocuments,
+          await operations.listFleet(),
+        );
+      }
+      incoming = installedBatteryDocument(incoming);
+      upsertMission(demoDocuments, incoming);
+    } catch (e) {
+      setError(errorMessage(e));
+      return;
+    }
+    if (previewTrialOrigin.current) {
+      setOperationActionBusy(true);
+      try {
+        const reports = simulatedTrialFleetChanges(
+          previewTrialOrigin.current,
+          preview,
+          await operations.listFleet(),
+          new Date().toISOString(),
+        );
+        for (const report of reports) await operations.reportFleet(report);
+        if (reports.length)
+          setDemoDocuments((ds) =>
+            ds.map((d) => ({
+              ...d,
+              scenario: {
+                ...d.scenario,
+                vehicles: d.scenario.vehicles.map(
+                  (v) =>
+                    reports.find((r) => r.state.id === v.id)?.state.vehicle ??
+                    v,
+                ),
+              },
+              batteries: d.batteries.map((b) => {
+                const state = reports.find(
+                  (r) => r.state.id === b.vehicleId,
+                )?.state;
+                return state ? { ...state.battery, readyAt: b.readyAt } : b;
+              }),
+            })),
+          );
+        previewTrialOrigin.current = null;
+      } catch (e) {
+        setError(errorMessage(e));
+        return;
+      } finally {
+        setOperationActionBusy(false);
+      }
+    }
+    setOpenedDemo(true);
     setClearedAreaId(null);
     setAreaRestore(null);
     setTerritoryEditing(false);
-    edit(installedBatteryDocument(preview));
+    setBoundaryEditing(false);
+    setSelectedBase(null);
+    edit(incoming, false);
     setSavedRevision(previewRevision);
     setDirty(
       previewRevision === undefined ||
@@ -1353,7 +1390,13 @@ export default function MissionWorkbench() {
         !preview.planning.safetyPolicy,
     );
     setResult(null);
-    setJobIndex(0);
+    setJobIndex(
+      Math.max(
+        0,
+        preview.jobs.findIndex((j) => j.id === previewJobId.current),
+      ),
+    );
+    previewJobId.current = null;
     setSelected(preview.scenario.vehicles[0].id);
     setFit((x) => x + 1);
     setMode(null);
@@ -1365,36 +1408,16 @@ export default function MissionWorkbench() {
     setPlanningStep('task');
     setNotice('Миссия открыта в редакторе.');
   }
-  function createNewMission(discardConfirmed = false) {
-    if (
-      dirty &&
-      !discardConfirmed &&
-      !window.confirm('Открыть новую миссию без сохранения текущих изменений?')
-    )
-      return;
-    let next = {
-      ...installedBatteryDocument(demoMission(1)),
-      id: `mission-${crypto.randomUUID()}`,
-      name: 'Новая миссия',
-    };
-    if (fleetRegistry) next = applyRegistryFleet(next, fleetRegistry);
-    setClearedAreaId(null);
-    setAreaRestore(null);
-    setTerritoryEditing(false);
-    edit(next);
-    setSavedRevision(undefined);
-    setResult(null);
-    setJobIndex(0);
-    setSelected(next.scenario.vehicles[0].id);
-    setMode(null);
-    setDraft([]);
-    setWizard(true);
-    setEditorSession((n) => n + 1);
-    setWorkspace('planning');
-    setPlanningStep('task');
-    setFit((n) => n + 1);
-  }
   async function calculate() {
+    if (busy) return;
+    const invalidDate = window.document.querySelector<HTMLInputElement>(
+      '.expert-date-field input[aria-invalid="true"]',
+    );
+    if (invalidDate) {
+      setError('Исправьте дату или время в редакторе перед расчётом.');
+      invalidDate.focus();
+      return;
+    }
     if (validation) {
       setError(validation);
       return;
@@ -1416,15 +1439,75 @@ export default function MissionWorkbench() {
     setRestoredSnapshot(false);
     setApproval(null);
     setTime(0);
+    setResult(null);
+    setBusy(true);
+    setWizard(false);
+    setWorkspace('planning');
+    setPlanningStep('variants');
     try {
-      await operations.refresh();
-      const input = applyFleetState(document, await operations.listFleet());
+      if (operations.rows.some((r) => r.document.id === document.id))
+        throw new Error(
+          'Удалите предыдущий запуск этой миссии перед новым расчётом.',
+        );
+      const otherOperations = await operations.refresh();
+      const known = await operations.listFleet();
+      // Camera bindings are an explicit working-draft migration before polling.
+      // Saved executions and their old hashes are never rewritten here.
+      const workingDocument = migrateMissionCameraBindings(document).document;
+      for (const v of workingDocument.scenario.vehicles) {
+        const previous = known.find((s) => s.id === v.id);
+        if (previous?.operationId) continue;
+        const state = structuredClone(
+          previous ??
+            fleetStateFromDocument(
+              workingDocument,
+              v.id,
+              new Date().toISOString(),
+            ),
+        );
+        // A recalculation is a poll, not a battery replacement. Shared missions
+        // cannot restore spent charge or move an aircraft using an older draft.
+        const polledVehicle =
+          previous &&
+          state.vehicle.cameraIds === undefined &&
+          state.vehicle.cameraProfiles === undefined
+            ? migrateMissionCameraBindings({
+                ...workingDocument,
+                scenario: {
+                  ...workingDocument.scenario,
+                  vehicles: [state.vehicle],
+                },
+              }).document.scenario.vehicles[0]
+            : state.vehicle;
+        state.vehicle = previous
+          ? { ...polledVehicle, enabled: v.enabled }
+          : { ...v };
+        state.ready =
+          v.enabled &&
+          state.grounded &&
+          (!previous || state.ready || !previous.vehicle.enabled);
+        state.source = 'simulation';
+        state.observedAt = new Date(
+          Math.max(Date.now(), Date.parse(state.observedAt) + 1),
+        ).toISOString();
+        state.lastEvent = 'Симулятор: опрос выполнен';
+        await operations.reportFleet({
+          expectedRevision: previous?.revision ?? 0,
+          state,
+          replacement: false,
+        });
+      }
+      const input = withMissionReservations(
+        refreshMissionFleetState(workingDocument, await operations.listFleet()),
+        otherOperations,
+      );
+      // A new editor calculation opts into multi-area flights; archived snapshots stay immutable.
+      input.planning.areaTransferPolicy = 'compatible-work-v1';
       if (rev !== revision.current || controller.signal.aborted) return;
       setDocument(input);
       setDirty(true);
-      setBusy(true);
       const response = await fetch(
-        input.obstacleLayer
+        input.obstacleLayer || input.catalogLayers
           ? '/api/planner/missions/solve-with-obstacles'
           : '/api/planner/missions/solve',
         {
@@ -1450,6 +1533,19 @@ export default function MissionWorkbench() {
       )
         return;
       setResult(data);
+      setDocument(data.document);
+      setDemoSelection((s) => ({
+        ...s,
+        [data.document.id]:
+          data.candidates.find((c) => c.objective === input.scenario.objective)
+            ?.id ??
+          data.candidates[0]?.id ??
+          '',
+      }));
+      setDemoResults((rs) => ({ ...rs, [data.document.id]: data }));
+      setDemoDocuments((ds) =>
+        ds.map((d) => (d.id === data.document.id ? data.document : d)),
+      );
       setCandidateId(
         data.candidates.find((c) => c.objective === input.scenario.objective)
           ?.id ??
@@ -1460,9 +1556,7 @@ export default function MissionWorkbench() {
       setWorkspace('planning');
       setPlanningStep('variants');
       setFit((n) => n + 1);
-      setNotice(
-        'Варианты рассчитаны. Проверьте ограничения и подтвердите выбранный план перед симуляцией.',
-      );
+      setNotice('Расчёт завершён. Выберите план и откройте его проверки.');
     } catch (e) {
       if (
         !controller.signal.aborted &&
@@ -1510,6 +1604,7 @@ export default function MissionWorkbench() {
     if (id === candidateId) return;
     revision.current++;
     setCandidateId(id);
+    setDemoSelection((s) => ({ ...s, [document.id]: id }));
     setApproval(null);
     setPlaying(false);
     setActiveRunId(null);
@@ -1541,7 +1636,20 @@ export default function MissionWorkbench() {
     try {
       if (rev !== revision.current) return;
       setPlaying(false);
-      let row = activeRunId ? operations.get(activeRunId) : null;
+      let row = activeRunId
+        ? operations.get(activeRunId)
+        : (operations.rows.find((r) => r.document.id === current.document.id) ??
+          null);
+      if (
+        row &&
+        (row.inputHash !== approval.inputHash ||
+          row.planHash !== approval.planHash ||
+          row.status === 'completed' ||
+          row.status === 'cancelled')
+      )
+        throw new Error(
+          'Удалите прежний запуск этой миссии перед повторным выполнением.',
+        );
       if (
         !row ||
         row.inputHash !== approval.inputHash ||
@@ -1591,10 +1699,7 @@ export default function MissionWorkbench() {
       setOperationActionBusy(false);
     }
   }
-  const openOperation = async (
-    snapshot: MissionOperation,
-    startNow = false,
-  ) => {
+  async function openOperation(snapshot: MissionOperation, startNow = false) {
     if (
       dirty &&
       !window.confirm(
@@ -1669,7 +1774,11 @@ export default function MissionWorkbench() {
     } finally {
       setOperationActionBusy(false);
     }
-  };
+  }
+  useEffect(() => {
+    selectedRunRef.current = activeRunId;
+    openRunRef.current = openOperation;
+  });
   async function pauseOperation(row: MissionOperation) {
     try {
       if (row.id === activeRunId && playing) {
@@ -1698,40 +1807,19 @@ export default function MissionWorkbench() {
       setError(errorMessage(e));
     }
   }
-  async function save(copy = false) {
+  async function save(_copy = false) {
     try {
       if (validation) throw new Error(validation);
-      if (mode)
-        throw new Error('Сначала примените контур или отмените рисование.');
-      const rev = revision.current;
-      const d = parseMissionDocument(document),
-        next = copy
-          ? {
-              ...d,
-              id: `mission-${crypto.randomUUID()}`,
-              name: `${d.name.slice(0, 90)} · копия`,
-            }
-          : d;
-      if (!library.current)
-        throw new Error(
-          'Локальная библиотека недоступна. Выгрузите JSON как резервную копию.',
-        );
-      const saved = await library.current.save(
-        next,
-        copy ? {} : { expectedRevision: savedRevision },
+      if (mode) throw new Error('Завершите рисование перед сохранением.');
+      const d = parseMissionDocument(document);
+      setDemoDocuments((ds) => upsertMission(ds, d));
+      setDirty(false);
+      setNotice(
+        'Изменения сохранены в карточке этой сессии. JSON можно скачать в меню.',
       );
-      if (rev === revision.current) {
-        if (copy) edit(saved.document);
-        setDirty(false);
-        setSavedRevision(saved.revision);
-      }
-      setLibraryRows(await library.current.list(true));
-      setNotice(`Сохранено в «Сохранённые миссии» · версия ${saved.revision}`);
       return true;
     } catch (e) {
-      setError(
-        `${errorMessage(e)} Если ID занят другой версией, используйте «Сохранить копию» в библиотеке.`,
-      );
+      setError(errorMessage(e));
       return false;
     }
   }
@@ -1744,13 +1832,6 @@ export default function MissionWorkbench() {
     } catch (e) {
       setError(errorMessage(e));
     }
-  }
-  function showSaveAs() {
-    setCopyId(`mission-${crypto.randomUUID()}`);
-    setCopyName(`${document.name.slice(0, 90)} · копия`);
-    setError('');
-    setPlaying(false);
-    setModal('saveas');
   }
   async function saveAs() {
     if (copyBusy) return;
@@ -1802,6 +1883,211 @@ export default function MissionWorkbench() {
     setPlaying(false);
     setModal('layers');
   }
+  function importObjects(role: GeometryRole) {
+    requestedGeometryRole.current = role;
+    geoFile.current?.click();
+  }
+  function showMapObjects() {
+    setWorkspace('planning');
+    setPlanningStep('task');
+    setWizard(true);
+    requestAnimationFrame(() => {
+      const panel = window.document.querySelector<HTMLDetailsElement>(
+        '.mission-data-panel',
+      );
+      if (panel) {
+        panel.open = true;
+        panel.scrollIntoView({ block: 'nearest' });
+      }
+    });
+  }
+  async function applyBaseChanges(next: MissionDocument, undoing = false) {
+    if (busy || operationActionBusy || baseChangeLock.current)
+      throw new Error('Дождитесь окончания текущего действия.');
+    baseChangeLock.current = true;
+    setOperationActionBusy(true);
+    try {
+      const changes = changedBaseVehicles(document, next);
+      const originalBases = missionBases(document);
+      const changedBaseIds = new Set(
+        [...originalBases, ...(next.bases ?? [])]
+          .filter(
+            (b) =>
+              JSON.stringify(originalBases.find((o) => o.id === b.id)) !==
+              JSON.stringify(next.bases?.find((n) => n.id === b.id)),
+          )
+          .map((b) => b.id),
+      );
+      const rows = await operations.refresh();
+      if (rows.some((r) => r.document.id === document.id))
+        throw new Error(
+          'Для этой миссии уже сохранён запуск. Откройте её копию в редакторе; история останется неизменной.',
+        );
+      if (
+        changes.length &&
+        rows.some((r) => !['completed', 'cancelled'].includes(r.status))
+      )
+        throw new Error(
+          'Есть запланированные или выполняемые миссии. Завершите или отмените их перед переносом общего парка.',
+        );
+      const affected = demoDocuments.filter(
+        (d) =>
+          d.id !== document.id &&
+          (d.scenario.vehicles.some((v) =>
+            changes.some((x) => x.id === v.id),
+          ) ||
+            missionBases(d).some((b) => changedBaseIds.has(b.id))),
+      );
+      const known = await operations.listFleet();
+      const reports = changes.map((v) => {
+        const old = known.find((s) => s.id === v.id);
+        const state = structuredClone(
+          old ??
+            fleetStateFromDocument(document, v.id, new Date().toISOString()),
+        );
+        if (state.operationId || !state.grounded)
+          throw new Error(`БВС ${v.name} не свободен на земле.`);
+        state.vehicle = {
+          ...state.vehicle,
+          start: v.start,
+          landing: v.landing,
+        };
+        state.source = 'simulation';
+        state.observedAt = new Date(
+          Math.max(Date.now(), Date.parse(state.observedAt) + 1),
+        ).toISOString();
+        state.lastEvent = 'Оператор изменил модельное размещение БВС на базе';
+        return {
+          expectedRevision: old?.revision ?? 0,
+          state,
+          replacement: false,
+        };
+      });
+      // Validate all affected drafts before writing the shared fleet transaction.
+      const updated = reports.map((r) => r.state);
+      const oldBaseIds = new Set(missionBases(document).map((b) => b.id));
+      const propagate = (d: MissionDocument): MissionDocument => {
+        if (d.id !== next.id && !affected.some((a) => a.id === d.id)) return d;
+        const out = {
+          ...d,
+          scenario: {
+            ...d.scenario,
+            vehicles: d.scenario.vehicles.map(
+              (v) => updated.find((s) => s.id === v.id)?.vehicle ?? v,
+            ),
+          },
+          batteries: d.batteries.map((b) => {
+            const s = updated.find((s) => s.id === b.vehicleId);
+            return s ? { ...s.battery, readyAt: b.readyAt } : b;
+          }),
+          bases:
+            d.id === next.id
+              ? next.bases
+              : [
+                  ...(d.bases ?? []).filter(
+                    (b) =>
+                      !oldBaseIds.has(b.id) &&
+                      !next.bases?.some((n) => n.id === b.id),
+                  ),
+                  ...(next.bases ?? []),
+                ],
+        };
+        return out;
+      };
+      const activeNext = propagate(next);
+      let nextDocuments = demoDocuments.map((d) =>
+        d.id === next.id ? activeNext : propagate(d),
+      );
+      for (const d of nextDocuments.filter(
+        (d) => d === activeNext || affected.some((a) => a.id === d.id),
+      )) {
+        try {
+          parseMissionDocument(d);
+        } catch (e) {
+          throw new Error(
+            `Изменение базы не применено: проверьте миссию «${d.name}». ${errorMessage(e)}`,
+          );
+        }
+      }
+      nextDocuments = upsertMission(nextDocuments, activeNext);
+      if (reports.length) await operations.reportFleetBatch(reports);
+      edit(activeNext);
+      setDemoDocuments(nextDocuments);
+      for (const d of [document, ...affected])
+        editHistories.current.delete(d.id);
+      setHistoryVersion((n) => n + 1);
+      setBoundaryEditing(false);
+      setTerritoryEditing(false);
+      setMode(null);
+      setMovingBaseId(null);
+      setBasePreview(null);
+      setPickedMapPoint(null);
+      setBaseUndo(
+        undoing
+          ? null
+          : {
+              before: structuredClone(document),
+              after: synchronizeWorkSettings(activeNext),
+            },
+      );
+      setBaseFeedback({
+        missionId: document.id,
+        text: undoing
+          ? 'Изменение базы отменено.'
+          : `База обновлена. БВС и заряд сохранены.${affected.length ? ` Обновлены также миссии: ${affected.length}.` : ''} Пересчитайте план.`,
+      });
+    } finally {
+      baseChangeLock.current = false;
+      setOperationActionBusy(false);
+    }
+  }
+  async function moveBase(id: string, point: Coordinate): Promise<boolean> {
+    try {
+      if (baseChangeLock.current)
+        throw new Error('Дождитесь окончания переноса базы.');
+      setBasePreview(point);
+      await applyBaseChanges(moveMissionBase(document, id, point));
+      setSelectedBase(id);
+      return true;
+    } catch (e) {
+      setBaseFeedback({
+        missionId: document.id,
+        text: errorMessage(e),
+        error: true,
+      });
+      return false;
+    } finally {
+      setBasePreview(null);
+      setMovingBaseId(null);
+      setMode(null);
+    }
+  }
+  function pickBase(kind: 'base' | 'reserve', id?: string) {
+    setMovingBaseId(id ?? null);
+    setBasePreview(null);
+    setPickedMapPoint(null);
+    setMode(kind);
+    setDraft([]);
+    setTerritoryEditing(false);
+    setBoundaryEditing(false);
+    setBaseFeedback(null);
+  }
+  async function undoBaseChange() {
+    if (!baseUndo) return;
+    try {
+      if (canonicalStringify(document) !== canonicalStringify(baseUndo.after))
+        throw new Error(
+          'Миссия уже изменена. Перенесите базу заново, чтобы не отменить последующие правки.',
+        );
+      await applyBaseChanges(baseUndo.before, true);
+    } catch (e) {
+      setBaseFeedback({
+        missionId: document.id,
+        text: errorMessage(e),
+        error: true,
+      });
+    }
+  }
   async function loadFile(f: File, geometryOnly = false) {
     try {
       if (
@@ -1819,12 +2105,14 @@ export default function MissionWorkbench() {
           format: /\.kml$/i.test(f.name) ? 'kml' : 'geojson',
           name: f.name,
         });
-        setGeometryRole('area');
+        setGeometryRole(requestedGeometryRole.current);
         setModal('geometry');
       } else
         openPreview(
           parseMissionText(text, /\.ya?ml$/i.test(f.name) ? 'yaml' : 'auto'),
           f.name,
+          undefined,
+          true,
         );
     } catch (e) {
       setError(errorMessage(e));
@@ -1861,9 +2149,15 @@ export default function MissionWorkbench() {
           area: f.geometry,
         })),
       );
-    } else if (geometryRole === 'airspace')
+    } else if (geometryRole === 'airspace') {
+      if (polygons.length !== 1) {
+        setError(
+          'Для общей границы выберите файл с одним полигоном. Миссия не изменена.',
+        );
+        return;
+      }
       d.scenario.airspace = polygons[0].geometry;
-    else if (geometryRole === 'exclusion') {
+    } else if (geometryRole === 'exclusion') {
       if (d.scenario.exclusions.length + polygons.length > 5) {
         setError(
           'Можно хранить до 5 постоянных запретов. Удалите ненужные; ничего не добавлено.',
@@ -1920,8 +2214,11 @@ export default function MissionWorkbench() {
     }
   }
   function startDrawing(drawMode: DrawMode) {
+    setBoundaryEditing(drawMode === 'airspace');
     setDrawTool('polygon');
-    setTerritoryEditing(true);
+    // A finished restriction must not expose unrelated work-area drag handles.
+    setTerritoryEditing(drawMode === 'area');
+    setWizard(true);
     setWorkspace('planning');
     setPlanningStep('task');
     setDraft([]);
@@ -1930,6 +2227,16 @@ export default function MissionWorkbench() {
   }
   function mapPoint(point: Coordinate) {
     if (!mode) return;
+    if (mode === 'base' || mode === 'reserve') {
+      if (mode === 'base' && movingBaseId) {
+        void moveBase(movingBaseId, point);
+        return;
+      }
+      if (mode === 'base') setBasePreview(point);
+      setPickedMapPoint({ kind: mode, point, key: Date.now() });
+      setMode(null);
+      return;
+    }
     if (mode === 'start' || mode === 'landing') {
       edit({
         ...document,
@@ -1938,19 +2245,6 @@ export default function MissionWorkbench() {
           vehicles: document.scenario.vehicles.map((v) =>
             v.id === selected ? { ...v, [mode]: point } : v,
           ),
-        },
-      });
-      setMode(null);
-    } else if (mode === 'reserve') {
-      if (document.scenario.reserveSites.length >= 10) {
-        setError('Достигнут предел 10 резервных площадок.');
-        return;
-      }
-      edit({
-        ...document,
-        scenario: {
-          ...document.scenario,
-          reserveSites: [...document.scenario.reserveSites, point],
         },
       });
       setMode(null);
@@ -1995,7 +2289,7 @@ export default function MissionWorkbench() {
           restrictions: [
             ...document.restrictions,
             {
-              id: `zone-${Date.now()}`,
+              id: `zone-${crypto.randomUUID()}`,
               name: `Запрет ${document.restrictions.length + 1}`,
               kind: 'noFlight',
               geometry: shape,
@@ -2016,9 +2310,7 @@ export default function MissionWorkbench() {
       setMode(null);
       setDraft([]);
       setFit((n) => n + 1);
-      setNotice(
-        'Контур применён. Нажмите «Сохранить изменения», затем пересчитайте миссию.',
-      );
+      setNotice('Контур применён. Сохраните миссию и пересчитайте варианты.');
     } catch (e) {
       setError(
         `Контур не применён: ${errorMessage(e)}. Исправьте точки или нажмите Esc.`,
@@ -2096,31 +2388,223 @@ export default function MissionWorkbench() {
       setError(errorMessage(e));
     }
   }
-  async function exportEvidenceZip() {
-    const doc = activeRun?.document ?? current?.document;
-    const selected = activeRun?.candidate ?? candidate;
-    if (!doc || !selected) return;
+  async function changeDemoAvailability(
+    vehicleId: string,
+    enabled: boolean,
+    configuration?: string,
+    maintenance?: NonNullable<
+      MissionDocument['scenario']['vehicles'][number]['maintenance']
+    >,
+    cameras?: CameraPatch,
+  ) {
+    if (operationActionBusy || busy) return;
+    if (
+      operations.rows.some(
+        (r) =>
+          ['scheduled', 'running', 'paused'].includes(r.status) &&
+          r.candidate.sorties.some((s) => s.vehicleId === vehicleId),
+      )
+    ) {
+      setError('БВС занят. Дождитесь завершения его миссии.');
+      return;
+    }
+    setOperationActionBusy(true);
     try {
-      setNotice('Проверяем план и собираем архив…');
-      const { bytes } = await buildMissionArchive(
-        doc,
-        selected,
-        activeRun ?? undefined,
-        operations.rows,
+      const source = demoDocuments.find((d) =>
+        d.scenario.vehicles.some((v) => v.id === vehicleId),
       );
-      const url = URL.createObjectURL(
-        new Blob([bytes], { type: 'application/zip' }),
+      if (!source) return;
+      const known = (await operations.listFleet()).find(
+        (s) => s.id === vehicleId,
       );
-      const link = window.document.createElement('a');
-      link.href = url;
-      link.download = `${activeRun?.id ?? doc.id}.evidence.zip`;
-      link.click();
-      setTimeout(() => URL.revokeObjectURL(url), 30000);
+      const state = structuredClone(
+        known ??
+          fleetStateFromDocument(source, vehicleId, new Date().toISOString()),
+      );
+      const old = state.vehicle;
+      state.vehicle = {
+        ...old,
+        ...(configuration && old.model !== 'Custom'
+          ? catalogueCameraConfiguration(old.model, configuration)
+          : {}),
+        ...cameras,
+        id: old.id,
+        name: configuration ? `Геоскан ${old.model} · ${old.id}` : old.name,
+        start: old.start,
+        landing: old.landing,
+        batteryPct: state.battery.initialPct,
+        maintenance: maintenance ?? old.maintenance,
+        enabled,
+      };
+      state.ready = enabled && state.grounded;
+      state.source = 'simulation';
+      state.observedAt = new Date(
+        Math.max(Date.now(), Date.parse(state.observedAt) + 1),
+      ).toISOString();
+      state.lastEvent = maintenance
+        ? 'Симулятор: оператор обновил наработку аппарата после ТО'
+        : configuration || cameras
+          ? 'Симулятор: изменено установленное оборудование'
+          : 'Изменена доступность в общем парке';
+      await operations.reportFleet({
+        state,
+        expectedRevision: known?.revision ?? 0,
+        replacement: false,
+      });
+      const update = (d: MissionDocument): MissionDocument => ({
+        ...d,
+        scenario: {
+          ...d.scenario,
+          vehicles: d.scenario.vehicles.map((v) =>
+            v.id === vehicleId ? { ...state.vehicle } : v,
+          ),
+        },
+        batteries: d.batteries.map((b) =>
+          b.vehicleId === vehicleId
+            ? { ...state.battery, readyAt: b.readyAt }
+            : b,
+        ),
+      });
+      const ownsRun = operations.rows.some(
+        (r) => r.document.id === document.id,
+      );
+      if (
+        !ownsRun &&
+        document.scenario.vehicles.some((v) => v.id === vehicleId)
+      )
+        edit(update(document));
+      setDemoDocuments((ds) =>
+        ds.map((d) =>
+          d.scenario.vehicles.some((v) => v.id === vehicleId) ? update(d) : d,
+        ),
+      );
       setNotice(
-        'Архив доказательств скачан. Внутри — исходники, маршруты и повторные проверки.',
+        'Парк обновлён для всех миссий. Предыдущие проверки сохранены; изменения требуют нового расчёта.',
       );
     } catch (e) {
       setError(errorMessage(e));
+    } finally {
+      setOperationActionBusy(false);
+    }
+  }
+  async function deleteDemoRun(documentId: string) {
+    const row = operations.rows.find((r) => r.document.id === documentId);
+    if (!row) return;
+    if (
+      !window.confirm(
+        'Удалить модельное выполнение и его журнал? Предустановленная миссия останется для повторного редактирования.',
+      )
+    )
+      return;
+    setOperationActionBusy(true);
+    ownedRuns.current.delete(row.id);
+    modelClocks.current.delete(row.id);
+    if (activeRunId === row.id) setPlaying(false);
+    try {
+      await recoveryRunner.current?.pause(row.id);
+      await operations.removeDemo(row.id);
+      recoveryRunner.current?.forget(row.id);
+      recordings.forget(row.id);
+      if (activeRunId === row.id) {
+        setActiveRunId(null);
+        setApproval(null);
+        setResult(null);
+        setTime(0);
+        setRestoredSnapshot(false);
+        setWorkspace('missions');
+      }
+      setDemoResults((rs) => {
+        const next = { ...rs };
+        delete next[documentId];
+        return next;
+      });
+      setNotice('Выполнение и журнал удалены. Миссию можно запустить заново.');
+    } catch (e) {
+      setError(errorMessage(e));
+    } finally {
+      setOperationActionBusy(false);
+    }
+  }
+  async function downloadDemoArtifact(id: string, kind: DemoDownload) {
+    if (exportBusy) return;
+    const row = operations.rows.find((r) => r.document.id === id);
+    if (kind === 'video') {
+      if (!row) return;
+      try {
+        await recordings.download(row.id);
+      } catch (e) {
+        setError(errorMessage(e));
+      }
+      return;
+    }
+    const result = demoResults[id];
+    const doc = row?.document ?? result?.document;
+    const selected =
+      row?.candidate ??
+      (current?.document.id === id ? candidate : undefined) ??
+      (demoSelection[id] === 'balanced'
+        ? result?.recommendation?.candidate
+        : result?.candidates.find((c) => c.id === demoSelection[id])) ??
+      result?.candidates[0];
+    if (!doc || !selected) return;
+    setExportBusy(true);
+    try {
+      const archive =
+        selected.status === 'feasible_model'
+          ? await buildMissionArchive(doc, selected, row, operations.rows)
+          : await buildMissionDiagnosticArchive(doc, selected);
+      if (kind === 'kml' || kind === 'geojson') {
+        if (selected.status !== 'feasible_model')
+          throw new Error('Нет допустимых маршрутов. Откройте проверки плана.');
+        const files = Object.fromEntries(
+          Object.entries(archive.files)
+            .filter(
+              ([path]) =>
+                path.startsWith('data/routes/') && path.endsWith(`.${kind}`),
+            )
+            .map(([path, text]) => [path.replace('data/routes/', ''), text]),
+        );
+        if (!Object.keys(files).length)
+          throw new Error('В плане нет маршрутов назначенных БВС.');
+        files['README.md'] =
+          `# Маршруты по БВС\n\nМиссия: ${doc.name}\nID: ${doc.id}\nЗапуск: ${row?.id ?? 'только план'}\n\nКаждый файл относится к одному БВС. Высоты, скорости, этапы и временные метки — в свойствах. Полный вход и проверки доступны в «Доказательства ZIP». Это модельный план, не команды подключённому автопилоту.\n`;
+        const url = URL.createObjectURL(
+          new Blob([createStoredZip(files)], { type: 'application/zip' }),
+        );
+        const link = window.document.createElement('a');
+        link.href = url;
+        link.download = `${id}.routes-${kind}.zip`;
+        link.click();
+        setTimeout(() => URL.revokeObjectURL(url), 30000);
+      } else if (kind === 'view') {
+        setReportPreview(archive.files['data/report.html']);
+        setModal('report-preview');
+      } else if (kind === 'report')
+        download(
+          `${id}.report.html`,
+          archive.files['data/report.html'],
+          'text/html',
+        );
+      else if (kind === 'checks')
+        download(
+          `${id}.checks.json`,
+          archive.files['data/checks/validation.json'],
+        );
+      else {
+        const url = URL.createObjectURL(
+          new Blob([archive.bytes], { type: 'application/zip' }),
+        );
+        const link = window.document.createElement('a');
+        link.href = url;
+        link.download = `${id}.evidence.zip`;
+        link.click();
+        setTimeout(() => URL.revokeObjectURL(url), 30000);
+      }
+      setNotice('Файл подготовлен.');
+    } catch (e) {
+      setError(errorMessage(e));
+    } finally {
+      setExportBusy(false);
     }
   }
   const checkCounts = {
@@ -2134,13 +2618,18 @@ export default function MissionWorkbench() {
     setArchiveId(null);
   };
   const revealChecks = () => {
+    setReviewMissionId(current?.document.id ?? document.id);
     setWorkspace('results');
     setResultsTab('analysis');
-    setAllChecksOpen(true);
+  };
+  const openReportChecks = (id: string) => {
+    setReviewMissionId(id);
+    setWorkspace('results');
+    setResultsTab('analysis');
   };
   return (
     <main
-      className="mission-workbench"
+      className="mission-workbench expert-workbench demo-workbench"
       data-workspace={workspace}
       data-execution-tab={executionTab}
       style={
@@ -2158,23 +2647,25 @@ export default function MissionWorkbench() {
           aria-label="Планер — список миссий"
           onClick={() => setWorkspace('missions')}
         >
-          <svg viewBox="0 0 32 32" width="27" height="27" aria-hidden="true">
-            <path d="M4 25 14 5l4 10 10 4-24 6Z" fill="currentColor" />
-            <path d="m9 23 9-8" stroke="white" strokeWidth="1.6" />
-          </svg>
-          <span>Планер</span>
+          <Image
+            unoptimized
+            className="mw-brand-image"
+            src="/planner/branding/planner-brush.png"
+            alt="Planner"
+            width={2048}
+            height={768}
+            draggable={false}
+          />
         </button>
         <Tabs
           className="mw-workspace-tabs"
-          value={workspace === 'results' ? 'missions' : workspace}
+          value={workspace}
           onValueChange={(value) => {
             setMode(null);
             setDraft([]);
             setWorkspace(String(value));
             setFocusMode(false);
             if (value === 'results') setResultsTab('summary');
-            if (value === 'planning' || value === 'execution')
-              setFit((x) => x + 1);
           }}
         >
           <TabsList aria-label="Разделы стенда" variant="line">
@@ -2183,6 +2674,7 @@ export default function MissionWorkbench() {
                 ['missions', 'Миссии'],
                 ['planning', 'Редактор'],
                 ['execution', 'Выполнение'],
+                ['results', 'Отчёт'],
                 ['fleet', 'Парк БВС'],
               ] as const
             ).map(([id, label]) => (
@@ -2191,7 +2683,10 @@ export default function MissionWorkbench() {
                 id={`workspace-${id}`}
                 value={id}
                 aria-controls="workspace-content"
-                disabled={!hydrated}
+                disabled={
+                  !hydrated ||
+                  (!openedDemo && (id === 'planning' || id === 'execution'))
+                }
                 onClick={() => {
                   if (workspace === 'results' && id === 'missions')
                     setWorkspace('missions');
@@ -2210,8 +2705,43 @@ export default function MissionWorkbench() {
         </Tabs>
         <div
           className="mw-actions mw-header-actions"
-          hidden={workspace === 'missions' || workspace === 'fleet'}
+          hidden={
+            workspace === 'missions' ||
+            workspace === 'fleet' ||
+            workspace === 'results'
+          }
         >
+          {workspace === 'planning' && planningStep === 'task' && (
+            <span
+              className="mw-undo-controls"
+              data-history-version={historyVersion}
+            >
+              <button
+                className="mw-button small"
+                aria-label="Отменить изменение"
+                title="Отменить изменение"
+                disabled={
+                  !editHistories.current.get(document.id)?.canUndo ||
+                  !!activeRun
+                }
+                onClick={() => undoEdit()}
+              >
+                ↶
+              </button>
+              <button
+                className="mw-button small"
+                aria-label="Повторить изменение"
+                title="Повторить изменение"
+                disabled={
+                  !editHistories.current.get(document.id)?.canRedo ||
+                  !!activeRun
+                }
+                onClick={() => undoEdit(true)}
+              >
+                ↷
+              </button>
+            </span>
+          )}
           <button
             className="mw-button mw-edit-action"
             hidden={workspace !== 'planning' || planningStep === 'task'}
@@ -2241,19 +2771,6 @@ export default function MissionWorkbench() {
           >
             <MoreHorizontal size={20} />
           </button>
-          <button
-            className="mw-button primary mw-calculate-action"
-            hidden
-            disabled={busy || !!validation}
-            onClick={calculate}
-          >
-            {busy ? (
-              <LoaderCircle size={15} className="mw-spinner" />
-            ) : (
-              <Play size={15} />
-            )}
-            {busy ? 'Расчёт вариантов…' : 'Рассчитать варианты'}
-          </button>
           {busy && (
             <button
               className="mw-button"
@@ -2271,6 +2788,7 @@ export default function MissionWorkbench() {
           )}
         </div>
         <MissionNotificationCenter
+          compact
           modalKey={modal ?? ''}
           entries={[
             ...(operations.error
@@ -2341,6 +2859,24 @@ export default function MissionWorkbench() {
           <Settings size={21} />
         </button>
       </header>
+      <nav
+        className="mw-navigation-row"
+        aria-label="Возврат к предыдущему экрану"
+      >
+        <button
+          className="mw-button mw-back"
+          disabled={!navigation.canBack && !modal && workspace === 'missions'}
+          aria-label="Назад"
+          title="Предыдущий экран — выполнение миссии продолжается"
+          onClick={() => {
+            if (modal) onModalClose();
+            else if (navigation.canBack) navigation.back();
+            else setWorkspace('missions');
+          }}
+        >
+          ← Назад
+        </button>
+      </nav>
       {modal === 'fleet-state' && (
         <Modal title="Парк БВС" onClose={() => setModal(null)} wide>
           <fieldset
@@ -2459,173 +2995,93 @@ export default function MissionWorkbench() {
       <div
         id="workspace-content"
         role="tabpanel"
-        aria-labelledby={`workspace-${workspace === 'results' ? 'missions' : workspace}`}
+        aria-labelledby={`workspace-${workspace}`}
       >
-        <div hidden={workspace !== 'fleet'}>
-          <FleetWorkspace
-            registry={fleetRegistry}
-            seed={document}
+        <div className="mw-fleet-summary" hidden={workspace !== 'fleet'}>
+          <DemoFleet
+            documents={demoDocuments}
             states={operations.fleet}
-            busy={registryBusy || operations.busy}
-            onSave={saveRegistry}
-            onRefresh={() => void refreshRegistry()}
-            onNotice={setNotice}
-            onReport={operations.reportFleet}
-            onApply={() => void applyGlobalFleet()}
-            operations={operations.rows}
-            onOpenOperation={(row) => void openOperation(row)}
-            recalculations={fleetRecalculations}
-            onOpenRecalculation={(id) =>
-              void openFleetRecalculation(id).catch((e) =>
-                setError(errorMessage(e)),
+            lockedIds={operations.rows
+              .filter((r) =>
+                ['scheduled', 'running', 'paused'].includes(r.status),
               )
+              .flatMap((r) => r.candidate.sorties.map((s) => s.vehicleId))}
+            busy={busy || operationActionBusy}
+            onAvailability={(id, enabled, configuration) =>
+              void changeDemoAvailability(id, enabled, configuration)
             }
+            onMaintenance={(id, maintenance) => {
+              const v =
+                operations.fleet.find((s) => s.id === id)?.vehicle ??
+                demoDocuments
+                  .flatMap((d) => d.scenario.vehicles)
+                  .find((v) => v.id === id);
+              if (v)
+                void changeDemoAvailability(
+                  id,
+                  v.enabled,
+                  undefined,
+                  maintenance,
+                );
+            }}
+            onCameras={(id, cameras) => {
+              const v =
+                operations.fleet.find((s) => s.id === id)?.vehicle ??
+                demoDocuments
+                  .flatMap((d) => d.scenario.vehicles)
+                  .find((v) => v.id === id);
+              if (v)
+                void changeDemoAvailability(
+                  id,
+                  v.enabled,
+                  undefined,
+                  undefined,
+                  cameras,
+                );
+            }}
           />
         </div>
         <section className="mw-missions-home" hidden={workspace !== 'missions'}>
           <div className="mw-home-heading">
-            <div>
-              <h1>Миссии</h1>
-            </div>
-            <div className="mw-actions">
-              <button
-                className="mw-button primary"
-                onClick={() => createNewMission()}
-              >
-                <Plus size={16} />
-                Создать миссию
-              </button>
-              <button className="mw-button" onClick={() => setModal('catalog')}>
-                Готовые примеры
-              </button>
-              <button className="mw-button" onClick={() => setModal('upload')}>
-                <Upload size={16} />
-                Загрузить миссию
-              </button>
-            </div>
+            <h1>Миссии</h1>
+            <span className="demo-mode-label">Демонстрационный стенд</span>
           </div>
-          <MissionHome
-            journalAttentionCount={operations.rejected.length}
-            onReviewJournal={() => setModal('journal-review')}
-            document={document}
-            editing={!activeRun}
-            dirty={dirty}
-            savedEntries={libraryRows}
-            onRestore={(entry) => {
-              void library.current
-                ?.restore(entry)
-                .then(async () =>
-                  setLibraryRows(await library.current!.list(true)),
-                )
-                .catch((e) => setError(errorMessage(e)));
-            }}
-            onRename={(entry) => {
-              const name = window
-                .prompt('Название миссии', entry.document.name)
-                ?.trim();
-              if (!name || name === entry.document.name) return;
-              if (document.id === entry.id && dirty) {
-                setError('Сначала сохраните правки открытой миссии.');
-                return;
+          <DemoMissionCards
+            documents={demoDocuments}
+            rows={operations.rows}
+            onEdit={(d) => {
+              const next = structuredClone(d);
+              if (operations.rows.some((r) => r.document.id === d.id)) {
+                next.id = `mission-${crypto.randomUUID().slice(0, 20)}`;
+                next.name = `${d.name.slice(0, 90)} · копия`;
               }
-              void library.current
-                ?.save(
-                  {
-                    ...entry.document,
-                    name,
-                    scenario: { ...entry.document.scenario, name },
-                  },
-                  { expectedRevision: entry.revision },
-                )
-                .then(async (saved) => {
-                  setLibraryRows(await library.current!.list(true));
-                  if (document.id === entry.id && !activeRun) {
-                    setDocument(saved.document);
-                    setSavedRevision(saved.revision);
-                  }
-                })
-                .catch((e) => setError(errorMessage(e)));
+              openPreview(next, 'Карточка миссии');
             }}
-            onDelete={(entry) => {
-              if (operations.rows.some((r) => r.document.id === entry.id)) {
-                setError(
-                  'Миссию с историей запусков можно только архивировать.',
-                );
-                return;
-              }
-              if (
-                !window.confirm(
-                  'Удалить черновик «' +
-                    entry.document.name +
-                    '» безвозвратно?',
-                )
-              )
-                return;
-              void library.current
-                ?.remove(entry.id, entry.revision)
-                .then(async () => {
-                  setLibraryRows(await library.current!.list(true));
-                  if (document.id === entry.id) {
-                    createNewMission(true);
-                    setWorkspace('missions');
-                  }
-                })
-                .catch((e) => setError(errorMessage(e)));
-            }}
-            onEditCurrent={() => {
-              setWorkspace(activeRun ? 'execution' : 'planning');
-              setWizard(true);
-              setPlanningStep('task');
-              setFit((x) => x + 1);
-            }}
-            onOpenSaved={(entry) =>
-              openPreview(
-                structuredClone(entry.document),
-                `Сохранённая миссия · версия ${entry.revision}`,
-                entry.revision,
-              )
-            }
-            onExport={(d) =>
+            onOpen={(r) => void openOperation(r)}
+            onDelete={(id) => void deleteDemoRun(id)}
+            onDownload={(d) =>
               download(`${d.id}.mission.json`, serializeMissionJson(d))
             }
-            onCopy={(d) =>
-              openPreview(
-                {
-                  ...structuredClone(d),
-                  id: `mission-${crypto.randomUUID()}`,
-                  name: `${d.name.slice(0, 85)} · копия`,
-                },
-                'Копия миссии',
-              )
-            }
-            onArchive={(entry) => {
+            onImport={() => file.current?.click()}
+            onRemove={(id) => {
               if (
                 !window.confirm(
-                  `Убрать «${entry.document.name}» в архив?${document.id === entry.id && dirty ? ' Несохранённые изменения будут потеряны.' : ''} История запусков сохранится.`,
+                  'Удалить карточку миссии? Скачайте JSON, если хотите сохранить её.',
                 )
               )
                 return;
-              void library.current
-                ?.archive(entry.id, entry.revision)
-                .then(async () => {
-                  setLibraryRows(await library.current!.list(true));
-                  if (document.id === entry.id && !activeRun) {
-                    createNewMission(true);
-                    setWorkspace('missions');
-                  }
-                })
-                .catch((e) => setError(errorMessage(e)));
-            }}
-            operations={{
-              rows: operations.rows,
-              selectedId: activeRunId ?? undefined,
-              onJournal: openRunJournal,
-              busy: operations.busy || operationActionBusy,
-              onOpen: (row) => void openOperation(row),
-              onStart: (row) => void openOperation(row, true),
-              onPause: (row) => void pauseOperation(row),
-              onCancel: (row) => void cancelOperation(row),
-              onRefresh: () => void operations.refresh(),
+              setDemoDocuments((ds) => ds.filter((d) => d.id !== id));
+              setDemoResults((rs) => {
+                const next = { ...rs };
+                delete next[id];
+                return next;
+              });
+              if (document.id === id) {
+                setOpenedDemo(false);
+                setResult(null);
+                setApproval(null);
+                setDirty(false);
+              }
             }}
           />
         </section>
@@ -2655,23 +3111,13 @@ export default function MissionWorkbench() {
               Миссия
             </button>
             <button
-              aria-pressed={planningStep !== 'task'}
-              onClick={() => {
-                setPlanningStep('variants');
-                setWizard(false);
-              }}
+              className="mw-button primary mw-calculate-action"
+              disabled={busy || !!validation}
+              onClick={() => void calculate()}
             >
-              Расчёт вариантов
+              {busy && <LoaderCircle size={15} className="mw-spinner" />}
+              {busy ? 'Расчёт…' : 'Рассчитать варианты'}
             </button>
-            {planningStep !== 'task' && (
-              <button
-                className="mw-button primary"
-                disabled={busy || !!validation}
-                onClick={() => void calculate()}
-              >
-                {busy ? 'Расчёт…' : 'Рассчитать варианты'}
-              </button>
-            )}
           </div>
         )}
         <section className="mw-contextbar">
@@ -2703,19 +3149,13 @@ export default function MissionWorkbench() {
                   : 'Выбор плана'}
             </span>
           )}
-          <MissionWeatherPanel
-            document={document}
-            timeSec={time}
-            execution={workspace === 'execution'}
-            onChange={(next) => {
-              edit(next);
-              setWorkspace('planning');
-              setPlanningStep('task');
-              setNotice(
-                'Условия сохранены в миссии. Нажмите «Рассчитать варианты»: прежнее подтверждение отменено.',
-              );
-            }}
-          />
+          <span
+            className="demo-mode-label"
+            title="Фиксированные тестовые условия, не прогноз."
+          >
+            Модельная погода · ветер {document.scenario.wind.speedMps} м/с ·
+            ясно
+          </span>
         </section>
         <section
           className="mw-overview-strip"
@@ -2829,31 +3269,90 @@ export default function MissionWorkbench() {
                   ))}
                 </div>
                 {activeRun && (
+                  <div className="execution-actions">
+                    <button
+                      className="mw-button small"
+                      onClick={() => void reviseActiveMission()}
+                    >
+                      Изменить план
+                    </button>
+                    <button
+                      className="mw-button small"
+                      onClick={() => {
+                        setWorkspace('results');
+                        setResultsTab('summary');
+                      }}
+                    >
+                      Отчёт миссии
+                    </button>
+                    <button
+                      className="mw-button small"
+                      disabled={
+                        !recordings.info[activeRun.id]?.bytes ||
+                        ['recording', 'converting'].includes(
+                          recordings.info[activeRun.id]?.status,
+                        )
+                      }
+                      title={
+                        recordings.info[activeRun.id]?.error ??
+                        'Доступно после завершения записи'
+                      }
+                      onClick={() =>
+                        void recordings
+                          .download(activeRun.id)
+                          .catch((e) => setError(errorMessage(e)))
+                      }
+                    >
+                      Скачать MP4
+                    </button>
+                    <button
+                      className="mw-button small"
+                      onClick={() =>
+                        download(
+                          `${activeRun.document.id}.mission.json`,
+                          serializeMissionJson(activeRun.document),
+                        )
+                      }
+                    >
+                      Скачать миссию
+                    </button>
+                    <button
+                      className="mw-button small demo-delete"
+                      disabled={operationActionBusy || operations.busy}
+                      onClick={() => void deleteDemoRun(activeRun.document.id)}
+                    >
+                      Удалить
+                    </button>
+                  </div>
+                )}
+                {candidate && !activeRun && (
                   <button
                     className="mw-button small"
-                    onClick={() => void reviseActiveMission()}
+                    onClick={() => {
+                      setWorkspace('results');
+                      setResultsTab('summary');
+                    }}
                   >
-                    Изменить план
+                    Отчёт миссии
                   </button>
                 )}
                 {executionTab === 'journal' && activeRun && (
                   <MissionOperationJournal row={activeRun} />
                 )}
-                <span>Модельный полёт · {timestamp(document, time)}</span>
-                <MissionWeatherPanel
-                  document={document}
-                  timeSec={time}
-                  execution
-                  onChange={(next) => {
-                    edit(next);
-                    setWorkspace('planning');
-                    setPlanningStep('task');
-                  }}
-                />
+                <span className="execution-clock">
+                  Симуляция ·{' '}
+                  {timestamp(document, safety ? safetyDisplayTime : time)} ·{' '}
+                  {document.window.timezone}
+                </span>
+                <span className="demo-mode-label">
+                  Модельная погода ·{' '}
+                  {safety?.windMps ?? document.scenario.wind.speedMps} м/с
+                </span>
               </div>
             )}
-            {workspace === 'execution' && (
+            {workspace === 'execution' && operations.rows.length > 1 && (
               <MissionExecutionQueue
+                compact
                 rows={operations.rows}
                 selectedId={activeRunId}
                 busy={
@@ -2893,22 +3392,25 @@ export default function MissionWorkbench() {
             )}
             {workspace === 'execution' && !isApproved && (
               <div className="mw-execution-pending">
-                <span>План ещё не подтверждён</span>
+                <span>Подготовьте план к запуску</span>
                 <button
                   className="mw-button small"
                   onClick={() => {
                     setWorkspace('planning');
-                    setPlanningStep(candidate ? 'confirm' : 'task');
+                    if (candidate) setPlanningStep('confirm');
+                    else void calculate();
                   }}
                 >
-                  Открыть редактор
+                  {candidate
+                    ? 'Проверить и подтвердить план'
+                    : 'Рассчитать план'}
                 </button>
               </div>
             )}
             <section
               className="mw-playback"
               aria-label="Модельная симуляция"
-              hidden={!!safety}
+              hidden={!!safety || !isApproved}
             >
               <div className="mw-flight-status" data-running={playing}>
                 <span className="mw-flight-status-indicator" />
@@ -2988,7 +3490,7 @@ export default function MissionWorkbench() {
                     setPlaying(false);
                   }}
                 />
-                <label className="mw-caption">
+                <label className="mw-caption playback-rate">
                   Ускорение{' '}
                   <select
                     value={rate}
@@ -3005,7 +3507,7 @@ export default function MissionWorkbench() {
                 </label>
               </div>
             </section>
-            <div className="mw-panel-head">
+            <div className="mw-panel-head execution-vehicle-heading">
               <Layers size={16} />
               <h2>
                 {workspace === 'execution' ? 'Аппараты миссии' : 'Миссия'}
@@ -3032,7 +3534,7 @@ export default function MissionWorkbench() {
                 {!safety ? (
                   <details>
                     <summary>
-                      Нештатная ситуация{' '}
+                      Проверить нештатную ситуацию{' '}
                       <InfoHint label="Отказные сценарии">
                         События вводятся в тренажёр вручную. Реальные БВС и
                         сенсоры не подключены. Проверяются возврат всей летящей
@@ -3090,14 +3592,28 @@ export default function MissionWorkbench() {
                       )}
                       <button
                         className="mw-button"
+                        title={
+                          operationActionBusy
+                            ? 'Предыдущее действие ещё выполняется'
+                            : !['running', 'paused'].includes(activeRun.status)
+                              ? 'Сначала запустите миссию и выберите летящий аппарат'
+                              : 'Внести испытательное событие для выбранного аппарата'
+                        }
                         disabled={
                           operationActionBusy ||
                           !['running', 'paused'].includes(activeRun.status)
                         }
                         onClick={() => void triggerIncident()}
                       >
-                        Внести событие
+                        {operationActionBusy
+                          ? 'Рассчитываем реакцию…'
+                          : 'Внести событие'}
                       </button>
+                      {!['running', 'paused'].includes(activeRun.status) && (
+                        <p className="mw-caption">
+                          Событие доступно после запуска миссии.
+                        </p>
+                      )}
                     </div>
                   </details>
                 ) : (
@@ -3114,7 +3630,7 @@ export default function MissionWorkbench() {
                               ? 'Возврат завершён'
                               : safety.stage === 'crashed'
                                 ? 'Аппарат выведен из выполнения'
-                                : 'Возврат не подтверждён'}
+                                : 'Безопасный возврат не найден'}
                       </span>
                     </div>
                     {safety.stage === 'pending' && (
@@ -3129,7 +3645,11 @@ export default function MissionWorkbench() {
                         Тренажёр остановлен.{' '}
                         {safety.kind === 'crash'
                           ? 'Возврат этому аппарату недоступен. Сохраните координаты и организуйте осмотр.'
-                          : 'Не подтверждены безопасный маршрут или ресурс. Не запускать исходный план; проверить условия и площадки.'}
+                          : recoveryChoices
+                              .flatMap((o) => o.reasons)
+                              .filter((v, i, a) => a.indexOf(v) === i)
+                              .slice(0, 2)
+                              .join(' ')}
                       </p>
                     )}
                     <div className="mw-actions">
@@ -3172,10 +3692,12 @@ export default function MissionWorkbench() {
                             setOperationActionBusy(true);
                             try {
                               if (recovering) {
-                                await recoveryStop.current();
+                                await recoveryRunner.current?.pause(
+                                  activeRun.id,
+                                );
                                 setRecovering(false);
                               } else {
-                                await recoveryStop.current();
+                                recoveryRunner.current?.resume(activeRun.id);
                                 setRecoveryTime(
                                   operationsRef.current.get(activeRun.id)
                                     ?.safety?.progressSec ?? safety.progressSec,
@@ -3205,25 +3727,42 @@ export default function MissionWorkbench() {
                         )}
                       <button
                         className="mw-button"
-                        onClick={() =>
-                          download(
-                            `${activeRun.id}.incident.json`,
-                            JSON.stringify(
+                        disabled={exportBusy}
+                        onClick={async () => {
+                          setExportBusy(true);
+                          try {
+                            const archive = await buildIncidentArchive(
+                              activeRun,
+                              operations.rows,
                               {
-                                operationId: activeRun.id,
-                                missionId: document.id,
-                                originalInputHash: activeRun.inputHash,
-                                originalPlanHash: activeRun.planHash,
-                                safety,
-                                returnChecks: recoveryChoices,
+                                userAgent: navigator.userAgent,
+                                timezone:
+                                  Intl.DateTimeFormat().resolvedOptions()
+                                    .timeZone,
+                                viewport: `${window.innerWidth}x${window.innerHeight}`,
                               },
-                              null,
-                              2,
-                            ),
-                          )
-                        }
+                            );
+                            const url = URL.createObjectURL(
+                              new Blob([archive.bytes], {
+                                type: 'application/zip',
+                              }),
+                            );
+                            const link = window.document.createElement('a');
+                            link.href = url;
+                            link.download = `${activeRun.id}.incident.zip`;
+                            link.click();
+                            setTimeout(() => URL.revokeObjectURL(url), 30000);
+                            setNotice('Диагностика события сохранена в ZIP.');
+                          } catch (e) {
+                            setError(errorMessage(e));
+                          } finally {
+                            setExportBusy(false);
+                          }
+                        }}
                       >
-                        Журнал события
+                        {exportBusy
+                          ? 'Собираем диагностику…'
+                          : 'Диагностика ZIP'}
                       </button>
                     </div>
                     <details>
@@ -3323,7 +3862,9 @@ export default function MissionWorkbench() {
                       «Применить контур». От руки, круг, овал: протяните мышью.
                       Esc или крестик отменяют рисование.
                     </InfoHint>
-                    {!['start', 'landing', 'reserve'].includes(mode) && (
+                    {!['base', 'start', 'landing', 'reserve'].includes(
+                      mode,
+                    ) && (
                       <>
                         <button
                           className="mw-button primary small"
@@ -3356,6 +3897,8 @@ export default function MissionWorkbench() {
                   </output>
                 )}
                 <MissionEditor
+                  activeTab={editorTab}
+                  onTabChange={setEditorTab}
                   onFleet={() => setWorkspace('fleet')}
                   hasGlobalFleet={!!fleetRegistry}
                   fleetStates={operations.fleet}
@@ -3464,10 +4007,10 @@ export default function MissionWorkbench() {
                         setMode('area');
                         setDrawTool(tool);
                       }}
-                      onImport={() => geoFile.current?.click()}
+                      onImport={() => importObjects('area')}
                     />
                   }
-                  onImportGeometry={() => geoFile.current?.click()}
+                  onImportGeometry={() => importObjects('exclusion')}
                   onExample={(n) =>
                     openPreview(demoMission(n), `Контрольный сценарий ${n} км²`)
                   }
@@ -3476,6 +4019,56 @@ export default function MissionWorkbench() {
                     else setError(validation);
                   }}
                   onSave={() => void save()}
+                />
+                <MissionDataPanel
+                  key={`mission-data-${editorSession}`}
+                  document={document}
+                  selectedJob={jobIndex}
+                  onNotice={setNotice}
+                  onObstacles={() => setModal('layers')}
+                  onDownloadMission={() => exportTask('json')}
+                  objects={
+                    <MissionMapObjects
+                      key={document.id}
+                      document={document}
+                      busy={busy || operationActionBusy}
+                      selectedBase={selectedBase}
+                      action={baseAction}
+                      onSelectBase={setSelectedBase}
+                      picked={pickedMapPoint}
+                      onPick={pickBase}
+                      onCancelPick={() => {
+                        setMode(null);
+                        setDraft([]);
+                        setMovingBaseId(null);
+                        setBasePreview(null);
+                        setPickedMapPoint(null);
+                      }}
+                      onDraw={startDrawing}
+                      onEditBoundary={(editing) => {
+                        setBoundaryEditing(editing);
+                        setTerritoryEditing(editing);
+                        setMode(null);
+                        setDraft([]);
+                        if (editing) {
+                          setFit((value) => value + 1);
+                          setNotice(
+                            'Перетащите вершины зелёной границы. Изменения потребуют нового расчёта.',
+                          );
+                        }
+                      }}
+                      onImport={importObjects}
+                      onChange={edit}
+                      onBaseChange={applyBaseChanges}
+                      onLayers={showLayers}
+                    />
+                  }
+                  onChange={(next) => {
+                    edit(next);
+                    setFit((x) => x + 1);
+                    setMode(null);
+                    setDraft([]);
+                  }}
                 />
               </>
             ) : (
@@ -3499,15 +4092,20 @@ export default function MissionWorkbench() {
                     const state = vehicleStates.find(
                       (s) => s.vehicleId === v.id,
                     );
-                    const recoverySeg = safety
-                      ? displayedPlan?.missions
-                          .find((m) => m.vehicleId === v.id)
-                          ?.segments.find(
-                            (s) =>
-                              safetyDisplayTime >= s.startSec &&
-                              safetyDisplayTime < s.endSec,
-                          )
-                      : undefined;
+                    const recoverySegments = safety
+                      ? (displayedPlan?.missions.find(
+                          (m) => m.vehicleId === v.id,
+                        )?.segments ?? [])
+                      : [];
+                    const recoverySeg =
+                      recoverySegments.find(
+                        (s) =>
+                          safetyDisplayTime >= s.startSec &&
+                          safetyDisplayTime < s.endSec,
+                      ) ??
+                      [...recoverySegments]
+                        .reverse()
+                        .find((s) => s.endSec <= safetyDisplayTime);
                     const recoveryPos = recoverySeg
                       ? positionAt(recoverySeg, safetyDisplayTime)
                       : null;
@@ -3652,7 +4250,7 @@ export default function MissionWorkbench() {
                       onClick={() => setFit((n) => n + 1)}
                     >
                       <Crosshair size={16} />
-                      Показать всю миссию
+                      Вписать маршрут
                     </button>
                     <details className="mw-details">
                       <summary>Какой это аппарат?</summary>
@@ -3669,7 +4267,37 @@ export default function MissionWorkbench() {
             aria-label="Карта миссии и рассчитанных маршрутов"
           >
             <MissionMap
-              bases={document.bases}
+              bases={mapBases}
+              selectedBase={selectedBase}
+              baseEditable={
+                workspace === 'planning' && !busy && !operationActionBusy
+              }
+              basePreview={workspace === 'planning' ? basePreview : null}
+              onMoveBase={workspace === 'planning' ? moveBase : undefined}
+              onBaseAction={
+                workspace === 'planning'
+                  ? (id, action) => {
+                      setSelectedBase(id);
+                      showMapObjects();
+                      if (action === 'move') pickBase('base', id);
+                      else {
+                        setFocusMode(false);
+                        setBaseAction({ id, action, key: Date.now() });
+                      }
+                    }
+                  : undefined
+              }
+              onSelectBase={
+                workspace === 'planning'
+                  ? (id) => {
+                      setSelectedBase(id);
+                      showMapObjects();
+                    }
+                  : undefined
+              }
+              editPolygon={
+                boundaryEditing ? document.scenario.airspace : undefined
+              }
               scenario={displayedScenario}
               plan={clearedAreaId ? null : displayedPlan}
               selected={displaySelected}
@@ -3680,9 +4308,8 @@ export default function MissionWorkbench() {
               fit={fit}
               showTiles={showTiles}
               showTransit={showTransit}
-              workAreas={document.jobs.filter(
-                (j) => j.id !== clearedAreaId && j.area.coordinates[0]?.length,
-              )}
+              workAreas={visibleWorkAreas}
+              playbackRate={rate}
               activeJobId={currentJob.id}
               editable={
                 workspace === 'planning' &&
@@ -3691,23 +4318,32 @@ export default function MissionWorkbench() {
               }
               drawTool={drawTool}
               onSelectArea={(id) => {
+                setBoundaryEditing(false);
                 setJobIndex(document.jobs.findIndex((j) => j.id === id));
                 setTerritoryEditing(true);
               }}
               onVertex={(ring, vertex, point) => {
                 try {
                   const area = moveAreaVertex(
-                    currentJob.area,
+                    boundaryEditing
+                      ? document.scenario.airspace
+                      : currentJob.area,
                     ring,
                     vertex,
                     point,
                   );
-                  edit({
-                    ...document,
-                    jobs: document.jobs.map((j) =>
-                      j.id === currentJob.id ? { ...j, area } : j,
-                    ),
-                  });
+                  if (boundaryEditing)
+                    edit({
+                      ...document,
+                      scenario: { ...document.scenario, airspace: area },
+                    });
+                  else
+                    edit({
+                      ...document,
+                      jobs: document.jobs.map((j) =>
+                        j.id === currentJob.id ? { ...j, area } : j,
+                      ),
+                    });
                   setError('');
                   setNotice('Граница участка изменена.');
                   return true;
@@ -3732,7 +4368,7 @@ export default function MissionWorkbench() {
                   setError(errorMessage(e));
                 }
               }}
-              restrictions={safetySceneDocument.restrictions}
+              restrictions={sceneRestrictions}
               obstacleLayer={safetySceneDocument.obstacleLayer}
               showObstacles={showObstacles}
               obstacleFocus={obstacleFocus}
@@ -3742,9 +4378,41 @@ export default function MissionWorkbench() {
               onSelectVehicle={(id) => {
                 setSelected(id);
                 setFlightDetails(true);
+                if (workspace === 'execution') setExecutionTab('vehicles');
               }}
             />
             <div className="mw-map-tools">
+              {(focusMode || mode === 'base' || mode === 'reserve') && mode && (
+                <output className="expert-drawing-actions">
+                  <span>
+                    {mode === 'base'
+                      ? 'Выберите точку базы на карте'
+                      : mode === 'reserve'
+                        ? 'Выберите запасную посадку на карте'
+                        : 'Редактирование контура'}
+                  </span>
+                  {!['base', 'reserve', 'start', 'landing'].includes(mode) && (
+                    <button
+                      className="mw-button primary small"
+                      disabled={draft.length < 3}
+                      onClick={() => finishDrawing()}
+                    >
+                      Применить контур
+                    </button>
+                  )}
+                  <button
+                    className="mw-button small"
+                    onClick={() => {
+                      setMode(null);
+                      setDraft([]);
+                      setMovingBaseId(null);
+                      setBasePreview(null);
+                    }}
+                  >
+                    Отмена
+                  </button>
+                </output>
+              )}
               <button
                 className="mw-button square"
                 title="Показать всю область"
@@ -3763,19 +4431,11 @@ export default function MissionWorkbench() {
               </button>
               <button
                 className={`mw-button square ${mode === 'exclusion' ? 'active' : ''}`}
-                title="Нарисовать запрет"
-                aria-label="Нарисовать запрет"
-                onClick={() => startDrawing('exclusion')}
+                title="Объекты карты"
+                aria-label="Объекты карты"
+                onClick={showMapObjects}
               >
                 <ShieldCheck size={17} />
-              </button>
-              <button
-                className="mw-button square mw-plan-action"
-                title="Слои и препятствия"
-                aria-label="Слои и препятствия"
-                onClick={showLayers}
-              >
-                <Layers size={17} />
               </button>
               <span className="spacer" />
               {workspace === 'planning' && (
@@ -3824,6 +4484,32 @@ export default function MissionWorkbench() {
                 </div>
               </details>
             </div>
+            {workspace === 'planning' &&
+              baseFeedback?.missionId === document.id && (
+                <div
+                  className={`base-map-feedback ${baseFeedback.error ? 'is-error' : ''}`}
+                  role={baseFeedback.error ? 'alert' : 'status'}
+                >
+                  <span>{baseFeedback.text}</span>
+                  {baseUndo?.after.id === document.id &&
+                    !baseFeedback.error && (
+                      <button
+                        className="mw-button small"
+                        disabled={operationActionBusy}
+                        onClick={() => void undoBaseChange()}
+                      >
+                        Отменить изменение базы
+                      </button>
+                    )}
+                  <button
+                    className="mw-button small"
+                    aria-label="Закрыть сообщение базы"
+                    onClick={() => setBaseFeedback(null)}
+                  >
+                    ×
+                  </button>
+                </div>
+              )}
             {showWind && (
               <div className="mw-wind-overlay">
                 <MissionWind
@@ -3865,38 +4551,41 @@ export default function MissionWorkbench() {
                   : 'Выберите подходящий план'}
               </h2>
               <InfoHint label="Выбор и подтверждение плана">
-                Варианты рассчитываются на одном входе. Одинаковые маршруты
-                объединены; разные назначения и пути остаются отдельными.
-                Подтверждение разрешает только модельную симуляцию, не реальный
-                полёт. Ошибки блокируют запуск, неизвестные условия показаны в
-                проверках.
-                {current?.recommendation?.samePlan &&
-                  ` Баланс совпал с ${current.recommendation.samePlanAs.map((x) => (x === 'makespan' ? 'быстрым' : 'ресурсным')).join(' и ')} вариантом.`}
+                Сравните время и расход ресурса. Одинаковые маршруты объединены.
+                Запустить симуляцию можно только после проверки плана.
               </InfoHint>
             </div>
-            <div className="mw-panel-content">
-              {!candidate ? (
-                <div className="mw-empty">
-                  <Compass size={35} />
-                  <h3>Нет расчёта</h3>
-                  <div className="mw-quickstart">
-                    <button
-                      className="mw-button primary"
-                      onClick={() => setModal('catalog')}
-                    >
-                      Начать с готового сценария
-                    </button>
-                    <button
-                      className="mw-button"
-                      onClick={() => setModal('guide')}
-                    >
-                      Проверить стенд по шагам
-                    </button>
-                  </div>
-                </div>
+            <div className="mw-panel-content" aria-busy={busy}>
+              {busy ? (
+                <output className="mw-calculation-state">
+                  <LoaderCircle size={20} className="mw-spinner" />
+                  Рассчитываем маршруты и проверяем безопасность…
+                </output>
+              ) : !candidate ? (
+                <output className="mw-calculation-state">
+                  {error
+                    ? `Расчёт не завершён: ${error}`
+                    : 'Нет рассчитанных планов. Нажмите «Рассчитать варианты».'}
+                </output>
               ) : (
                 <>
                   <div className="mw-section-label">Планы</div>
+                  {(() => {
+                    const reason = alternativeLimitExplanation(
+                      document,
+                      currentCandidates,
+                      expertCandidateGroups(
+                        currentCandidates,
+                        candidate.id,
+                        current?.recommendation?.explanation,
+                      ).length,
+                    );
+                    return reason ? (
+                      <output className="mw-alternative-reason">
+                        {reason}
+                      </output>
+                    ) : null;
+                  })()}
                   <button
                     className="mw-button"
                     style={{ width: '100%', marginBottom: 12 }}
@@ -3906,95 +4595,219 @@ export default function MissionWorkbench() {
                       setModal('comparison');
                     }}
                   >
-                    Сравнить и объяснить варианты
+                    Подробное сравнение
                   </button>
-                  {groupMissionCandidates(currentCandidates, candidate.id)
+                  {expertCandidateGroups(
+                    currentCandidates,
+                    candidate.id,
+                    current?.recommendation?.explanation,
+                  )
                     .map((group) => group.representative)
                     .filter(
                       (c) =>
                         planningStep !== 'confirm' || c.id === candidate.id,
                     )
-                    .map((c) => (
-                      <div
-                        key={c.id}
-                        className={`mw-card mw-vehicle mw-plan-card ${candidate.id === c.id ? 'selected' : ''}`}
-                      >
-                        <button
-                          className="mw-plan-select"
-                          aria-pressed={candidate.id === c.id}
-                          onClick={() => chooseCandidate(c.id)}
+                    .map((c) => {
+                      const same = expertCandidateGroups(
+                        currentCandidates,
+                        c.id,
+                        current?.recommendation?.explanation,
+                      ).find((group) => group.candidateIds.includes(c.id));
+                      const duplicate = same?.candidateIds.find(
+                        (id) => id !== c.id,
+                      );
+                      const other = currentCandidates.find(
+                        (item) => item.id === duplicate,
+                      );
+                      return (
+                        <div
+                          key={c.id}
+                          data-candidate-id={c.id}
+                          className={`mw-card mw-vehicle mw-plan-card ${candidate.id === c.id ? 'selected' : ''}`}
                         >
-                          <h3>{candidateTitle(c)}</h3>
-                          <span>
-                            {candidate.id === c.id
-                              ? 'Выбран'
-                              : 'Выбрать вариант'}
-                          </span>
-                        </button>
-                        <p className="mw-caption">{candidateNames[c.status]}</p>
-                        <div className="mw-plan-headline">
-                          <div>
-                            <strong>
-                              {c.sorties.length
-                                ? `${fmt(c.metrics.makespanSec / 60)} мин`
-                                : '—'}
-                            </strong>
-                            <small>До завершения</small>
+                          <button
+                            className="mw-plan-select"
+                            aria-pressed={candidate.id === c.id}
+                            onClick={() => chooseCandidate(c.id)}
+                          >
+                            <h3>{candidateTitle(c)}</h3>
+                            <span>
+                              {candidate.id === c.id
+                                ? 'Выбран'
+                                : 'Выбрать вариант'}
+                            </span>
+                          </button>
+                          <p className="mw-caption">
+                            {c.status !== 'feasible_model'
+                              ? candidateNames[c.status]
+                              : c.id === 'balanced'
+                                ? 'Компромисс между сроком и общим временем в воздухе'
+                                : c.objective === 'makespan'
+                                  ? 'Один БВС или группа — кто завершит работу раньше'
+                                  : 'Меньше общего времени всех БВС в воздухе'}
+                          </p>
+                          {other && (
+                            <span className="mw-alternative-same">
+                              Один план для:{' '}
+                              {same?.candidateIds
+                                .map((id) =>
+                                  candidateTitle(
+                                    currentCandidates.find((x) => x.id === id)!,
+                                  ),
+                                )
+                                .join(' · ')}
+                            </span>
+                          )}
+                          <div className="mw-plan-headline">
+                            <div>
+                              <strong>
+                                {c.sorties.length
+                                  ? `${fmt(c.metrics.makespanSec / 60)} мин`
+                                  : '—'}
+                              </strong>
+                              <small>
+                                {c.status === 'feasible_model'
+                                  ? 'До завершения'
+                                  : 'Только рассчитанная часть'}
+                              </small>
+                            </div>
+                            <div>
+                              <strong>
+                                {fmt(c.metrics.flightTimeSec / 60)} мин
+                              </strong>
+                              <small>
+                                Общий налёт{' '}
+                                <InfoHint
+                                  label={`Что такое налёт: ${candidateTitle(c)}`}
+                                >
+                                  Складываем время всех БВС в воздухе. Два
+                                  аппарата по 10 минут — это 20 минут налёта,
+                                  даже если миссия завершилась за 10 минут.
+                                </InfoHint>
+                              </small>
+                            </div>
                           </div>
-                          <div>
-                            <strong>
-                              {fmt(c.metrics.flightTimeSec / 60)} мин
-                            </strong>
-                            <small>Суммарный налёт</small>
+                          <div className="mw-alternative-fleet">
+                            <span>{missionFleetLabel(document, c)}</span>
+                            {c.sorties.length > 0 && (
+                              <span>
+                                {concurrentVehicleCount(c) > 1
+                                  ? `${concurrentVehicleCount(c)} одновременно`
+                                  : c.metrics.vehicleCount > 1
+                                    ? 'По очереди'
+                                    : 'Один аппарат'}
+                              </span>
+                            )}
                           </div>
+                          {c.trace.some(
+                            (x) =>
+                              x.event === 'DIRECT_AREA_TRANSFER' ||
+                              x.event === 'AREA_TRANSFER_BLOCKED',
+                          ) && (
+                            <details className="mw-details">
+                              <summary>Переходы между участками</summary>
+                              {c.trace
+                                .filter(
+                                  (x) =>
+                                    x.event === 'DIRECT_AREA_TRANSFER' ||
+                                    x.event === 'AREA_TRANSFER_BLOCKED',
+                                )
+                                .map((x, i) => (
+                                  <p key={i}>{x.detail}</p>
+                                ))}
+                            </details>
+                          )}
+                          <details className="mw-details">
+                            <summary>Покрытие, вылеты и батарея</summary>
+                            <dl className="mw-definition">
+                              <dt>
+                                {c.status === 'feasible_model'
+                                  ? 'Завершение'
+                                  : 'Конец рассчитанной части'}
+                              </dt>
+                              <dd>
+                                {c.sorties.length
+                                  ? timestamp(document, c.metrics.makespanSec)
+                                  : '—'}
+                              </dd>
+                              <dt>
+                                Суммарный налёт{' '}
+                                <InfoHint label={`Налёт: ${candidateTitle(c)}`}>
+                                  Сумма времени всех вылетов всех БВС. При
+                                  параллельных полётах она больше времени до
+                                  окончания миссии. Это показатель использования
+                                  ресурса, не прогноз физического износа.
+                                </InfoHint>
+                              </dt>
+                              <dd>{fmt(c.metrics.flightTimeSec / 60)} мин</dd>
+                              <dt>БВС / вылеты</dt>
+                              <dd>
+                                {c.metrics.vehicleCount} /{' '}
+                                {c.metrics.sortieCount}
+                              </dd>
+                              <dt>Покрытие целевой площади</dt>
+                              <dd>{fmt(c.metrics.coveragePct)}%</dd>
+                              <dt>
+                                Минимальный остаток АКБ{' '}
+                                <InfoHint
+                                  label={`Остаток АКБ: ${candidateTitle(c)}`}
+                                >
+                                  Самый маленький расчётный заряд после посадки
+                                  среди всех вылетов. Должен быть не ниже
+                                  заданного резерва. Это не текущий заряд всего
+                                  флота.
+                                </InfoHint>
+                              </dt>
+                              <dd>
+                                {c.sorties.length
+                                  ? `${fmt(c.metrics.minimumRemainingPct)}%`
+                                  : '—'}
+                              </dd>
+                            </dl>
+                          </details>
                         </div>
-                        <details className="mw-details">
-                          <summary>Покрытие, вылеты и батарея</summary>
-                          <dl className="mw-definition">
-                            <dt>Завершение</dt>
-                            <dd>
-                              {c.sorties.length
-                                ? timestamp(document, c.metrics.makespanSec)
-                                : '—'}
-                            </dd>
-                            <dt>
-                              Суммарный налёт{' '}
-                              <InfoHint label={`Налёт: ${candidateTitle(c)}`}>
-                                Сумма времени всех вылетов всех БВС. При
-                                параллельных полётах она больше времени до
-                                окончания миссии. Это показатель использования
-                                ресурса, не прогноз физического износа.
-                              </InfoHint>
-                            </dt>
-                            <dd>{fmt(c.metrics.flightTimeSec / 60)} мин</dd>
-                            <dt>БВС / вылеты</dt>
-                            <dd>
-                              {c.metrics.vehicleCount} / {c.metrics.sortieCount}
-                            </dd>
-                            <dt>Покрытие целевой площади</dt>
-                            <dd>{fmt(c.metrics.coveragePct)}%</dd>
-                            <dt>
-                              Минимальный остаток АКБ{' '}
-                              <InfoHint
-                                label={`Остаток АКБ: ${candidateTitle(c)}`}
-                              >
-                                Самый маленький расчётный заряд после посадки
-                                среди всех вылетов. Должен быть не ниже
-                                заданного резерва. Это не текущий заряд всего
-                                флота.
-                              </InfoHint>
-                            </dt>
-                            <dd>
-                              {c.sorties.length
-                                ? `${fmt(c.metrics.minimumRemainingPct)}%`
-                                : '—'}
-                            </dd>
-                          </dl>
-                        </details>
-                      </div>
-                    ))}
+                      );
+                    })}
+                  {planningStep !== 'confirm' && !current?.recommendation && (
+                    <div
+                      className="mw-card mw-plan-card"
+                      data-candidate-id="balanced"
+                      aria-disabled="true"
+                    >
+                      <h3>Уложиться в срок</h3>
+                      <p className="mw-caption">
+                        Нужен хотя бы один план, прошедший проверки.
+                      </p>
+                    </div>
+                  )}
+                  {!!current?.document.resourceReservations?.length && (
+                    <details className="mw-details">
+                      <summary>БВС, занятые другими миссиями</summary>
+                      <ul>
+                        {current.document.resourceReservations.map((r) => (
+                          <li key={`${r.operationId}:${r.vehicleId}`}>
+                            {r.vehicleId} · {r.missionName} — не участвует в
+                            этом расчёте.
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  )}
+                  <MissionSafetySummary
+                    candidate={candidate}
+                    compact
+                    onOpenChecks={revealChecks}
+                  />
                   <button
                     className="mw-button primary"
+                    title={
+                      candidate.status !== 'feasible_model' ||
+                      checkCounts.fail > 0
+                        ? 'Есть нарушения или не найден полный выполнимый план'
+                        : isApproved
+                          ? 'План уже подтверждён — перейдите к выполнению'
+                          : 'Проверить ограничения перед симуляцией'
+                    }
                     style={{ width: '100%', marginTop: 10 }}
                     disabled={
                       candidate.status !== 'feasible_model' ||
@@ -4032,94 +4845,62 @@ export default function MissionWorkbench() {
                       </button>
                     </div>
                   )}
-                  <MissionSafetySummary
-                    candidate={candidate}
-                    compact
-                    onOpenChecks={revealChecks}
-                  />
                 </>
               )}
             </div>
-            <details
-              className="mw-panel-content mw-candidate-checks"
-              style={{ borderTop: '1px solid #e5ecef' }}
-            >
-              <summary className="mw-section-label">
-                Проверки: {checkCounts.pass} пройдено · {checkCounts.fail}{' '}
-                ошибок · {checkCounts.unknown} неизвестно
-              </summary>
-              <div className="mw-scroll">
-                {candidate?.checks.map((c, i) => (
-                  <div className={`mw-check ${c.status}`} key={`${c.id}-${i}`}>
-                    {c.status === 'pass' ? (
-                      <CheckCircle2 size={14} />
-                    ) : c.status === 'fail' ? (
-                      <TriangleAlert size={14} />
-                    ) : (
-                      <CircleHelp size={14} />
-                    )}
-                    <div>
-                      <strong>{c.title}</strong>
-                      <p>{c.detail}</p>
-                    </div>
-                  </div>
-                ))}
-                {!candidate && (
-                  <p className="mw-caption">Проверки ещё не запускались.</p>
-                )}
-              </div>
-            </details>
           </aside>
         </div>
         {workspace === 'results' && (
           <>
-            <button
-              className="mw-button mw-report-back"
-              onClick={() => setWorkspace('missions')}
-            >
-              ← К списку миссий
-            </button>
-            <Tabs
-              className="mw-result-tabs"
-              value={resultsTab}
-              onValueChange={(value) =>
-                setResultsTab(value as typeof resultsTab)
-              }
-            >
-              <TabsList aria-label="Разделы результатов" variant="line">
-                {(
-                  [
-                    ['summary', 'Итог'],
-                    ['analysis', 'Анализ'],
-                    ['files', 'Файлы'],
-                  ] as const
-                ).map(([id, title]) => (
-                  <TabsTrigger
-                    id={`result-${id}`}
-                    key={id}
-                    value={id}
-                    aria-controls={`result-panel-${id}`}
-                  >
-                    {title}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </Tabs>
-            {candidate && (
+            <div className="expert-report-navigation">
+              <button
+                className="mw-button mw-report-back"
+                onClick={() => setWorkspace('missions')}
+              >
+                ← К списку миссий
+              </button>
+              <Tabs
+                className="mw-result-tabs"
+                value={resultsTab}
+                onValueChange={(value) =>
+                  setResultsTab(value as typeof resultsTab)
+                }
+              >
+                <TabsList aria-label="Разделы результатов" variant="line">
+                  {(
+                    [
+                      ['summary', 'Все миссии'],
+                      ['analysis', 'Проверки миссии'],
+                    ] as const
+                  ).map(([id, title]) => (
+                    <TabsTrigger
+                      id={`result-${id}`}
+                      key={id}
+                      value={id}
+                      aria-controls={`result-panel-${id}`}
+                    >
+                      {title}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </Tabs>
+            </div>
+            {reviewCandidate && resultsTab !== 'summary' && (
               <output
                 className="mw-result-state"
-                data-status={candidate.status}
+                data-status={reviewCandidate.status}
               >
-                <strong>{candidateNames[candidate.status]}</strong> ·{' '}
-                {checkCounts.fail} нарушений · {checkCounts.unknown} ограничений
-                не подтверждено
+                <strong>{reviewDocument?.name}</strong> ·{' '}
+                {candidateNames[reviewCandidate.status]}
               </output>
             )}
-            {candidate && (
+            {reviewCandidate && reviewDocument && resultsTab !== 'summary' && (
               <button
                 className="mw-button primary"
-                onClick={() => void exportEvidenceZip()}
-                disabled={candidate.status !== 'feasible_model'}
+                onClick={() =>
+                  void downloadDemoArtifact(reviewDocument.id, 'evidence')
+                }
+                disabled={exportBusy}
               >
                 <Download size={16} /> Скачать доказательства ZIP
               </button>
@@ -4131,134 +4912,148 @@ export default function MissionWorkbench() {
               aria-labelledby="result-summary"
               hidden={resultsTab !== 'summary'}
             >
-              <div className="mw-result-heading">
-                <div>
-                  <h2>{candidate ? 'Итог расчёта' : 'Результатов пока нет'}</h2>
-                  <p>
-                    План и расчётные проверки, не отчёт о фактически полученной
-                    съёмке.
-                  </p>
-                </div>
-                <button
-                  className="mw-button primary"
-                  disabled={!candidate}
-                  onClick={() => void exportPlan('evidence')}
-                >
-                  <Download size={16} />
-                  Расчёт JSON
-                </button>
-              </div>
-              {candidate ? (
-                <>
-                  {activeRun && (
-                    <div className="mw-actions" style={{ marginBottom: 16 }}>
-                      <button
-                        className="mw-button primary"
-                        onClick={() => void exportRun()}
-                      >
-                        Отчёт о запуске JSON
-                      </button>
-                      <button
-                        className="mw-button"
-                        onClick={() => void exportRun(true)}
-                      >
-                        Отчёт HTML
-                      </button>
-                      <button
-                        className="mw-button"
-                        onClick={() => openRunJournal(activeRun)}
-                      >
-                        Журнал запуска
-                      </button>
-                      <span className="mb-status">
-                        {activeRun.status === 'completed'
-                          ? 'Завершена в модели'
-                          : activeRun.status === 'cancelled'
-                            ? 'Остановлена'
-                            : 'Не завершена'}
-                      </span>
-                    </div>
-                  )}
-                  <div
-                    className="mw-result-metrics"
-                    aria-label="Показатели плана"
+              <DemoReportTable
+                documents={demoDocuments}
+                results={demoResults}
+                rows={operations.rows}
+                busy={exportBusy}
+                recordings={recordings.info}
+                selections={demoSelection}
+                onDownload={(id, kind) => void downloadDemoArtifact(id, kind)}
+                onOpenChecks={openReportChecks}
+              />
+              <div className="expert-legacy-summary" hidden>
+                <div className="mw-result-heading">
+                  <div>
+                    <h2>
+                      {candidate ? 'Итог расчёта' : 'Результатов пока нет'}
+                    </h2>
+                    <p>
+                      План и расчётные проверки, не отчёт о фактически
+                      полученной съёмке.
+                    </p>
+                  </div>
+                  <button
+                    className="mw-button primary"
+                    disabled={!candidate}
+                    onClick={() => void exportPlan('evidence')}
                   >
-                    <article>
-                      <strong>
-                        {fmt(candidate.metrics.grossCoveragePct)}%
-                      </strong>
-                      <span>Покрытие исходной площади</span>
-                    </article>
-                    <article>
-                      <strong>
-                        {fmt(candidate.metrics.makespanSec / 60)} мин
-                      </strong>
-                      <span>До последней посадки</span>
-                    </article>
-                    <article>
-                      <strong>
-                        {fmt(candidate.metrics.flightTimeSec / 60)} мин
-                      </strong>
-                      <span>Общий налёт</span>
-                    </article>
-                    <article>
-                      <strong>{candidate.metrics.vehicleCount}</strong>
-                      <span>БВС в плане</span>
-                    </article>
-                  </div>
-                  <MissionSafetySummary
-                    candidate={candidate}
-                    onOpenChecks={revealChecks}
-                  />
-                  {current && (
-                    <MissionDataSummary
-                      document={current.document}
+                    <Download size={16} />
+                    Расчёт JSON
+                  </button>
+                </div>
+                {candidate ? (
+                  <>
+                    {activeRun && (
+                      <div className="mw-actions" style={{ marginBottom: 16 }}>
+                        <button
+                          className="mw-button primary"
+                          onClick={() => void exportRun()}
+                        >
+                          Отчёт о запуске JSON
+                        </button>
+                        <button
+                          className="mw-button"
+                          onClick={() => void exportRun(true)}
+                        >
+                          Отчёт HTML
+                        </button>
+                        <button
+                          className="mw-button"
+                          onClick={() => openRunJournal(activeRun)}
+                        >
+                          Журнал запуска
+                        </button>
+                        <span className="mb-status">
+                          {activeRun.status === 'completed'
+                            ? 'Завершена в модели'
+                            : activeRun.status === 'cancelled'
+                              ? 'Остановлена'
+                              : 'Не завершена'}
+                        </span>
+                      </div>
+                    )}
+                    <div
+                      className="mw-result-metrics"
+                      aria-label="Показатели плана"
+                    >
+                      <article>
+                        <strong>
+                          {fmt(candidate.metrics.grossCoveragePct)}%
+                        </strong>
+                        <span>Покрытие исходной площади</span>
+                      </article>
+                      <article>
+                        <strong>
+                          {fmt(candidate.metrics.makespanSec / 60)} мин
+                        </strong>
+                        <span>До последней посадки</span>
+                      </article>
+                      <article>
+                        <strong>
+                          {fmt(candidate.metrics.flightTimeSec / 60)} мин
+                        </strong>
+                        <span>Общий налёт</span>
+                      </article>
+                      <article>
+                        <strong>{candidate.metrics.vehicleCount}</strong>
+                        <span>БВС в плане</span>
+                      </article>
+                    </div>
+                    <MissionSafetySummary
                       candidate={candidate}
-                      completed={
-                        activeRun?.status === 'completed' &&
-                        activeRun.inputHash === current.inputHash &&
-                        canonicalStringify(activeRun.candidate) ===
-                          canonicalStringify(candidate)
-                      }
+                      onOpenChecks={revealChecks}
                     />
-                  )}
-                  <div className="mw-result-next">
-                    <button
-                      className="mw-button"
-                      onClick={() => {
-                        setWorkspace('planning');
-                        setPlanningStep('variants');
-                        setFocusMode(false);
-                        setFit((x) => x + 1);
-                      }}
-                    >
-                      Сравнить планы
-                    </button>
-                    <button
-                      className="mw-button"
-                      onClick={() => setResultsTab('analysis')}
-                    >
-                      Почему этот план
-                    </button>
-                    <button
-                      className="mw-button"
-                      onClick={() => setResultsTab('files')}
-                    >
-                      Форматы и файлы
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <button
-                  className="mw-button"
-                  onClick={() => {
-                    setWorkspace('planning');
-                    setPlanningStep('task');
-                  }}
-                >
-                  Подготовить миссию
-                </button>
-              )}
+                    {current && (
+                      <MissionDataSummary
+                        document={current.document}
+                        candidate={candidate}
+                        completed={
+                          activeRun?.status === 'completed' &&
+                          activeRun.inputHash === current.inputHash &&
+                          canonicalStringify(activeRun.candidate) ===
+                            canonicalStringify(candidate)
+                        }
+                      />
+                    )}
+                    <div className="mw-result-next">
+                      <button
+                        className="mw-button"
+                        onClick={() => {
+                          setWorkspace('planning');
+                          setPlanningStep('variants');
+                          setFocusMode(false);
+                          setFit((x) => x + 1);
+                        }}
+                      >
+                        Сравнить планы
+                      </button>
+                      <button
+                        className="mw-button"
+                        onClick={() => setResultsTab('analysis')}
+                      >
+                        Почему этот план
+                      </button>
+                      <button
+                        className="mw-button"
+                        onClick={() => setResultsTab('files')}
+                      >
+                        Форматы и файлы
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <button
+                    className="mw-button"
+                    onClick={() => {
+                      setWorkspace('planning');
+                      setPlanningStep('task');
+                    }}
+                  >
+                    Подготовить миссию
+                  </button>
+                )}
+              </div>
             </section>
             <section
               className="mw-results-checks"
@@ -4267,46 +5062,55 @@ export default function MissionWorkbench() {
               aria-labelledby="result-analysis"
               hidden={resultsTab !== 'analysis'}
             >
-              <h2>Проверки и объяснение решения</h2>
-              {resultsTab === 'analysis' && current && candidate && (
-                <MissionContingencyPanel
-                  key={`${current.inputHash}:${candidate.id}:${current.createdAt}`}
-                  document={current.document}
-                  candidate={candidate}
-                />
+              <h2>Проверки плана</h2>
+              {resultsTab === 'analysis' &&
+                reviewDocument &&
+                reviewCandidate && (
+                  <MissionFailedChecks
+                    document={reviewDocument}
+                    candidate={reviewCandidate}
+                    onFleet={() => setWorkspace('fleet')}
+                    onAssignment={(jobId) => {
+                      const draft =
+                        demoDocuments.find((d) => d.id === reviewDocument.id) ??
+                        reviewDocument;
+                      previewJobId.current = jobId;
+                      openPreview(draft, 'Назначение БВС');
+                      setJobIndex(
+                        Math.max(
+                          0,
+                          draft.jobs.findIndex((j) => j.id === jobId),
+                        ),
+                      );
+                      setEditorTab('vehicles');
+                    }}
+                  />
+                )}
+              {resultsTab === 'analysis' && reviewCandidate && (
+                <details
+                  className="mw-details"
+                  key={`${reviewResult?.inputHash}:${reviewCandidate.id}:checks`}
+                >
+                  <summary>Все проверки</summary>
+                  <MissionCheckGroups checks={reviewCandidate.checks} />
+                </details>
               )}
-              <details
-                className="mw-details"
-                open={allChecksOpen}
-                onToggle={(event) => setAllChecksOpen(event.currentTarget.open)}
-              >
-                <summary>Все проверки и пояснения</summary>
-                {candidate?.checks.map((c, i) => (
-                  <div className={`mw-check ${c.status}`} key={`${c.id}-${i}`}>
-                    <span>
-                      {c.status === 'pass'
-                        ? '✓'
-                        : c.status === 'fail'
-                          ? '×'
-                          : '?'}
-                    </span>
-                    <div>
-                      <strong>{c.title}</strong>
-                      <p>{c.detail}</p>
-                    </div>
-                  </div>
-                ))}
-              </details>
-              {resultsTab === 'analysis' && current && candidate && (
-                <MissionAnalysisPanel
-                  key={`${current.inputHash}:${candidate.id}:${current.createdAt}`}
-                  document={current.document}
-                  candidate={candidate}
-                  onOpenTrial={openPreview}
-                  operation={activeRun}
-                  getFleet={() => operations.listFleet()}
-                />
-              )}
+              {resultsTab === 'analysis' &&
+                reviewDocument &&
+                reviewCandidate && (
+                  <MissionAnalysisPanel
+                    key={`${reviewResult?.inputHash}:${reviewCandidate.id}:insights`}
+                    document={reviewDocument}
+                    candidate={reviewCandidate}
+                    compact
+                    onOpenTrial={(next, label) => {
+                      openPreview({ ...next, id: reviewDocument.id }, label);
+                      previewTrialOrigin.current = reviewDocument;
+                    }}
+                    operation={reviewOperation}
+                    getFleet={() => operations.listFleet()}
+                  />
+                )}
             </section>
           </>
         )}
@@ -4631,6 +5435,30 @@ export default function MissionWorkbench() {
           }
         }}
       />
+      {modal === 'report-preview' && (
+        <Modal
+          title="Отчёт миссии"
+          wide
+          onClose={onModalClose}
+          footer={
+            <button className="mw-button small" onClick={onModalClose}>
+              ← Назад к отчётам
+            </button>
+          }
+        >
+          <iframe
+            title="Отчёт выполнения"
+            sandbox=""
+            srcDoc={reportPreview}
+            style={{
+              width: '100%',
+              height: '70vh',
+              border: 0,
+              background: 'white',
+            }}
+          />
+        </Modal>
+      )}
       {modal === 'upload' && (
         <Modal
           title="Загрузить данные"
@@ -4766,6 +5594,24 @@ export default function MissionWorkbench() {
             Справка по программе
           </button>
         </section>
+        <section className="mw-settings-section">
+          <h3>Новая демонстрация</h3>
+          <button
+            className="mw-button demo-delete"
+            onClick={() => {
+              if (
+                window.confirm(
+                  'Начать стенд с нуля? Будут остановлены симуляции и удалены изменения миссий, расчёты, журналы и видео текущей сессии. Три примера и активный парк восстановятся. Скачанные файлы сохранятся.',
+                )
+              ) {
+                request.current?.abort();
+                window.dispatchEvent(new Event('prime:reset-demo'));
+              }
+            }}
+          >
+            Начать с нуля
+          </button>
+        </section>
         <details className="mw-details">
           <summary>О стенде и диагностике</summary>
           <p>
@@ -4781,116 +5627,28 @@ export default function MissionWorkbench() {
             Диагностика v1
           </Link>
         </details>
-        <button
-          className="mw-button"
-          onClick={() => {
-            void operations.refresh().catch(() => undefined);
-            setModal(null);
-            setWorkspace('fleet');
-          }}
-        >
-          Состояние парка
-        </button>
       </Modal>
       {modal === 'mission-actions' && (
-        <Modal title={document.name || 'Новая миссия'} onClose={onModalClose}>
-          <p className="mw-caption">
-            Действия относятся к этой миссии. ID: {document.id}
-            {savedRevision ? ` · версия ${savedRevision}` : ''}.
-          </p>
+        <Modal title="Действия с миссией" onClose={onModalClose}>
           <div className="mw-mission-action-list">
             <button className="mw-button" onClick={() => setModal('upload')}>
               <Upload size={16} />
               Загрузить миссию или слой
             </button>
-            <button className="mw-button" onClick={showLibrary}>
-              <FolderOpen size={16} />
-              Сохранённые миссии
-            </button>
-            <button
-              className="mw-button"
-              onClick={() => {
-                void operations.refresh().catch(() => undefined);
-                setModal(null);
-                setWorkspace('fleet');
-              }}
-            >
-              Состояние парка
-            </button>
-            <button className="mw-button" onClick={() => setModal('overview')}>
-              Описание миссии
-            </button>
-            <button
-              className="mw-button"
-              onClick={() => {
-                setWizard(true);
-                setWorkspace('planning');
-                setPlanningStep('task');
-                setPlaying(false);
-                setModal(null);
-              }}
-            >
-              Редактировать миссию
-            </button>
-            <button
-              className="mw-button"
-              onClick={() => {
-                setModal(null);
-                void save();
-              }}
-            >
-              <Save size={16} />
-              Сохранить миссию
-            </button>
-            <button className="mw-button" onClick={showSaveAs}>
-              Сохранить копию…
-            </button>
-            <button className="mw-button" onClick={() => exportTask('yaml')}>
-              <Download size={16} />
-              Скачать миссию YAML
-            </button>
             <button className="mw-button" onClick={() => exportTask('json')}>
+              <Download size={16} />
               Скачать миссию JSON
             </button>
-            {isApproved && !safety && (
-              <>
-                <button
-                  className="mw-button"
-                  disabled={
-                    operationActionBusy || operations.loading || playing
-                  }
-                  onClick={() => {
-                    setModal(null);
-                    void scheduleOperation(false);
-                  }}
-                >
-                  Поставить в план
-                </button>
-                <button
-                  className="mw-button"
-                  disabled={operationActionBusy || operations.loading}
-                  onClick={() => {
-                    setPlaying(false);
-                    setTime(0);
-                    setModal(null);
-                  }}
-                >
-                  В начало симуляции
-                </button>
-              </>
-            )}
             {activeRun && (
               <button
-                className="mw-button"
-                disabled={
-                  safety?.stage === 'pending' || safety?.stage === 'returning'
-                }
+                className="mw-button demo-delete"
                 onClick={() => {
                   setModal(null);
-                  void reviseActiveMission();
+                  void deleteDemoRun(activeRun.document.id);
                 }}
               >
-                Создать пересмотр миссии
+                <Trash2 size={16} />
+                Удалить из выполнения
               </button>
             )}
           </div>
@@ -5057,7 +5815,7 @@ export default function MissionWorkbench() {
           <div className="ms-file-actions">
             <button
               className="mw-button"
-              onClick={() => geoFile.current?.click()}
+              onClick={() => importObjects('obstacle')}
             >
               Загрузить GeoJSON / KML
             </button>
@@ -5169,49 +5927,113 @@ export default function MissionWorkbench() {
       {modal === 'preview' && preview && (
         <Modal
           title="Проверка перед загрузкой"
+          className="mission-import-modal"
           help="Источник загружается только после подтверждения. Сохранённая библиотека не изменяется. Старые миссии открываются рабочими копиями с актуальными правилами батареи и безопасности; перед запуском нужен новый расчёт."
           error={error}
           onClose={onModalClose}
           footer={
             <>
+              <details className="mission-download-menu">
+                <summary className="mw-button">Скачать миссию</summary>
+                <div>
+                  <button
+                    className="mw-button"
+                    onClick={() =>
+                      download(
+                        `${preview.id}.mission.json`,
+                        serializeMissionJson(preview),
+                      )
+                    }
+                  >
+                    JSON · для загрузки
+                  </button>
+                  <button
+                    className="mw-button"
+                    onClick={() =>
+                      download(
+                        `${preview.id}.mission.html`,
+                        missionPassportHtml(preview),
+                        'text/html',
+                      )
+                    }
+                  >
+                    HTML · все параметры
+                  </button>
+                </div>
+              </details>
               <button className="mw-button" onClick={onModalClose}>
                 Отмена
               </button>
-              <button className="mw-button primary" onClick={acceptPreview}>
-                Заменить текущую миссию
+              <button
+                className="mw-button primary"
+                disabled={
+                  operationActionBusy ||
+                  (previewDuplicate && !importCopyChoice) ||
+                  (!!previewConflicts.length && !importFleetChoice)
+                }
+                onClick={() => void acceptPreview()}
+              >
+                Открыть в редакторе
               </button>
             </>
           }
         >
           <p className="mw-caption">Источник: {previewName}.</p>
-          {dirty && (
-            <p className="mw-caption">
-              Несохранённые изменения текущей миссии будут заменены.
-            </p>
+          {previewDuplicate && (
+            <div className="mw-alert">
+              <strong>Миссия с таким ID уже есть.</strong>
+              <label className="mw-checkbox">
+                <input
+                  type="checkbox"
+                  checked={importCopyChoice}
+                  onChange={(e) => setImportCopyChoice(e.target.checked)}
+                />
+                Создать отдельную копию с новым ID
+              </label>
+              <button
+                className="mw-button small"
+                onClick={() =>
+                  openPreview(
+                    demoDocuments.find((d) => d.id === preview.id)!,
+                    'Существующая миссия',
+                  )
+                }
+              >
+                Открыть существующую
+              </button>
+            </div>
           )}
-          <div className="mw-import-summary">
-            <h3>{preview.name}</h3>
-            <p>
-              {preview.jobs.length} работ · {preview.scenario.vehicles.length}{' '}
-              БВС
-            </p>
-            <p>
-              {preview.window.start} — {preview.window.end}
-            </p>
-            <p>{preview.jobs.map((j) => jobNames[j.job.type]).join(', ')}</p>
-          </div>
+          {!!previewConflicts.length && (
+            <div className="mw-alert">
+              <strong>
+                Эти ID БВС уже есть в парке с другими параметрами:
+              </strong>
+              <ul>
+                {previewConflicts.map((c) => (
+                  <li key={c.id}>
+                    <strong>{c.name}</strong>: {c.differences.join('; ')}.
+                  </li>
+                ))}
+              </ul>
+              <label className="mw-checkbox">
+                <input
+                  type="checkbox"
+                  checked={importFleetChoice}
+                  onChange={(e) => setImportFleetChoice(e.target.checked)}
+                />
+                Использовать текущие характеристики, базы и заряд общего парка
+              </label>
+              <small>
+                Для других физических аппаратов отмените импорт и задайте им
+                уникальные ID в файле.
+              </small>
+            </div>
+          )}
+          <MissionImportCard document={preview} />
           {(!preview.planning.batteryPolicy ||
             !preview.planning.safetyPolicy) && (
             <p className="mw-caption">Архивный формат · требуется пересчёт.</p>
           )}
-          <details className="mw-details">
-            <summary>Все параметры миссии</summary>
-            <MissionBrief document={preview} />
-          </details>
-          <details className="mw-details">
-            <summary>Полное содержимое файла</summary>
-            <pre>{JSON.stringify(preview, null, 2)}</pre>
-          </details>
         </Modal>
       )}
       {modal === 'geometry' && geometry && (
@@ -5251,6 +6073,12 @@ export default function MissionWorkbench() {
                 Области работ — заменить выбранную / добавить части
               </option>
               <option value="exclusion">Постоянные запреты — добавить</option>
+              <option value="airspace">
+                Граница полётов — заменить одним контуром
+              </option>
+              <option value="reserve">
+                Запасные площадки — добавить точки
+              </option>
               <option value="obstacle">
                 Препятствия / возвышенности — добавить объёмы
               </option>
@@ -5337,23 +6165,14 @@ export default function MissionWorkbench() {
               покрытие {fmt(candidate.metrics.coveragePct)}%
             </p>
           </div>
-          <p>
-            Проверок пройдено: {checkCounts.pass}. Неизвестно:{' '}
-            {checkCounts.unknown}. Ошибок: {checkCounts.fail}.
-          </p>
-          <div className="mw-scroll">
-            {candidate.checks
-              .filter((c) => c.status !== 'pass')
-              .map((c, i) => (
-                <div className="mw-check unknown" key={i}>
-                  <CircleHelp size={15} />
-                  <div>
-                    <strong>{c.title}</strong>
-                    <p>{c.detail}</p>
-                  </div>
-                </div>
-              ))}
-          </div>
+          <MissionSafetySummary
+            candidate={candidate}
+            compact
+            onOpenChecks={() => {
+              onModalClose();
+              revealChecks();
+            }}
+          />
           <label className="mw-checkbox">
             <input
               type="checkbox"
@@ -5361,12 +6180,14 @@ export default function MissionWorkbench() {
               onChange={(e) => setAcknowledged(e.target.checked)}
             />
             <span>
-              Я ознакомился с допущениями. Подтверждаю этот вариант только для
-              модельной симуляции; разрешения и реальная безопасность полёта не
-              удостоверены.
+              Подтверждаю запуск симуляции с условиями модели. Это не разрешение
+              на реальный полёт.
             </span>
           </label>
-          <p className="mw-code">SHA-256 входа: {current?.inputHash}</p>
+          <details className="mw-details">
+            <summary>Идентификатор расчёта</summary>
+            <p className="mw-code">SHA-256: {current?.inputHash}</p>
+          </details>
         </Modal>
       )}
       {modal === 'library' && (

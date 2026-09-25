@@ -99,6 +99,31 @@ void test('wind outside profile and exhausted battery block fake returns', async
     'blocked',
   );
 });
+
+void test('wind triggers immediate checked return; new wind invalidates any cached decision', async () => {
+  const row = await fixture;
+  const normal = createSafetySession(
+    row,
+    { ...input, kind: 'wind', windMps: 2 },
+    now,
+  );
+  assert.equal(normal.stage, 'returning');
+  assert.equal(normal.delaySec, 0);
+  const extreme = createSafetySession(
+    row,
+    { ...input, kind: 'wind', windMps: 30 },
+    now,
+  );
+  assert.equal(extreme.stage, 'blocked');
+  assert.ok(
+    recoveryOptions(row.document, row.candidate, extreme).every(
+      (o) => !o.valid,
+    ),
+  );
+  assert.ok(
+    recoveryOptions(row.document, row.candidate, normal).some((o) => o.valid),
+  );
+});
 void test('critical battery bypasses waiting when only immediate return is feasible', async () => {
   const row = await fixture;
   const base = createSafetySession(row, input, now);

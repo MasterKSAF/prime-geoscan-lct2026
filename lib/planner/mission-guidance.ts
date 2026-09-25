@@ -1,5 +1,6 @@
 import type { MissionDocument } from './mission-schema.ts';
 import { vehiclePlanningEligibility } from './fixed-wing-profile.ts';
+import { resolveVehicleCamera } from './camera-profile.ts';
 
 const fromNames = [
   'с севера',
@@ -62,6 +63,13 @@ export function missionFleetHints(document: MissionDocument, jobId: string) {
       );
     if (!vehicle.jobs.includes(job.job.type))
       reasons.push(`Нет профиля ${job.job.type}`);
+    else if (
+      job.quality.mode === 'camera' &&
+      (vehicle.cameraProfiles !== undefined || vehicle.cameraIds !== undefined)
+    ) {
+      const camera = resolveVehicleCamera(vehicle, job.job.type);
+      if (camera.reason) reasons.push(camera.reason);
+    }
     if (document.scenario.wind.speedMps > vehicle.maxWindMps)
       reasons.push(`Ветер выше лимита ${vehicle.maxWindMps} м/с`);
     const batteries = document.batteries.filter(

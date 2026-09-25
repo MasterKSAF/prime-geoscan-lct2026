@@ -36,7 +36,7 @@ void test('v2 exports preserve sortie, battery, absolute time and honest height 
     'above_declared_local_flat_surface',
   );
   assert.equal(geo.properties.jobs[0].job.type, 'RGB');
-  assert.ok(geo.properties.jobs[0].effectiveJob.triggerDistanceM > 0);
+  assert.ok(geo.properties.jobs[0].effectiveJob!.triggerDistanceM > 0);
   assert.ok(geo.properties.jobs[0].quality.source);
   assert.equal(
     geo.features.filter((f) => f.properties.kind === 'sortie').length,

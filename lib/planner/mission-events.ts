@@ -3,6 +3,7 @@ import type {
   MissionEvent,
   ScheduledSortie,
 } from './mission-schema.ts';
+import { segmentJobId, sortieJobIds } from './mission-sortie-jobs.ts';
 
 export function buildMissionEvents(
   d: MissionDocument,
@@ -40,7 +41,7 @@ export function buildMissionEvents(
       vehicleId: sortie.vehicleId,
       sortieId: sortie.id,
       batteryId: sortie.batteryId,
-      detail: `Начало вылета по работе ${sortie.jobId}.`,
+      detail: `Начало вылета по работам ${sortieJobIds(sortie).join(', ')}.`,
     });
     for (const seg of sortie.segments.filter((s) => s.phase === 'survey'))
       events.push({
@@ -49,7 +50,7 @@ export function buildMissionEvents(
         vehicleId: sortie.vehicleId,
         sortieId: sortie.id,
         batteryId: sortie.batteryId,
-        detail: `Рабочая полоса ${seg.stripId}; расчётное событие сенсора, не полученный снимок.`,
+        detail: `Рабочая полоса ${seg.stripId}; работа ${segmentJobId(sortie, seg)}; модельное срабатывание сенсора.`,
       });
     events.push({
       timeSec: sortie.endSec,

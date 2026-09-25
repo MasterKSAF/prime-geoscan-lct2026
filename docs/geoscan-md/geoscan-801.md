@@ -1,6 +1,6 @@
 ---
 title: "Геоскан 801 — описание и характеристики"
-source: "tmp/geoscan-plan/geoscan-801.pdf"
+source: "docs/planner/references/manufacturers/geoscan-801.pdf"
 source_sha256: "8c515fb0113602aeb7c17e697e9d978b6ce89432e2d32e6e554b58bcda622868"
 converted_at: "2026-09-15T15:25:32+00:00"
 source_status: "reference-snapshot"
@@ -9,7 +9,7 @@ extraction: "pdf-native-text-and-selective-ocr"
 
 # Геоскан 801 — описание и характеристики
 
-Источник: [geoscan-801.pdf](../../tmp/geoscan-plan/geoscan-801.pdf). [Каталог Markdown](README.md).
+Источник: [geoscan-801.pdf](../planner/references/manufacturers/geoscan-801.pdf). [Каталог Markdown](README.md).
 
 > Копия для поиска и парсинга, не новый нормативный документ. Сохранены физические номера страниц. Текст PDF дан в блоках `text`, чтобы не потерять расположение строк и колонок; схемы и подписи внутри изображений могут отсутствовать. OCR отмечен отдельно.
 
@@ -17,7 +17,7 @@ extraction: "pdf-native-text-and-selective-ocr"
 
 ## Страница 1
 
-[Оригинал, страница 1](../../tmp/geoscan-plan/geoscan-801.pdf#page=1)
+[Оригинал, страница 1](../planner/references/manufacturers/geoscan-801.pdf#page=1)
 
 > Извлечение: `visual-transcription`. Растровых объектов в PDF: 1.
 
@@ -46,7 +46,7 @@ sale@geoscan.ru · 8 800 333-84-77 · geoscan.ru
 
 ## Страница 2
 
-[Оригинал, страница 2](../../tmp/geoscan-plan/geoscan-801.pdf#page=2)
+[Оригинал, страница 2](../planner/references/manufacturers/geoscan-801.pdf#page=2)
 
 > Извлечение: `visual-transcription`. Растровых объектов в PDF: 7.
 
@@ -78,7 +78,7 @@ sale@geoscan.ru · 8 800 333-84-77 · geoscan.ru
 
 ## Страница 3
 
-[Оригинал, страница 3](../../tmp/geoscan-plan/geoscan-801.pdf#page=3)
+[Оригинал, страница 3](../planner/references/manufacturers/geoscan-801.pdf#page=3)
 
 > Извлечение: `visual-transcription`. Растровых объектов в PDF: 0.
 
@@ -127,7 +127,7 @@ sale@geoscan.ru · 8 800 333-84-77 · geoscan.ru
 
 ## Страница 4
 
-[Оригинал, страница 4](../../tmp/geoscan-plan/geoscan-801.pdf#page=4)
+[Оригинал, страница 4](../planner/references/manufacturers/geoscan-801.pdf#page=4)
 
 > Извлечение: `visual-transcription`. Растровых объектов в PDF: 0.
 

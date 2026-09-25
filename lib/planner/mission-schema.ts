@@ -1,6 +1,9 @@
 import { z } from 'zod';
+import { AUTO_ALTITUDE_CEILING_M } from './altitude-policy.ts';
 import { obstacleSourceSchema } from './obstacle-layer.ts';
 import { missionWeatherSchema } from './mission-weather.ts';
+import { catalogSourceSchema, checkCatalogSources } from './mission-catalog.ts';
+import { airspaceAltitudeReferenceSchema } from './airspace-altitudes.ts';
 import {
   scenarioSchema,
   polygon,
@@ -11,7 +14,7 @@ import type { Scenario, Mission, Plan, Check, Polygon } from './schema.ts';
 
 export const MISSION_VERSION = '2.0' as const;
 export const MAX_MISSION_FILE_BYTES = 200 * 1024;
-export const MISSION_ENGINE_VERSION = '0.3.0';
+export const MISSION_ENGINE_VERSION = '0.4.0';
 const id = z.string().regex(/^[a-zA-Z0-9_-]{1,60}$/);
 const text = z.string().min(1).max(500);
 const num = (min: number, max: number) => z.number().min(min).max(max);
@@ -29,6 +32,8 @@ export const qualitySchema = z
     forwardOverlap: num(0, 0.95).optional(),
     minimumIntervalSec: num(0.01, 60).optional(),
     maximumGsdCm: num(0.01, 1000).optional(),
+    // Omitted preserves the explicit height and hashes of existing documents.
+    altitudeMode: z.enum(['fixed', 'gsd']).optional(),
     shutterSec: num(0.000001, 10).optional(),
     maximumBlurPx: num(0.01, 100).optional(),
     fieldOfViewDeg: num(1, 170).optional(),
@@ -77,7 +82,31 @@ export const missionDocumentSchema = z
     scenario: scenarioSchema,
     bases: z
       .array(
-        z.object({ id, name: z.string().min(1).max(100), coordinate }).strict(),
+        z
+          .object({
+            id,
+            name: z.string().min(1).max(100),
+            coordinate,
+            // Optional explicit pads: base centre alone never implies capacity.
+            landingPads: z
+              .array(
+                z
+                  .object({
+                    id,
+                    coordinate,
+                    enabled: z.boolean(),
+                    kinds: z
+                      .array(z.enum(['multirotor', 'fixedWing']))
+                      .min(1)
+                      .max(2),
+                  })
+                  .strict(),
+              )
+              .min(1)
+              .max(20)
+              .optional(),
+          })
+          .strict(),
       )
       .max(40)
       .optional(),
@@ -119,12 +148,15 @@ export const missionDocumentSchema = z
         temporalBufferSec: num(0, 600),
         separationSource: text,
         maxSortiesPerVehicle: num(1, 30).int(),
+        // Distinct aircraft over the entire mission, not concurrent flights.
+        maxVehicles: num(1, 20).int().optional(),
         maxComputeMs: num(100, 30000).int(),
         altitudePreference: z.enum(['balanced', 'lower', 'higher']),
         windModel: z.enum(['constantAirspeed', 'constantGroundSpeed']),
         // Optional, never defaulted: historical input hashes must stay unchanged.
         batteryPolicy: z.literal('installed-current-v1').optional(),
         safetyPolicy: z.literal('continuous-occupancy-v1').optional(),
+        areaTransferPolicy: z.literal('compatible-work-v1').optional(),
       })
       .strict(),
     batteries: z
@@ -172,6 +204,8 @@ export const missionDocumentSchema = z
         })
         .strict(),
     ]),
+    // Optional to preserve source documents/hashes; legacy simulation uses the declared ISA default.
+    airspaceAltitudeReference: airspaceAltitudeReferenceSchema.optional(),
     flightEnvelope: z
       .object({
         minSurveyAltitudeM: num(0, 1000),
@@ -194,9 +228,26 @@ export const missionDocumentSchema = z
       )
       .max(20)
       .optional(),
+    // Optional snapshot of other runs at calculation time, not live telemetry.
+    resourceReservations: z
+      .array(
+        z
+          .object({
+            vehicleId: id,
+            operationId: z.string().min(1).max(120),
+            missionName: z.string().min(1).max(200),
+            status: z.enum(['scheduled', 'running', 'paused']),
+            startAt: instant,
+            endAt: instant.nullable(),
+          })
+          .strict(),
+      )
+      .max(100)
+      .optional(),
     notes: z.string().max(2000),
     // Immutable attachment travels with a run; ordinary mission fields keep their 200 KiB budget.
     obstacleLayer: obstacleSourceSchema.optional(),
+    catalogLayers: z.array(catalogSourceSchema).max(2).optional(),
   })
   .strict();
 export type MissionDocument = z.infer<typeof missionDocumentSchema>;
@@ -210,6 +261,22 @@ export function parseMissionDocument(value: unknown): MissionDocument {
       throw new Error(`${label}: повторяющиеся идентификаторы.`);
   };
   parseScenario(d.scenario);
+  for (const vehicle of d.scenario.vehicles) {
+    unique(
+      (vehicle.cameraProfiles ?? []).map((c) => c.id),
+      `Камеры ${vehicle.id}`,
+    );
+    unique(vehicle.cameraIds ?? [], `Установленные камеры ${vehicle.id}`);
+    if (
+      (vehicle.cameraIds ?? []).some(
+        (id) => !vehicle.cameraProfiles?.some((c) => c.id === id),
+      )
+    )
+      throw new Error(
+        `БВС ${vehicle.id}: выбранная камера отсутствует в снимках профилей.`,
+      );
+  }
+  if (d.catalogLayers) checkCatalogSources(d.catalogLayers);
   if (d.bases) {
     unique(
       d.bases.map((b) => b.id),
@@ -219,6 +286,17 @@ export function parseMissionDocument(value: unknown): MissionDocument {
       d.bases.map((b) => b.coordinate.join(',')),
       'Координаты баз',
     );
+    for (const base of d.bases)
+      if (base.landingPads) {
+        unique(
+          base.landingPads.map((p) => p.id),
+          `Посадочные места ${base.name}`,
+        );
+        unique(
+          base.landingPads.map((p) => p.coordinate.join(',')),
+          `Координаты мест ${base.name}`,
+        );
+      }
   }
   for (const job of d.jobs)
     if (job.inheritsFrom) {
@@ -265,6 +343,16 @@ export function parseMissionDocument(value: unknown): MissionDocument {
     throw new Error('Неизвестный часовой пояс.');
   }
   const ids = new Set(d.scenario.vehicles.map((x) => x.id));
+  for (const reservation of d.resourceReservations ?? []) {
+    if (
+      !ids.has(reservation.vehicleId) ||
+      (reservation.endAt !== null &&
+        Date.parse(reservation.endAt) <= Date.parse(reservation.startAt))
+    )
+      throw new Error(
+        'Занятость БВС: неизвестный аппарат или неверный период.',
+      );
+  }
   if (d.planning.batteryPolicy === 'installed-current-v1') {
     for (const v of d.scenario.vehicles) {
       const installed = d.batteries.filter((b) => b.vehicleId === v.id);
@@ -374,9 +462,9 @@ export function migrateScenario(
     terrainModel: { kind: 'unknown', source: 'В сценарии v1 рельеф не задан.' },
     flightEnvelope: {
       minSurveyAltitudeM: 10,
-      maxAltitudeM: 500,
+      maxAltitudeM: AUTO_ALTITUDE_CEILING_M,
       source:
-        'Учебный диапазон сценария, не разрешение воздушного пространства.',
+        'Предел трека ниже 150 м AGL; потолок 149 м включает модельный запас 1 м. Не разрешение на полёт.',
     },
     notes:
       'Импорт v1: дата, наземные времена и разнесение заданы как учебные значения. Подтвердите их перед расчётом.',
@@ -402,6 +490,7 @@ export type ScheduledSortie = Mission & {
   id: string;
   jobId: string;
   batteryId: string;
+  cameraId?: string;
   startSec: number;
   endSec: number;
   readySec: number;
@@ -433,6 +522,8 @@ export type MissionCandidate = {
   };
   jobCoverage: {
     jobId: string;
+    cameraProfileId?: string;
+    cameraVehicleId?: string;
     bearingDeg: number;
     grossAreaHa: number;
     targetAreaHa: number;
@@ -450,19 +541,26 @@ export type MissionResult = {
   document: MissionDocument;
   candidates: MissionCandidate[];
   recommendation?: MissionRecommendation;
+  resourceStudy?: {
+    maxVehicles: number | null;
+    deadlineSec: number;
+    rows: {
+      maxVehicles: number;
+      status: 'found' | 'not_found' | 'not_searched';
+      vehicleCount: number | null;
+      makespanSec: number | null;
+      flightTimeSec: number | null;
+    }[];
+    scope: string;
+  };
   computationMs: number;
   warnings: string[];
 };
 export type MissionRecommendation = {
   candidate: MissionCandidate;
-  policy: 'balanced-normalized-v1';
-  weights: { makespan: 0.5; flightTime: 0.5 };
-  score: number;
-  normalized: { makespan: number; flightTime: number };
-  ranges: {
-    makespanSec: { min: number; max: number };
-    flightTimeSec: { min: number; max: number };
-  };
+  policy: 'deadline-min-flight-v1';
+  deadlineSec: number;
+  slackSec: number;
   poolSize: number;
   distinctPlanCount: number;
   samePlan: boolean;

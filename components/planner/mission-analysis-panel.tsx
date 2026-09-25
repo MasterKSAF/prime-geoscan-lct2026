@@ -27,6 +27,8 @@ import type { RemainingMissionDraft } from '@/lib/planner/mission-remaining-work
 import type { MissionOperation } from '@/lib/planner/mission-operations';
 import type { FleetState } from '@/lib/planner/mission-fleet-state';
 import { InfoHint } from './mission-help';
+import { MissionCheckDetails } from './mission-check-details';
+import { shortMissionVerdict } from '@/lib/planner/mission-check-copy';
 
 const number = (v: number) =>
   v.toLocaleString('ru-RU', { maximumFractionDigits: 1 });
@@ -110,8 +112,8 @@ function CoverageTile({ view }: { view: CoverageView }) {
         {view.qualityStatus === 'fail'
           ? 'Параметры качества нарушены'
           : view.qualityStatus === 'unknown'
-            ? 'Есть неподтверждённые параметры качества'
-            : 'Заданные параметры качества проверены в модели'}
+            ? 'Качество оценено с допущениями'
+            : 'Качество проверено в модели'}
       </small>
       {view.details.length > 0 && (
         <details>
@@ -133,12 +135,14 @@ export default function MissionAnalysisPanel({
   onOpenTrial,
   operation,
   getFleet,
+  compact = false,
 }: {
   document: MissionDocument;
   candidate: MissionCandidate;
   onOpenTrial: (document: MissionDocument, label: string) => void;
   operation: MissionOperation | null;
   getFleet: () => Promise<FleetState[]>;
+  compact?: boolean;
 }) {
   const explanations = useMemo(
     () => explainMissionPlan(document, candidate),
@@ -174,7 +178,12 @@ export default function MissionAnalysisPanel({
     try {
       const response = await fetch('/api/planner/missions/analyze', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...(document.obstacleLayer ? { 'x-prime-obstacles': '1' } : {}) },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(document.obstacleLayer || document.catalogLayers
+            ? { 'x-prime-obstacles': '1' }
+            : {}),
+        },
         signal: controller.signal,
         body: JSON.stringify({ document, candidate }),
       });
@@ -206,12 +215,17 @@ export default function MissionAnalysisPanel({
     setBusy(trial.id);
     setError('');
     try {
-      const response = await fetch('/api/planner/missions/solve', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        signal: controller.signal,
-        body: JSON.stringify(trial.document),
-      });
+      const response = await fetch(
+        trial.document.obstacleLayer || trial.document.catalogLayers
+          ? '/api/planner/missions/solve-with-obstacles'
+          : '/api/planner/missions/solve',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          signal: controller.signal,
+          body: JSON.stringify(trial.document),
+        },
+      );
       const data = (await response.json()) as MissionResult & {
         error?: string;
       };
@@ -271,18 +285,20 @@ export default function MissionAnalysisPanel({
   }
 
   return (
-    <section className="mi-panel" aria-label="Анализ решения">
-      <header>
+    <section
+      className="mi-panel"
+      aria-label="Анализ решения"
+      data-compact={compact}
+    >
+      <header hidden={compact}>
         <FlaskConical size={19} />
-        <h2>Почему этот план</h2>
+        <h2>Подробности плана</h2>
         <InfoHint label="Что проверяет анализ решения">
-          Пояснения основаны на выбранном расчёте. Проверки «что, если» не
-          меняют миссию, парк или выполняющуюся миссию. Глобальный оптимум не
-          заявляется.
+          Проверки ниже не изменяют миссию. Откройте нужный раздел.
         </InfoHint>
       </header>
       <details className="mi-section">
-        <summary>Назначение каждого БВС</summary>
+        <summary>Какие БВС выбраны и почему</summary>
         <div className="mi-cards">
           {explanations.map((v) => (
             <article key={v.vehicleId}>
@@ -298,8 +314,7 @@ export default function MissionAnalysisPanel({
               </p>
               {v.minimumRemainingPct !== null && (
                 <p>
-                  Минимальный остаток на посадке:{' '}
-                  {number(v.minimumRemainingPct)}%
+                  Наименьший заряд при посадке: {number(v.minimumRemainingPct)}%
                 </p>
               )}
               <ul>
@@ -315,7 +330,7 @@ export default function MissionAnalysisPanel({
       </details>
       <details className="mi-section">
         <summary>
-          <span>Запас устойчивости</span>
+          <span>Если изменятся ветер, время или заряд</span>
           <InfoHint label="Как проверяется устойчивость">
             Тот же маршрут: ветер +2 м/с, направление +45°, старт позже на 5
             минут, заряд ниже на 10 п.п. Проверки раздельные, не прогноз
@@ -371,7 +386,12 @@ export default function MissionAnalysisPanel({
                       ? 'Ограничения нарушены'
                       : 'Не проверено'}
                 </span>
-                {c.detail && <p>{c.detail}</p>}
+                {c.detail && (
+                  <details>
+                    <summary>Подробности расчёта</summary>
+                    <p>{c.detail}</p>
+                  </details>
+                )}
                 {c.metrics && (
                   <p>
                     До завершения {number(c.metrics.makespanSec / 60)} мин ·
@@ -379,24 +399,25 @@ export default function MissionAnalysisPanel({
                   </p>
                 )}
                 {c.failedChecks.length > 0 && (
-                  <ul>
+                  <details>
+                    <summary>Что мешает: {c.failedChecks.length}</summary>
                     {c.failedChecks.map((check, i) => (
-                      <li key={`${check.id}-${i}`}>
-                        {check.title}: {check.detail}
-                      </li>
+                      <MissionCheckDetails
+                        key={`${check.id}-${i}`}
+                        check={check}
+                      />
                     ))}
-                  </ul>
+                  </details>
                 )}
                 {c.unknownChecks.length > 0 && (
                   <details>
-                    <summary>Не подтверждено: {c.unknownChecks.length}</summary>
-                    <ul>
-                      {c.unknownChecks.map((check, i) => (
-                        <li key={`${check.id}-${i}`}>
-                          {check.title}: {check.detail}
-                        </li>
-                      ))}
-                    </ul>
+                    <summary>Условия модели: {c.unknownChecks.length}</summary>
+                    {c.unknownChecks.map((check, i) => (
+                      <MissionCheckDetails
+                        key={`${check.id}-${i}`}
+                        check={check}
+                      />
+                    ))}
                   </details>
                 )}
               </article>
@@ -412,181 +433,192 @@ export default function MissionAnalysisPanel({
           </div>
         )}
       </details>
-      {trials.length > 0 && (
-        <details
-          className="mi-section"
-          open={trials[0].kind === 'repair' ? true : undefined}
-        >
-          <summary>
-            <span>
-              {trials[0].kind === 'repair'
-                ? 'Что изменить, чтобы выполнить миссию'
-                : 'Нужны ли все назначенные БВС'}
-            </span>
-            <InfoHint label="Как проверяются варианты изменений">
-              Каждая проверка запускает отдельный поиск до 5 секунд. Изменения
-              не применяются автоматически. В сравнении плюс означает увеличение
-              времени завершения или налёта. Для гипотез требуется подтверждение
-              условий перед открытием копии миссии.
-            </InfoHint>
-          </summary>
-          <div className="mi-cards">
-            {trials.map((trial) => {
-              const outcome = trialResults[trial.id],
-                comparison =
-                  outcome && compareMissionTrial(candidate, outcome.candidate);
-              return (
-                <article key={trial.id}>
-                  <h3>{trial.title}</h3>
-                  <p>{trial.change}</p>
-                  {trial.confirmation && (
-                    <details>
-                      <summary>Условия применения</summary>
-                      <ul>
-                        {trial.confirmation.map((item) => (
-                          <li key={item}>{item}</li>
-                        ))}
-                      </ul>
+      {trials.length > 0 &&
+        (!compact || candidate.status !== 'feasible_model') && (
+          <details
+            className="mi-section mi-repairs"
+            open={compact || undefined}
+          >
+            <summary>
+              <span>
+                {trials[0].kind === 'repair'
+                  ? 'Что изменить, чтобы выполнить миссию'
+                  : 'Можно ли обойтись меньшим числом БВС'}
+              </span>
+              <InfoHint label="Как проверяются варианты изменений">
+                Каждый вариант рассчитывается отдельно. Изменения можно открыть
+                в редакторе после проверки — автоматически они не применяются.
+              </InfoHint>
+            </summary>
+            <div className="mi-cards">
+              {(compact ? trials.slice(0, 3) : trials).map((trial) => {
+                const outcome = trialResults[trial.id],
+                  comparison =
+                    outcome &&
+                    compareMissionTrial(candidate, outcome.candidate);
+                return (
+                  <article key={trial.id}>
+                    <h3>{trial.title}</h3>
+                    <details open={compact || undefined}>
+                      <summary>Что изменится</summary>
+                      <p>{trial.change}</p>
                     </details>
-                  )}
-                  <button
-                    className="mw-button"
-                    disabled={!!busy}
-                    onClick={() => void runTrial(trial)}
-                  >
-                    {busy === trial.id && (
-                      <LoaderCircle size={14} className="animate-spin" />
-                    )}
-                    Проверить вариант
-                  </button>
-                  {outcome && comparison && (
-                    <div aria-live="polite">
-                      <p>{comparison.summary}</p>
-                      {comparison.comparable && (
-                        <p>
-                          Разница: завершение{' '}
-                          {signedMinutes(comparison.makespanDeltaSec)} · налёт{' '}
-                          {signedMinutes(comparison.flightTimeDeltaSec)}.
-                        </p>
-                      )}
-                      {!comparison.feasible && (
+                    {trial.confirmation && (
+                      <details>
+                        <summary>Условия применения</summary>
                         <ul>
-                          {outcome.candidate.checks
-                            .filter((c) => c.status === 'fail')
-                            .slice(0, 4)
-                            .map((c) => (
-                              <li key={c.id}>
-                                {c.title}: {c.detail}
-                              </li>
-                            ))}
+                          {trial.confirmation.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
                         </ul>
+                      </details>
+                    )}
+                    <button
+                      className="mw-button"
+                      disabled={!!busy}
+                      onClick={() => void runTrial(trial)}
+                    >
+                      {busy === trial.id && (
+                        <LoaderCircle size={14} className="animate-spin" />
                       )}
-                      <div className="mw-actions">
-                        <button
-                          className="mw-button small"
-                          onClick={() =>
-                            void Promise.all([
-                              sha256(document),
-                              sha256(candidate),
-                              sha256(outcome.candidate),
-                            ])
-                              .then(
-                                ([inputHash, planHash, alternativePlanHash]) =>
-                                  download(`${document.id}.${trial.id}.json`, {
-                                    type: 'prime-mission-counterfactual',
-                                    schemaVersion: '1.0',
-                                    change: trial.change,
-                                    hypothetical: true,
-                                    confirmationRequired:
-                                      trial.confirmation ?? [],
-                                    comparison,
-                                    original: {
-                                      document,
-                                      candidate,
-                                      inputHash,
-                                      planHash,
-                                    },
-                                    alternative: outcome.result,
-                                    alternativePlanHash,
-                                    warning:
-                                      'Сравнение при явном изменении условий; не статистика эффективности алгоритма и не глобальный оптимум.',
-                                  }),
-                              )
-                              .catch((e) => setError(String(e)))
-                          }
-                        >
-                          Скачать сравнение
-                        </button>
-                        <button
-                          className="mw-button small"
-                          onClick={() =>
-                            void missionEvidence(
-                              outcome.result,
-                              outcome.candidate,
-                            )
-                              .then((evidence) =>
-                                download(
-                                  `${document.id}.${trial.id}.evidence.json`,
-                                  evidence,
-                                ),
-                              )
-                              .catch((e) => setError(String(e)))
-                          }
-                        >
-                          Доказательства варианта
-                        </button>
-                        {comparison.feasible && trial.confirmation && (
-                          <label className="mi-confirm">
-                            <input
-                              type="checkbox"
-                              checked={!!acknowledgedTrials[trial.id]}
-                              onChange={(e) =>
-                                setAcknowledgedTrials((old) => ({
-                                  ...old,
-                                  [trial.id]: e.target.checked,
-                                }))
-                              }
-                            />
-                            Понимаю: это гипотеза. Перед применением сверю
-                            реальные условия и парк.
-                          </label>
+                      Проверить вариант
+                    </button>
+                    {outcome && comparison && (
+                      <div aria-live="polite">
+                        <p>
+                          {comparison.feasible
+                            ? 'С этими изменениями миссию можно выполнить в модели.'
+                            : shortMissionVerdict(outcome.candidate).reason}
+                        </p>
+                        {comparison.comparable && (
+                          <p>
+                            Разница: завершение{' '}
+                            {signedMinutes(comparison.makespanDeltaSec)} · налёт{' '}
+                            {signedMinutes(comparison.flightTimeDeltaSec)}.
+                          </p>
                         )}
-                        {comparison.feasible && (
+                        {!comparison.feasible && (
+                          <details>
+                            <summary>Все проверки варианта</summary>
+                            {outcome.candidate.checks.map((c, i) => (
+                              <MissionCheckDetails
+                                key={`${c.id}:${i}`}
+                                check={c}
+                              />
+                            ))}
+                          </details>
+                        )}
+                        <div className="mw-actions">
                           <button
                             className="mw-button small"
-                            disabled={
-                              !!trial.confirmation &&
-                              !acknowledgedTrials[trial.id]
-                            }
                             onClick={() =>
-                              onOpenTrial(
-                                {
-                                  ...structuredClone(trial.document),
-                                  id: `mission-${crypto.randomUUID()}`,
-                                },
-                                `Копия: ${trial.title}`,
-                              )
+                              void Promise.all([
+                                sha256(document),
+                                sha256(candidate),
+                                sha256(outcome.candidate),
+                              ])
+                                .then(
+                                  ([
+                                    inputHash,
+                                    planHash,
+                                    alternativePlanHash,
+                                  ]) =>
+                                    download(
+                                      `${document.id}.${trial.id}.json`,
+                                      {
+                                        type: 'prime-mission-counterfactual',
+                                        schemaVersion: '1.0',
+                                        change: trial.change,
+                                        hypothetical: true,
+                                        confirmationRequired:
+                                          trial.confirmation ?? [],
+                                        comparison,
+                                        original: {
+                                          document,
+                                          candidate,
+                                          inputHash,
+                                          planHash,
+                                        },
+                                        alternative: outcome.result,
+                                        alternativePlanHash,
+                                        warning:
+                                          'Сравнение при явном изменении условий; не статистика эффективности алгоритма и не глобальный оптимум.',
+                                      },
+                                    ),
+                                )
+                                .catch((e) => setError(String(e)))
                             }
                           >
-                            Открыть копию миссии
+                            Скачать сравнение
                           </button>
-                        )}
+                          <button
+                            className="mw-button small"
+                            onClick={() =>
+                              void missionEvidence(
+                                outcome.result,
+                                outcome.candidate,
+                              )
+                                .then((evidence) =>
+                                  download(
+                                    `${document.id}.${trial.id}.evidence.json`,
+                                    evidence,
+                                  ),
+                                )
+                                .catch((e) => setError(String(e)))
+                            }
+                          >
+                            Доказательства варианта
+                          </button>
+                          {comparison.feasible && trial.confirmation && (
+                            <label className="mi-confirm">
+                              <input
+                                type="checkbox"
+                                checked={!!acknowledgedTrials[trial.id]}
+                                onChange={(e) =>
+                                  setAcknowledgedTrials((old) => ({
+                                    ...old,
+                                    [trial.id]: e.target.checked,
+                                  }))
+                                }
+                              />
+                              Проверю условия перед применением изменений.
+                            </label>
+                          )}
+                          {comparison.feasible && (
+                            <button
+                              className="mw-button small"
+                              disabled={
+                                !!trial.confirmation &&
+                                !acknowledgedTrials[trial.id]
+                              }
+                              onClick={() =>
+                                onOpenTrial(
+                                  {
+                                    ...structuredClone(trial.document),
+                                    id: `mission-${crypto.randomUUID()}`,
+                                  },
+                                  `Копия: ${trial.title}`,
+                                )
+                              }
+                            >
+                              Открыть исправленную миссию
+                            </button>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </article>
-              );
-            })}
-          </div>
-        </details>
-      )}
+                    )}
+                  </article>
+                );
+              })}
+            </div>
+          </details>
+        )}
       <details className="mi-section">
         <summary>
-          <span>Покрытие и ожидаемый результат съёмки</span>
+          <span>Какая территория будет отснята</span>
           <InfoHint label="Как читать расчётное покрытие">
-            Синий — расчётные полосы; янтарный — непокрытая часть исходного
-            миссии, включая запретные участки. Это ожидаемое покрытие, не
-            полученные снимки.
+            Синий — планируемая съёмка; янтарный — пропуски. Это расчёт, а не
+            реальные снимки.
           </InfoHint>
         </summary>
         <div className="mw-actions">
@@ -629,7 +661,7 @@ export default function MissionAnalysisPanel({
         operation.safety?.stage === 'landed' && (
           <details className="mi-section">
             <summary>
-              <span>Продолжить оставшиеся участки после возврата</span>
+              <span>Как завершить прерванную миссию</span>
               <InfoHint label="Как составляется остаток миссии">
                 Создаётся новая миссия. Вычитаются только полностью законченные
                 проходы до события. Дата — по модельным часам исходной миссии;
@@ -646,8 +678,7 @@ export default function MissionAnalysisPanel({
                   setRemaining(null);
                 }}
               />
-              Подтверждаю получение пригодных данных завершённых проходов до
-              события
+              Данные выполненной части получены и пригодны для использования.
             </label>
             <div className="mw-actions">
               <button

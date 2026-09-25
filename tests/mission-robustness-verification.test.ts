@@ -195,16 +195,12 @@ async function temporary<T>(
   action: (folder: string) => Promise<T>,
 ): Promise<T> {
   const folder = await mkdtemp(join(tmpdir(), 'lct-stress-verify-'));
+  if (dirname(resolve(folder)) !== resolve(tmpdir()) || !basename(folder).startsWith('lct-stress-verify-')) {
+    throw new Error('Refusing cleanup outside the owned temporary test directory.');
+  }
   try {
     return await action(folder);
   } finally {
-    if (
-      dirname(resolve(folder)) !== resolve(tmpdir()) ||
-      !basename(folder).startsWith('lct-stress-verify-')
-    )
-      throw new Error(
-        'Refusing cleanup outside the owned temporary test directory.',
-      );
     await rm(folder, { recursive: true, force: true });
   }
 }

@@ -26,6 +26,28 @@
       "jobs": [
         "RGB"
       ],
+      "cameraProfiles": [
+        {
+          "id": "pf1b",
+          "name": "PF1B (миграция)",
+          "type": "RGB",
+          "status": "assumed",
+          "source": "Миграция legacy-camera-binding-v1: перенесена оптика старой работы; фактическую установку подтверждает оператор. PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры.",
+          "supportedModels": [
+            "Gemini"
+          ],
+          "sensorWidthMm": 23.5,
+          "sensorHeightMm": 15.6,
+          "focalLengthMm": 20,
+          "imageWidthPx": 6000,
+          "imageHeightPx": 4000,
+          "minimumIntervalSec": 1,
+          "shutterSec": 0.001
+        }
+      ],
+      "cameraIds": [
+        "pf1b"
+      ],
       "assumptions": [
         "Числа скорости, ресурса и совместимости заданы для синтетического теста."
       ],
@@ -55,6 +77,28 @@
       "jobs": [
         "MS"
       ],
+      "cameraProfiles": [
+        {
+          "id": "pollux",
+          "name": "Pollux (миграция)",
+          "type": "MS",
+          "status": "assumed",
+          "source": "Миграция legacy-camera-binding-v1: перенесена оптика старой работы; фактическую установку подтверждает оператор. Геометрия Pollux по буклету Gemini; период/перекрытия/GSD — параметры учебного задания.",
+          "supportedModels": [
+            "Gemini"
+          ],
+          "sensorWidthMm": 4.968,
+          "sensorHeightMm": 3.726,
+          "focalLengthMm": 8,
+          "imageWidthPx": 1440,
+          "imageHeightPx": 1080,
+          "minimumIntervalSec": 1,
+          "shutterSec": 0.001
+        }
+      ],
+      "cameraIds": [
+        "pollux"
+      ],
       "assumptions": [
         "Числа скорости, ресурса и совместимости заданы для синтетического теста."
       ],
@@ -62,8 +106,8 @@
     },
     {
       "id": "ir-1",
-      "name": "801 · ir-1",
-      "model": "801",
+      "name": "Custom · ir-1",
+      "model": "Custom",
       "kind": "multirotor",
       "enabled": true,
       "airspeedMps": 6,
@@ -83,6 +127,28 @@
       ],
       "jobs": [
         "IR"
+      ],
+      "cameraProfiles": [
+        {
+          "id": "legacy-ir",
+          "name": "Ручная IR (миграция)",
+          "type": "IR",
+          "status": "assumed",
+          "source": "Миграция legacy-camera-binding-v1: перенесена оптика старой работы; фактическую установку подтверждает оператор. Учебная ИК-камера: геометрия/период условные, реальная метрическая съёмка 801 не подтверждена.",
+          "supportedModels": [
+            "Custom"
+          ],
+          "sensorWidthMm": 7.68,
+          "sensorHeightMm": 6.144,
+          "focalLengthMm": 9.1,
+          "imageWidthPx": 640,
+          "imageHeightPx": 512,
+          "minimumIntervalSec": 1,
+          "shutterSec": 0.001
+        }
+      ],
+      "cameraIds": [
+        "legacy-ir"
       ],
       "assumptions": [
         "Числа скорости, ресурса и совместимости заданы для синтетического теста."

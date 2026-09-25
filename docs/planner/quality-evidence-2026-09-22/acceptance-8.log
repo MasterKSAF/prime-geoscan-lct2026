@@ -1,0 +1,18 @@
+(node:36412) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A1: 1 km2 has complete validated plans for both objectives (616.2259ms)
+✔ A2: 10 km2 has complete validated plans for both objectives (4841.2376ms)
+✔ A3: every vehicle receives individual route, phases, times, heights and speeds in GeoJSON/KML (302.208ms)
+✔ A4: wind beyond vehicle limits cannot receive a feasible plan (18.8967ms)
+✔ A5: an accepted plan cannot bring a suspended geophysics sensor inside the other BVS safety separation (104.1179ms)
+✔ A6: proof checker rejects removed mandatory turn phases even after consistent metric changes (55.8508ms)
+✔ A7: every accepted mission can be saved to the library and exported without field loss (345.5299ms)
+✔ A8: the running API rejects duplicate safety-constraint keys just as file import does (79.5627ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7255.1227

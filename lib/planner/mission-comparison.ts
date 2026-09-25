@@ -45,61 +45,56 @@ export function buildMissionRecommendation(
   pool: readonly MissionCandidate[],
   presented: readonly MissionCandidate[],
 ): MissionRecommendation | undefined {
-  const eligible = pool.filter(
-    (candidate) =>
-      candidate.status === 'feasible_model' &&
-      candidate.sorties.length > 0 &&
-      !candidate.checks.some((check) => check.status === 'fail') &&
-      !candidate.plan.checks.some((check) => check.status === 'fail') &&
-      candidate.metrics.minimumRemainingPct + 1e-6 >=
-        document.scenario.reservePct &&
-      candidate.metrics.grossCoveragePct >= 99 &&
-      candidate.metrics.coveragePct >= 99 &&
-      candidate.jobCoverage.length === document.jobs.length &&
-      document.jobs.every((job) =>
-        candidate.jobCoverage.some(
-          (row) =>
-            row.jobId === job.id &&
-            row.coveragePct >= 99 &&
-            row.grossCoveragePct >= 99,
-        ),
-      ) &&
-      Number.isFinite(candidate.metrics.makespanSec) &&
-      candidate.metrics.makespanSec > 0 &&
-      Number.isFinite(candidate.metrics.flightTimeSec) &&
-      candidate.metrics.flightTimeSec > 0,
-  );
+  const eligible = pool
+    .filter(
+      (candidate) =>
+        candidate.status === 'feasible_model' &&
+        candidate.sorties.length > 0 &&
+        !candidate.checks.some((check) => check.status === 'fail') &&
+        !candidate.plan.checks.some((check) => check.status === 'fail') &&
+        candidate.metrics.minimumRemainingPct + 1e-6 >=
+          document.scenario.reservePct &&
+        candidate.metrics.grossCoveragePct >= 99 &&
+        candidate.metrics.coveragePct >= 99 &&
+        candidate.jobCoverage.length === document.jobs.length &&
+        document.jobs.every((job) =>
+          candidate.jobCoverage.some(
+            (row) =>
+              row.jobId === job.id &&
+              row.coveragePct >= 99 &&
+              row.grossCoveragePct >= 99,
+          ),
+        ) &&
+        Number.isFinite(candidate.metrics.makespanSec) &&
+        candidate.metrics.makespanSec > 0 &&
+        Number.isFinite(candidate.metrics.flightTimeSec) &&
+        candidate.metrics.flightTimeSec > 0,
+    )
+    .filter(
+      (c) =>
+        c.metrics.makespanSec <=
+          (Date.parse(document.window.end) -
+            Date.parse(document.window.start)) /
+            1000 +
+            1e-6 &&
+        new Set(c.sorties.map((s) => s.vehicleId)).size <=
+          (document.planning.maxVehicles ?? 20),
+    );
   if (!eligible.length) return undefined;
-
-  const range = (key: 'makespanSec' | 'flightTimeSec') => ({
-    min: Math.min(...eligible.map((candidate) => candidate.metrics[key])),
-    max: Math.max(...eligible.map((candidate) => candidate.metrics[key])),
-  });
-  const ranges = {
-    makespanSec: range('makespanSec'),
-    flightTimeSec: range('flightTimeSec'),
-  };
-  const normalize = (value: number, bounds: { min: number; max: number }) =>
-    bounds.max === bounds.min
-      ? 0
-      : (value - bounds.min) / (bounds.max - bounds.min);
-  const ranked = eligible.map((candidate) => {
-    const normalized = {
-      makespan: normalize(candidate.metrics.makespanSec, ranges.makespanSec),
-      flightTime: normalize(
-        candidate.metrics.flightTimeSec,
-        ranges.flightTimeSec,
-      ),
-    };
-    return {
-      candidate,
-      normalized,
-      key: missionPlanKey(candidate),
-      score: 0.5 * normalized.makespan + 0.5 * normalized.flightTime,
-    };
-  });
+  const deadlineSec =
+    (Date.parse(document.window.end) - Date.parse(document.window.start)) /
+    1000;
+  const ranked = eligible.map((candidate) => ({
+    candidate,
+    key: missionPlanKey(candidate),
+  }));
   ranked.sort((a, b) => {
-    if (Math.abs(a.score - b.score) > EPS) return a.score - b.score;
+    const flight =
+      a.candidate.metrics.flightTimeSec - b.candidate.metrics.flightTimeSec;
+    if (Math.abs(flight) > EPS) return flight;
+    const end =
+      a.candidate.metrics.makespanSec - b.candidate.metrics.makespanSec;
+    if (Math.abs(end) > EPS) return end;
     const reserve =
       b.candidate.metrics.minimumRemainingPct -
       a.candidate.metrics.minimumRemainingPct;
@@ -116,19 +111,16 @@ export function buildMissionRecommendation(
     .filter((item) => sameMissionPlan(candidate, item))
     .map((item) => item.objective);
   const explanation =
-    'Компромисс 50/50 среди найденных полных вариантов без проваленных модельных проверок: ' +
-    '0,5 × (T − min T)/(max T − min T) + 0,5 × (F − min F)/(max F − min F), меньше лучше. ' +
-    'T — время завершения, F — суммарный налёт; при нулевом диапазоне компонент равен 0. ' +
-    'При равной оценке выбраны больший остаток ресурса, затем меньше вылетов, затем детерминированный ключ плана. ' +
-    'Налёт — ресурсный proxy, не физический износ оборудования. Глобальная оптимальность не доказана.';
+    'Уложиться в срок: минимальный суммарный налёт среди найденных полных планов, прошедших проверки срока, лимита БВС и безопасности. ' +
+    'При равном налёте — более раннее завершение, затем больший остаток батареи и меньше вылетов. ' +
+    'Поскольку срок обязателен для всех вариантов, этот выбор может совпадать с «Меньше налёт»; это не отдельная выгода. ' +
+    'Налёт — время в воздухе, не физический износ. Глобальная оптимальность не доказана.';
   candidate.assumptions.push(explanation);
   return {
     candidate,
-    policy: 'balanced-normalized-v1',
-    weights: { makespan: 0.5, flightTime: 0.5 },
-    score: winner.score,
-    normalized: winner.normalized,
-    ranges,
+    policy: 'deadline-min-flight-v1',
+    deadlineSec,
+    slackSec: deadlineSec - candidate.metrics.makespanSec,
     poolSize: eligible.length,
     distinctPlanCount: new Set(ranked.map((item) => item.key)).size,
     samePlan: samePlanAs.length > 0,

@@ -1,0 +1,1948 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-09-24T11:51:57.656Z",
+  "engineVersion": "0.3.9",
+  "health": {
+    "status": "ok",
+    "engineVersion": "0.1.0",
+    "missionEngineVersion": "0.3.9",
+    "missionSchemaVersion": "2.0",
+    "safetyValidationPolicy": "continuous-occupancy-v1",
+    "mode": "engineering-preview",
+    "flightReady": false
+  },
+  "dockerImage": "sha256:b4b3f9b5e7bb6211f2938a7257e30ffdc1878d40a2708e308077f9536a1602d7",
+  "baseCommit": "3abfcd138fc0ab36ea5d7fe497ac7c55a6cec248",
+  "scope": "Working tree, not a clean clone, frozen submission, live airspace permission or physical flight certification.",
+  "automatedTests": {
+    "total": 659,
+    "passed": 659,
+    "failed": 0,
+    "log": "output/planner-airspace-build-final-20260924.log",
+    "logSha256": "d20933b6e8ff416e5e79a48fac6c71d71b7cc3f8732bf856c5d25b728d685ac5"
+  },
+  "browser": {
+    "airspace": {
+      "passed": 16,
+      "checks": [
+        {
+          "name": "Imported altitude layer is visible with original range",
+          "pass": true
+        },
+        {
+          "name": "Unknown schedule is not called permanent",
+          "pass": true
+        },
+        {
+          "name": "Standard atmosphere explicitly labelled a model",
+          "pass": true
+        },
+        {
+          "name": "Full KML source survives mission export",
+          "pass": true
+        },
+        {
+          "name": "Actual map drag under high FL layer applies",
+          "pass": true
+        },
+        {
+          "name": "Map drag leaves battery state unchanged",
+          "pass": true
+        },
+        {
+          "name": "Unknown pressure reference round-trips explicitly",
+          "pass": true
+        },
+        {
+          "name": "Unresolved altitude datum rejects unsafe drag",
+          "pass": true
+        },
+        {
+          "name": "Rejected drag presents a ground-restriction reason",
+          "pass": true
+        },
+        {
+          "name": "High zone allows a fully calculated plan",
+          "pass": true,
+          "detail": [
+            "feasible_model",
+            "feasible_model"
+          ]
+        },
+        {
+          "name": "High-zone plan passes 4D checks",
+          "pass": true
+        },
+        {
+          "name": "Ground zone still blocks base placement",
+          "pass": true
+        },
+        {
+          "name": "Ground zone does not produce fake success",
+          "pass": true,
+          "detail": [
+            "unsupported",
+            "unsupported"
+          ]
+        },
+        {
+          "name": "Explicit expired interval allows ground placement in a later mission",
+          "pass": true
+        },
+        {
+          "name": "Compact zone settings do not overflow",
+          "pass": true
+        },
+        {
+          "name": "No runtime errors",
+          "pass": true,
+          "detail": []
+        }
+      ],
+      "errors": [],
+      "log": "output/playwright/airspace-prod-20260924.log",
+      "logSha256": "775c34b07ced83d90ea946c8a9f24a635b44376650c5c749860dfc5703403e8b"
+    },
+    "baseEditing": {
+      "passed": 24,
+      "checks": [
+        {
+          "name": "Base click opens compact card",
+          "pass": true
+        },
+        {
+          "name": "Coordinates and assignments hidden by default",
+          "pass": true
+        },
+        {
+          "name": "Real mouse drag commits coordinates without Save",
+          "pass": true
+        },
+        {
+          "name": "Drag keeps battery and same aircraft",
+          "pass": true
+        },
+        {
+          "name": "Selected marker remains on the map",
+          "pass": true
+        },
+        {
+          "name": "Undo restores original endpoints and bases",
+          "pass": true
+        },
+        {
+          "name": "Move then map click applies without hidden Save",
+          "pass": true
+        },
+        {
+          "name": "Invalid coordinates produce clear error and preserve map",
+          "pass": true
+        },
+        {
+          "name": "Occupied base cannot be removed without destination",
+          "pass": true
+        },
+        {
+          "name": "Deletion removes real marker and base, no Start ghost",
+          "pass": true
+        },
+        {
+          "name": "Deletion preserves all aircraft and charge",
+          "pass": true
+        },
+        {
+          "name": "Empty base can be created without assigning aircraft",
+          "pass": true
+        },
+        {
+          "name": "Empty base deletion needs no destination",
+          "pass": true
+        },
+        {
+          "name": "Empty base deletion preserves other bases",
+          "pass": true
+        },
+        {
+          "name": "Assigned UAV can be reassigned, not a disabled checkbox",
+          "pass": true
+        },
+        {
+          "name": "Removing assignment requires a safe destination",
+          "pass": true
+        },
+        {
+          "name": "Base can be left empty; aircraft remains in fleet",
+          "pass": true
+        },
+        {
+          "name": "Catalog source controls are collapsed",
+          "pass": true
+        },
+        {
+          "name": "Expert catalogs reveal sources and controls together",
+          "pass": true
+        },
+        {
+          "name": "Compact base card and inline name in dark",
+          "pass": true,
+          "detail": {
+            "card": 196,
+            "heading": 34
+          }
+        },
+        {
+          "name": "Compact base card and inline name in light",
+          "pass": true,
+          "detail": {
+            "card": 196,
+            "heading": 34
+          }
+        },
+        {
+          "name": "Delete from focused map reveals its confirmation panel",
+          "pass": true
+        },
+        {
+          "name": "Narrow display has no horizontal page overflow",
+          "pass": true
+        },
+        {
+          "name": "No runtime errors",
+          "pass": true,
+          "detail": []
+        }
+      ],
+      "errors": [],
+      "log": "output/playwright/airspace-prod-base-20260924.log",
+      "logSha256": "94c3506f19f17f1d7483a4ae4ffe86df565b0916bc3e83583ee81b28a2193896"
+    },
+    "objectsAndImports": {
+      "passed": 34,
+      "checks": [
+        {
+          "name": "Three defaults plus a permanent upload card",
+          "pass": true
+        },
+        {
+          "name": "Import preserves custom ID and wind 1",
+          "pass": true
+        },
+        {
+          "name": "Import preserves work geometry 1",
+          "pass": true
+        },
+        {
+          "name": "Import preserves custom ID and wind 2",
+          "pass": true
+        },
+        {
+          "name": "Import preserves work geometry 2",
+          "pass": true
+        },
+        {
+          "name": "Import preserves custom ID and wind 3",
+          "pass": true
+        },
+        {
+          "name": "Import preserves work geometry 3",
+          "pass": true
+        },
+        {
+          "name": "Import preserves custom ID and wind 4",
+          "pass": true
+        },
+        {
+          "name": "Import preserves work geometry 4",
+          "pass": true
+        },
+        {
+          "name": "Import preserves custom ID and wind 5",
+          "pass": true
+        },
+        {
+          "name": "Import preserves work geometry 5",
+          "pass": true
+        },
+        {
+          "name": "Five imports create eight independent missions and upload card",
+          "pass": true
+        },
+        {
+          "name": "Broken import keeps existing cards",
+          "pass": true
+        },
+        {
+          "name": "Duplicate ID requires explicit choice",
+          "pass": true
+        },
+        {
+          "name": "Cancel duplicate preserves all cards",
+          "pass": true
+        },
+        {
+          "name": "Duplicate can create an independent copy",
+          "pass": true
+        },
+        {
+          "name": "Delete one copy preserves neighbours",
+          "pass": true
+        },
+        {
+          "name": "Missing boundary disables calculation",
+          "pass": true
+        },
+        {
+          "name": "Restore exact boundary",
+          "pass": true
+        },
+        {
+          "name": "Boundary editing exposes map vertex handles",
+          "pass": true
+        },
+        {
+          "name": "Boundary vertices fit inside the map",
+          "pass": true
+        },
+        {
+          "name": "Dragging a boundary vertex changes the saved geometry",
+          "pass": true
+        },
+        {
+          "name": "Cancel boundary editing restores exact original geometry",
+          "pass": true
+        },
+        {
+          "name": "Map selection fills base coordinates",
+          "pass": true
+        },
+        {
+          "name": "Cancelled base does not change input",
+          "pass": true
+        },
+        {
+          "name": "Shared base has separate explicit pads",
+          "pass": true
+        },
+        {
+          "name": "Base move preserves battery charge",
+          "pass": true
+        },
+        {
+          "name": "Shared-base placement has a feasible fully rechecked plan",
+          "pass": true,
+          "detail": [
+            {
+              "status": "feasible_model",
+              "checks": []
+            },
+            {
+              "status": "feasible_model",
+              "checks": []
+            }
+          ]
+        },
+        {
+          "name": "Other draft sees shared UAV base change",
+          "pass": true
+        },
+        {
+          "name": "Cannot delete occupied base without reassignment",
+          "pass": true
+        },
+        {
+          "name": "Delete with reassignment removes only base",
+          "pass": true
+        },
+        {
+          "name": "Zone import does not default to replacing work area",
+          "pass": true
+        },
+        {
+          "name": "No page-wide horizontal overflow on narrow display",
+          "pass": true
+        },
+        {
+          "name": "No browser runtime errors",
+          "pass": true,
+          "detail": []
+        }
+      ],
+      "errors": [],
+      "log": "output/playwright/airspace-prod-objects-20260924.log",
+      "logSha256": "7866be1e79530438db7b4ea9a05dc55297fa51cfe8fa9a168305ad65e39b0e06"
+    },
+    "plansAndDownloads": {
+      "passed": 20,
+      "checks": [
+        {
+          "name": "Before planning only useful calculate action is shown",
+          "pass": true
+        },
+        {
+          "name": "Calculation returns HTTP 200",
+          "pass": true,
+          "detail": 200
+        },
+        {
+          "name": "Demo 1 expected result",
+          "pass": true
+        },
+        {
+          "name": "Demo 1 report has direct checks",
+          "pass": true
+        },
+        {
+          "name": "Demo 1 evidence downloaded",
+          "pass": true
+        },
+        {
+          "name": "Calculation returns HTTP 200",
+          "pass": true,
+          "detail": 200
+        },
+        {
+          "name": "Demo 2 expected result",
+          "pass": true
+        },
+        {
+          "name": "Demo 2 completes its obstacle-aware plan through UI",
+          "pass": true
+        },
+        {
+          "name": "Demo 2 report has direct checks",
+          "pass": true
+        },
+        {
+          "name": "Demo 2 evidence downloaded",
+          "pass": true
+        },
+        {
+          "name": "Calculation returns HTTP 200",
+          "pass": true,
+          "detail": 200
+        },
+        {
+          "name": "Demo 3 expected result",
+          "pass": true
+        },
+        {
+          "name": "Demo 3 report has direct checks",
+          "pass": true
+        },
+        {
+          "name": "Refused mission has no misleading route download",
+          "pass": true
+        },
+        {
+          "name": "Demo 3 evidence downloaded",
+          "pass": true
+        },
+        {
+          "name": "Calculation returns HTTP 200",
+          "pass": true,
+          "detail": 200
+        },
+        {
+          "name": "Arbitrary imported ID solves without demo reassignment",
+          "pass": true
+        },
+        {
+          "name": "Custom mission completes through actual UI",
+          "pass": true
+        },
+        {
+          "name": "Execution progress and coverage are separate",
+          "pass": true
+        },
+        {
+          "name": "No browser exceptions",
+          "pass": true,
+          "detail": []
+        }
+      ],
+      "calculations": [
+        {
+          "id": "demo-01-survey",
+          "candidates": [
+            {
+              "id": "makespan",
+              "status": "feasible_model",
+              "makespanSec": 645.7802189750706,
+              "coveragePct": 99.99999999367931
+            },
+            {
+              "id": "flightTime",
+              "status": "feasible_model",
+              "makespanSec": 1042.4953483099266,
+              "coveragePct": 99.99999999367931
+            }
+          ]
+        },
+        {
+          "id": "demo-02-expert-obstacles",
+          "candidates": [
+            {
+              "id": "makespan",
+              "status": "feasible_model",
+              "makespanSec": 601.3646557576931,
+              "coveragePct": 99.50112217319538
+            },
+            {
+              "id": "flightTime",
+              "status": "feasible_model",
+              "makespanSec": 601.3922747580395,
+              "coveragePct": 99.50112217319538
+            }
+          ]
+        },
+        {
+          "id": "demo-03-repair",
+          "candidates": [
+            {
+              "id": "makespan",
+              "status": "not_found",
+              "makespanSec": 0,
+              "coveragePct": 0
+            },
+            {
+              "id": "flightTime",
+              "status": "not_found",
+              "makespanSec": 0,
+              "coveragePct": 0
+            }
+          ]
+        }
+      ],
+      "errors": [],
+      "log": "output/playwright/airspace-prod-plans-20260924.log",
+      "logSha256": "a9b5fffd6f0ea92d676f258bc043d0625addb38ba36a238f573d3a8423f890fe"
+    }
+  },
+  "browserChecks": 94,
+  "downloadedArchives": [
+    {
+      "filename": "output/playwright/airspace-prod-demo1.evidence.zip",
+      "bytes": 616214,
+      "sha256": "a2b918fe822d7bfb2b1469a26302639f0c8ed0863c4a7a1b957b9430b4dbcd24",
+      "result": {
+        "status": "passes-declared-model",
+        "flightReady": false,
+        "checks": [
+          {
+            "id": "INPUT_HASH",
+            "status": "pass",
+            "title": "Связь результата со входом",
+            "detail": "SHA-256 канонического документа пересчитан независимо."
+          },
+          {
+            "id": "BEARING_PROVENANCE",
+            "status": "pass",
+            "title": "Направления рабочих полос",
+            "detail": "Каждой работе соответствует один сохранённый угол из разрешённого набора поиска."
+          },
+          {
+            "id": "TRACK_ALTITUDE",
+            "status": "pass",
+            "title": "Предел трека: ниже 150 м AGL",
+            "detail": "Рабочие высоты и оба конца каждого линейного сегмента ниже 150 м над принятой поверхностью; поэтому предел соблюдается и между концами. Рельеф/реальный AGL требуют подтверждения; это не разрешение на полёт."
+          },
+          {
+            "id": "FLEET_LIMIT",
+            "status": "pass",
+            "title": "Число БВС за всю миссию",
+            "detail": "Назначено 4; лимит автоматически, в пределах парка. Повторные вылеты того же аппарата не увеличивают число БВС."
+          },
+          {
+            "id": "MAINTENANCE_rgb-fast",
+            "title": "Ресурс до ТО · Геоскан Gemini · 3",
+            "status": "pass",
+            "detail": "После миссии: 1 полётов, 0.11 ч после ТО. Предел: 160 ч. РЭ Gemini, 28.05.2026, с. 9: проверка и ТО рекомендованы при 160 ч суммарного налёта. Стенд консервативно применяет этот интервал после ТО. https://download.geoscan.ru/site-files/gemini/Geoscan_Gemini_Manual.pdf"
+          },
+          {
+            "id": "MAINTENANCE_rgb-center",
+            "title": "Ресурс до ТО · Геоскан Gemini · 1",
+            "status": "pass",
+            "detail": "После миссии: 1 полётов, 0.13 ч после ТО. Предел: 160 ч. РЭ Gemini, 28.05.2026, с. 9: проверка и ТО рекомендованы при 160 ч суммарного налёта. Стенд консервативно применяет этот интервал после ТО. https://download.geoscan.ru/site-files/gemini/Geoscan_Gemini_Manual.pdf"
+          },
+          {
+            "id": "MAINTENANCE_north-801-rgb-ir-3",
+            "title": "Ресурс до ТО · Геоскан 801 · RGB + ИК · Север 3",
+            "status": "pass",
+            "detail": "После миссии: 1 полётов, 0.16 ч после ТО. Предел: 160 ч. Ответ экспертов Геоскан в чате трека, 23.09.2026, 16:22: 501/801 — каждые 160 часов налёта."
+          },
+          {
+            "id": "MAINTENANCE_rgb-near",
+            "title": "Ресурс до ТО · Геоскан Gemini · 2",
+            "status": "pass",
+            "detail": "После миссии: 1 полётов, 0.10 ч после ТО. Предел: 160 ч. РЭ Gemini, 28.05.2026, с. 9: проверка и ТО рекомендованы при 160 ч суммарного налёта. Стенд консервативно применяет этот интервал после ТО. https://download.geoscan.ru/site-files/gemini/Geoscan_Gemini_Manual.pdf"
+          },
+          {
+            "id": "sortie-1:QUALITY_rgb-01_CADENCE",
+            "status": "pass",
+            "title": "Интервал кадров",
+            "detail": "1.950 с; камера требует ≥1 с."
+          },
+          {
+            "id": "sortie-1:QUALITY_rgb-01_BLUR",
+            "status": "pass",
+            "title": "Смаз в поступательной модели",
+            "detail": "0.613 пикселя; предел 1."
+          },
+          {
+            "id": "sortie-2:QUALITY_rgb-01_CADENCE",
+            "status": "pass",
+            "title": "Интервал кадров",
+            "detail": "2.600 с; камера требует ≥1 с."
+          },
+          {
+            "id": "sortie-2:QUALITY_rgb-01_BLUR",
+            "status": "pass",
+            "title": "Смаз в поступательной модели",
+            "detail": "0.460 пикселя; предел 1."
+          },
+          {
+            "id": "sortie-3:QUALITY_rgb-01_CADENCE",
+            "status": "pass",
+            "title": "Интервал кадров",
+            "detail": "2.925 с; камера требует ≥1 с."
+          },
+          {
+            "id": "sortie-3:QUALITY_rgb-01_BLUR",
+            "status": "pass",
+            "title": "Смаз в поступательной модели",
+            "detail": "0.409 пикселя; предел 1."
+          },
+          {
+            "id": "sortie-4:QUALITY_rgb-01_CADENCE",
+            "status": "pass",
+            "title": "Интервал кадров",
+            "detail": "3.900 с; камера требует ≥1 с."
+          },
+          {
+            "id": "sortie-4:QUALITY_rgb-01_BLUR",
+            "status": "pass",
+            "title": "Смаз в поступательной модели",
+            "detail": "0.306 пикселя; предел 1."
+          },
+          {
+            "id": "GEOMETRY",
+            "status": "pass",
+            "title": "Границы и статические запреты",
+            "detail": "Каждый отрезок проверен целиком, включая переходы и возврат. Запреты расширены, разрешённая зона сужена на защитный запас 5 м в общей локальной проекции. Это параметр модели, не универсальная норма."
+          },
+          {
+            "id": "STRIPS",
+            "status": "pass",
+            "title": "Все рабочие полосы назначены",
+            "detail": "Сверены идентификаторы и геометрия каждой исходной полосы, пропуски и повторы запрещены."
+          },
+          {
+            "id": "REQUESTED_AREA",
+            "status": "pass",
+            "title": "Исходная область не сокращена скрыто",
+            "detail": "Запреты и границы не могут незаметно убрать часть задания. Численный допуск — только 0,1 м², отдельно от порога геометрического покрытия 99%. Потери: rgb-01: 0.000 м²."
+          },
+          {
+            "id": "PHASES",
+            "status": "pass",
+            "title": "Обязательные манёвры и порядок фаз",
+            "detail": "Каждой рабочей полосе предшествует манёвр с turnSeconds профиля; промежуточные вершины перехода/возврата не могут терять поворот. Возврат допускается только после последней рабочей полосы."
+          },
+          {
+            "id": "TIME",
+            "status": "pass",
+            "title": "Время и скорости",
+            "detail": "Независимо пересчитаны длительности, ветер, геометрическая длина и фактическая требуемая воздушная скорость."
+          },
+          {
+            "id": "ENERGY",
+            "status": "pass",
+            "title": "Линейный баланс ресурса",
+            "detail": "Ни одна фаза не теряет расход; после посадки ≥25% в принятой модели."
+          },
+          {
+            "id": "ENDPOINTS",
+            "status": "pass",
+            "title": "Непрерывность траекторий",
+            "detail": "Взлёт, посадка, позиции и высоты непрерывны; повторный вылет начинается в месте предыдущей посадки."
+          },
+          {
+            "id": "WINDOW",
+            "status": "pass",
+            "title": "Календарь и обслуживание",
+            "detail": "Подготовка, общее окно, занятость БВС, обслуживание и предел вылетов проверены."
+          },
+          {
+            "id": "BATTERIES",
+            "status": "pass",
+            "title": "Экземпляры батарей",
+            "detail": "Проверены текущая батарея, расход между повторными вылетами и запас на возвращение; автоматического восстановления заряда нет."
+          },
+          {
+            "id": "COMPATIBILITY",
+            "status": "pass",
+            "title": "Совместимость и пределы профиля",
+            "detail": "Выбранные БВС, назначение, работа, ветер и ограничения скорости согласованы."
+          },
+          {
+            "id": "FLIGHT_ENVELOPE",
+            "status": "pass",
+            "title": "Заданный высотный диапазон",
+            "detail": "Ограничение съёмочной высоты отдельно от взлёта/посадки; абсолютный потолок всех фаз."
+          },
+          {
+            "id": "FOUR_DIMENSIONAL",
+            "status": "pass",
+            "title": "Четырёхмерные ограничения",
+            "detail": "Проверены контур, высотный слой и время на всём маршруте, включая взлёт и посадку; временной запас ±2 с. Неизвестная верхняя граница не отменяет известную нижнюю. Расписание без дат учитывается весь период миссии."
+          },
+          {
+            "id": "SEPARATION",
+            "status": "pass",
+            "title": "Непрерывное разнесение",
+            "detail": "Аналитический минимум расстояния между линейными сегментами с учётом вертикального объёма БВС–геофизический подвес, не проверка по кадрам. Параметры: Учебные защитные расстояния и интервалы; не утверждённый норматив. Временная неопределённость консервативно расширяет защитные расстояния и интервалы. Колебания подвеса не моделируются."
+          },
+          {
+            "id": "DAYLIGHT",
+            "status": "pass",
+            "title": "Условия освещения",
+            "detail": "Проверены только работы с включённым правилом; Солнце вычислено по UTC и координатам, шаг≤60 с и запас0,5°; облачное исключение не применяется."
+          },
+          {
+            "id": "GROUND_SEPARATION",
+            "status": "pass",
+            "title": "Свободные места взлёта и посадки",
+            "detail": "Проверены все переданные БВС на земле: до первого вылета, между вылетами и после посадки; также неназначенные аппараты. Удаление с площадки без данных не предполагается."
+          },
+          {
+            "id": "CLOUD_CEILING",
+            "status": "pass",
+            "title": "Нижняя граница облаков и запас",
+            "detail": "Потолок 1950 м = нижняя граница 2000 м − запас 50 м; максимальная заданная/маршрутная высота 100 м. Высоты относительно единого базового уровня старта/модельной плоскости, не реальная AGL. Постоянные условия на всё окно, источник: Модельная погода: ясное небо, видимость 20 км, ветер 1 м/с."
+          },
+          {
+            "id": "VISIBILITY",
+            "status": "pass",
+            "title": "Заданный минимум видимости",
+            "detail": "Заданная видимость 20000 м, требуемый минимум 1000 м. Это не проверка фактического обзора или качества съёмки. Постоянные условия на всё окно, источник: Модельная погода: ясное небо, видимость 20 км, ветер 1 м/с."
+          },
+          {
+            "id": "RESERVE_LANDING",
+            "status": "pass",
+            "title": "Достижимая посадка из каждой точки",
+            "detail": "Консервативный сертификат: остаток того же проверенного непрерывного маршрута является допустимым путём к назначенной посадке и заканчивается с требуемым резервом. Это не кратчайший аварийный уход."
+          },
+          {
+            "id": "ALTERNATE_ESCAPE",
+            "status": "unknown",
+            "title": "Альтернативный аварийный уход",
+            "detail": "Отдельный интервальный протокол ухода доступен в «Результаты → Анализ → Возврат из любой части маршрута». Этот основной набор проверок не подменяет его результат. Падение, внезапные новые условия и внешние БВС не покрываются сертификатом исходного плана."
+          },
+          {
+            "id": "TERRAIN",
+            "status": "pass",
+            "title": "Поверхность в расчётной модели",
+            "detail": "Единая горизонтальная плоскость 0 м; высоты траекторий относительно неё. Источник: Синтетическая горизонтальная поверхность; не реальный DEM участка. Это не проверка реального рельефа."
+          },
+          {
+            "id": "CALIBRATION",
+            "status": "unknown",
+            "title": "Реальная динамика и энергия",
+            "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+          },
+          {
+            "id": "IMAGE_FOOTPRINTS",
+            "status": "unknown",
+            "title": "Реальные фотоотпечатки",
+            "detail": "Отдельно проверяются ожидаемые отпечатки над плоской поверхностью. Реальные изображения, наклоны, экспозиция и аппаратное срабатывание камеры не получены и не подтверждены."
+          },
+          {
+            "id": "PHOTO_rgb-01_COVERAGE",
+            "status": "pass",
+            "title": "Покрытие ожидаемыми кадрами",
+            "detail": "338 модельных экспозиций; непокрыто 0.00 из 360000.00 м². Проверяются исходный контур, отверстия, края и стыки. Камера вниз, плоская поверхность; реальные фото не получены."
+          },
+          {
+            "id": "PHOTO_rgb-01_OVERLAP",
+            "status": "pass",
+            "title": "Продольное перекрытие ожидаемых кадров",
+            "detail": "70.00% на каждом прямом проходе; требование 70.00%. Между разворотами непрерывность съёмки не предполагается."
+          },
+          {
+            "id": "AIRSPACE_PERMISSION",
+            "status": "unknown",
+            "title": "Допуск к реальному полёту",
+            "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+          },
+          {
+            "id": "EXPORTED_QUALITY_rgb-01_SOURCE",
+            "status": "unknown",
+            "title": "Источник параметров сенсора",
+            "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+          },
+          {
+            "id": "EXPORTED_QUALITY_rgb-01_TYPE",
+            "status": "pass",
+            "title": "Тип сенсора",
+            "detail": "Камерная модель применима к RGB/MS/ИК, не к лазерным или геофизическим измерениям."
+          },
+          {
+            "id": "EXPORTED_QUALITY_rgb-01_FIELDS",
+            "status": "pass",
+            "title": "Параметры камеры",
+            "detail": "Нужны размеры сенсора, объектив, разрешение, перекрытие, период и целевой GSD."
+          },
+          {
+            "id": "EXPORTED_QUALITY_rgb-01_GSD",
+            "status": "pass",
+            "title": "Детализация в модели",
+            "detail": "1.958 см/пиксель; требование ≤3 см."
+          },
+          {
+            "id": "EXPORTED_QUALITY_rgb-01_STRIP",
+            "status": "pass",
+            "title": "Размеры покрытия",
+            "detail": "Отпечаток и шаг кадров должны быть в поддерживаемом диапазоне ядра."
+          },
+          {
+            "id": "COVERAGE",
+            "status": "pass",
+            "title": "Повторная проверка покрытия",
+            "detail": "Геометрические полосы заново пересечены с исходной и доступной областями каждой работы."
+          },
+          {
+            "id": "METRICS",
+            "status": "pass",
+            "title": "Числа отчёта",
+            "detail": "Площадь, покрытие, время, длина и число ресурсов пересчитаны по исходным данным и траекториям."
+          },
+          {
+            "id": "EVENT_JOURNAL",
+            "status": "pass",
+            "title": "Журнал соответствует проверяемому плану",
+            "detail": "Полный упорядоченный журнал заново построен из вылетов, фаз, батарей и расписания, включая обслуживание и зарядку. Пропущенные, выдуманные или изменённые события запрещены."
+          },
+          {
+            "id": "SAVED_CHECKS",
+            "status": "pass",
+            "title": "Сохранённые проверки подтверждены заново",
+            "detail": "Сопоставлены все ID, статусы и пояснения обеих копий проверок с текущим проверяющим проходом. Неизвестное нельзя заменить положительным утверждением; старые пакеты требуют повторного расчёта текущей версией."
+          },
+          {
+            "id": "TRACE_PROJECTION",
+            "status": "pass",
+            "title": "Согласованность диагностических трасс",
+            "detail": "Схема трассы и её копия для представления совпадают. Это не доказательство истинности истории поиска."
+          },
+          {
+            "id": "TRACE_SEARCH_PROVENANCE",
+            "status": "unknown",
+            "title": "Происхождение диагностической трассы поиска",
+            "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+          },
+          {
+            "id": "VIEW_PROJECTION",
+            "status": "pass",
+            "title": "Карта показывает тот же план",
+            "detail": "Совместимая проекция для карты совпадает с проверенными вылетами и исходным сценарием, включая геометрию, ветер и профили. Отдельной декоративной траектории или подменённой подложки задания нет."
+          },
+          {
+            "id": "BASELINE_EXPORT",
+            "status": "unknown",
+            "title": "Повторная проверка baseline",
+            "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+          }
+        ],
+        "files": 27
+      }
+    },
+    {
+      "filename": "output/playwright/airspace-prod-demo2.evidence.zip",
+      "bytes": 52183379,
+      "sha256": "419ca53c98b6f4e867d9be2db515ff1862433e07140d0c7274b4544b6107ed1f",
+      "result": {
+        "status": "passes-declared-model",
+        "flightReady": false,
+        "checks": [
+          {
+            "id": "INPUT_HASH",
+            "status": "pass",
+            "title": "Связь результата со входом",
+            "detail": "SHA-256 канонического документа пересчитан независимо."
+          },
+          {
+            "id": "BEARING_PROVENANCE",
+            "status": "pass",
+            "title": "Направления рабочих полос",
+            "detail": "Каждой работе соответствует один сохранённый угол из разрешённого набора поиска."
+          },
+          {
+            "id": "TRACK_ALTITUDE",
+            "status": "pass",
+            "title": "Предел трека: ниже 150 м AGL",
+            "detail": "Рабочие высоты и оба конца каждого линейного сегмента ниже 150 м над принятой поверхностью; поэтому предел соблюдается и между концами. Рельеф/реальный AGL требуют подтверждения; это не разрешение на полёт."
+          },
+          {
+            "id": "FLEET_LIMIT",
+            "status": "pass",
+            "title": "Число БВС за всю миссию",
+            "detail": "Назначено 3; лимит автоматически, в пределах парка. Повторные вылеты того же аппарата не увеличивают число БВС."
+          },
+          {
+            "id": "MAINTENANCE_demo-ms",
+            "title": "Ресурс до ТО · БВС 02 · мультиспектр",
+            "status": "pass",
+            "detail": "После миссии: 1 полётов, 0.14 ч после ТО. Предел: 160 ч. РЭ Gemini, 28.05.2026, с. 9: проверка и ТО рекомендованы при 160 ч суммарного налёта. Стенд консервативно применяет этот интервал после ТО. https://download.geoscan.ru/site-files/gemini/Geoscan_Gemini_Manual.pdf"
+          },
+          {
+            "id": "MAINTENANCE_moscow-801-rgb-ir-1",
+            "title": "Ресурс до ТО · Геоскан 801 · RGB + ИК · Коломна 1",
+            "status": "pass",
+            "detail": "После миссии: 1 полётов, 0.11 ч после ТО. Предел: 160 ч. Ответ экспертов Геоскан в чате трека, 23.09.2026, 16:22: 501/801 — каждые 160 часов налёта."
+          },
+          {
+            "id": "MAINTENANCE_demo-rgb",
+            "title": "Ресурс до ТО · БВС 01 · фотокамера",
+            "status": "pass",
+            "detail": "После миссии: 1 полётов, 0.11 ч после ТО. Предел: 160 ч. РЭ Gemini, 28.05.2026, с. 9: проверка и ТО рекомендованы при 160 ч суммарного налёта. Стенд консервативно применяет этот интервал после ТО. https://download.geoscan.ru/site-files/gemini/Geoscan_Gemini_Manual.pdf"
+          },
+          {
+            "id": "sortie-1:QUALITY_demo-ms-work_CADENCE",
+            "status": "pass",
+            "title": "Интервал кадров",
+            "detail": "2.329 с; камера требует ≥1 с."
+          },
+          {
+            "id": "sortie-1:QUALITY_demo-ms-work_BLUR",
+            "status": "pass",
+            "title": "Смаз в поступательной модели",
+            "detail": "0.139 пикселя; предел 1."
+          },
+          {
+            "id": "sortie-2:QUALITY_demo-rgb-second-area_CADENCE",
+            "status": "pass",
+            "title": "Интервал кадров",
+            "detail": "2.925 с; камера требует ≥1 с."
+          },
+          {
+            "id": "sortie-2:QUALITY_demo-rgb-second-area_BLUR",
+            "status": "pass",
+            "title": "Смаз в поступательной модели",
+            "detail": "0.409 пикселя; предел 1."
+          },
+          {
+            "id": "sortie-3:QUALITY_demo-rgb-work_CADENCE",
+            "status": "pass",
+            "title": "Интервал кадров",
+            "detail": "2.925 с; камера требует ≥1 с."
+          },
+          {
+            "id": "sortie-3:QUALITY_demo-rgb-work_BLUR",
+            "status": "pass",
+            "title": "Смаз в поступательной модели",
+            "detail": "0.409 пикселя; предел 1."
+          },
+          {
+            "id": "GEOMETRY",
+            "status": "pass",
+            "title": "Границы и статические запреты",
+            "detail": "Каждый отрезок проверен целиком, включая переходы и возврат. Запреты расширены, разрешённая зона сужена на защитный запас 5 м в общей локальной проекции. Это параметр модели, не универсальная норма."
+          },
+          {
+            "id": "STRIPS",
+            "status": "pass",
+            "title": "Все рабочие полосы назначены",
+            "detail": "Сверены идентификаторы и геометрия каждой исходной полосы, пропуски и повторы запрещены."
+          },
+          {
+            "id": "REQUESTED_AREA",
+            "status": "pass",
+            "title": "Исходная область не сокращена скрыто",
+            "detail": "Запреты и границы не могут незаметно убрать часть задания. Численный допуск — только 0,1 м², отдельно от порога геометрического покрытия 99%. Потери: demo-rgb-work: 0.000 м²; demo-ms-work: 0.000 м²; demo-rgb-second-area: 0.000 м²."
+          },
+          {
+            "id": "PHASES",
+            "status": "pass",
+            "title": "Обязательные манёвры и порядок фаз",
+            "detail": "Каждой рабочей полосе предшествует манёвр с turnSeconds профиля; промежуточные вершины перехода/возврата не могут терять поворот. Возврат допускается только после последней рабочей полосы."
+          },
+          {
+            "id": "TIME",
+            "status": "pass",
+            "title": "Время и скорости",
+            "detail": "Независимо пересчитаны длительности, ветер, геометрическая длина и фактическая требуемая воздушная скорость."
+          },
+          {
+            "id": "ENERGY",
+            "status": "pass",
+            "title": "Линейный баланс ресурса",
+            "detail": "Ни одна фаза не теряет расход; после посадки ≥25% в принятой модели."
+          },
+          {
+            "id": "ENDPOINTS",
+            "status": "pass",
+            "title": "Непрерывность траекторий",
+            "detail": "Взлёт, посадка, позиции и высоты непрерывны; повторный вылет начинается в месте предыдущей посадки."
+          },
+          {
+            "id": "WINDOW",
+            "status": "pass",
+            "title": "Календарь и обслуживание",
+            "detail": "Подготовка, общее окно, занятость БВС, обслуживание и предел вылетов проверены."
+          },
+          {
+            "id": "BATTERIES",
+            "status": "pass",
+            "title": "Экземпляры батарей",
+            "detail": "Проверены текущая батарея, расход между повторными вылетами и запас на возвращение; автоматического восстановления заряда нет."
+          },
+          {
+            "id": "COMPATIBILITY",
+            "status": "pass",
+            "title": "Совместимость и пределы профиля",
+            "detail": "Выбранные БВС, назначение, работа, ветер и ограничения скорости согласованы."
+          },
+          {
+            "id": "FLIGHT_ENVELOPE",
+            "status": "pass",
+            "title": "Заданный высотный диапазон",
+            "detail": "Ограничение съёмочной высоты отдельно от взлёта/посадки; абсолютный потолок всех фаз."
+          },
+          {
+            "id": "FOUR_DIMENSIONAL",
+            "status": "pass",
+            "title": "Четырёхмерные ограничения",
+            "detail": "Проверены контур, высотный слой и время на всём маршруте, включая взлёт и посадку; временной запас ±2 с. Неизвестная верхняя граница не отменяет известную нижнюю. Расписание без дат учитывается весь период миссии."
+          },
+          {
+            "id": "SEPARATION",
+            "status": "pass",
+            "title": "Непрерывное разнесение",
+            "detail": "Аналитический минимум расстояния между линейными сегментами с учётом вертикального объёма БВС–геофизический подвес, не проверка по кадрам. Параметры: Учебные защитные интервалы 30/20 м и 2 с; не утверждённый норматив. Временная неопределённость консервативно расширяет защитные расстояния и интервалы. Колебания подвеса не моделируются."
+          },
+          {
+            "id": "DAYLIGHT",
+            "status": "pass",
+            "title": "Условия освещения",
+            "detail": "Проверены только работы с включённым правилом; Солнце вычислено по UTC и координатам, шаг≤60 с и запас0,5°; облачное исключение не применяется."
+          },
+          {
+            "id": "GROUND_SEPARATION",
+            "status": "pass",
+            "title": "Свободные места взлёта и посадки",
+            "detail": "Проверены все переданные БВС на земле: до первого вылета, между вылетами и после посадки; также неназначенные аппараты. Удаление с площадки без данных не предполагается."
+          },
+          {
+            "id": "EXTERNAL_OBSTACLES",
+            "title": "Препятствия исходного KML",
+            "status": "pass",
+            "detail": "Полный каталог: 5164; сегментов: 88; точных проверок: 20. Пересечений защитных контуров в принятой горизонтальной модели не найдено."
+          },
+          {
+            "id": "CLOUD_CEILING",
+            "status": "pass",
+            "title": "Нижняя граница облаков и запас",
+            "detail": "Потолок 1950 м = нижняя граница 2000 м − запас 50 м; максимальная заданная/маршрутная высота 100 м. Высоты относительно единого базового уровня старта/модельной плоскости, не реальная AGL. Постоянные условия на всё окно, источник: Модельная погода: ясное небо, видимость 20 км, ветер 1 м/с."
+          },
+          {
+            "id": "VISIBILITY",
+            "status": "pass",
+            "title": "Заданный минимум видимости",
+            "detail": "Заданная видимость 20000 м, требуемый минимум 1000 м. Это не проверка фактического обзора или качества съёмки. Постоянные условия на всё окно, источник: Модельная погода: ясное небо, видимость 20 км, ветер 1 м/с."
+          },
+          {
+            "id": "RESERVE_LANDING",
+            "status": "pass",
+            "title": "Достижимая посадка из каждой точки",
+            "detail": "Консервативный сертификат: остаток того же проверенного непрерывного маршрута является допустимым путём к назначенной посадке и заканчивается с требуемым резервом. Это не кратчайший аварийный уход."
+          },
+          {
+            "id": "ALTERNATE_ESCAPE",
+            "status": "unknown",
+            "title": "Альтернативный аварийный уход",
+            "detail": "Отдельный интервальный протокол ухода доступен в «Результаты → Анализ → Возврат из любой части маршрута». Этот основной набор проверок не подменяет его результат. Падение, внезапные новые условия и внешние БВС не покрываются сертификатом исходного плана."
+          },
+          {
+            "id": "TERRAIN",
+            "status": "pass",
+            "title": "Поверхность в расчётной модели",
+            "detail": "Единая горизонтальная плоскость 0 м; высоты траекторий относительно неё. Источник: Синтетическая горизонтальная поверхность; не реальный DEM участка. Это не проверка реального рельефа."
+          },
+          {
+            "id": "CALIBRATION",
+            "status": "unknown",
+            "title": "Реальная динамика и энергия",
+            "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+          },
+          {
+            "id": "IMAGE_FOOTPRINTS",
+            "status": "unknown",
+            "title": "Реальные фотоотпечатки",
+            "detail": "Отдельно проверяются ожидаемые отпечатки над плоской поверхностью. Реальные изображения, наклоны, экспозиция и аппаратное срабатывание камеры не получены и не подтверждены."
+          },
+          {
+            "id": "PHOTO_demo-rgb-work_COVERAGE",
+            "status": "pass",
+            "title": "Покрытие ожидаемыми кадрами",
+            "detail": "12 модельных экспозиций; непокрыто 0.00 из 3390.09 м². Проверяются исходный контур, отверстия, края и стыки. Камера вниз, плоская поверхность; реальные фото не получены."
+          },
+          {
+            "id": "PHOTO_demo-rgb-work_OVERLAP",
+            "status": "pass",
+            "title": "Продольное перекрытие ожидаемых кадров",
+            "detail": "70.00% на каждом прямом проходе; требование 70.00%. Между разворотами непрерывность съёмки не предполагается."
+          },
+          {
+            "id": "PHOTO_demo-ms-work_COVERAGE",
+            "status": "pass",
+            "title": "Покрытие ожидаемыми кадрами",
+            "detail": "34 модельных экспозиций; непокрыто 0.00 из 3390.09 м². Проверяются исходный контур, отверстия, края и стыки. Камера вниз, плоская поверхность; реальные фото не получены."
+          },
+          {
+            "id": "PHOTO_demo-ms-work_OVERLAP",
+            "status": "pass",
+            "title": "Продольное перекрытие ожидаемых кадров",
+            "detail": "70.00% на каждом прямом проходе; требование 70.00%. Между разворотами непрерывность съёмки не предполагается."
+          },
+          {
+            "id": "PHOTO_demo-rgb-second-area_COVERAGE",
+            "status": "pass",
+            "title": "Покрытие ожидаемыми кадрами",
+            "detail": "12 модельных экспозиций; непокрыто 0.00 из 3537.87 м². Проверяются исходный контур, отверстия, края и стыки. Камера вниз, плоская поверхность; реальные фото не получены."
+          },
+          {
+            "id": "PHOTO_demo-rgb-second-area_OVERLAP",
+            "status": "pass",
+            "title": "Продольное перекрытие ожидаемых кадров",
+            "detail": "70.00% на каждом прямом проходе; требование 70.00%. Между разворотами непрерывность съёмки не предполагается."
+          },
+          {
+            "id": "AIRSPACE_PERMISSION",
+            "status": "unknown",
+            "title": "Допуск к реальному полёту",
+            "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+          },
+          {
+            "id": "EXPORTED_QUALITY_demo-rgb-work_SOURCE",
+            "status": "unknown",
+            "title": "Источник параметров сенсора",
+            "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+          },
+          {
+            "id": "EXPORTED_QUALITY_demo-rgb-work_TYPE",
+            "status": "pass",
+            "title": "Тип сенсора",
+            "detail": "Камерная модель применима к RGB/MS/ИК, не к лазерным или геофизическим измерениям."
+          },
+          {
+            "id": "EXPORTED_QUALITY_demo-rgb-work_FIELDS",
+            "status": "pass",
+            "title": "Параметры камеры",
+            "detail": "Нужны размеры сенсора, объектив, разрешение, перекрытие, период и целевой GSD."
+          },
+          {
+            "id": "EXPORTED_QUALITY_demo-rgb-work_GSD",
+            "status": "pass",
+            "title": "Детализация в модели",
+            "detail": "1.958 см/пиксель; требование ≤3 см."
+          },
+          {
+            "id": "EXPORTED_QUALITY_demo-rgb-work_STRIP",
+            "status": "pass",
+            "title": "Размеры покрытия",
+            "detail": "Отпечаток и шаг кадров должны быть в поддерживаемом диапазоне ядра."
+          },
+          {
+            "id": "EXPORTED_QUALITY_demo-ms-work_SOURCE",
+            "status": "unknown",
+            "title": "Источник параметров сенсора",
+            "detail": "Геометрия Pollux по буклету Gemini; период/перекрытия/GSD — параметры учебного задания."
+          },
+          {
+            "id": "EXPORTED_QUALITY_demo-ms-work_TYPE",
+            "status": "pass",
+            "title": "Тип сенсора",
+            "detail": "Камерная модель применима к RGB/MS/ИК, не к лазерным или геофизическим измерениям."
+          },
+          {
+            "id": "EXPORTED_QUALITY_demo-ms-work_FIELDS",
+            "status": "pass",
+            "title": "Параметры камеры",
+            "detail": "Нужны размеры сенсора, объектив, разрешение, перекрытие, период и целевой GSD."
+          },
+          {
+            "id": "EXPORTED_QUALITY_demo-ms-work_GSD",
+            "status": "pass",
+            "title": "Детализация в модели",
+            "detail": "4.313 см/пиксель; требование ≤6 см."
+          },
+          {
+            "id": "EXPORTED_QUALITY_demo-ms-work_STRIP",
+            "status": "pass",
+            "title": "Размеры покрытия",
+            "detail": "Отпечаток и шаг кадров должны быть в поддерживаемом диапазоне ядра."
+          },
+          {
+            "id": "EXPORTED_QUALITY_demo-rgb-second-area_SOURCE",
+            "status": "unknown",
+            "title": "Источник параметров сенсора",
+            "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+          },
+          {
+            "id": "EXPORTED_QUALITY_demo-rgb-second-area_TYPE",
+            "status": "pass",
+            "title": "Тип сенсора",
+            "detail": "Камерная модель применима к RGB/MS/ИК, не к лазерным или геофизическим измерениям."
+          },
+          {
+            "id": "EXPORTED_QUALITY_demo-rgb-second-area_FIELDS",
+            "status": "pass",
+            "title": "Параметры камеры",
+            "detail": "Нужны размеры сенсора, объектив, разрешение, перекрытие, период и целевой GSD."
+          },
+          {
+            "id": "EXPORTED_QUALITY_demo-rgb-second-area_GSD",
+            "status": "pass",
+            "title": "Детализация в модели",
+            "detail": "1.958 см/пиксель; требование ≤3 см."
+          },
+          {
+            "id": "EXPORTED_QUALITY_demo-rgb-second-area_STRIP",
+            "status": "pass",
+            "title": "Размеры покрытия",
+            "detail": "Отпечаток и шаг кадров должны быть в поддерживаемом диапазоне ядра."
+          },
+          {
+            "id": "COVERAGE",
+            "status": "pass",
+            "title": "Повторная проверка покрытия",
+            "detail": "Геометрические полосы заново пересечены с исходной и доступной областями каждой работы."
+          },
+          {
+            "id": "METRICS",
+            "status": "pass",
+            "title": "Числа отчёта",
+            "detail": "Площадь, покрытие, время, длина и число ресурсов пересчитаны по исходным данным и траекториям."
+          },
+          {
+            "id": "EVENT_JOURNAL",
+            "status": "pass",
+            "title": "Журнал соответствует проверяемому плану",
+            "detail": "Полный упорядоченный журнал заново построен из вылетов, фаз, батарей и расписания, включая обслуживание и зарядку. Пропущенные, выдуманные или изменённые события запрещены."
+          },
+          {
+            "id": "SAVED_CHECKS",
+            "status": "pass",
+            "title": "Сохранённые проверки подтверждены заново",
+            "detail": "Сопоставлены все ID, статусы и пояснения обеих копий проверок с текущим проверяющим проходом. Неизвестное нельзя заменить положительным утверждением; старые пакеты требуют повторного расчёта текущей версией."
+          },
+          {
+            "id": "TRACE_PROJECTION",
+            "status": "pass",
+            "title": "Согласованность диагностических трасс",
+            "detail": "Схема трассы и её копия для представления совпадают. Это не доказательство истинности истории поиска."
+          },
+          {
+            "id": "TRACE_SEARCH_PROVENANCE",
+            "status": "unknown",
+            "title": "Происхождение диагностической трассы поиска",
+            "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+          },
+          {
+            "id": "VIEW_PROJECTION",
+            "status": "pass",
+            "title": "Карта показывает тот же план",
+            "detail": "Совместимая проекция для карты совпадает с проверенными вылетами и исходным сценарием, включая геометрию, ветер и профили. Отдельной декоративной траектории или подменённой подложки задания нет."
+          },
+          {
+            "id": "BASELINE_EXPORT",
+            "status": "unknown",
+            "title": "Повторная проверка baseline",
+            "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+          }
+        ],
+        "files": 41
+      }
+    },
+    {
+      "filename": "output/playwright/airspace-prod-demo3.evidence.zip",
+      "bytes": 160780,
+      "sha256": "73508265c9c8b5b1b668d56c5167919fe72a11722267ac0df5c320d4b9044e14",
+      "result": {
+        "status": "diagnostic-only-not-flight-approved",
+        "flightReady": false,
+        "checks": [
+          {
+            "id": "INPUT_HASH",
+            "status": "pass",
+            "title": "Связь результата со входом",
+            "detail": "SHA-256 канонического документа пересчитан независимо."
+          },
+          {
+            "id": "BEARING_PROVENANCE",
+            "status": "pass",
+            "title": "Направления рабочих полос",
+            "detail": "Каждой работе соответствует один сохранённый угол из разрешённого набора поиска."
+          },
+          {
+            "id": "TRACK_ALTITUDE",
+            "status": "pass",
+            "title": "Предел трека: ниже 150 м AGL",
+            "detail": "Рабочие высоты и оба конца каждого линейного сегмента ниже 150 м над принятой поверхностью; поэтому предел соблюдается и между концами. Рельеф/реальный AGL требуют подтверждения; это не разрешение на полёт."
+          },
+          {
+            "id": "FLEET_LIMIT",
+            "status": "pass",
+            "title": "Число БВС за всю миссию",
+            "detail": "Назначено 0; лимит автоматически, в пределах парка. Повторные вылеты того же аппарата не увеличивают число БВС."
+          },
+          {
+            "id": "GEOMETRY",
+            "status": "pass",
+            "title": "Границы и статические запреты",
+            "detail": "Каждый отрезок проверен целиком, включая переходы и возврат. Запреты расширены, разрешённая зона сужена на защитный запас 5 м в общей локальной проекции. Это параметр модели, не универсальная норма."
+          },
+          {
+            "id": "STRIPS",
+            "status": "fail",
+            "title": "Все рабочие полосы назначены",
+            "detail": "Сверены идентификаторы и геометрия каждой исходной полосы, пропуски и повторы запрещены."
+          },
+          {
+            "id": "REQUESTED_AREA",
+            "status": "pass",
+            "title": "Исходная область не сокращена скрыто",
+            "detail": "Запреты и границы не могут незаметно убрать часть задания. Численный допуск — только 0,1 м², отдельно от порога геометрического покрытия 99%. Потери: demo-repair-rgb: 0.000 м²."
+          },
+          {
+            "id": "PHASES",
+            "status": "pass",
+            "title": "Обязательные манёвры и порядок фаз",
+            "detail": "Каждой рабочей полосе предшествует манёвр с turnSeconds профиля; промежуточные вершины перехода/возврата не могут терять поворот. Возврат допускается только после последней рабочей полосы."
+          },
+          {
+            "id": "TIME",
+            "status": "pass",
+            "title": "Время и скорости",
+            "detail": "Независимо пересчитаны длительности, ветер, геометрическая длина и фактическая требуемая воздушная скорость."
+          },
+          {
+            "id": "ENERGY",
+            "status": "pass",
+            "title": "Линейный баланс ресурса",
+            "detail": "Ни одна фаза не теряет расход; после посадки ≥25% в принятой модели."
+          },
+          {
+            "id": "ENDPOINTS",
+            "status": "pass",
+            "title": "Непрерывность траекторий",
+            "detail": "Взлёт, посадка, позиции и высоты непрерывны; повторный вылет начинается в месте предыдущей посадки."
+          },
+          {
+            "id": "WINDOW",
+            "status": "pass",
+            "title": "Календарь и обслуживание",
+            "detail": "Подготовка, общее окно, занятость БВС, обслуживание и предел вылетов проверены."
+          },
+          {
+            "id": "BATTERIES",
+            "status": "pass",
+            "title": "Экземпляры батарей",
+            "detail": "Проверены текущая батарея, расход между повторными вылетами и запас на возвращение; автоматического восстановления заряда нет."
+          },
+          {
+            "id": "COMPATIBILITY",
+            "status": "pass",
+            "title": "Совместимость и пределы профиля",
+            "detail": "Выбранные БВС, назначение, работа, ветер и ограничения скорости согласованы."
+          },
+          {
+            "id": "FLIGHT_ENVELOPE",
+            "status": "pass",
+            "title": "Заданный высотный диапазон",
+            "detail": "Ограничение съёмочной высоты отдельно от взлёта/посадки; абсолютный потолок всех фаз."
+          },
+          {
+            "id": "FOUR_DIMENSIONAL",
+            "status": "pass",
+            "title": "Четырёхмерные ограничения",
+            "detail": "Проверены контур, высотный слой и время на всём маршруте, включая взлёт и посадку; временной запас ±2 с. Неизвестная верхняя граница не отменяет известную нижнюю. Расписание без дат учитывается весь период миссии."
+          },
+          {
+            "id": "SEPARATION",
+            "status": "pass",
+            "title": "Непрерывное разнесение",
+            "detail": "Аналитический минимум расстояния между линейными сегментами с учётом вертикального объёма БВС–геофизический подвес, не проверка по кадрам. Параметры: Учебные защитные интервалы 30/20 м и 2 с; не утверждённый норматив. Временная неопределённость консервативно расширяет защитные расстояния и интервалы. Колебания подвеса не моделируются."
+          },
+          {
+            "id": "DAYLIGHT",
+            "status": "pass",
+            "title": "Условия освещения",
+            "detail": "Проверены только работы с включённым правилом; Солнце вычислено по UTC и координатам, шаг≤60 с и запас0,5°; облачное исключение не применяется."
+          },
+          {
+            "id": "GROUND_SEPARATION",
+            "status": "pass",
+            "title": "Свободные места взлёта и посадки",
+            "detail": "Проверены все переданные БВС на земле: до первого вылета, между вылетами и после посадки; также неназначенные аппараты. Удаление с площадки без данных не предполагается."
+          },
+          {
+            "id": "CLOUD_CEILING",
+            "status": "pass",
+            "title": "Нижняя граница облаков и запас",
+            "detail": "Потолок 1950 м = нижняя граница 2000 м − запас 50 м; максимальная заданная/маршрутная высота 100 м. Высоты относительно единого базового уровня старта/модельной плоскости, не реальная AGL. Постоянные условия на всё окно, источник: Модельная погода: ясное небо, видимость 20 км, ветер 1 м/с."
+          },
+          {
+            "id": "VISIBILITY",
+            "status": "pass",
+            "title": "Заданный минимум видимости",
+            "detail": "Заданная видимость 20000 м, требуемый минимум 1000 м. Это не проверка фактического обзора или качества съёмки. Постоянные условия на всё окно, источник: Модельная погода: ясное небо, видимость 20 км, ветер 1 м/с."
+          },
+          {
+            "id": "RESERVE_LANDING",
+            "status": "pass",
+            "title": "Достижимая посадка из каждой точки",
+            "detail": "Консервативный сертификат: остаток того же проверенного непрерывного маршрута является допустимым путём к назначенной посадке и заканчивается с требуемым резервом. Это не кратчайший аварийный уход."
+          },
+          {
+            "id": "ALTERNATE_ESCAPE",
+            "status": "unknown",
+            "title": "Альтернативный аварийный уход",
+            "detail": "Отдельный интервальный протокол ухода доступен в «Результаты → Анализ → Возврат из любой части маршрута». Этот основной набор проверок не подменяет его результат. Падение, внезапные новые условия и внешние БВС не покрываются сертификатом исходного плана."
+          },
+          {
+            "id": "TERRAIN",
+            "status": "pass",
+            "title": "Поверхность в расчётной модели",
+            "detail": "Единая горизонтальная плоскость 0 м; высоты траекторий относительно неё. Источник: Синтетическая горизонтальная поверхность; не реальный DEM участка. Это не проверка реального рельефа."
+          },
+          {
+            "id": "CALIBRATION",
+            "status": "unknown",
+            "title": "Реальная динамика и энергия",
+            "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+          },
+          {
+            "id": "IMAGE_FOOTPRINTS",
+            "status": "unknown",
+            "title": "Реальные фотоотпечатки",
+            "detail": "Отдельно проверяются ожидаемые отпечатки над плоской поверхностью. Реальные изображения, наклоны, экспозиция и аппаратное срабатывание камеры не получены и не подтверждены."
+          },
+          {
+            "id": "PHOTO_demo-repair-rgb_COVERAGE",
+            "status": "fail",
+            "title": "Покрытие ожидаемыми кадрами",
+            "detail": "0 модельных экспозиций; непокрыто 66000.00 из 66000.00 м². Проверяются исходный контур, отверстия, края и стыки. Камера вниз, плоская поверхность; реальные фото не получены."
+          },
+          {
+            "id": "PHOTO_demo-repair-rgb_OVERLAP",
+            "status": "pass",
+            "title": "Продольное перекрытие ожидаемых кадров",
+            "detail": "70.00% на каждом прямом проходе; требование 70.00%. Между разворотами непрерывность съёмки не предполагается."
+          },
+          {
+            "id": "AIRSPACE_PERMISSION",
+            "status": "unknown",
+            "title": "Допуск к реальному полёту",
+            "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+          },
+          {
+            "id": "EXPORTED_QUALITY_demo-repair-rgb_SOURCE",
+            "status": "unknown",
+            "title": "Источник параметров сенсора",
+            "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+          },
+          {
+            "id": "EXPORTED_QUALITY_demo-repair-rgb_TYPE",
+            "status": "pass",
+            "title": "Тип сенсора",
+            "detail": "Камерная модель применима к RGB/MS/ИК, не к лазерным или геофизическим измерениям."
+          },
+          {
+            "id": "EXPORTED_QUALITY_demo-repair-rgb_FIELDS",
+            "status": "pass",
+            "title": "Параметры камеры",
+            "detail": "Нужны размеры сенсора, объектив, разрешение, перекрытие, период и целевой GSD."
+          },
+          {
+            "id": "EXPORTED_QUALITY_demo-repair-rgb_GSD",
+            "status": "pass",
+            "title": "Детализация в модели",
+            "detail": "1.958 см/пиксель; требование ≤3 см."
+          },
+          {
+            "id": "EXPORTED_QUALITY_demo-repair-rgb_STRIP",
+            "status": "pass",
+            "title": "Размеры покрытия",
+            "detail": "Отпечаток и шаг кадров должны быть в поддерживаемом диапазоне ядра."
+          },
+          {
+            "id": "COVERAGE",
+            "status": "fail",
+            "title": "Повторная проверка покрытия",
+            "detail": "Геометрические полосы заново пересечены с исходной и доступной областями каждой работы."
+          },
+          {
+            "id": "METRICS",
+            "status": "pass",
+            "title": "Числа отчёта",
+            "detail": "Площадь, покрытие, время, длина и число ресурсов пересчитаны по исходным данным и траекториям."
+          },
+          {
+            "id": "EVENT_JOURNAL",
+            "status": "pass",
+            "title": "Журнал соответствует проверяемому плану",
+            "detail": "Полный упорядоченный журнал заново построен из вылетов, фаз, батарей и расписания, включая обслуживание и зарядку. Пропущенные, выдуманные или изменённые события запрещены."
+          },
+          {
+            "id": "SAVED_CHECKS",
+            "status": "pass",
+            "title": "Сохранённые проверки подтверждены заново",
+            "detail": "Сопоставлены все ID, статусы и пояснения обеих копий проверок с текущим проверяющим проходом. Неизвестное нельзя заменить положительным утверждением; старые пакеты требуют повторного расчёта текущей версией."
+          },
+          {
+            "id": "TRACE_PROJECTION",
+            "status": "pass",
+            "title": "Согласованность диагностических трасс",
+            "detail": "Схема трассы и её копия для представления совпадают. Это не доказательство истинности истории поиска."
+          },
+          {
+            "id": "TRACE_SEARCH_PROVENANCE",
+            "status": "unknown",
+            "title": "Происхождение диагностической трассы поиска",
+            "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+          },
+          {
+            "id": "VIEW_PROJECTION",
+            "status": "pass",
+            "title": "Карта показывает тот же план",
+            "detail": "Совместимая проекция для карты совпадает с проверенными вылетами и исходным сценарием, включая геометрию, ветер и профили. Отдельной декоративной траектории или подменённой подложки задания нет."
+          }
+        ],
+        "files": 19
+      }
+    },
+    {
+      "filename": "output/playwright/airspace-prod-custom-completed.evidence.zip",
+      "bytes": 1662814,
+      "sha256": "cf3f9f237e6ae4b8671388ba613d08bf077e58c6ae0651f0cb105d5b87c63f6c",
+      "result": {
+        "status": "passes-declared-model",
+        "flightReady": false,
+        "checks": [
+          {
+            "id": "INPUT_HASH",
+            "status": "pass",
+            "title": "Связь результата со входом",
+            "detail": "SHA-256 канонического документа пересчитан независимо."
+          },
+          {
+            "id": "BEARING_PROVENANCE",
+            "status": "pass",
+            "title": "Направления рабочих полос",
+            "detail": "Каждой работе соответствует один сохранённый угол из разрешённого набора поиска."
+          },
+          {
+            "id": "TRACK_ALTITUDE",
+            "status": "pass",
+            "title": "Предел трека: ниже 150 м AGL",
+            "detail": "Рабочие высоты и оба конца каждого линейного сегмента ниже 150 м над принятой поверхностью; поэтому предел соблюдается и между концами. Рельеф/реальный AGL требуют подтверждения; это не разрешение на полёт."
+          },
+          {
+            "id": "FLEET_LIMIT",
+            "status": "pass",
+            "title": "Число БВС за всю миссию",
+            "detail": "Назначено 4; лимит автоматически, в пределах парка. Повторные вылеты того же аппарата не увеличивают число БВС."
+          },
+          {
+            "id": "MAINTENANCE_rgb-fast",
+            "title": "Ресурс до ТО · Геоскан Gemini · 3",
+            "status": "pass",
+            "detail": "После миссии: 1 полётов, 0.11 ч после ТО. Предел: 160 ч. РЭ Gemini, 28.05.2026, с. 9: проверка и ТО рекомендованы при 160 ч суммарного налёта. Стенд консервативно применяет этот интервал после ТО. https://download.geoscan.ru/site-files/gemini/Geoscan_Gemini_Manual.pdf"
+          },
+          {
+            "id": "MAINTENANCE_rgb-center",
+            "title": "Ресурс до ТО · Геоскан Gemini · 1",
+            "status": "pass",
+            "detail": "После миссии: 1 полётов, 0.13 ч после ТО. Предел: 160 ч. РЭ Gemini, 28.05.2026, с. 9: проверка и ТО рекомендованы при 160 ч суммарного налёта. Стенд консервативно применяет этот интервал после ТО. https://download.geoscan.ru/site-files/gemini/Geoscan_Gemini_Manual.pdf"
+          },
+          {
+            "id": "MAINTENANCE_north-801-rgb-ir-3",
+            "title": "Ресурс до ТО · Геоскан 801 · RGB + ИК · Север 3",
+            "status": "pass",
+            "detail": "После миссии: 1 полётов, 0.16 ч после ТО. Предел: 160 ч. Ответ экспертов Геоскан в чате трека, 23.09.2026, 16:22: 501/801 — каждые 160 часов налёта."
+          },
+          {
+            "id": "MAINTENANCE_rgb-near",
+            "title": "Ресурс до ТО · Геоскан Gemini · 2",
+            "status": "pass",
+            "detail": "После миссии: 1 полётов, 0.10 ч после ТО. Предел: 160 ч. РЭ Gemini, 28.05.2026, с. 9: проверка и ТО рекомендованы при 160 ч суммарного налёта. Стенд консервативно применяет этот интервал после ТО. https://download.geoscan.ru/site-files/gemini/Geoscan_Gemini_Manual.pdf"
+          },
+          {
+            "id": "sortie-1:QUALITY_rgb-01_CADENCE",
+            "status": "pass",
+            "title": "Интервал кадров",
+            "detail": "1.950 с; камера требует ≥1 с."
+          },
+          {
+            "id": "sortie-1:QUALITY_rgb-01_BLUR",
+            "status": "pass",
+            "title": "Смаз в поступательной модели",
+            "detail": "0.613 пикселя; предел 1."
+          },
+          {
+            "id": "sortie-2:QUALITY_rgb-01_CADENCE",
+            "status": "pass",
+            "title": "Интервал кадров",
+            "detail": "2.600 с; камера требует ≥1 с."
+          },
+          {
+            "id": "sortie-2:QUALITY_rgb-01_BLUR",
+            "status": "pass",
+            "title": "Смаз в поступательной модели",
+            "detail": "0.460 пикселя; предел 1."
+          },
+          {
+            "id": "sortie-3:QUALITY_rgb-01_CADENCE",
+            "status": "pass",
+            "title": "Интервал кадров",
+            "detail": "2.925 с; камера требует ≥1 с."
+          },
+          {
+            "id": "sortie-3:QUALITY_rgb-01_BLUR",
+            "status": "pass",
+            "title": "Смаз в поступательной модели",
+            "detail": "0.409 пикселя; предел 1."
+          },
+          {
+            "id": "sortie-4:QUALITY_rgb-01_CADENCE",
+            "status": "pass",
+            "title": "Интервал кадров",
+            "detail": "3.900 с; камера требует ≥1 с."
+          },
+          {
+            "id": "sortie-4:QUALITY_rgb-01_BLUR",
+            "status": "pass",
+            "title": "Смаз в поступательной модели",
+            "detail": "0.306 пикселя; предел 1."
+          },
+          {
+            "id": "GEOMETRY",
+            "status": "pass",
+            "title": "Границы и статические запреты",
+            "detail": "Каждый отрезок проверен целиком, включая переходы и возврат. Запреты расширены, разрешённая зона сужена на защитный запас 5 м в общей локальной проекции. Это параметр модели, не универсальная норма."
+          },
+          {
+            "id": "STRIPS",
+            "status": "pass",
+            "title": "Все рабочие полосы назначены",
+            "detail": "Сверены идентификаторы и геометрия каждой исходной полосы, пропуски и повторы запрещены."
+          },
+          {
+            "id": "REQUESTED_AREA",
+            "status": "pass",
+            "title": "Исходная область не сокращена скрыто",
+            "detail": "Запреты и границы не могут незаметно убрать часть задания. Численный допуск — только 0,1 м², отдельно от порога геометрического покрытия 99%. Потери: rgb-01: 0.000 м²."
+          },
+          {
+            "id": "PHASES",
+            "status": "pass",
+            "title": "Обязательные манёвры и порядок фаз",
+            "detail": "Каждой рабочей полосе предшествует манёвр с turnSeconds профиля; промежуточные вершины перехода/возврата не могут терять поворот. Возврат допускается только после последней рабочей полосы."
+          },
+          {
+            "id": "TIME",
+            "status": "pass",
+            "title": "Время и скорости",
+            "detail": "Независимо пересчитаны длительности, ветер, геометрическая длина и фактическая требуемая воздушная скорость."
+          },
+          {
+            "id": "ENERGY",
+            "status": "pass",
+            "title": "Линейный баланс ресурса",
+            "detail": "Ни одна фаза не теряет расход; после посадки ≥25% в принятой модели."
+          },
+          {
+            "id": "ENDPOINTS",
+            "status": "pass",
+            "title": "Непрерывность траекторий",
+            "detail": "Взлёт, посадка, позиции и высоты непрерывны; повторный вылет начинается в месте предыдущей посадки."
+          },
+          {
+            "id": "WINDOW",
+            "status": "pass",
+            "title": "Календарь и обслуживание",
+            "detail": "Подготовка, общее окно, занятость БВС, обслуживание и предел вылетов проверены."
+          },
+          {
+            "id": "BATTERIES",
+            "status": "pass",
+            "title": "Экземпляры батарей",
+            "detail": "Проверены текущая батарея, расход между повторными вылетами и запас на возвращение; автоматического восстановления заряда нет."
+          },
+          {
+            "id": "COMPATIBILITY",
+            "status": "pass",
+            "title": "Совместимость и пределы профиля",
+            "detail": "Выбранные БВС, назначение, работа, ветер и ограничения скорости согласованы."
+          },
+          {
+            "id": "FLIGHT_ENVELOPE",
+            "status": "pass",
+            "title": "Заданный высотный диапазон",
+            "detail": "Ограничение съёмочной высоты отдельно от взлёта/посадки; абсолютный потолок всех фаз."
+          },
+          {
+            "id": "FOUR_DIMENSIONAL",
+            "status": "pass",
+            "title": "Четырёхмерные ограничения",
+            "detail": "Проверены контур, высотный слой и время на всём маршруте, включая взлёт и посадку; временной запас ±2 с. Неизвестная верхняя граница не отменяет известную нижнюю. Расписание без дат учитывается весь период миссии."
+          },
+          {
+            "id": "SEPARATION",
+            "status": "pass",
+            "title": "Непрерывное разнесение",
+            "detail": "Аналитический минимум расстояния между линейными сегментами с учётом вертикального объёма БВС–геофизический подвес, не проверка по кадрам. Параметры: Учебные защитные расстояния и интервалы; не утверждённый норматив. Временная неопределённость консервативно расширяет защитные расстояния и интервалы. Колебания подвеса не моделируются."
+          },
+          {
+            "id": "DAYLIGHT",
+            "status": "pass",
+            "title": "Условия освещения",
+            "detail": "Проверены только работы с включённым правилом; Солнце вычислено по UTC и координатам, шаг≤60 с и запас0,5°; облачное исключение не применяется."
+          },
+          {
+            "id": "GROUND_SEPARATION",
+            "status": "pass",
+            "title": "Свободные места взлёта и посадки",
+            "detail": "Проверены все переданные БВС на земле: до первого вылета, между вылетами и после посадки; также неназначенные аппараты. Удаление с площадки без данных не предполагается."
+          },
+          {
+            "id": "CLOUD_CEILING",
+            "status": "pass",
+            "title": "Нижняя граница облаков и запас",
+            "detail": "Потолок 1950 м = нижняя граница 2000 м − запас 50 м; максимальная заданная/маршрутная высота 100 м. Высоты относительно единого базового уровня старта/модельной плоскости, не реальная AGL. Постоянные условия на всё окно, источник: Модельная погода: ясное небо, видимость 20 км, ветер 1 м/с."
+          },
+          {
+            "id": "VISIBILITY",
+            "status": "pass",
+            "title": "Заданный минимум видимости",
+            "detail": "Заданная видимость 20000 м, требуемый минимум 1000 м. Это не проверка фактического обзора или качества съёмки. Постоянные условия на всё окно, источник: Модельная погода: ясное небо, видимость 20 км, ветер 1 м/с."
+          },
+          {
+            "id": "RESERVE_LANDING",
+            "status": "pass",
+            "title": "Достижимая посадка из каждой точки",
+            "detail": "Консервативный сертификат: остаток того же проверенного непрерывного маршрута является допустимым путём к назначенной посадке и заканчивается с требуемым резервом. Это не кратчайший аварийный уход."
+          },
+          {
+            "id": "ALTERNATE_ESCAPE",
+            "status": "unknown",
+            "title": "Альтернативный аварийный уход",
+            "detail": "Отдельный интервальный протокол ухода доступен в «Результаты → Анализ → Возврат из любой части маршрута». Этот основной набор проверок не подменяет его результат. Падение, внезапные новые условия и внешние БВС не покрываются сертификатом исходного плана."
+          },
+          {
+            "id": "TERRAIN",
+            "status": "pass",
+            "title": "Поверхность в расчётной модели",
+            "detail": "Единая горизонтальная плоскость 0 м; высоты траекторий относительно неё. Источник: Синтетическая горизонтальная поверхность; не реальный DEM участка. Это не проверка реального рельефа."
+          },
+          {
+            "id": "CALIBRATION",
+            "status": "unknown",
+            "title": "Реальная динамика и энергия",
+            "detail": "Модельные фазы не подтверждены полётными логами; расход нагрузки, температура и деградация АКБ не калиброваны."
+          },
+          {
+            "id": "IMAGE_FOOTPRINTS",
+            "status": "unknown",
+            "title": "Реальные фотоотпечатки",
+            "detail": "Отдельно проверяются ожидаемые отпечатки над плоской поверхностью. Реальные изображения, наклоны, экспозиция и аппаратное срабатывание камеры не получены и не подтверждены."
+          },
+          {
+            "id": "PHOTO_rgb-01_COVERAGE",
+            "status": "pass",
+            "title": "Покрытие ожидаемыми кадрами",
+            "detail": "338 модельных экспозиций; непокрыто 0.00 из 360000.00 м². Проверяются исходный контур, отверстия, края и стыки. Камера вниз, плоская поверхность; реальные фото не получены."
+          },
+          {
+            "id": "PHOTO_rgb-01_OVERLAP",
+            "status": "pass",
+            "title": "Продольное перекрытие ожидаемых кадров",
+            "detail": "70.00% на каждом прямом проходе; требование 70.00%. Между разворотами непрерывность съёмки не предполагается."
+          },
+          {
+            "id": "AIRSPACE_PERMISSION",
+            "status": "unknown",
+            "title": "Допуск к реальному полёту",
+            "detail": "Пользовательские зоны не заменяют актуальные разрешения, региональные запреты и воздушную обстановку."
+          },
+          {
+            "id": "EXPORTED_QUALITY_rgb-01_SOURCE",
+            "status": "unknown",
+            "title": "Источник параметров сенсора",
+            "detail": "PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры."
+          },
+          {
+            "id": "EXPORTED_QUALITY_rgb-01_TYPE",
+            "status": "pass",
+            "title": "Тип сенсора",
+            "detail": "Камерная модель применима к RGB/MS/ИК, не к лазерным или геофизическим измерениям."
+          },
+          {
+            "id": "EXPORTED_QUALITY_rgb-01_FIELDS",
+            "status": "pass",
+            "title": "Параметры камеры",
+            "detail": "Нужны размеры сенсора, объектив, разрешение, перекрытие, период и целевой GSD."
+          },
+          {
+            "id": "EXPORTED_QUALITY_rgb-01_GSD",
+            "status": "pass",
+            "title": "Детализация в модели",
+            "detail": "1.958 см/пиксель; требование ≤3 см."
+          },
+          {
+            "id": "EXPORTED_QUALITY_rgb-01_STRIP",
+            "status": "pass",
+            "title": "Размеры покрытия",
+            "detail": "Отпечаток и шаг кадров должны быть в поддерживаемом диапазоне ядра."
+          },
+          {
+            "id": "COVERAGE",
+            "status": "pass",
+            "title": "Повторная проверка покрытия",
+            "detail": "Геометрические полосы заново пересечены с исходной и доступной областями каждой работы."
+          },
+          {
+            "id": "METRICS",
+            "status": "pass",
+            "title": "Числа отчёта",
+            "detail": "Площадь, покрытие, время, длина и число ресурсов пересчитаны по исходным данным и траекториям."
+          },
+          {
+            "id": "EVENT_JOURNAL",
+            "status": "pass",
+            "title": "Журнал соответствует проверяемому плану",
+            "detail": "Полный упорядоченный журнал заново построен из вылетов, фаз, батарей и расписания, включая обслуживание и зарядку. Пропущенные, выдуманные или изменённые события запрещены."
+          },
+          {
+            "id": "SAVED_CHECKS",
+            "status": "pass",
+            "title": "Сохранённые проверки подтверждены заново",
+            "detail": "Сопоставлены все ID, статусы и пояснения обеих копий проверок с текущим проверяющим проходом. Неизвестное нельзя заменить положительным утверждением; старые пакеты требуют повторного расчёта текущей версией."
+          },
+          {
+            "id": "TRACE_PROJECTION",
+            "status": "pass",
+            "title": "Согласованность диагностических трасс",
+            "detail": "Схема трассы и её копия для представления совпадают. Это не доказательство истинности истории поиска."
+          },
+          {
+            "id": "TRACE_SEARCH_PROVENANCE",
+            "status": "unknown",
+            "title": "Происхождение диагностической трассы поиска",
+            "detail": "Перебор кандидатов и момент исчерпания вычислительного бюджета нельзя восстановить из итоговых траекторий. Трасса не используется как доказательство оптимальности или достоверный журнал исполнения; маршрутные события проверены отдельно."
+          },
+          {
+            "id": "VIEW_PROJECTION",
+            "status": "pass",
+            "title": "Карта показывает тот же план",
+            "detail": "Совместимая проекция для карты совпадает с проверенными вылетами и исходным сценарием, включая геометрию, ветер и профили. Отдельной декоративной траектории или подменённой подложки задания нет."
+          },
+          {
+            "id": "BASELINE_EXPORT",
+            "status": "unknown",
+            "title": "Повторная проверка baseline",
+            "detail": "При расчёте baseline прошёл тот же валидатор. Экспорт содержит его итоговые числа, но не все исходные траектории: для независимого подтверждения улучшения нужно повторить расчёт той же версии."
+          }
+        ],
+        "files": 33
+      }
+    }
+  ],
+  "sourceAudit": {
+    "path": "docs/planner/airspace-source-audit-2026-09-24.json",
+    "sha256": "d7c6c0fb12e4a151bbe460902a4c8cddc95200127666cadfe208fe4ff69efeb6"
+  },
+  "files": [
+    {
+      "path": "lib/planner/airspace-altitudes.ts",
+      "sha256": "dbad8c9e0edaf58a47a3ece68cfc82a9d15c7809f0aee28803ba0ae21aeeeffb"
+    },
+    {
+      "path": "lib/planner/mission-catalog.ts",
+      "sha256": "1db936bf9316225dc4259e97ed099cccfaf6d4a471242e9d176b70b5cb824811"
+    },
+    {
+      "path": "lib/planner/mission-bases.ts",
+      "sha256": "eec228270bf1a1b617bae285cc990c8450cc29cbd34fe6932f863b23d2e26d32"
+    },
+    {
+      "path": "lib/planner/mission-engine.ts",
+      "sha256": "47fa4a97a4f16b1a17661368a345aca9370162acd4c7fb83addeea14a28e7d1e"
+    },
+    {
+      "path": "lib/planner/mission-safety.ts",
+      "sha256": "418a8c43a6f98d6af2688919a6483de58d06d3926ecfc26bbd688dcc8bbed20b"
+    },
+    {
+      "path": "lib/planner/mission-contingency.ts",
+      "sha256": "6a89c2be636e8d2a6b99b5ce81d99a5a04b57087efbbee7e8859479f002f03aa"
+    },
+    {
+      "path": "lib/planner/mission-schema.ts",
+      "sha256": "ac3c94113a0f3614dc6684d3d5162b0ef45140edd71f3ef05064251cef5e8ea6"
+    },
+    {
+      "path": "lib/planner/mission-validation.ts",
+      "sha256": "ee03e6a39907f7c3b4791bdb643a15792b078d21514297f4df5f3da9023af1c6"
+    },
+    {
+      "path": "lib/planner/mission-archive.ts",
+      "sha256": "f7893e65d7856806135f5ff6bffaf606208fb389d0f519b45bbe6580e820e6cb"
+    },
+    {
+      "path": "components/planner/mission-map.tsx",
+      "sha256": "de82a22c6e5d7ad755df7eece33825ff6377a15a8e1ccb2efbbf084c5d70f38e"
+    },
+    {
+      "path": "components/planner/mission-airspace-layer-summary.tsx",
+      "sha256": "a821cc660e9eb87ad74289364a9633fc10593934f2cf8a88ce6026575f3f7a51"
+    },
+    {
+      "path": "components/planner/mission-data-panel.tsx",
+      "sha256": "32e8af425302ce6a9238f053fb354edeb25ae5644b0c07c0ae500add6e9d44c3"
+    },
+    {
+      "path": "components/planner/mission-program-help.tsx",
+      "sha256": "19542179cbd96626022e186d28811c50b2f0e5d042d190cebba85e40d3ab2a09"
+    },
+    {
+      "path": "app/planner/mission-expert.css",
+      "sha256": "1cea85e1037de7e90a00be12eb5a51dfb7d37d55666a3708b55ac348d3739f70"
+    },
+    {
+      "path": "docs/planner/contracts/mission-v2.schema.json",
+      "sha256": "7146305a284d4f5af6e5a71eada022ec39724f4cf6d1352a0c51f629043d30d8"
+    },
+    {
+      "path": "tests/mission-airspace-altitudes.test.ts",
+      "sha256": "483797d0c80641761e06838dd922d3d96744717085f8fcce15dc9527ea1ed94a"
+    },
+    {
+      "path": "tests/mission-catalog.test.ts",
+      "sha256": "387b795a1a7feed6dd5520275d437d0d25375db0e546d1595cd6f4e071ebb1b1"
+    },
+    {
+      "path": "tests/mission-map-lifecycle.test.ts",
+      "sha256": "57c48aa2373ecdce67ec076a488c2a14ba89d766a4e837cee5e080968d735962"
+    },
+    {
+      "path": "scripts/checks/airspace-20260924-browser.js",
+      "sha256": "1c1e0f4326f694d3e38436fefa60765b989e0f561ed698fe2f6ca9a4a8c5cc98"
+    },
+    {
+      "path": "scripts/checks/audit-airspace-20260924.ts",
+      "sha256": "c885fa300fa10da776342145cbae5740ad2404be5a325c1c4b8a733285873797"
+    }
+  ]
+}

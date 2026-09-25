@@ -26,6 +26,16 @@ with zipfile.ZipFile(path) as archive:
         }
         assert set(entries) == expected, "Manifest membership mismatch"
     source_digest = hashlib.sha256(archive.read("data/sources/obstacles.kml")).hexdigest()
-    assert source_digest == "58b7fc12f8870ac434d2ae3f3a4dd0627878aa41e5afc862c5fd74da22f420a8"
+    expected_sources = {
+        "58b7fc12f8870ac434d2ae3f3a4dd0627878aa41e5afc862c5fd74da22f420a8": "Primorsky expert source",
+        "43e32fe63eb715194d7c43f2eb36066523105433c81613a57f21aadd62520ed1": "Moscow expert source, received 2026-09-23",
+    }
+    assert source_digest in expected_sources, "Not an unchanged reference obstacle source"
+    for name, digest in {
+        "data/sources/areas.kml": "b48f4cf70726121919b7d8e20a9bab43027afb55730538698e4c17c8eacadf70",
+        "data/sources/restrictions.kml": "b175fd0fa16895f56c73fd4d8a771c4ff603cf3118a96399b6afa0d942772305",
+    }.items():
+        if name in names:
+            assert hashlib.sha256(archive.read(name)).hexdigest() == digest, name
     print(json.dumps({"status": "pass", "checker": "Python stdlib zipfile/hashlib", "files": len(names),
                       "sourceSha256": source_digest, "flightSafetyChecked": False}, indent=2))

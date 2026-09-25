@@ -163,7 +163,7 @@ void test('demo 3 named battery replacement solves full work; waiting/assignment
   const trials = missionImprovementTrials(d, candidate);
   assert.deepEqual(
     trials.map((t) => t.id),
-    ['battery-full-demo-07', 'auto-assignment', 'extra-time'],
+    ['auto-assignment', 'battery-full-demo-07', 'extra-time'],
   );
   for (const trial of trials) {
     const alternative = (await solveMissionDocument(trial.document))

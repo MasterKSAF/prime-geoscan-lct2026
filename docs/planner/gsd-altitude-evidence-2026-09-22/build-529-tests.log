@@ -1,0 +1,845 @@
+ Image prime-planner:local Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 547B 0.1s done
+#1 DONE 0.1s
+
+#2 [internal] load build definition from Dockerfile.planner
+#2 transferring dockerfile: 2.09kB 0.0s done
+#2 DONE 0.1s
+
+#3 [internal] load metadata for docker.io/library/node:24.14.1-bookworm-slim@sha256:b506e7321f176aae77317f99d67a24b272c1f09f1d10f1761f2773447d8da26c
+#3 DONE 2.3s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 554B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [ 1/23] FROM docker.io/library/node:24.14.1-bookworm-slim@sha256:b506e7321f176aae77317f99d67a24b272c1f09f1d10f1761f2773447d8da26c
+#6 resolve docker.io/library/node:24.14.1-bookworm-slim@sha256:b506e7321f176aae77317f99d67a24b272c1f09f1d10f1761f2773447d8da26c 0.0s done
+#6 DONE 0.1s
+
+#5 [internal] load build context
+#5 transferring context: 4.09MB 0.4s done
+#5 DONE 0.4s
+
+#7 [ 2/23] WORKDIR /app
+#7 CACHED
+
+#8 [ 3/23] COPY package.json package-lock.json ./
+#8 CACHED
+
+#9 [ 4/23] RUN npm ci
+#9 CACHED
+
+#10 [ 5/23] COPY tsconfig.json next.config.ts vite.config.ts ./
+#10 CACHED
+
+#11 [ 6/23] COPY .openai/hosting.json .openai/hosting.json
+#11 CACHED
+
+#12 [ 7/23] COPY app ./app
+#12 CACHED
+
+#13 [ 8/23] COPY components ./components
+#13 DONE 0.2s
+
+#14 [ 9/23] COPY lib ./lib
+#14 DONE 0.2s
+
+#15 [10/23] COPY hooks ./hooks
+#15 DONE 0.1s
+
+#16 [11/23] COPY public ./public
+#16 DONE 0.3s
+
+#17 [12/23] COPY tests ./tests
+#17 DONE 0.2s
+
+#18 [13/23] COPY scripts/verify-mission-evidence.ts ./scripts/verify-mission-evidence.ts
+#18 DONE 0.1s
+
+#19 [14/23] COPY scripts/verify-mission-archive.ts ./scripts/verify-mission-archive.ts
+#19 DONE 0.1s
+
+#20 [15/23] COPY scripts/verify-mission-run-report.ts ./scripts/verify-mission-run-report.ts
+#20 DONE 0.1s
+
+#21 [16/23] COPY scripts/benchmark-missions.ts ./scripts/benchmark-missions.ts
+#21 DONE 0.1s
+
+#22 [17/23] COPY scripts/verify-mission-robustness.ts ./scripts/verify-mission-robustness.ts
+#22 DONE 0.1s
+
+#23 [18/23] COPY scripts/verify-mission-contingency.ts ./scripts/verify-mission-contingency.ts
+#23 DONE 0.1s
+
+#24 [19/23] COPY scripts/create-geometry-overflow-fixtures.ts ./scripts/create-geometry-overflow-fixtures.ts
+#24 DONE 0.1s
+
+#25 [20/23] COPY scripts/start-planner.mjs ./scripts/start-planner.mjs
+#25 DONE 0.1s
+
+#26 [21/23] RUN npm run typecheck && npm run test:planner && npm run build
+#26 1.460 
+#26 1.460 > sites-project@0.1.0 typecheck
+#26 1.460 > tsc --noEmit
+#26 1.460 
+#26 20.32 
+#26 20.32 > sites-project@0.1.0 test:planner
+#26 20.32 > node --experimental-transform-types --test --test-concurrency=2 tests/*.test.ts
+#26 20.32 
+#26 20.63 (node:44) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 20.63 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 20.67 ✔ finite-radius 90-degree turn has tangent ends, exact arc cost and no hover (3.246316ms)
+#26 20.67 ✔ right turns are mirrored without negative time or radius (0.230059ms)
+#26 20.67 ✔ straight continuation needs no invented manoeuvre, reversal requires a real loop (0.679758ms)
+#26 20.67 ✔ insufficient approach, adjacent overlapping fillets and duplicate points fail closed (0.49078ms)
+#26 20.67 ✔ groundwork rejects wind, zero speed, zero radius and nonfinite data (0.409167ms)
+#26 20.67 ✔ analytic curve check catches small obstacle missed by the straight chord (1.603643ms)
+#26 20.67 ✔ entire smooth path checks lines as well as turns and rejects crossing outside permitted space (0.729798ms)
+#26 20.68 ✔ display chords have a known error bound and are not used for analytical verification (0.427234ms)
+#26 20.68 ✔ analytic intersections detect thin obstacles across 120 deterministic angles and radii (8.729179ms)
+#26 20.68 ✔ tampered arc endpoints, nonfinite angles and zero-length geometry are rejected (0.699247ms)
+#26 20.84 (node:45) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 20.84 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 21.18 ✔ Dubins CSC connectors close 180 degree reversals with finite moving turns (2.740204ms)
+#26 21.18 ✔ Dubins endpoints are independently checked over 100 deterministic inputs (10.917118ms)
+#26 21.18 ✔ loiter is a moving closed circle, not a stationary wait (0.353365ms)
+#26 21.18 ✔ capsules catch complete thin obstacles and corridors narrower than the tube (1.128194ms)
+#26 21.18 ✔ 201 sorties include forward launch, real U-turns, battery use and wind-drift parachute (109.566745ms)
+#26 21.18 ✔ 201 works with still air and nonzero wind, and radius grows conservatively (63.385361ms)
+#26 21.18 ✔ 201 rejects insufficient battery, unsupported hover profile and forbidden launch corridor (5.832411ms)
+#26 21.18 ✔ 201 independent validator rejects tampered radius, understated tube and fake hover (10.391268ms)
+#26 21.18 ✔ recovery preserves airborne heading, uses actual charge and ends at wind-corrected landing (7.043742ms)
+#26 21.66 ✔ 201 end-to-end solve, independent replay, runtime recovery and tamper rejection (478.708565ms)
+#26 21.66 ✔ separation rejects intersecting conservative tubes despite noncolliding centerlines (18.896526ms)
+#26 21.75 (node:58) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 21.75 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 21.75 ✔ 201 passport keeps airspeed, maxima and source separate from supported capability (36.493972ms)
+#26 21.75 ✔ 201 contradicting type, minimum speed, wind and endurance are diagnosed without fabricated performance (3.84421ms)
+#26 21.75 ✔ supported multirotor limits are preserved (3.793769ms)
+#26 21.75 ✔ automatic mixed registry excludes 201 but may complete using validated copters (489.619309ms)
+#26 21.75 ✔ explicitly assigning only 201 remains unsupported with a concrete explanation (24.895322ms)
+#26 21.75 ✔ excluded or disabled 201 still occupies its physical parking position (79.489544ms)
+#26 22.03 ✔ a returned copter route cannot be relabelled as fixed wing and pass independent verification (281.81362ms)
+#26 22.08 (node:73) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 22.08 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 22.31 ✔ 150 m is exclusive; negative/unknown/nonfinite heights fail, touchdown is allowed (1.601009ms)
+#26 22.31 ✔ GSD inversion uses worst axis with mm/metres/cm conversion (38.103492ms)
+#26 22.31 ✔ GSD sets height, footprint and triggers; cap improves resolution, not the reverse (4.786003ms)
+#26 22.31 ✔ GSD auto height respects lower operator ceiling and refuses impossible minimum (4.605191ms)
+#26 22.31 ✔ fixed heights are never silently lowered; GSD still rejects coarse imagery (3.913559ms)
+#26 22.31 ✔ forecast level and readable mission passport use derived, not stale stored height (10.651263ms)
+#26 22.31 ✔ missing camera and wrong work type cannot bypass auto-height quality checks (2.525646ms)
+#26 22.33 ✔ new camera works use GSD; older files retain fixed height and hashes on parsing (32.955276ms)
+#26 22.38 ✔ solver refuses fixed 150/151 m despite enlarged corridor and permissive GSD (49.060856ms)
+#26 22.38 ✔ legacy API cannot produce a feasible plan at 150 m (3.373361ms)
+#26 22.75 ✔ auto GSD is consistent in routes, export, camera coverage and independent verifier (369.760031ms)
+#26 22.84 (node:80) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 22.84 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 22.84 ✔ benchmark: same complete input and full serial routes are independently rechecked (241.155197ms)
+#26 22.87 ✔ benchmark: partial result is retained but cannot produce an improvement percentage (26.511661ms)
+#26 22.89 ✔ benchmark: altered metric and forged saved pass flags do not prove efficiency (23.516106ms)
+#26 22.90 ✔ benchmark: changing resources invalidates comparison input even when routes are untouched (8.465656ms)
+#26 22.93 ✔ benchmark: distinct objectives cannot be compared as one improvement (32.322783ms)
+#26 23.04 ✔ benchmark: ordinary candidate cannot masquerade as the serial protocol (13.863295ms)
+#26 23.04 ✔ benchmark: fixed dataset includes refusal and stress cases with current batteries only (98.475264ms)
+#26 23.04 ✔ benchmark: percentile summary preserves losses and handles empty comparable set (0.412855ms)
+#26 23.05 ✔ benchmark: dropping a failed case or repeat cannot leave a complete run matrix (0.537524ms)
+#26 23.25 (node:95) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 23.25 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 23.25 ✔ circumscribed metric buffer guarantees complete-edge clearance, including former arc deficit (22.158292ms)
+#26 23.25 ✔ metric clearance is conservative for rotated convex and concave polygons at bounded latitudes (152.428941ms)
+#26 23.25 ✔ holes shrink without dropping identity, small holes close through geometric union (3.672718ms)
+#26 23.25 ✔ analytic segment clearance catches crossing and degenerate endpoints without sampling (0.542594ms)
+#26 23.25 ✔ buffer input complexity, local radius and invalid topology fail closed (98.975881ms)
+#26 23.42 (node:102) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 23.42 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 23.90 ✔ balanced recommendation retains two required objectives and an independently valid exported candidate (20.675219ms)
+#26 23.90 ✔ 50/50 normalized compromise may select an interior option from the full existing pool (4.836654ms)
+#26 23.90 ✔ unsafe or incomplete cheap plans never participate in normalization or recommendation (3.842509ms)
+#26 23.90 ✔ zero metric ranges and identical routes are explicit without inventing a third plan (4.030493ms)
+#26 23.90 ✔ equal compromise scores break ties by reserve, then sorties, then deterministic plan content (5.442033ms)
+#26 23.90 ✔ same-plan comparison ignores presentation metadata, but includes geometry, timing and battery assignment (4.711474ms)
+#26 23.94 ✔ no recommendation is emitted when the actual solver has no complete safe plan (49.644321ms)
+#26 24.28 (node:109) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 24.28 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 24.28 ✔ contingency API: valid certificate is input/plan bound, complete and explicitly model-only (363.555766ms)
+#26 24.74 ✔ contingency API: forged paths, metrics, charge, status and mismatched input never get certificates (352.822589ms)
+#26 24.74 ✔ contingency API: malformed JSON, duplicate keys and unsafe object keys reject before schema (6.644737ms)
+#26 24.76 ✔ contingency API: unknown top-level/document fields and missing document reject strict schema (163.770854ms)
+#26 24.86 ✔ contingency API: missing/null/unstructured candidate produces no certificate or internal crash (49.34854ms)
+#26 24.86 ✔ contingency API: wrong origin/content type reject and cancel unopened bodies (2.495086ms)
+#26 24.86 ✔ contingency API: 2 MiB limit counts bytes, cancels oversized stream and releases busy state (12.465127ms)
+#26 24.86 ✔ contingency API: stalled body returns timeout, releases reader even if cancel never resolves, and frees busy lock (3.529433ms)
+#26 24.86 ✔ contingency API: invalid UTF-8 and aborted completed upload reject without holding lock (1.604365ms)
+#26 24.89 ✔ contingency API: exhausted CPU budget cannot become a complete certificate (69.989052ms)
+#26 25.01 (node:124) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 25.01 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 25.01 ✔ contingency replay: source inputs and complete path certificate reproduce offline (246.05348ms)
+#26 25.01 ✔ contingency replay: altered battery, path and hidden anchors cannot preserve green status (220.462125ms)
+#26 25.09 ✔ contingency replay: declared incomplete coverage remains incomplete, not a fabricated pass (41.977023ms)
+#26 25.15 ✔ contingency replay: altered source or unsupported unknown bundle fields are rejected (98.806902ms)
+#26 25.19 ✔ contingency replay: unknown candidate fields cannot be certified even with recomputed envelope hashes (46.30273ms)
+#26 25.40 ✔ contingency replay CLI file path never overwrites input or existing output (209.383254ms)
+#26 25.54 (node:136) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 25.54 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 25.78 ✔ contingency: every continuous motion interval is covered without sampling gaps or mutating inputs (285.503472ms)
+#26 25.91 ✔ contingency: bounded anchor cap cannot be reported as a complete certificate (130.282252ms)
+#26 26.03 ✔ contingency: incomplete or modified source plans are never trusted (120.626638ms)
+#26 26.20 ✔ contingency: unknown terrain is explicitly outside the claimed certificate scope (172.517019ms)
+#26 27.08 ✔ contingency: obstacle demonstration certifies actual independent routed departures (879.138229ms)
+#26 27.45 ✔ contingency: planned-corridor fallback is counted separately and cannot pretend to be a shortcut (373.495324ms)
+#26 27.56 ✔ contingency: invalid limits are rejected instead of silently weakening coverage (105.144054ms)
+#26 28.12 ✔ contingency: 201 original-corridor certificate preserves full moving phases and reports its actual longer response delay (563.760065ms)
+#26 28.17 (node:143) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 28.17 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 28.17 ✔ standalone separation is symmetric across a 20 km north-south segment (2.786337ms)
+#26 28.17 ✔ continuous-occupancy sorties share the mission plane in either argument order (5.980359ms)
+#26 28.17 ✔ analytic separation misses no conflicts found by a deterministic dense-sample oracle (95.929813ms)
+#26 28.17 ✔ a collision between animation frames is caught continuously (0.374749ms)
+#26 28.17 ✔ head-on and overtaking trajectories use relative motion (0.312184ms)
+#26 28.17 ✔ changing height is intersected with the horizontal encounter interval (0.257384ms)
+#26 28.17 ✔ increasing temporal guard never removes a conflict, including endpoint holds (10.039681ms)
+#26 28.17 ✔ 4D restrictions include simultaneous footprint, altitude and time boundaries (1.210118ms)
+#26 28.17 ✔ continuous-occupancy 4D time guards extend both closed boundaries (21.072023ms)
+#26 28.17 ✔ full solver delays repeat sorties beyond the guarded closure and export validation agrees (266.337949ms)
+#26 28.17 ✔ export validation rejects an advanced start that re-enters the guarded closure (17.851719ms)
+#26 28.17 ✔ export validation rejects a changed trajectory height with matching map data (16.020019ms)
+#26 28.17 ✔ export validation rejects a changed trajectory coordinate with matching map data (16.183105ms)
+#26 28.17 (node:158) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 28.17 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 28.17 ✔ v2 examples have exact nominal areas and explicit synthetic sources (58.939596ms)
+#26 28.17 ✔ v2 strict semantic validation prevents unknown refs and malformed windows (18.706285ms)
+#26 28.17 ✔ canonical hashes ignore key ordering but invalidate changed constraints (19.246996ms)
+#26 28.17 ✔ camera formulas derive physical footprint and detect insufficient capture interval (3.897577ms)
+#26 28.17 ✔ five work models are explicit and sensor-specific; missing sensor never becomes camera (1.913022ms)
+#26 28.17 (node:169) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 28.17 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 28.17 ✔ a 2.2 m² narrow hole cannot be crossed beside its long boundary edges (6.771109ms)
+#26 28.17 ✔ a long obstacle edge does not turn an insufficient clearance into a boundary point (12.388803ms)
+#26 28.17 ✔ corridor margin is opt-in and shared origins keep independently prepared planes identical (20.247546ms)
+#26 28.17 ✔ insetting protects exterior edges and expands airspace holes with full-edge clearance (155.191662ms)
+#26 28.17 ✔ margin rejects routes too near exterior or hole boundaries and closes narrow corridors (10.110752ms)
+#26 28.17 ✔ empty corridors and invalid margin inputs fail closed (3.443902ms)
+#26 28.72 (node:176) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 28.72 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 28.72 ✔ running and paused missions reserve airspace even for disjoint vehicle IDs; own resume succeeds (620.402881ms)
+#26 28.85 ✔ a completed operation releases the cross-operation reservation (130.920846ms)
+#26 28.97 ✔ an archived second paused execution also blocks uncoordinated protective routing (120.267151ms)
+#26 29.11 ✔ legacy safety snapshots remain readable but neither start nor resume (138.040763ms)
+#26 29.22 ✔ fleet additions on the ground or in the air are rejected during running and paused operations (117.451756ms)
+#26 29.52 ✔ active operations reject unassigned fleet movement and airborne reports but permit stationary SOC updates (297.837446ms)
+#26 29.77 ✔ a fleet addition after planning blocks the stale start until the whole fleet is captured and recalculated (248.092192ms)
+#26 30.06 (node:187) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 30.06 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 30.06 ✔ 72 percent supports three sorties without any replacement or automatic recharge (275.747089ms)
+#26 30.06 ✔ insufficient remainder cannot turn into a future charged battery (74.881508ms)
+#26 30.06 ✔ completed mission transfers SOC, blocks stale launch, and accepts explicit grounded replacement (657.057416ms)
+#26 30.06 ✔ cancellation in the air never makes UAV ready or permits replacement (307.640614ms)
+#26 30.06 ✔ fifteen joined UAVs enter one snapshot; temporary unavailability does not stick (27.765409ms)
+#26 30.06 ✔ legacy input remains untouched and migration does not assume spare supply (4.062964ms)
+#26 30.27 (node:198) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 30.27 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 30.72 ✔ delivery plan never claims real acquisition, file copy or completed flight (258.96209ms)
+#26 30.72 ✔ completion flag refers only to simulation and cannot promote a rejected plan (0.386512ms)
+#26 30.84 ✔ battery result uses final landing of each vehicle, not first sortie or minimum group charge (124.581406ms)
+#26 30.98 ✔ unused vehicles retain original charge; non-camera sensors do not invent a frame count (142.37102ms)
+#26 30.99 ✔ manifest rejects a plan from a different document instead of attaching wrong provenance (7.629956ms)
+#26 31.83 (node:205) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 31.83 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 31.83 ✔ three demo stories preserve the nine legacy acceptance examples (2.962188ms)
+#26 31.83 ✔ demo-01-survey: solver and exported validator agree with the declared story (1052.844141ms)
+#26 31.89 ✔ demo-01-survey: all four downloadable files round-trip without lost geometry or vehicles (57.626454ms)
+#26 31.96 ✔ demo-02-obstacles: solver and exported validator agree with the declared story (75.521134ms)
+#26 31.99 ✔ demo-02-obstacles: all four downloadable files round-trip without lost geometry or vehicles (32.917777ms)
+#26 32.00 ✔ demo-03-repair: solver and exported validator agree with the declared story (2.414224ms)
+#26 32.03 ✔ demo-03-repair: all four downloadable files round-trip without lost geometry or vehicles (20.186595ms)
+#26 32.03 ✔ demo 2 genuinely needs time separation: removing the delay causes a conflict (7.319245ms)
+#26 32.11 ✔ demo 3 named battery replacement solves full work; waiting/assignment do not invent charge (86.380676ms)
+#26 32.20 ✔ camera suggestion is a catalogued replacement, not an arbitrary extra capability (91.080496ms)
+#26 32.20 ✔ wind suggestion is conditional and never raises a vehicle wind limit (5.389615ms)
+#26 32.27 (node:220) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 32.27 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 32.27 ✔ planned countdown never implies an automatic launch (1.483034ms)
+#26 32.27 ✔ global fleet is independent of invalid mission-only dates and names (210.820641ms)
+#26 32.27 ✔ mission list joins draft and runs by id; identical names do not merge (22.367553ms)
+#26 32.27 ✔ fleet registry persists, rejects stale writes and does not alias source (28.993813ms)
+#26 32.27 ✔ applying global fleet preserves mission id and rejects unknown manual assignments (8.924071ms)
+#26 32.27 ✔ active run prevents profile changes in shared fleet, terminal run does not (0.831411ms)
+#26 32.27 ✔ optional work period preserves legacy parse and enforces nesting (5.075371ms)
+#26 32.27 ✔ solver respects a later work start and independent validator rejects earlier sortie (84.818536ms)
+#26 32.27 ✔ run export binds immutable snapshot, with no future events for queued run (21.942283ms)
+#26 32.27 ✔ HTML report escapes mission names and embedded data (23.835915ms)
+#26 32.27 ✔ report verifier rejects forged artifacts and journal without trusting saved hashes (74.492794ms)
+#26 32.53 (node:231) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 32.53 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 32.69 ✔ multi-work addition preserves independent same-type areas, IDs, quality and assignments (54.256549ms)
+#26 32.69 ✔ all five types coexist in a schema-valid editable document (7.401929ms)
+#26 32.69 ✔ removing work uses ID, leaves sibling data intact and protects the last work (3.432168ms)
+#26 32.70 ✔ work editor rejects duplicate identifiers and ninth work (3.351988ms)
+#26 32.79 (node:238) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 32.79 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 33.68 ✔ new area has no hidden copied geometry, cannot persist or solve, and leaves source intact (540.768707ms)
+#26 33.68 ✔ area IDs and limits are validated before entering drawing mode (13.77312ms)
+#26 33.68 ✔ default automatic priority does not change existing document or ordering (17.991119ms)
+#26 33.68 ✔ work priority applies to every same-type area; unrelated works remain independent (4.646785ms)
+#26 33.68 ✔ priority survives JSON round trip; invalid priority is rejected (60.384905ms)
+#26 33.68 ✔ allocation uses work priority then area priority, automatic ties are stable (5.66092ms)
+#26 33.73 ✔ priority is recorded in real solver trace and preserves hard safety checks (21.43482ms)
+#26 33.74 ✔ fleet base change is blocked for scheduled, active and airborne vehicles (3.37346ms)
+#26 33.74 ✔ assignments and remaining duration are modeled, pauses have unknown ETA (0.617444ms)
+#26 33.74 ✔ operator base report preserves actual battery, readiness, provenance and CAS revision (7.250468ms)
+#26 33.78 ✔ base update persists through state merge without importing unrelated aircraft (58.635208ms)
+#26 33.83 ✔ state and registry store accept a grounded base change; future solve sees the new base (50.361447ms)
+#26 33.86 ✔ empty bases keep their identity after the last aircraft moves away (38.28618ms)
+#26 34.02 (node:245) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 34.02 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 34.50 ✔ archive, restore, rename, delete with revision checks; no hidden data loss (456.596142ms)
+#26 34.50 ✔ linked areas inherit settings, never geometry; override detaches cleanly (17.003965ms)
+#26 34.50 ✔ inheritance cycles, missing source, and conflicting bases reject (7.046961ms)
+#26 34.52 ✔ base ID and custom name persist through registry and fleet JSON (35.460594ms)
+#26 34.52 ✔ fleet diff distinguishes changes; updating IDs requires explicit confirmation (12.197803ms)
+#26 35.08 ✔ parallel missions: genuinely separated fleets run and advance independently (558.392981ms)
+#26 35.11 ✔ overlapping airspace or shared aircraft remain blocked regardless of altitude or clocks (27.744175ms)
+#26 35.53 ✔ safe revision produces remainder, binds parent, exports verifiable history (428.241076ms)
+#26 35.62 ✔ revision refuses airborne cancellation and cannot fabricate landing (86.177331ms)
+#26 35.94 ✔ partial safe checkpoint subtracts completed work and never restores consumed battery (317.275106ms)
+#26 36.15 (node:256) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 36.15 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 36.15 ✔ continuous separation detects crossing between animation frames and honors vertical/time separation (2.158323ms)
+#26 36.15 ✔ 4D volume detects crossing even when both endpoints are outside, excludes inactive time and height (0.885078ms)
+#26 36.15 ✔ solar geometry separates night/noon and dates are absolute instants (0.391222ms)
+#26 36.15 ✔ 1 km² full end-to-end mission has repeated sorties, distinct battery instances and both validated objectives (497.63381ms)
+#26 36.15 ✔ deterministic plan/hash excludes wall-clock metadata (476.069021ms)
+#26 36.15 ✔ insufficient batteries produce partial/not_found, not a successful partial coverage plan (153.263816ms)
+#26 36.15 ✔ temporary 4D restriction delays all affected flights beyond expiration (311.295076ms)
+#26 36.46 ✔ night window with RGB sunlight rule yields no plan; rule none does not impose a universal night ban (313.229732ms)
+#26 36.56 ✔ battery recharge is explicit and stale resource time cannot be forged (106.559737ms)
+#26 36.81 ✔ independent validator catches forged energy, times and omitted strips (248.156832ms)
+#26 36.83 ✔ fixed-wing unsupported is never reported as verified multirotor (14.933498ms)
+#26 37.05 ✔ permanent exclusion cannot convert missing gross coverage into success (217.293574ms)
+#26 38.05 ✔ even sub-one-percent area removed by a permanent restriction is partial, not feasible (1001.048975ms)
+#26 38.79 ✔ different work-area projections preserve WGS84 positions and vehicle resource continuity (740.35741ms)
+#26 39.13 ✔ exported verification rebuilds selected bearing and rejects input/profile/metric mutation (347.390083ms)
+#26 39.62 ✔ independent export verification accepts a genuinely selected perpendicular bearing (481.578941ms)
+#26 39.83 ✔ export verification rejects changed legacy-view geometry and profiles despite an unchanged document hash (216.207732ms)
+#26 40.03 ✔ strict trajectory schema rejects unknown phases, duplicate IDs, non-finite values and forged shot counts (197.061824ms)
+#26 43.10 ✔ objective selection uses shared pool and never loses to the other available candidate (3072.747029ms)
+#26 43.19 (node:271) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 43.19 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 43.19 ✔ optional environment preserves old documents/hashes and validates only explicit bounded values (142.593146ms)
+#26 43.19 ✔ known cloud/visibility boundaries allow matching missions and survive independent evidence verification (404.618695ms)
+#26 43.19 ✔ cloud clearance lowers the actual scheduling ceiling; even a one-metre violation blocks confirmation (13.258814ms)
+#26 43.19 ✔ visibility below an explicit minimum, or missing data for that minimum, cannot produce an accepted plan (26.242034ms)
+#26 43.19 ✔ unknown optional weather is reported as unknown without fabricating a forecast or modifying old checks (280.981505ms)
+#26 43.19 ✔ independent cloud validation checks every phase rather than only survey altitude (312.889299ms)
+#26 43.19 ✔ cloud heights share the start/flat-plane datum and are not silently interpreted as AMSL or real AGL (5.036332ms)
+#26 43.19 ✔ weather compatibility cannot promote partial jobs or bypass the existing wind limit (403.25595ms)
+#26 43.19 (node:282) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 43.19 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 43.19 ✔ mission events preserve chronology, equal-time order and repeated sortie readiness (37.753944ms)
+#26 43.19 ✔ one charger queues batteries and flight completion does not wait for recharge (3.825071ms)
+#26 43.19 (node:289) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 43.19 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 43.19 ✔ KML preserves Unicode and XML escaping, rejects XML 1.0 forbidden code points (423.308321ms)
+#26 43.19 ✔ evidence verification still accepts a current valid calculation (62.022608ms)
+#26 43.19 ✔ malformed mandatory metadata is rejected with matching hashes and artifacts (227.301164ms)
+#26 43.19 ✔ evidence with XML-forbidden text is rejected even when input and candidate hashes match (69.991144ms)
+#26 43.19 ✔ malformed evidence always writes a structured rejection report (253.014705ms)
+#26 43.19 (node:300) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 43.19 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 43.19 ✔ failed calculation still exports diagnostic evidence without invented paths (140.166745ms)
+#26 43.19 ✔ v2 exports preserve sortie, battery, absolute time and honest height datum (317.642248ms)
+#26 43.19 ✔ evidence binds the exact input, candidate, approval and raw UTF-8 KML (279.261989ms)
+#26 43.19 (node:311) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 43.19 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 43.19 ✔ fleet export falls back to compact JSON when formatting would exceed the import limit (125.670469ms)
+#26 43.19 ✔ import validates the complete normalized mission and its compact save size before returning (124.253479ms)
+#26 43.19 ✔ import rejects invalid existing mission data without changing either input (7.606907ms)
+#26 43.19 ✔ fleet JSON round trips complete profiles, coordinates and battery metadata (12.757236ms)
+#26 43.19 ✔ custom profiles have distinct IDs, explicit assumptions and a battery instance (3.287526ms)
+#26 43.19 ✔ deleting a vehicle removes its batteries and every assignment atomically (1.95744ms)
+#26 43.19 ✔ import appends the validated bundle and preserves mission work, assignments and bases (3.122488ms)
+#26 43.19 ✔ import rejects either type of ID collision without mutating input (3.256495ms)
+#26 43.19 ✔ vehicle and battery caps reject additions and whole imports (7.923159ms)
+#26 43.19 ✔ fleet parsing rejects duplicate keys, unsafe trees and oversized UTF-8 JSON (8.23863ms)
+#26 43.19 ✔ fleet parsing rejects bad references, duplicates, unknown fields and disguised 201 (31.168106ms)
+#26 43.19 (node:318) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 43.19 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 43.19 ✔ geometry merge rejects a schema-valid mission above the save limit before editor state changes (275.646477ms)
+#26 43.19 ✔ sized mission validation retains every field, returns a clone and keeps schema checks (44.210161ms)
+#26 43.63 (node:325) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 43.63 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 43.86 ✔ occupancy rejects a shared physical base even with separated flight intervals (59.523624ms)
+#26 43.86 ✔ landing cannot occupy the position of a UAV awaiting its first takeoff (3.805117ms)
+#26 43.87 ✔ a UAV remains physically present after its final landing (2.911937ms)
+#26 43.87 ✔ ground occupancy persists during the interval between repeated sorties (4.186768ms)
+#26 43.87 ✔ an unassigned UAV is not invisible to a landing aircraft (2.634092ms)
+#26 43.87 ✔ separate bases permit sequential or simultaneous flights and repeat departures (3.596836ms)
+#26 43.87 ✔ ground separation retains vertical clearance for a high transit over a parked UAV (2.534563ms)
+#26 44.06 ✔ the full solver cannot certify two aircraft sharing the same occupied pad (212.437792ms)
+#26 44.11 (node:332) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 44.11 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 44.11 ✔ wind direction distinguishes FROM meteorological bearing and TO arrow (39.699584ms)
+#26 44.11 ✔ fleet hints are capability checks and retain explicit unsupported/wind/readiness causes (43.970674ms)
+#26 44.45 (node:339) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 44.45 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 44.82 ✔ the two verbose explanations exist only as tooltip content attached to their section headings (10.293225ms)
+#26 44.82 ✔ wizard help is grouped into actual headings rather than standalone body or caption rows (4.357245ms)
+#26 44.82 ✔ unknown terrain and unsupported aircraft remain visible conditional safety states, not tooltip-only explanations (5.736791ms)
+#26 44.82 ✔ approval still requires a checked acknowledgement and displays non-passing checks outside help (9.883695ms)
+#26 44.90 (node:350) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 44.90 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 44.90 ✔ explanations use actual assignments and do not invent optimality reasons (302.805223ms)
+#26 44.90 ✔ fleet trials disable assignment, retain physical occupancy and never mutate source (4.296243ms)
+#26 44.90 ✔ repair trials preserve task area, weather, forbidden volumes and time restrictions (2.939703ms)
+#26 44.90 ✔ partial or invalid alternatives never receive a claimed time saving (0.539408ms)
+#26 44.90 ✔ coverage partitions original area and never represents model output as received imagery (2.420196ms)
+#26 44.90 ✔ no survey means original task fully missing, not zero target after exclusions (0.333066ms)
+#26 44.90 ✔ coverage quality uses ground speed including tailwind, not the vehicle nominal airspeed (1.891778ms)
+#26 45.00 ✔ coverage keeps holes and bounded complexity does not yield false green (100.498162ms)
+#26 45.19 (node:365) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 45.19 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 46.31 ✔ IO-01: dense accepted mission saves, restores and exports every coordinate and field (745.808615ms)
+#26 47.18 ✔ IO-01: dense GeoJSON import remains lossless through mission JSON and library save (324.348411ms)
+#26 47.18 ✔ IO-01: small mission keeps readable JSON; normalization overflow is rejected at import (674.017695ms)
+#26 47.22 ✔ IO-02: maximum revision remains readable and unchanged after refused save/archive (43.658861ms)
+#26 47.67 ✔ IO-02: last safe increment works for save and archive; unsafe import stays atomic (45.872023ms)
+#26 47.67 ✔ IO-03: API rejects duplicate safety keys, unsafe trees and malformed JSON before solving (71.42109ms)
+#26 47.67 ✔ IO-03: API matches MIME exactly, keeps v2-only and distinct schema/mission errors (331.853417ms)
+#26 47.80 ✔ IO-03: valid API JSON still solves after rejected requests (121.83151ms)
+#26 47.80 ✔ API requires the current safety policy without silently rewriting historical input (9.19907ms)
+#26 47.80 ✔ early API rejection drains to EOF without parsing malformed JSON or changing status (2.480276ms)
+#26 47.80 ✔ early API rejection preserves the HTTP error when the body stream fails (1.052393ms)
+#26 47.80 ✔ early API rejection stops reading at its 200 KiB bound, cancels and releases the lock (0.91098ms)
+#26 47.80 ✔ early API rejection has a 5 second deadline even if stream cancellation never settles (1.492351ms)
+#26 47.80 ✔ busy API request drains its body while retaining 429 and the active request (0.936121ms)
+#26 47.94 (node:372) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 47.94 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 47.94 ✔ mission JSON/YAML round trip preserves normalized fields and canonical SHA-256 (128.444483ms)
+#26 47.94 ✔ mission hash ignores object key order, not semantic changes (9.10935ms)
+#26 47.94 ✔ v1 migrates explicitly with demo-assumption notice; unknown schema and fields rejected (31.754084ms)
+#26 47.94 ✔ JSON/YAML strict handling rejects duplicate keys at every depth (2.744925ms)
+#26 47.94 ✔ YAML rejects aliases, unused anchors, merge, explicit tags and custom tags (2.441669ms)
+#26 47.94 ✔ YAML exactly one document, string keys, finite numbers, depth and JSON syntax (3.247338ms)
+#26 47.94 ✔ prototype pollution keys prohibited in JSON/YAML before schema handling (1.226861ms)
+#26 47.94 ✔ UTF-8 byte limit and empty files are enforced (12.825054ms)
+#26 47.94 ✔ Russian summary includes all jobs, schedule, assumptions and escaped operator text (4.475953ms)
+#26 47.94 ✔ GeoJSON preserves Polygon holes and explicit Point roles (3.594882ms)
+#26 47.94 ✔ GeoJSON MultiPolygon preserves every part and identity, never silently selects first (2.332471ms)
+#26 47.94 ✔ GeoJSON rejects mixed layers, excess features, unknown geometry and CRS, 3D and unclosed rings (4.703027ms)
+#26 47.94 ✔ KML preserves Polygon outer ring and holes, xml escaping and source identity (6.561761ms)
+#26 47.94 ✔ KML MultiGeometry preserves parts, roles and holes (2.63246ms)
+#26 47.94 ✔ KML rejects DTD/entities, URL resources, malformed XML, unsupported types and altitude loss (3.777637ms)
+#26 47.94 ✔ KML refuses unconsumed geometry and excessive XML depth (0.912574ms)
+#26 47.94 (node:383) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 47.94 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 47.94 ✔ restriction layer round-trip preserves geometry, heights and active interval (73.529679ms)
+#26 47.94 ✔ restriction import rejects duplicate IDs and overflow atomically (20.710079ms)
+#26 47.94 ✔ restriction contract rejects wrong datum, duplicate JSON keys and invalid intervals (12.313204ms)
+#26 47.94 ✔ restriction import does not silently close malformed rings or accept unknown fields (9.259832ms)
+#26 47.94 (node:390) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 47.94 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 47.94 ✔ library saves clone, list/get persist normalized v2 and stable hash (100.267592ms)
+#26 47.94 ✔ library prevents silent overwrite and stale revision, permits explicit matching update (45.20305ms)
+#26 47.94 ✔ concurrent updates atomically reject one stale writer (18.741947ms)
+#26 47.94 ✔ archive preserves history and explicit revision; backup includes archived entries (34.494552ms)
+#26 47.94 ✔ clean-browser backup restore keeps every normalized field and revision (82.59728ms)
+#26 47.94 ✔ backup conflicts, duplicate ID and invalid entries fail atomically with no replacement (105.732916ms)
+#26 47.94 ✔ bounded library never evicts old records at capacity (211.612032ms)
+#26 47.94 ✔ invalid mission or corrupt backup cannot enter database (3.570094ms)
+#26 47.94 ✔ library is durable across new instances, no browser global required for injected factory (10.976932ms)
+#26 47.94 ✔ blocked storage returns a usable error rather than dropping task data (3.445283ms)
+#26 48.56 (node:402) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 48.56 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 48.56 ✔ Leaflet host/classes survive drawing, calculation, fit and resize rerenders; unmount cleans ownership (76.260189ms)
+#26 48.56 ✔ late import cannot initialize an unmounted map and failed initialization retries on a clean host (14.45866ms)
+#26 48.56 ✔ fit requested in a hidden panel is applied once after the map becomes visible (5.772222ms)
+#26 48.56 ✔ explicit fit includes full route detours outside work areas without refitting on plan or time updates (10.101964ms)
+#26 48.56 ✔ drone marker moves without replacement, stops pulse on pause, refreshes aliases and is removed with plan (13.396426ms)
+#26 48.57 ✔ fit refreshes cached viewport before a queued resize frame; ordinary resize preserves center without fitting (3.367248ms)
+#26 48.57 ✔ tile failure keeps vector geometry and current point callback; draft numbers are actual coordinates (5.436923ms)
+#26 48.57 ✔ work areas and volume metadata remain distinct; model time changes activity only at interval boundaries (5.675489ms)
+#26 48.62 (node:413) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 48.62 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 48.62 ✔ duplicate notification sources and rerenders retain one card with its original deadline (3.782687ms)
+#26 48.62 ✔ one card expires at 15 seconds, fades during its last two seconds, remains unread in history (0.706256ms)
+#26 48.62 ✔ manual close marks one item read, keeps history, does not resurrect on a tab change (0.404769ms)
+#26 48.62 ✔ changed content creates a new notification, empty and whitespace-only messages do not (0.401613ms)
+#26 48.62 ✔ no more than three cards and 30 history items; seen content is bounded separately (5.165992ms)
+#26 48.62 ✔ reading the center acknowledges cards without deleting evidence or allowing a replay (0.478045ms)
+#26 48.62 ✔ duplicate warning can upgrade an info notification without resetting its lifetime (0.506151ms)
+#26 48.62 (node:420) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 48.62 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 48.62 ✔ queued mission has no flight events before explicit start, including events at zero (2.535046ms)
+#26 48.62 ✔ journal shows only this run and elapsed model events without rewriting snapshot (2.332861ms)
+#26 48.62 ✔ incident cuts off nominal future while preserving logged incident and decision (0.452203ms)
+#26 48.62 ✔ terminal snapshot records finish but never fabricates past pause actions (0.336372ms)
+#26 48.73 (node:431) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 48.73 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 48.87 ✔ queued pause follows this controller checkpoint revision, not a stale React closure (3.716997ms)
+#26 48.87 ✔ reading a foreign revision never rebases or retries an already queued command (1.424045ms)
+#26 48.87 ✔ checkpoints throttle writes for two seconds while pause always flushes exact time (0.802925ms)
+#26 48.87 ✔ terminal checkpoint flushes once behind a periodic write and queued pause does not rewrite completion (1.087603ms)
+#26 48.87 ✔ failed command rejects with visible error, and the serial queue remains usable (0.90617ms)
+#26 48.88 ✔ unmount detaches notifications but drains an explicit cleanup pause before closing store (2.173673ms)
+#26 48.88 ✔ post-commit read failure is explicit and keeps the confirmed saved row visible (0.585519ms)
+#26 49.06 (node:438) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 49.06 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 49.62 ✔ one stale completed snapshot is isolated, preserves bytes and never hides healthy rows or reapproves its plan (384.151089ms)
+#26 49.93 ✔ stale active checkpoint blocks other launches until explicit audited archive, without fake battery or landing updates (306.553467ms)
+#26 49.96 ✔ corrupt hashes are visible but cannot be automatically archived, recovered or released from occupancy (30.283037ms)
+#26 50.03 ✔ controller loads healthy records with rejected history instead of a persistent global error; errors are dismissible (74.411605ms)
+#26 50.09 ✔ healthy running rows cannot bypass normal cancellation through the archive endpoint (55.558867ms)
+#26 50.23 ✔ an altered archive wrapper loses its stop acknowledgement and blocks execution without changing the original payload (138.690554ms)
+#26 50.26 ✔ a resealed but contradictory terminal status cannot silently release an unverified checkpoint (36.087665ms)
+#26 50.34 ✔ an integrity-valid earlier engine version can be preserved and explicitly stopped but never resumed (78.444202ms)
+#26 50.41 (node:445) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 50.41 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 50.41 ✔ enqueue clones approved snapshot and persists independently without mission-library migration (233.818773ms)
+#26 50.41 ✔ unapproved, partial, wrong hash and altered candidate fail before any write (45.019079ms)
+#26 50.41 ✔ rehashed approval cannot promote a physically invalid plan (20.85057ms)
+#26 50.41 ✔ explicit start, monotonic advance, pause, resume and exact completion (216.676463ms)
+#26 50.41 ✔ reload and real elapsed time never advance, auto-start or hide a running checkpoint (153.025586ms)
+#26 50.41 ✔ cancel retains record, completed/cancelled do not silently disappear (93.417158ms)
+#26 50.41 ✔ shared vehicle/time conflict can queue but blocks start until explicit cancellation (154.248551ms)
+#26 50.65 ✔ non-overlapping time windows remain serial even with no vehicle/time conflict (233.606228ms)
+#26 50.72 ✔ optimistic revision rejects stale writes and concurrent starts atomically (68.162811ms)
+#26 51.01 ✔ concurrent starts of different non-conflicting fleets still acquire only one simulator (287.790408ms)
+#26 51.10 ✔ corrupt stored progress/snapshot and state contradictions fail closed on read (90.227094ms)
+#26 54.88 ✔ revision overflow rejects before write and record cap never evicts (3672.841175ms)
+#26 54.89 ✔ record size and unavailable storage fail without fallback or deletion (115.713582ms)
+#26 55.14 ✔ vehicle view derives waiting battery, in-flight phase, service and terminal readiness from model time only (255.766635ms)
+#26 55.33 ✔ battery recharge is sequential and percentage is not fabricated linearly (188.130795ms)
+#26 55.35 ✔ strict record metadata rejects extra telemetry and forged terminal time even after reseal (27.379606ms)
+#26 55.45 (node:460) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 55.45 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 55.45 ✔ planned frame rectangles cover simple mission, including edges, and preserve correct shot count (396.595648ms)
+#26 55.45 ✔ removed or absent survey strips cannot be called complete image coverage (134.176281ms)
+#26 55.45 ✔ unknown terrain and incomplete camera never issue a pass (3.440214ms)
+#26 55.45 (node:471) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 55.45 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 55.45 ✔ presentation groups exactly identical execution across objectives without changing original candidates (381.575943ms)
+#26 55.45 ✔ selected original candidate remains the representative, preserving its exact evidence identity (3.323099ms)
+#26 55.45 ▶ equal metrics never hide different geometry, assignments, timing, battery, events, status, checks or assumptions
+#26 55.45   ✔ position (3.662508ms)
+#26 55.45   ✔ altitude (4.299159ms)
+#26 55.45   ✔ timing (3.855754ms)
+#26 55.45   ✔ sortie start (3.818819ms)
+#26 55.45   ✔ vehicle (2.292831ms)
+#26 55.45   ✔ job (2.978982ms)
+#26 55.45   ✔ battery (4.107236ms)
+#26 55.45   ✔ remaining charge (2.526929ms)
+#26 55.45   ✔ coverage (2.060107ms)
+#26 55.45   ✔ metric precision (2.110116ms)
+#26 55.45   ✔ event (3.79872ms)
+#26 55.45   ✔ status (3.321996ms)
+#26 55.45   ✔ check status (2.710266ms)
+#26 55.45   ✔ check detail (3.5887ms)
+#26 55.45   ✔ assumption (3.736496ms)
+#26 55.45   ✔ input hash (3.684652ms)
+#26 55.45   ✔ legacy view (2.913741ms)
+#26 55.45 ✔ equal metrics never hide different geometry, assignments, timing, battery, events, status, checks or assumptions (60.752485ms)
+#26 55.45 ✔ invalid nonfinite payloads cannot collapse to an equivalent null through JSON serialization (0.879007ms)
+#26 55.45 ✔ all source checks including unfamiliar IDs survive exactly once, preserving source references (1.234246ms)
+#26 55.45 ✔ aggregated failures dominate uncertainty; uncertainty never turns into a successful category (0.25512ms)
+#26 55.45 ✔ unrecognized IDs matching object properties cannot disappear from Other (0.184448ms)
+#26 55.45 ✔ empty categories are explicit unknowns and create no invented checks or count inflation (0.371462ms)
+#26 55.45 ✔ actual model limitations and lack of airspace permission remain visible in summary nonpasses (0.482935ms)
+#26 56.46 (node:482) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 56.46 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 56.46 ✔ fresh evidence confirms complete event journal and both saved-check projections (343.378454ms)
+#26 56.46 ✔ proof rejects empty events (16.074287ms)
+#26 56.46 ✔ proof rejects phantom vehicle (19.193719ms)
+#26 56.46 ✔ proof rejects incorrect event time (21.966339ms)
+#26 56.46 ✔ proof rejects false event explanation (17.440546ms)
+#26 56.46 ✔ proof rejects duplicate event (9.375001ms)
+#26 56.46 ✔ unknown permission cannot become a saved pass even when both copies agree (13.030826ms)
+#26 56.46 ✔ missing claims and changed explanation in map-only copy are rejected (23.376566ms)
+#26 56.46 ✔ search trace cannot silently differ between model and map view (11.840477ms)
+#26 56.46 ✔ repeated flights and charging events retain a valid full journal at 10 km2 (3224.241869ms)
+#26 56.53 (node:493) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 56.53 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 56.53 ✔ remaining work is a new hash-bound draft after landing, without mutation of parent or fleet (473.970679ms)
+#26 56.56 ✔ only fully completed survey passes are credited; interrupted segment is retained (31.907453ms)
+#26 56.63 ✔ calendar uses the mission clock, keeps deadline and refuses automatic extension (72.622593ms)
+#26 56.67 ✔ current battery is transferred exactly and readiness is never invented after an incident (31.772924ms)
+#26 56.69 ✔ unacknowledged data, unfinished landing and tampered source cannot create continuation (19.458389ms)
+#26 57.10 ✔ sensor failure does not certify earlier sensor data merely from nominal motion (411.215201ms)
+#26 57.27 ✔ stale, incomplete, airborne and busy fleet states fail closed (169.539489ms)
+#26 57.33 ✔ raising charge to 100 needs an explicit post-landing battery replacement (60.886636ms)
+#26 57.84 ✔ new obstacle and changed wind are preserved in continuation, not discarded for feasibility (512.000115ms)
+#26 57.84 ✔ one-metre passage and real hole survive micrometre normalization (0.657854ms)
+#26 57.87 ✔ normalization reports nanometre hairpin repair and rejects excessive area change (28.868099ms)
+#26 57.87 ✔ numerical tolerance does not authorize deleting an isolated narrow component (0.477574ms)
+#26 58.24 ✔ real operation store, landed recovery, explicit readiness and remaining-work solve form a valid end-to-end path without fresh battery (371.515519ms)
+#26 58.75 (node:504) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 58.75 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 58.75 ✔ stress bundle replay rechecks the complete suite and retains a correctly reported negative case (327.347679ms)
+#26 58.75 ✔ stress replay rejects forged safe status, erased violations and changed battery metrics (322.449523ms)
+#26 58.75 ✔ stress replay detects deleted, duplicated, reordered and weakened default cases (22.764815ms)
+#26 58.75 ✔ stress proof does not fill in missing policy or perturbation values (14.018371ms)
+#26 58.75 ✔ matching forged hashes do not bypass trajectory and metric verification (26.440568ms)
+#26 58.75 ✔ creation and compute timestamps are not forged deterministic measurements (56.957526ms)
+#26 58.75 ✔ original budget-exhausted cases remain incomplete even if replay can now finish (34.623159ms)
+#26 58.75 ✔ file verification writes a new report and cannot overwrite input, an existing output or a hardlink (139.769527ms)
+#26 58.75 ✔ file verification rejects duplicate keys, unsafe nesting and oversized input before output creation (68.088154ms)
+#26 58.75 ✔ importing the verifier neither runs its CLI nor writes output files (527.136106ms)
+#26 61.17 ✔ CLI reports pass, rejection and incomplete with distinct exit codes (2418.118082ms)
+#26 61.23 (node:522) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 61.23 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 61.23 ✔ robustness independently verifies original, binds complete candidate and never changes input (282.53981ms)
+#26 61.23 ✔ SOC loss is applied once to installed battery and carried across all three flights (35.559511ms)
+#26 61.23 ✔ reduced available SOC reports reserve violation, never a fabricated replacement (25.422925ms)
+#26 61.23 ✔ uniform delay retains original deadline and costs no airborne battery on ground (25.022407ms)
+#26 61.23 ✔ delay crossing the deadline fails WINDOW although the baseline still passes (130.405877ms)
+#26 61.23 ✔ start delay rechecks absolute 4D restriction intervals instead of shifting the restrictions (170.022966ms)
+#26 61.23 ✔ changed wind recomputes duration and carried energy for the same constant-airspeed route (92.419297ms)
+#26 61.23 ✔ wind over the selected vehicle limit fails; impossible kinematics never produces NaN (17.420346ms)
+#26 61.23 ✔ altered metrics, altered route and altered input all reject before stress evaluation (45.782808ms)
+#26 61.23 ✔ partial, legacy battery and fixed-wing stress scope never appear safe (22.83773ms)
+#26 61.23 ✔ request limits reject nonfinite values, duplicate cases, unknown fields and large route shapes (32.652133ms)
+#26 61.23 ✔ budget exhaustion gives not_checked, not a fabricated success (7.8685ms)
+#26 61.23 ✔ forecast remains unchanged while the explicitly increased gust is checked (165.346511ms)
+#26 61.23 ✔ analysis API returns bounded report, rejects duplicate JSON and strict schema (214.567897ms)
+#26 61.23 ✔ analysis API protects content type, cross origin, byte limit and stalled upload (14.86951ms)
+#26 61.23 (node:556) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 61.23 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 61.23 ✔ pairwise separation includes the sensor and is symmetric (39.739141ms)
+#26 61.23 ✔ separation covers cable interior, not just its two endpoints (3.025125ms)
+#26 61.23 ✔ two suspended volumes preserve genuine clearances and time separation (4.21871ms)
+#26 61.23 ✔ suspension conflict is continuously detected during changing height (3.649372ms)
+#26 61.23 ✔ phase checker requires turns and rejects relabelling transit as early return (337.696375ms)
+#26 61.48 (node:578) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 61.48 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 61.90 ✔ recovery checks a real route and budgets sixty seconds, leaving original untouched (158.742991ms)
+#26 61.90 ✔ sixty real seconds required; timeout single action and early stale choices refused (12.76545ms)
+#26 61.90 ✔ crash never produces a return; aircraft disabled in a new distinct revision (0.867583ms)
+#26 61.90 ✔ wind outside profile and exhausted battery block fake returns (13.284396ms)
+#26 61.90 ✔ critical battery bypasses waiting when only immediate return is feasible (14.162171ms)
+#26 61.90 ✔ unknown terrain is not silently treated as a safe flat plane (1.425878ms)
+#26 61.90 ✔ obstacle creates a known footprint and deviation uses observed rather than planned position (22.370529ms)
+#26 61.91 ✔ nominal return reserve monitor accepts the healthy fixture (4.273503ms)
+#26 61.91 ✔ blocked base does not produce a straight-line fake return (25.257925ms)
+#26 61.91 ✔ two aircraft cannot reuse an occupied recovery landing site (12.043048ms)
+#26 62.19 ✔ safety persists atomically, prevents replay/parallel start, closes without declaring work complete (289.67545ms)
+#26 62.55 (node:585) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 62.55 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 62.55 ✔ search: unchanged north-wind input uses viable pass orientation, without inventing airspeed (322.248453ms)
+#26 62.55 ✔ search: real detour clears a closed buffered obstacle instead of grazing its boundary (564.210752ms)
+#26 62.79 ✔ search: parallel baseline uses same input, is independently checked and cannot be forged by ordinary trace (230.037814ms)
+#26 62.82 ✔ search: bounded solver never labels low charge or absent payload as completed (33.399157ms)
+#26 63.12 ✔ search: smaller parallel packs close a short window where maximum-prefix baseline finds no plan (273.708327ms)
+#26 63.12 ✔ search: fixed public holdouts retain all six inputs and independent mutations (24.943107ms)
+#26 63.29 ✔ search: small whole-job oracle enumerates all assignments/orders with original input hash (169.411253ms)
+#26 63.29 ✔ search: oracle explicitly rejects a case outside its finite family (4.931858ms)
+#26 63.29 ✔ search: invalid objective is rejected by both reference solvers (3.300871ms)
+#26 63.44 (node:600) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 63.44 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 63.44 ✔ showcase covers all five jobs and factories return independent documents (96.523811ms)
+#26 63.44 ✔ showcase automatic-tradeoff: actual solver and exported validator match its declared expectation (324.739586ms)
+#26 63.44 ✔ showcase automatic-tradeoff: downloadable mission matches the UI factory (44.743805ms)
+#26 63.44 ✔ showcase mixed-fleet: actual solver and exported validator match its declared expectation (283.067566ms)
+#26 63.48 ✔ showcase mixed-fleet: downloadable mission matches the UI factory (28.900698ms)
+#26 63.60 ✔ showcase lidar-geophysics: actual solver and exported validator match its declared expectation (124.245517ms)
+#26 63.65 ✔ showcase lidar-geophysics: downloadable mission matches the UI factory (52.739616ms)
+#26 63.76 ✔ showcase repeat-sorties: actual solver and exported validator match its declared expectation (115.298366ms)
+#26 63.78 ✔ showcase repeat-sorties: downloadable mission matches the UI factory (15.803968ms)
+#26 63.85 ✔ showcase timed-airspace: actual solver and exported validator match its declared expectation (71.207208ms)
+#26 63.87 ✔ showcase timed-airspace: downloadable mission matches the UI factory (17.883238ms)
+#26 63.94 ✔ showcase height-obstacle: actual solver and exported validator match its declared expectation (66.024059ms)
+#26 63.95 ✔ showcase height-obstacle: downloadable mission matches the UI factory (16.217854ms)
+#26 64.04 ✔ showcase area-with-hole: actual solver and exported validator match its declared expectation (84.38956ms)
+#26 64.05 ✔ showcase area-with-hole: downloadable mission matches the UI factory (16.251891ms)
+#26 64.07 ✔ showcase wind-limit: actual solver and exported validator match its declared expectation (14.930514ms)
+#26 64.09 ✔ showcase wind-limit: downloadable mission matches the UI factory (21.026386ms)
+#26 64.12 ✔ showcase insufficient-energy: actual solver and exported validator match its declared expectation (31.663798ms)
+#26 64.14 ✔ showcase insufficient-energy: downloadable mission matches the UI factory (19.934976ms)
+#26 64.19 (node:611) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 64.19 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 64.19 ✔ theme preference accepts only the three declared modes (1.005678ms)
+#26 64.19 ✔ system theme follows OS preference and explicit theme ignores it (0.203647ms)
+#26 64.19 ✔ theme persistence has a versioned key separate from mission documents (0.219769ms)
+#26 64.19 (node:618) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 64.19 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 64.19 ✔ catalogue exposes exactly the three manufacturer models from the task with original primary sources (2.812405ms)
+#26 64.19 ✔ catalogue 801 has documented visible and thermal cameras, not fictitious multispectral capability (0.65615ms)
+#26 64.19 ✔ adding a model creates one explicit current battery, keeps mission bases, and does not modify existing data (86.046961ms)
+#26 64.19 ✔ new 201 receives a complete independent model without changing legacy demo or imported aircraft (4.150286ms)
+#26 64.19 ✔ catalogue Gemini/rgb/RGB schedules and independently replays a suitable model mission (111.372292ms)
+#26 64.19 ✔ catalogue Gemini/ms/MS schedules and independently replays a suitable model mission (39.04755ms)
+#26 64.23 ✔ catalogue 801/rgb-ir/RGB schedules and independently replays a suitable model mission (35.008828ms)
+#26 64.25 ✔ catalogue 801/rgb-ir/IR schedules and independently replays a suitable model mission (26.843471ms)
+#26 64.65 ✔ catalogue 201/rgb/RGB schedules and independently replays a suitable model mission (400.079366ms)
+#26 65.05 ✔ catalogue 201/ms/MS schedules and independently replays a suitable model mission (400.0854ms)
+#26 65.11 (node:629) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 65.11 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 65.11 ✔ all TZ models are explicit in names and map labels (1.400356ms)
+#26 65.11 ✔ custom profiles never acquire a manufacturer label (0.254689ms)
+#26 65.32 (node:636) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 65.32 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 65.32 ✔ weather optional field preserves legacy hashes and round-trips complete snapshots (100.886783ms)
+#26 65.32 ✔ forecast URL is pinned, SI/UTC, future bounded and cannot be overridden (4.133434ms)
+#26 65.32 ✔ normalizer verifies units, gaps and nulls; keeps final accumulated hour and uses worst points (4.407922ms)
+#26 65.32 ✔ missing hours, changed footprint/time/height and mismatched manual wind cannot pass (3.607884ms)
+#26 65.32 ✔ rain, cloud, gust and visibility cannot produce an approved feasible result; evidence repeats checks (415.988634ms)
+#26 65.32 ✔ forecast verification is deterministic and no wall-clock network check changes old evidence (2.887065ms)
+#26 65.49 (node:647) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 65.49 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 67.25 ✔ expert source preserved, every polygon and line accounted for (639.190218ms)
+#26 67.25 ✔ unsafe XML and remote resources rejected (1.65271ms)
+#26 67.25 ✔ invalid geometries are accounted for, not silently dropped (1.110648ms)
+#26 67.25 ✔ original altitude samples on a varying-height line remain intact (1.239546ms)
+#26 67.25 ✔ large immutable attachment round-trips without relaxing normal mission limit (942.008092ms)
+#26 67.25 ✔ full-catalog validator catches crossing obstacle outside work area at any altitude (7.438313ms)
+#26 74.49 ✔ expert obstacle demo solves, independently checks and archives reproducibly (7259.356845ms)
+#26 74.49 ✔ line corridor clearance includes physical half-width and full segment, including return (7.003566ms)
+#26 74.49 ✔ external compiled restrictions are active at all heights and times (5.536621ms)
+#26 74.98 ✔ an obstacle over the requested work cannot become false full coverage (38.234077ms)
+#26 74.98 ✔ new bad source or exhausted regional budget cannot silently use subset (443.658512ms)
+#26 74.98 ✔ ZIP paths cannot escape and unreferenced payload is rejected (0.453671ms)
+#26 75.26 ✔ catalog deduplicates bytes, versions changed sources and preserves mission snapshot (295.080357ms)
+#26 75.45 (node:654) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 75.45 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 75.45 ▶ ingress isolates rejected uploads and retains strict worker limits
+#26 75.45   ✔ malformed absolute request target cannot crash the ingress (44.723595ms)
+#26 75.45   ✔ declared oversize never reaches worker and next request succeeds repeatedly (64.305737ms)
+#26 75.45   ✔ origin and type refusals do not poison subsequent requests (28.015392ms)
+#26 75.45   ✔ chunked oversize returns complete JSON and releases busy gate (6.856832ms)
+#26 75.45   ✔ slow upload times out without dispatch; BUSY also releases cleanly (66.778885ms)
+#26 75.45   ✔ aborted upload does not reach worker or strand the gate (25.846551ms)
+#26 75.45   ✔ exact size is accepted; one extra UTF-8 byte is refused (16.220921ms)
+#26 75.45   ✔ obstacle allowance is endpoint-specific, origin/host stay intact (79.125488ms)
+#26 75.45 ✔ ingress isolates rejected uploads and retains strict worker limits (384.11646ms)
+#26 75.45 (node:662) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 75.45 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 75.45 ✔ coordinates: local projection round trip and metre scale (1.579393ms)
+#26 75.45 ✔ wind: headwind, tailwind and crab correction (0.911239ms)
+#26 75.45 ✔ polygon crossing: vertices valid but segment through forbidden island is invalid (23.908913ms)
+#26 75.45 ✔ demo: all strips, endpoints, time, reserve and geometric coverage checked (70.899464ms)
+#26 75.45 ✔ deterministic result independent of wall-clock metadata (90.935081ms)
+#26 75.45 ✔ two criteria both execute; sum-of-flight-times is not distance (38.340349ms)
+#26 75.45 ✔ optimizer does not worsen a feasible baseline on selected criterion (75.937354ms)
+#26 75.45 ✔ incompatible job, unsupported payload and fixed wing fail closed (1.288223ms)
+#26 75.45 ✔ battery, wind and empty fleet rejected (1.171239ms)
+#26 75.45 ✔ tiny endurance cannot produce a full mission (3.06492ms)
+#26 75.45 ✔ schema rejects malformed, excessive and unknown data (2.082007ms)
+#26 75.45 ✔ self-intersection and distant coordinates rejected (1.240748ms)
+#26 75.45 ✔ start in no-fly zone rejected (2.682747ms)
+#26 75.45 ✔ validator detects forged energy, time, endpoint and strip omissions (36.444272ms)
+#26 75.45 ✔ GeoJSON round trip includes ordered phases and explicit non-geodetic heights (107.399899ms)
+#26 75.45 ✔ area and hole topology: excluded area cannot improve the gross coverage claim (1.4525ms)
+#26 75.45 (node:669) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+#26 75.45 (Use `node --trace-warnings ...` to show where the warning was created)
+#26 75.45 ✔ crossing closes first loop and removes both tails (1.999353ms)
+#26 75.45 ✔ closure at first vertex produces one closing coordinate (0.765088ms)
+#26 75.45 ✔ open polygon closes on apply, collinear drawing rejected (0.733896ms)
+#26 75.45 ✔ oval and circle use metric dimensions with bounded geometry (5.744211ms)
+#26 75.45 ✔ dense freehand is simplified without dropping last end (7.787851ms)
+#26 75.45 ✔ vertex drag preserves holes and closure; invalid geometry is rejected (2.246616ms)
+#26 75.45 ✔ Gemini full-charge demonstration uses 105 minutes, never 75 to 100% (46.596684ms)
+#26 75.45 ℹ tests 529
+#26 75.45 ℹ suites 0
+#26 75.45 ℹ pass 529
+#26 75.45 ℹ fail 0
+#26 75.45 ℹ cancelled 0
+#26 75.45 ℹ skipped 0
+#26 75.45 ℹ todo 0
+#26 75.45 ℹ duration_ms 55081.695153
+#26 75.60 
+#26 75.60 > sites-project@0.1.0 build
+#26 75.60 > vinext build
+#26 75.60 
+#26 76.48 
+#26 76.48   vinext build  (Vite 8.0.16)
+#26 76.48 
+#26 78.90 [1/5] analyze client references...
+#26 78.98 [2K
+transforming...✓ 367 modules transformed.
+#26 84.93 rendering chunks...
+#26 84.95 [33m[PLUGIN_TIMINGS] [0mYour build spent significant time in plugins. Here is a breakdown:
+#26 84.95   - rsc:virtual-client-package (18%)
+#26 84.95   - alias (16%)
+#26 84.95   - vinext:og-inline-fetch-assets (12%)
+#26 84.95   - vinext:middleware-server-only (10%)
+#26 84.95   - vinext:css-data-url (9%)
+#26 84.95 See https://rolldown.rs/options/checks#plugintimings for more details.
+#26 84.95 
+#26 84.95 ✓ built in 6.05s
+#26 84.97 [2/5] analyze server references...
+#26 85.02 [2K
+transforming...✓ 622 modules transformed.
+#26 87.02 rendering chunks...
+#26 87.03 ✓ built in 2.06s
+#26 87.05 [3/5] build rsc environment...
+#26 87.10 [2K
+transforming...✓ 444 modules transformed.
+#26 88.89 rendering chunks...
+#26 89.14 computing gzip size...
+#26 89.18 ✓ built in 2.13s
+#26 89.20 [4/5] build client environment...
+#26 89.24 [2K
+transforming...✓ 2335 modules transformed.
+#26 92.73 rendering chunks...
+#26 92.98 computing gzip size...
+#26 92.99 [plugin builtin:vite-reporter] 
+#26 92.99 (!) Some chunks are larger than 500 kB after minification. Consider:
+#26 92.99 - Using dynamic import() to code-split the application
+#26 92.99 - Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+#26 92.99 - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+#26 93.01 ✓ built in 3.82s
+#26 93.02 [5/5] build ssr environment...
+#26 93.06 [2K
+transforming...✓ 632 modules transformed.
+#26 94.87 rendering chunks...
+#26 95.36 computing gzip size...
+#26 95.38 ✓ built in 2.36s
+#26 95.39 [0m
+#26 95.40   Route (app)
+#26 95.40   ┌ ? /                                         
+#26 95.40   ├ λ /api/planner/health                       
+#26 95.40   ├ λ /api/planner/missions/analyze             
+#26 95.40   ├ λ /api/planner/missions/contingency         
+#26 95.40   ├ λ /api/planner/missions/solve               
+#26 95.40   ├ λ /api/planner/missions/solve-with-obstacles
+#26 95.40   ├ λ /api/planner/solve                        
+#26 95.40   ├ λ /api/planner/weather                      
+#26 95.40   ├ ? /planner                                  
+#26 95.40   └ ? /planner/legacy                           
+#26 95.40 
+#26 95.40   λ API  ? Unknown
+#26 95.40 
+#26 95.40   ? Some routes could not be classified. vinext currently uses static analysis
+#26 95.40     and cannot detect dynamic API usage (headers(), cookies(), etc.) at build time.
+#26 95.40     Automatic classification will be improved in a future release.
+#26 95.40 
+#26 95.40   Build complete. Run `vinext start` to start the production server.
+#26 95.40 
+#26 DONE 95.8s
+
+#27 [22/23] RUN node -e "require('node:fs').writeFileSync('/app/node-trust-roots.pem', require('node:tls').rootCertificates.join('\n'))"
+#27 DONE 0.5s
+
+#28 [23/23] RUN mkdir -p /app/.wrangler /app/dist/server/.wrangler /app/node_modules/.mf     && chown node:node /app     && chown -R node:node /app/.wrangler /app/dist/server/.wrangler /app/node_modules/.mf
+#28 DONE 0.5s
+
+#29 exporting to image
+#29 exporting layers
+#29 exporting layers 1.8s done
+#29 exporting manifest sha256:d12a327e61a4ce46a6f8cc8bea7f41c23e513fb02b3775c5e6c827219fab71ba 0.0s done
+#29 exporting config sha256:b7110c5fb014d3f583723b2b52b2167d35367cbf8d57941c16ce48a311de34cc 0.0s done
+#29 exporting attestation manifest sha256:654fe629a93f6c5049026bc4c345100e5b779dcc02739376fa3dcd817f8ce382
+#29 exporting attestation manifest sha256:654fe629a93f6c5049026bc4c345100e5b779dcc02739376fa3dcd817f8ce382 0.0s done
+#29 exporting manifest list sha256:c387f9e250e7b6a310c4623f74b4c99cf46fa088bd328ca5275c9bd40291334e 0.0s done
+#29 naming to docker.io/library/prime-planner:local done
+#29 unpacking to docker.io/library/prime-planner:local
+#29 unpacking to docker.io/library/prime-planner:local 1.0s done
+#29 DONE 3.0s
+
+#30 resolving provenance for metadata file
+#30 DONE 0.0s
+ Image prime-planner:local Built 

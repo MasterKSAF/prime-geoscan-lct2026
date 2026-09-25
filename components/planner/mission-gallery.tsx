@@ -10,11 +10,70 @@ import { useState } from 'react';
 import { parseMissionText } from '@/lib/planner/mission-io';
 export default function MissionGallery({
   onOpen,
+  compact = false,
 }: {
   onOpen: (document: MissionDocument, label: string) => void;
+  compact?: boolean;
 }) {
   const [loading, setLoading] = useState(false),
     [error, setError] = useState('');
+  if (compact)
+    return (
+      <section className="expert-demos" aria-label="Три сценария проверки">
+        {[
+          {
+            id: 'demo-01-survey',
+            title: 'Съёмка участка',
+            text: 'Выбор БВС, расчёт и завершение миссии.',
+            tag: '01 · Основной маршрут',
+          },
+          {
+            id: 'demo-02-expert-obstacles',
+            title: 'Обход препятствий',
+            text: 'KML экспертов, два вида съёмки и разнесение БВС.',
+            tag: '02 · Безопасность',
+          },
+          {
+            id: 'demo-03-repair',
+            title: 'Недостаточный заряд',
+            text: 'Отказ в запуске, причины и проверка исправлений.',
+            tag: '03 · Проверка отказа',
+          },
+        ].map((demo) => (
+          <button
+            key={demo.id}
+            className="expert-demo"
+            data-scenario-id={demo.id}
+            disabled={loading}
+            onClick={async () => {
+              setLoading(true);
+              setError('');
+              try {
+                const response = await fetch(
+                  `/planner/scenarios/${demo.id}.mission.json`,
+                );
+                if (!response.ok)
+                  throw new Error(
+                    'Не удалось загрузить пример. Повторите попытку.',
+                  );
+                onOpen(parseMissionText(await response.text()), demo.title);
+              } catch (e) {
+                setError(e instanceof Error ? e.message : String(e));
+              } finally {
+                setLoading(false);
+              }
+            }}
+          >
+            <small>{demo.tag}</small>
+            <strong>{demo.title}</strong>
+            <span>{demo.text}</span>
+            <b>Открыть миссию →</b>
+          </button>
+        ))}
+        {loading && <output>Загрузка миссии…</output>}
+        {error && <p role="alert">{error}</p>}
+      </section>
+    );
   const renderScenario = (s: ShowcaseScenario, i: number, demo = false) => {
     const d = s.create();
     const automatic = d.jobs.every((j) => j.assignedVehicleIds.length === 0);

@@ -1,0 +1,16 @@
+{
+  "schema": "planner-reference-copies/1",
+  "packagedAt": "2026-09-25",
+  "unchangedCopies": true,
+  "files": [
+    { "path": "standards/fap138-revision-2025-07-31.pdf", "originalLocalPath": "tmp/geoscan-standards-2026-09-17/fap138-revision-2025-07-31.pdf", "sha256": "1338604913c3e9876b5fd402a01a502f4788b81d00e26416c00fa05076b9b49f" },
+    { "path": "standards/gost-r-59328-2021.pdf", "originalLocalPath": "tmp/geoscan-standards-2026-09-17/gost-r-59328-2021.pdf", "sha256": "d0591f264c734f8e98ae184cf4884ea76bd83b5ed966c020266cc5fbcdeb7953" },
+    { "path": "standards/gost-r-59562-2021.pdf", "originalLocalPath": "tmp/geoscan-standards-2026-09-17/gost-r-59562-2021.pdf", "sha256": "7f93d559260e3e35d8029a2e61a4f3ed070f2cd5267e1a767e70a1c1df9c4d57" },
+    { "path": "standards/gost-r-70078-2022.pdf", "originalLocalPath": "tmp/geoscan-standards-2026-09-17/gost-r-70078-2022.pdf", "sha256": "79681bb34ed55708c075c8ff68f8602aad965685af76a7e8259044b908b1d9dc" },
+    { "path": "manufacturers/gemini-specs.pdf", "originalLocalPath": "tmp/geoscan-plan/gemini-specs.pdf", "sha256": "a6876bfb869d4cdc22b88b29699e56e4eaaf966d181df9a6eed6ce103885d3a5" },
+    { "path": "manufacturers/geoscan-801.pdf", "originalLocalPath": "tmp/geoscan-plan/geoscan-801.pdf", "sha256": "8c515fb0113602aeb7c17e697e9d978b6ce89432e2d32e6e554b58bcda622868" },
+    { "path": "manufacturers/geoscan-201-manual.pdf", "originalLocalPath": "tmp/geoscan-plan/geoscan-201-manual.pdf", "sha256": "ebab1cbfa1ed014c08b402a0e084fdd67d6a242735ec279eddc76644570d4875" },
+    { "path": "manufacturers/pollux-manual.pdf", "originalLocalPath": "tmp/geoscan-resources/raw/pollux-manual.pdf", "sha256": "a059a9986632738f493a3db31391b39f93bae2e8a4c2b4b4d3fd03cae86a003b" },
+    { "path": "manufacturers/gemini-full-manual.pdf", "originalLocalPath": "tmp/geoscan-resources/raw/gemini-full-manual.pdf", "sha256": "b3b82c44dc9e7e3c8f26a90c32c77e65a8fc6d0bc88a90647afef27f446b4833" }
+  ]
+}

@@ -3,6 +3,8 @@ import { area, distance, projection } from './geometry.ts';
 import type { Multi, Point } from './geometry.ts';
 import type { MissionDocument, MissionCandidate } from './mission-schema.ts';
 import { qualityForJob } from './quality.ts';
+import { migrateMissionCameraBindings } from './camera-profile.ts';
+import { sortieHasJob, segmentJobId } from './mission-sortie-jobs.ts';
 
 export type CoverageView = {
   jobId: string;
@@ -24,14 +26,24 @@ export function missionCoverageViews(
   document: MissionDocument,
   candidate: MissionCandidate,
 ): CoverageView[] {
+  document = migrateMissionCameraBindings(document).document;
   const project = projection(document.scenario.area.coordinates[0][0]);
   const count = candidate.sorties.reduce((n, s) => n + s.segments.length, 0);
   return document.jobs.map((job) => {
     const requested: Multi = [
       job.area.coordinates.map((ring) => ring.map(project.forward)),
     ];
-    const own = candidate.sorties.filter((s) => s.jobId === job.id);
-    const q = qualityForJob(job);
+    const own = candidate.sorties.filter((s) => sortieHasJob(s, job.id));
+    const row = candidate.jobCoverage.find((r) => r.jobId === job.id);
+    const chosenVehicle = document.scenario.vehicles.find(
+      (v) => v.id === row?.cameraVehicleId,
+    );
+    const q = qualityForJob(
+      job,
+      chosenVehicle,
+      document.flightEnvelope,
+      row?.cameraProfileId,
+    );
     const checks = [
       ...q.checks,
       ...own.flatMap((s) => {
@@ -41,7 +53,10 @@ export function missionCoverageViews(
         const maxGround = Math.max(
           0,
           ...s.segments
-            .filter((seg) => seg.phase === 'survey')
+            .filter(
+              (seg) =>
+                seg.phase === 'survey' && segmentJobId(s, seg) === job.id,
+            )
             .map((seg) => seg.groundSpeedMps),
         );
         // Image cadence/blur and point density depend on speed OVER GROUND,
@@ -51,6 +66,8 @@ export function missionCoverageViews(
           vehicle
             ? { ...vehicle, airspeedMps: maxGround || vehicle.airspeedMps }
             : undefined,
+          document.flightEnvelope,
+          s.cameraId,
         ).checks;
       }),
     ];
@@ -70,7 +87,7 @@ export function missionCoverageViews(
         ),
       ],
     };
-    if (count > 1200)
+    if (count > 1200 || checks.some((c) => c.status === 'fail'))
       return {
         ...base,
         status: 'not_checked' as const,
@@ -79,14 +96,16 @@ export function missionCoverageViews(
         coveredM2: 0,
         missingM2: 0,
         details: [
-          'Для карты покрытия превышен лимит 1200 сегментов. Используйте основной отчёт.',
+          'Геометрия покрытия не подтверждена: превышен лимит сегментов или не выполнены проверки установленной камеры. Используйте основной отчёт.',
           ...base.details,
         ],
       };
     try {
       const bands: Multi = own.flatMap((s) =>
         s.segments
-          .filter((seg) => seg.phase === 'survey')
+          .filter(
+            (seg) => seg.phase === 'survey' && segmentJobId(s, seg) === job.id,
+          )
           .flatMap((seg) => {
             const a = project.forward(seg.from),
               b = project.forward(seg.to),

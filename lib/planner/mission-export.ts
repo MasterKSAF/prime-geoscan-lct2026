@@ -4,8 +4,17 @@ import type {
   MissionResult,
   MissionApproval,
 } from './mission-schema.ts';
-import { sha256, sha256Text } from './mission-schema.ts';
+import { sha256, sha256Text, canonicalStringify } from './mission-schema.ts';
 import { qualityForJob } from './quality.ts';
+import {
+  migrateMissionCameraBindings,
+  resolveVehicleCamera,
+} from './camera-profile.ts';
+import {
+  sortieHasJob,
+  segmentJobId,
+  sortieJobIds,
+} from './mission-sortie-jobs.ts';
 
 const iso = (doc: MissionDocument, sec: number) =>
   new Date(Date.parse(doc.window.start) + sec * 1000).toISOString();
@@ -27,22 +36,40 @@ const workDefinitions = (
   candidate: MissionCandidate,
 ) =>
   doc.jobs
-    .filter((job) => !sorties.length || sorties.some((s) => s.jobId === job.id))
-    .map((job) => ({
-      ...job,
-      effectiveJob: {
-        ...qualityForJob(job).job,
-        bearingDeg:
-          candidate.jobCoverage.find((row) => row.jobId === job.id)
-            ?.bearingDeg ?? job.job.bearingDeg,
-      },
-      note: 'Параметры качества и источники заданы в миссии; совместимость с конкретной полезной нагрузкой требует подтверждения.',
-    }));
+    .filter(
+      (job) => !sorties.length || sorties.some((s) => sortieHasJob(s, job.id)),
+    )
+    .map((job) => {
+      const row = candidate.jobCoverage.find((r) => r.jobId === job.id);
+      const vehicle = doc.scenario.vehicles.find(
+        (v) => v.id === row?.cameraVehicleId,
+      );
+      const camera =
+        vehicle &&
+        resolveVehicleCamera(vehicle, job.job.type, row?.cameraProfileId)
+          .camera;
+      return {
+        ...job,
+        ...(camera ? { cameraId: camera.id, cameraProfile: camera } : {}),
+        effectiveJob:
+          job.quality.mode === 'camera' && !camera
+            ? null
+            : {
+                ...qualityForJob(job, vehicle, doc.flightEnvelope, camera?.id)
+                  .job,
+                bearingDeg:
+                  candidate.jobCoverage.find((row) => row.jobId === job.id)
+                    ?.bearingDeg ?? job.job.bearingDeg,
+              },
+        note: 'Оптика — снимок активной камеры БВС; GSD/перекрытия — требования работы. Модель не подтверждает фактическую установку и качество полученных снимков.',
+      };
+    });
 export function missionGeoJSON(
   doc: MissionDocument,
   candidate: MissionCandidate,
   vehicleId?: string,
 ) {
+  doc = migrateMissionCameraBindings(doc).document;
   const sorties = selected(candidate, vehicleId);
   return {
     type: 'FeatureCollection',
@@ -56,6 +83,13 @@ export function missionGeoJSON(
       flightReady: false,
       window: doc.window,
       jobs: workDefinitions(doc, sorties, candidate),
+      cameraBindings: doc.scenario.vehicles
+        .filter((v) => sorties.some((s) => s.vehicleId === v.id))
+        .map((v) => ({
+          vehicleId: v.id,
+          cameraIds: v.cameraIds,
+          cameraProfiles: v.cameraProfiles,
+        })),
       units: {
         coordinates: 'longitude_latitude_degrees',
         altitude: 'm',
@@ -83,8 +117,10 @@ export function missionGeoJSON(
           kind: 'sortie',
           sortieId: sortie.id,
           jobId: sortie.jobId,
+          jobIds: sortieJobIds(sortie),
           vehicleId: sortie.vehicleId,
           batteryId: sortie.batteryId,
+          cameraId: sortie.cameraId,
           startTime: iso(doc, sortie.startSec),
           endTime: iso(doc, sortie.endSec),
           startSec: sortie.startSec,
@@ -103,9 +139,10 @@ export function missionGeoJSON(
           properties: {
             kind: 'segment',
             sortieId: sortie.id,
-            jobId: sortie.jobId,
+            jobId: segmentJobId(sortie, segment),
             vehicleId: sortie.vehicleId,
             batteryId: sortie.batteryId,
+            cameraId: sortie.cameraId,
             sequence: index + 1,
             ...segment,
             startTime: iso(doc, segment.startSec),
@@ -119,7 +156,7 @@ export function missionGeoJSON(
           properties: {
             kind: 'waypoint',
             sortieId: sortie.id,
-            jobId: sortie.jobId,
+            jobId: segmentJobId(sortie, segment),
             vehicleId: sortie.vehicleId,
             sequence: index + 1,
             phase: segment.phase,
@@ -160,7 +197,7 @@ const data = (values: Record<string, unknown>) =>
   `<ExtendedData>${Object.entries(values)
     .map(
       ([k, v]) =>
-        `<Data name="${xml(k)}"><value>${xml(typeof v === 'object' ? JSON.stringify(v) : v)}</value></Data>`,
+        `<Data name="${xml(k)}"><value>${xml(typeof v === 'object' ? canonicalStringify(v) : v)}</value></Data>`,
     )
     .join('')}</ExtendedData>`;
 export function missionKML(
@@ -168,11 +205,12 @@ export function missionKML(
   candidate: MissionCandidate,
   vehicleId?: string,
 ): string {
+  doc = migrateMissionCameraBindings(doc).document;
   const sorties = selected(candidate, vehicleId);
   const folders = sorties
     .map(
       (s) =>
-        `<Folder><name>${xml(s.name)} / ${xml(s.id)}</name>${data({ sortieId: s.id, jobId: s.jobId, vehicleId: s.vehicleId, batteryId: s.batteryId, startTime: iso(doc, s.startSec), endTime: iso(doc, s.endSec), flightTimeSec: s.durationSec, remainingPct: s.remainingPct })}${s.segments.map((p, i) => `<Placemark><name>${i + 1}. ${xml(p.phase)}</name><TimeSpan><begin>${iso(doc, p.startSec)}</begin><end>${iso(doc, p.endSec)}</end></TimeSpan>${data({ sequence: i + 1, sortieId: s.id, jobId: s.jobId, vehicleId: s.vehicleId, batteryId: s.batteryId, ...p, altitudeDatum: datum(doc) })}<LineString><altitudeMode>clampToGround</altitudeMode><coordinates>${p.from.join(',')},0 ${p.to.join(',')},0</coordinates></LineString></Placemark>`).join('')}</Folder>`,
+        `<Folder><name>${xml(s.name)} / ${xml(s.id)}</name>${data({ sortieId: s.id, jobId: s.jobId, vehicleId: s.vehicleId, cameraId: s.cameraId, cameraProfiles: doc.scenario.vehicles.find((v) => v.id === s.vehicleId)?.cameraProfiles, batteryId: s.batteryId, startTime: iso(doc, s.startSec), endTime: iso(doc, s.endSec), flightTimeSec: s.durationSec, remainingPct: s.remainingPct })}${s.segments.map((p, i) => `<Placemark><name>${i + 1}. ${xml(p.phase)}</name><TimeSpan><begin>${iso(doc, p.startSec)}</begin><end>${iso(doc, p.endSec)}</end></TimeSpan>${data({ sequence: i + 1, sortieId: s.id, jobId: s.jobId, vehicleId: s.vehicleId, cameraId: s.cameraId, batteryId: s.batteryId, ...p, altitudeDatum: datum(doc) })}<LineString><altitudeMode>clampToGround</altitudeMode><coordinates>${p.from.join(',')},0 ${p.to.join(',')},0</coordinates></LineString></Placemark>`).join('')}</Folder>`,
     )
     .join('');
   return `<?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>${xml(doc.name)}</name><description>Высоты и скорости в ExtendedData, координаты линии — проекция на карту. Модельное задание, не команды автопилота.</description>${data({ schemaVersion: '2.0', missionId: doc.id, candidateId: candidate.id, inputHash: candidate.plan.inputHash, status: candidate.status, flightReady: false, altitudeDatum: datum(doc), window: doc.window, jobs: workDefinitions(doc, sorties, candidate), checks: candidate.checks })}${folders}</Document></kml>`;
@@ -215,9 +253,10 @@ export async function missionEvidence(
     reproduce: {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      path: result.document.obstacleLayer
-        ? '/api/planner/missions/solve-with-obstacles'
-        : '/api/planner/missions/solve',
+      path:
+        result.document.obstacleLayer || result.document.catalogLayers
+          ? '/api/planner/missions/solve-with-obstacles'
+          : '/api/planner/missions/solve',
       body: result.document,
     },
     limitations: [

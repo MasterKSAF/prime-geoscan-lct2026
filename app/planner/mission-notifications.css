@@ -87,12 +87,15 @@
   border-radius: 12px;
   background: var(--mw-surface, #fff);
   box-shadow: 0 5px 24px #14253726;
-  pointer-events: auto;
+  pointer-events: none;
   opacity: 1;
   transition: opacity 2s ease;
 }
 .mw-notification-layer .mw-notification-card.is-fading {
   opacity: 0;
+}
+.mw-notification-layer .mw-notification-card button {
+  pointer-events: auto;
 }
 .mw-notification-layer .mw-notification-warning {
   border-inline-start-color: #bb8a32;

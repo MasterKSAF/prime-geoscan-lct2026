@@ -1,9 +1,14 @@
 import { z } from 'zod';
+import { trackAltitudeAllowed, trackAltitudeCheck } from './altitude-policy.ts';
 import { groundSpeed } from './engine.ts';
 import { buildFixedWingRecoverySegments } from './fixed-wing-mission.ts';
 import { capsuleInside } from './fixed-wing-dubins.ts';
 import { vehiclePlanningEligibility } from './fixed-wing-profile.ts';
 import { obstacleFootprints } from './obstacle-layer.ts';
+import { restrictionsInEnvelope } from './mission-catalog.ts';
+import { jobSurveySegments } from './mission-sortie-jobs.ts';
+import { dispatchRecovery } from './mission-recovery-dispatch.ts';
+import type { RecoveryDispatch } from './mission-recovery-dispatch.ts';
 import {
   distance,
   prepareGeometry,
@@ -15,7 +20,6 @@ import {
   compileRestrictions,
   positionAt,
   segmentIntersectsVolume,
-  sortiesConflict,
   missionEnvironmentChecks,
 } from './mission-validation.ts';
 import type {
@@ -32,7 +36,7 @@ export const incidentLabels = {
   battery: 'Падение заряда',
   sensor: 'Отказ сенсора',
   crash: 'Потеря способности лететь',
-  reserve: 'Контроль возвратного запаса',
+  reserve: 'Проверка безопасного возврата',
 } as const;
 export type IncidentKind = keyof typeof incidentLabels;
 export const safetySchema = z
@@ -77,12 +81,82 @@ export type RecoveryOption = {
   sorties: ScheduledSortie[];
   endSec: number;
   minimumPct: number;
+  diagnostics?: RecoveryDispatch;
 };
 type Snapshot = {
   document: MissionDocument;
   candidate: MissionCandidate;
   progressSec: number;
 };
+
+// Cache only exact geometric inputs, never decisions, weather, battery or safety flags.
+// Re-reading an identical KML must not rebuild the visibility graph on every animation tick.
+const geometryCache: {
+  key: string;
+  source: string;
+  value: ReturnType<typeof buildRecoveryGeometry>;
+}[] = [];
+function buildRecoveryGeometry(doc: MissionDocument, startSec: number) {
+  const scenario = {
+    ...doc.scenario,
+    clearanceM: Math.max(
+      doc.scenario.clearanceM,
+      doc.obstacleLayer?.bufferM ?? 0,
+    ),
+    exclusions: [
+      ...doc.scenario.exclusions,
+      ...restrictionsInEnvelope(
+        doc,
+        0,
+        doc.flightEnvelope.maxAltitudeM,
+        startSec,
+        Infinity,
+      ).map((r) => r.geometry),
+      ...obstacleFootprints(doc),
+    ],
+  };
+  const g = prepareGeometry(
+    scenario,
+    doc.planning.safetyPolicy ? doc.scenario.clearanceM : 0,
+    doc.planning.safetyPolicy ? doc.scenario.area.coordinates[0][0] : undefined,
+  );
+  const route = router(
+    prepareGeometry(
+      { ...scenario, clearanceM: scenario.clearanceM + 0.25 },
+      doc.planning.safetyPolicy ? doc.scenario.clearanceM : 0,
+      doc.scenario.area.coordinates[0][0],
+    ),
+  );
+  return { g, route };
+}
+function recoveryGeometry(doc: MissionDocument, startSec: number) {
+  const s = doc.scenario;
+  const source = doc.obstacleLayer?.sourceText ?? '';
+  const key = JSON.stringify([
+    s.area,
+    s.airspace,
+    s.exclusions,
+    s.reserveSites,
+    s.vehicles.map((v) => [v.start, v.landing]),
+    s.clearanceM,
+    restrictionsInEnvelope(
+      doc,
+      0,
+      doc.flightEnvelope.maxAltitudeM,
+      startSec,
+      Infinity,
+    ).map((r) => r.geometry),
+    doc.planning.safetyPolicy,
+    doc.obstacleLayer?.bufferM,
+    doc.obstacleLayer?.lineHalfWidthM,
+  ]);
+  const found = geometryCache.find((x) => x.key === key && x.source === source);
+  if (found) return found.value;
+  const value = buildRecoveryGeometry(doc, startSec);
+  if (geometryCache.length >= 4) geometryCache.shift();
+  geometryCache.push({ key, source, value });
+  return value;
+}
 
 export function safetyDocument(
   d: MissionDocument,
@@ -139,8 +213,8 @@ export function safetyDocument(
 }
 
 /** Independent recovery validator. No coverage claim and no mutation of the approved candidate.
- * All known height/time restrictions are conservatively treated as full-height permanent footprints.
- * This may reject a possible route but never silently fly above unknown terrain.
+ * Broad-phase routing avoids volumes that can intersect the return's altitude/time envelope.
+ * The independent 4D validator still checks every resulting segment, including descent.
  */
 export function recoveryOptions(
   d: MissionDocument,
@@ -175,46 +249,30 @@ export function recoveryOptions(
         throw new Error(
           'Рельеф неизвестен: автоматический возврат не подтверждён.',
         );
-      const scenario = {
-        ...doc.scenario,
-        clearanceM: Math.max(doc.scenario.clearanceM, doc.obstacleLayer?.bufferM ?? 0),
-        exclusions: [
-          ...doc.scenario.exclusions,
-          ...doc.restrictions.map((r) => r.geometry),
-          ...obstacleFootprints(doc),
-        ],
-      };
-      const g = prepareGeometry(
-          scenario,
-          doc.planning.safetyPolicy ? doc.scenario.clearanceM : 0,
-          doc.planning.safetyPolicy
-            ? doc.scenario.area.coordinates[0][0]
-            : undefined,
-        ),
-        route = router(
-          prepareGeometry(
-            { ...scenario, clearanceM: scenario.clearanceM + 0.25 },
-            doc.planning.safetyPolicy ? doc.scenario.clearanceM : 0,
-            doc.scenario.area.coordinates[0][0],
-          ),
-        ),
-        volumes = compileRestrictions(doc, g);
+      const { g, route } = recoveryGeometry(doc, session.modelTimeSec);
+      const volumes = compileRestrictions(doc, g);
       const active = c.sorties.filter(
         (s) =>
           s.startSec <= session.modelTimeSec && s.endSec > session.modelTimeSec,
       );
       if (!active.some((s) => s.vehicleId === session.vehicleId))
         throw new Error('Выбранный аппарат сейчас не в вылете.');
+      const pools: {
+        vehicleId: string;
+        batteryPct: number;
+        routes: ScheduledSortie[];
+      }[] = [];
       for (const original of active) {
         const v = doc.scenario.vehicles.find(
           (v) => v.id === original.vehicleId,
         )!;
-        if (
-          !vehiclePlanningEligibility(v).supported ||
-          session.windMps > v.maxWindMps
-        )
+        if (!vehiclePlanningEligibility(v).supported)
           throw new Error(
-            `${v.name}: ветер или тип аппарата не допускает подтверждённый возврат.`,
+            `${v.name}: профиль аппарата не поддерживает расчёт возврата.`,
+          );
+        if (session.windMps > v.maxWindMps)
+          throw new Error(
+            `${v.name}: ветер ${session.windMps} м/с превышает предел ${v.maxWindMps} м/с. Безопасный возврат рассчитать нельзя.`,
           );
         const seg = original.segments.find(
           (s) =>
@@ -234,7 +292,8 @@ export function recoveryOptions(
           pos.batteryPct = Math.min(pos.batteryPct, session.batteryPct);
         if (
           pos.altitudeM <= 0 ||
-          pos.altitudeM > doc.flightEnvelope.maxAltitudeM
+          pos.altitudeM > doc.flightEnvelope.maxAltitudeM ||
+          !trackAltitudeAllowed(pos.altitudeM)
         )
           throw new Error(
             'Текущая высота вне поддержанного диапазона возврата.',
@@ -251,260 +310,315 @@ export function recoveryOptions(
           doc.environment.visibilityM < doc.environment.minVisibilityM
         )
           throw new Error('Видимость ниже ограничения миссии.');
-        const targets =
+        const samePoint = (a: Coordinate, b: Coordinate) =>
+          a[0] === b[0] && a[1] === b[1];
+        const homeBase = doc.bases?.find(
+          (b) =>
+            samePoint(b.coordinate, v.landing) ||
+            b.landingPads?.some((p) => samePoint(p.coordinate, v.landing)),
+        );
+        const declaredPads = (
+          policy === 'home' ? (homeBase ? [homeBase] : []) : (doc.bases ?? [])
+        ).flatMap((b) =>
+          (b.landingPads ?? [])
+            .filter((p) => p.enabled && p.kinds.includes(v.kind))
+            .map((p) => p.coordinate),
+        );
+        const permitted = (point: Coordinate) =>
+          !(doc.bases ?? []).some(
+            (b) =>
+              (b.landingPads &&
+                samePoint(b.coordinate, point) &&
+                !b.landingPads.some((p) => samePoint(p.coordinate, point))) ||
+              b.landingPads?.some(
+                (p) =>
+                  samePoint(p.coordinate, point) &&
+                  (!p.enabled || !p.kinds.includes(v.kind)),
+              ),
+          );
+        const targets = (
           policy === 'home'
-            ? [v.landing]
-            : [v.landing, ...doc.scenario.reserveSites];
+            ? homeBase?.landingPads
+              ? declaredPads
+              : [v.landing]
+            : [
+                ...declaredPads,
+                v.landing,
+                ...doc.scenario.reserveSites,
+                // Explicitly known compatible landing sites, never invented offsets.
+                ...doc.scenario.vehicles
+                  .filter((other) => other.kind === v.kind)
+                  .map((other) => other.landing),
+              ]
+        )
+          .filter(permitted)
+          .filter((p, i, all) => all.findIndex((q) => samePoint(p, q)) === i);
         const possibilities: ScheduledSortie[] = [];
+        const rejectionReasons = new Set<string>();
         if (v.kind === 'fixedWing' && session.delaySec > 0)
           throw new Error(
             `${v.name}: ожидание зависанием невозможно. Требуется немедленный проверенный выход; круг ожидания автоматически не назначается.`,
           );
+        const nominalHeight = Math.min(
+          doc.flightEnvelope.maxAltitudeM,
+          Math.max(
+            pos.altitudeM,
+            ...original.segments.map((s) => s.altitudeToM),
+          ),
+        );
+        const levels =
+          v.kind === 'fixedWing'
+            ? [pos.altitudeM]
+            : [
+                ...new Set([
+                  pos.altitudeM,
+                  nominalHeight,
+                  Math.min(
+                    doc.flightEnvelope.maxAltitudeM,
+                    nominalHeight +
+                      doc.planning.separationVerticalM +
+                      2 * v.climbMps * doc.planning.temporalBufferSec +
+                      1,
+                  ),
+                ]),
+              ];
+        const waits = v.kind === 'fixedWing' ? [0] : [0, 15, 30, 60, 120];
         for (const target of targets) {
           const path =
             v.kind === 'fixedWing'
               ? []
               : route(g.forward(pos.coordinate), g.forward(target));
-          if (!path) continue;
-          try {
-            const segments: Segment[] = [];
-            let clock = session.modelTimeSec,
-              battery = pos.batteryPct;
-            const add = (
-              from: Coordinate,
-              to: Coordinate,
-              phase: Segment['phase'],
-              sec: number,
-              a: number,
-              b: number,
-              speed = 0,
-            ) => {
-              if (sec <= 0) return;
-              const after =
-                battery - (sec / (v.effectiveEnduranceMin * 60)) * 100;
-              segments.push({
-                from,
-                to,
-                phase,
-                startSec: clock,
-                endSec: clock + sec,
-                altitudeFromM: a,
-                altitudeToM: b,
-                batteryFromPct: battery,
-                batteryToPct: after,
-                distanceM: distance(g.forward(from), g.forward(to)),
-                airspeedMps: speed ? v.airspeedMps : 0,
-                groundSpeedMps: speed,
-              });
-              clock += sec;
-              battery = after;
-            };
-            if (v.kind === 'fixedWing') {
-              const meta = seg.fixedWing;
-              if (!meta) continue;
-              const fraction = Math.max(
-                0,
-                Math.min(
-                  1,
-                  (session.modelTimeSec - seg.startSec) /
-                    Math.max(1e-9, seg.endSec - seg.startSec),
-                ),
-              );
-              const recovered = buildFixedWingRecoverySegments(
-                doc,
-                v,
-                g,
-                {
-                  coordinate: pos.coordinate,
-                  altitudeM: pos.altitudeM,
-                  headingRad:
-                    meta.headingFromRad + (meta.sweepRad ?? 0) * fraction,
-                  batteryPct: pos.batteryPct,
-                  timeSec: session.modelTimeSec,
-                },
-                target,
-              );
-              if (!recovered?.length) continue;
-              segments.push(...recovered);
-              clock = recovered.at(-1)!.endSec;
-              battery = recovered.at(-1)!.batteryToPct;
-            } else {
-              add(
-                pos.coordinate,
-                pos.coordinate,
-                'turn',
-                session.delaySec,
-                pos.altitudeM,
-                pos.altitudeM,
-              );
-              for (let i = 1; i < path.length; i++) {
-                const from = g.inverse(path[i - 1]),
-                  to = g.inverse(path[i]);
-                // Include an initial heading change as well as every corner.
-                add(
-                  from,
-                  from,
-                  'turn',
-                  v.turnSeconds,
-                  pos.altitudeM,
-                  pos.altitudeM,
-                );
-                const speed = groundSpeed(
-                  path[i - 1],
-                  path[i],
-                  v.airspeedMps,
-                  doc.scenario.wind,
-                );
-                add(
-                  from,
-                  to,
-                  'return',
-                  distance(path[i - 1], path[i]) / speed,
-                  pos.altitudeM,
-                  pos.altitudeM,
-                  speed,
+          if (!path) {
+            rejectionReasons.add('нет свободного обхода препятствий');
+            continue;
+          }
+          for (const height of levels)
+            for (const queueSec of waits)
+              try {
+                const segments: Segment[] = [];
+                let clock = session.modelTimeSec,
+                  battery = pos.batteryPct;
+                const add = (
+                  from: Coordinate,
+                  to: Coordinate,
+                  phase: Segment['phase'],
+                  sec: number,
+                  a: number,
+                  b: number,
+                  speed = 0,
+                ) => {
+                  if (sec <= 0) return;
+                  const after =
+                    battery - (sec / (v.effectiveEnduranceMin * 60)) * 100;
+                  segments.push({
+                    from,
+                    to,
+                    phase,
+                    startSec: clock,
+                    endSec: clock + sec,
+                    altitudeFromM: a,
+                    altitudeToM: b,
+                    batteryFromPct: battery,
+                    batteryToPct: after,
+                    distanceM: distance(g.forward(from), g.forward(to)),
+                    airspeedMps: speed ? v.airspeedMps : 0,
+                    groundSpeedMps: speed,
+                  });
+                  clock += sec;
+                  battery = after;
+                };
+                if (v.kind === 'fixedWing') {
+                  const meta = seg.fixedWing;
+                  if (!meta) continue;
+                  const fraction = Math.max(
+                    0,
+                    Math.min(
+                      1,
+                      (session.modelTimeSec - seg.startSec) /
+                        Math.max(1e-9, seg.endSec - seg.startSec),
+                    ),
+                  );
+                  const recovered = buildFixedWingRecoverySegments(
+                    doc,
+                    v,
+                    g,
+                    {
+                      coordinate: pos.coordinate,
+                      altitudeM: pos.altitudeM,
+                      headingRad:
+                        meta.headingFromRad + (meta.sweepRad ?? 0) * fraction,
+                      batteryPct: pos.batteryPct,
+                      timeSec: session.modelTimeSec,
+                    },
+                    target,
+                  );
+                  if (!recovered?.length) continue;
+                  segments.push(...recovered);
+                  clock = recovered.at(-1)!.endSec;
+                  battery = recovered.at(-1)!.batteryToPct;
+                } else {
+                  add(
+                    pos.coordinate,
+                    pos.coordinate,
+                    'turn',
+                    session.delaySec,
+                    pos.altitudeM,
+                    pos.altitudeM,
+                  );
+                  // Climb vertically in the current checked position before horizontal
+                  // escape. A low aircraft on takeoff must not fly through parked UAVs.
+                  if (height > pos.altitudeM)
+                    add(
+                      pos.coordinate,
+                      pos.coordinate,
+                      'takeoff',
+                      (height - pos.altitudeM) / v.climbMps,
+                      pos.altitudeM,
+                      height,
+                    );
+                  add(
+                    pos.coordinate,
+                    pos.coordinate,
+                    'turn',
+                    queueSec,
+                    height,
+                    height,
+                  );
+                  for (let i = 1; i < path.length; i++) {
+                    const from = g.inverse(path[i - 1]),
+                      to = g.inverse(path[i]);
+                    // Include an initial heading change as well as every corner.
+                    add(from, from, 'turn', v.turnSeconds, height, height);
+                    const speed = groundSpeed(
+                      path[i - 1],
+                      path[i],
+                      v.airspeedMps,
+                      doc.scenario.wind,
+                    );
+                    add(
+                      from,
+                      to,
+                      'return',
+                      distance(path[i - 1], path[i]) / speed,
+                      height,
+                      height,
+                      speed,
+                    );
+                  }
+                  add(
+                    target,
+                    target,
+                    'landing',
+                    height / v.descentMps,
+                    height,
+                    0,
+                  );
+                }
+                if (
+                  battery < doc.scenario.reservePct ||
+                  trackAltitudeCheck([], segments).status !== 'pass' ||
+                  missionEnvironmentChecks(doc, segments).some(
+                    (check) => check.status === 'fail',
+                  ) ||
+                  clock >
+                    (Date.parse(doc.window.end) -
+                      Date.parse(doc.window.start)) /
+                      1000
+                ) {
+                  rejectionReasons.add(
+                    `не хватает заряда на возврат с резервом ${doc.scenario.reservePct}% либо нарушено окно/погода`,
+                  );
+                  continue;
+                }
+                if (
+                  segments.some(
+                    (s) =>
+                      !(s.fixedWing
+                        ? capsuleInside(
+                            g.forward(s.from),
+                            g.forward(s.to),
+                            s.fixedWing.tubeRadiusM,
+                            g.free,
+                          )
+                        : segmentInside(
+                            g.forward(s.from),
+                            g.forward(s.to),
+                            g.free,
+                          )) ||
+                      volumes.some((r) =>
+                        segmentIntersectsVolume(s, r, g.forward),
+                      ),
+                  )
+                )
+                  continue;
+                possibilities.push({
+                  ...original,
+                  id: `recovery-${original.id}`,
+                  startSec: session.modelTimeSec,
+                  endSec: clock,
+                  readySec: clock + doc.planning.serviceSec,
+                  segments,
+                  durationSec: clock - session.modelTimeSec,
+                  distanceM: segments.reduce((a, s) => a + s.distanceM, 0),
+                  remainingPct: battery,
+                  strips: 0,
+                  shots: null,
+                });
+              } catch (error) {
+                rejectionReasons.add(
+                  error instanceof Error
+                    ? error.message
+                    : 'площадка недоступна',
                 );
               }
-              add(
-                target,
-                target,
-                'landing',
-                pos.altitudeM / v.descentMps,
-                pos.altitudeM,
-                0,
-              );
-            }
-            if (
-              battery < doc.scenario.reservePct ||
-              missionEnvironmentChecks(doc, segments).some(
-                (check) => check.status === 'fail',
-              ) ||
-              clock >
-                (Date.parse(doc.window.end) - Date.parse(doc.window.start)) /
-                  1000
-            )
-              continue;
-            if (
-              segments.some(
-                (s) =>
-                  !(s.fixedWing
-                    ? capsuleInside(
-                        g.forward(s.from),
-                        g.forward(s.to),
-                        s.fixedWing.tubeRadiusM,
-                        g.free,
-                      )
-                    : segmentInside(
-                        g.forward(s.from),
-                        g.forward(s.to),
-                        g.free,
-                      )) ||
-                  volumes.some((r) => segmentIntersectsVolume(s, r, g.forward)),
-              )
-            )
-              continue;
-            possibilities.push({
-              ...original,
-              id: `recovery-${original.id}`,
-              startSec: session.modelTimeSec,
-              endSec: clock,
-              readySec: clock + doc.planning.serviceSec,
-              segments,
-              durationSec: clock - session.modelTimeSec,
-              distanceM: segments.reduce((a, s) => a + s.distanceM, 0),
-              remainingPct: battery,
-              strips: 0,
-              shots: null,
-            });
-          } catch {
-            /* This landing site is not feasible in the declared model. */
-          }
         }
         possibilities.sort((a, b) => a.endSec - b.endSec);
-        const chosen = possibilities.find(
-          (p) =>
-            !option.sorties.some((other) => sortiesConflict(doc, p, other)),
-        );
-        if (!chosen)
+        if (!possibilities.length)
           throw new Error(
-            `${v.name}: нет маршрута с резервом, свободным коридором и разделением группы.`,
+            `${v.name}: ${[...rejectionReasons].slice(0, 2).join('; ') || 'нет свободного маршрута до площадки'}.`,
           );
-        option.sorties.push(chosen);
+        pools.push({
+          vehicleId: v.id,
+          batteryPct: pos.batteryPct,
+          routes: possibilities,
+        });
       }
-      // A landed member still occupies its landing site until the whole group is down.
-      const groupEnd = Math.max(...option.sorties.map((s) => s.endSec));
-      const occupied = option.sorties.map((s) => {
-        const last = s.segments.at(-1)!;
-        return {
-          ...s,
-          endSec: groupEnd,
-          segments: [
-            ...s.segments,
-            {
-              ...last,
-              from: last.to,
-              to: last.to,
-              startSec: s.endSec,
-              endSec: groupEnd,
-              altitudeFromM: 0,
-              altitudeToM: 0,
-              groundSpeedMps: 0,
-              airspeedMps: 0,
-              distanceM: 0,
-              batteryFromPct: last.batteryToPct,
-              batteryToPct: last.batteryToPct,
-            },
-          ],
-        };
-      });
-      for (let i = 0; i < occupied.length; i++)
-        for (let j = i + 1; j < occupied.length; j++)
-          if (sortiesConflict(doc, occupied[i], occupied[j]))
-            throw new Error(
-              'Площадки возвращающейся группы конфликтуют после посадки.',
-            );
-      // Grounded vehicles do not launch; protect their occupied sites during recovery too.
-      for (const recovered of option.sorties)
-        for (const v of doc.scenario.vehicles.filter(
-          (v) => !active.some((s) => s.vehicleId === v.id),
-        )) {
+      const parked = doc.scenario.vehicles
+        .filter((v) => !active.some((s) => s.vehicleId === v.id))
+        .map((v) => {
           const last = c.sorties
             .filter(
               (s) => s.vehicleId === v.id && s.endSec <= session.modelTimeSec,
             )
             .sort((a, b) => b.endSec - a.endSec)[0];
           const coordinate = last?.segments.at(-1)?.to ?? v.start;
-          const base = {
-            ...recovered.segments[0],
-            from: coordinate,
-            to: coordinate,
-            startSec: session.modelTimeSec,
-            endSec: Math.max(...option.sorties.map((s) => s.endSec)),
-            altitudeFromM: 0,
-            altitudeToM: 0,
-            groundSpeedMps: 0,
-            airspeedMps: 0,
-            distanceM: 0,
-          };
-          const stationary = {
-            ...recovered,
-            vehicleId: v.id,
-            jobId: '',
-            segments: [base],
-            endSec: base.endSec,
-          };
-          if (sortiesConflict(doc, recovered, stationary))
-            throw new Error(
-              'Возврат пересекает защитный объём аппарата на земле.',
-            );
-        }
+          return { vehicleId: v.id, coordinate };
+        });
+      const dispatch = dispatchRecovery(
+        doc,
+        pools,
+        parked,
+        session.modelTimeSec,
+      );
+      option.diagnostics = dispatch.diagnostics;
+      option.sorties = dispatch.sorties;
+      if (!option.sorties.length) {
+        const hit = dispatch.diagnostics.conflicts.at(0);
+        const name = (id: string) =>
+          doc.scenario.vehicles.find((v) => v.id === id)?.name ?? id;
+        throw new Error(
+          hit
+            ? `${name(hit.vehicleId)} и ${name(hit.otherVehicleId)}: ${hit.kind === 'occupied-pad' ? 'занята посадочная площадка или путь проходит близко к БВС на земле' : 'пересекаются защитные интервалы возврата'}. Безопасная очередность в пределах поиска не найдена.`
+            : 'Безопасная очередность возврата в пределах поиска не найдена.',
+        );
+      }
       option.valid = true;
       option.endSec = Math.max(...option.sorties.map((s) => s.endSec));
       option.minimumPct = Math.min(
         ...option.sorties.map((s) => s.remainingPct),
       );
       option.reasons = [
-        'Маршрут, энергия, ветер, ограничения и разделение группы проверены в модели.',
+        'Маршруты, очередь возврата, набор высоты, заряд и занятость площадок проверены в модели.',
         ...(active.some(
           (s) =>
             doc.scenario.vehicles.find((v) => v.id === s.vehicleId)?.kind ===
@@ -537,17 +651,27 @@ export function createSafetySession(
   },
   now: Date,
 ): SafetySession {
+  const observed = recoverySnapshot(
+    row.document,
+    row.candidate,
+    row.progressSec,
+  ).find((v) => v.vehicleId === input.vehicleId);
+  const batteryPct = observed
+    ? input.kind === 'battery'
+      ? Math.min(observed.batteryPct, input.batteryPct)
+      : observed.batteryPct
+    : input.batteryPct;
   const s: SafetySession = safetySchema.parse({
     id: input.id,
     kind: input.kind,
     vehicleId: input.vehicleId,
     windMps: input.windMps,
-    batteryPct: input.batteryPct,
+    batteryPct,
     source: 'simulation',
     modelTimeSec: row.progressSec,
     detectedAt: now.toISOString(),
     stage: 'pending',
-    delaySec: 60,
+    delaySec: ['wind', 'battery', 'reserve'].includes(input.kind) ? 0 : 60,
     policy: 'home',
     progressSec: row.progressSec,
     decision: 'none',
@@ -565,6 +689,14 @@ export function createSafetySession(
     return s;
   }
   let options = recoveryOptions(row.document, row.candidate, s);
+  if (s.delaySec === 0 && options.some((o) => o.valid)) {
+    s.stage = 'returning';
+    s.decision = 'immediate';
+    s.events.push({
+      at: now.toISOString(),
+      text: 'Условия изменились: проверенный возврат начинается немедленно.',
+    });
+  }
   if (!options.some((o) => o.valid)) {
     s.delaySec = 0;
     options = recoveryOptions(row.document, row.candidate, s);
@@ -575,11 +707,48 @@ export function createSafetySession(
       text:
         s.stage === 'returning'
           ? 'Ожидание недопустимо. Защитный возврат принят немедленно.'
-          : 'Автоматический маршрут не подтверждён. Нужен оператор; тренажёр остановлен.',
+          : 'Безопасный маршрут возврата не найден. Нужен оператор; тренажёр остановлен.',
     });
   }
   s.policy = options.find((o) => o.valid)?.policy ?? 'home';
   return s;
+}
+
+/** Complete fleet at the incident time, including future/unassigned/landed UAVs. */
+export function recoverySnapshot(
+  d: MissionDocument,
+  c: MissionCandidate,
+  time: number,
+) {
+  return d.scenario.vehicles.map((v) => {
+    const flights = c.sorties.filter((s) => s.vehicleId === v.id);
+    const active = flights.find((s) => s.startSec <= time && s.endSec > time);
+    const segment = active?.segments.find(
+      (s) => s.startSec <= time && s.endSec > time,
+    );
+    const last = flights
+      .filter((s) => s.endSec <= time)
+      .sort((a, b) => b.endSec - a.endSec)[0];
+    const pos = segment
+      ? positionAt(segment, time)
+      : {
+          coordinate: last?.segments.at(-1)?.to ?? v.start,
+          altitudeM: 0,
+          batteryPct: last?.remainingPct ?? v.batteryPct,
+        };
+    return {
+      vehicleId: v.id,
+      name: v.name,
+      model: v.model,
+      kind: v.kind,
+      phase: segment?.phase ?? 'ground',
+      ...pos,
+      airborne: pos.altitudeM > 0,
+      sortieId: active?.id ?? null,
+      landing: v.landing,
+      source: 'simulation' as const,
+    };
+  });
 }
 
 /** Periodic monitor: the declared model only, never a measurement from a UAV.
@@ -610,7 +779,9 @@ export function returnReserveAlert(
     modelTimeSec: time,
     detectedAt: '2026-01-01T00:00:00.000Z',
     windMps: d.scenario.wind.speedMps,
-    batteryPct: 100,
+    batteryPct: recoverySnapshot(d, c, time).find(
+      (v) => v.vehicleId === s.vehicleId,
+    )!.batteryPct,
     stage: 'pending',
     delaySec: c.sorties.some(
       (x) =>
@@ -724,8 +895,8 @@ export function unfinishedRevision(
   next.name = `${d.name.slice(0, 70)} · пересмотр`;
   // Whole-job conservative accounting: repeat incomplete jobs, never invent exact remaining coverage.
   next.jobs = next.jobs.filter((j) => {
-    const sorties = c.sorties.filter((s) => s.jobId === j.id);
-    return !sorties.length || sorties.some((s) => s.endSec > time);
+    const segments = jobSurveySegments(c.sorties, j.id);
+    return !segments.length || segments.some((s) => s.endSec > time);
   });
   if (!next.jobs.length) next.jobs = structuredClone(d.jobs);
   if (incident?.kind === 'crash') {

@@ -17,6 +17,7 @@ import type { Geometry, Point, Strip, Multi } from './geometry.ts';
 import { groundSpeed } from './engine.ts';
 import clipping from 'polygon-clipping';
 import { qualityForJob } from './quality.ts';
+import { resolveVehicleCamera } from './camera-profile.ts';
 import {
   GEOSCAN_201_PASSPORT,
   fixedWingTurnRadius,
@@ -776,6 +777,9 @@ export function buildFixedWingSortie(
     id,
     jobId: context.job.id,
     batteryId: battery.id,
+    ...(context.job.quality.mode === 'camera'
+      ? { cameraId: resolveVehicleCamera(v, context.job.job.type).camera?.id }
+      : {}),
     vehicleId: v.id,
     name: v.name,
     startSec: 0,
@@ -799,14 +803,18 @@ export function buildFixedWingSortie(
       : null,
   };
   if (
-    qualityForJob(context.job, {
-      ...v,
-      airspeedMps: Math.max(
-        ...segments
-          .filter((seg) => seg.phase === 'survey')
-          .map((seg) => seg.groundSpeedMps),
-      ),
-    }).checks.some((c) => c.status === 'fail')
+    qualityForJob(
+      context.job,
+      {
+        ...v,
+        airspeedMps: Math.max(
+          ...segments
+            .filter((seg) => seg.phase === 'survey')
+            .map((seg) => seg.groundSpeedMps),
+        ),
+      },
+      d.flightEnvelope,
+    ).checks.some((c) => c.status === 'fail')
   )
     return null;
   if (

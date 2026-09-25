@@ -1,0 +1,20 @@
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { migrateMissionCameraBindings } from '../../lib/planner/camera-profile.ts';
+import { parseMissionDocument, sha256 } from '../../lib/planner/mission-schema.ts';
+
+const out='output/playwright/acceptance-2026-09-25/engine';
+await mkdir(out,{recursive:true});
+const source='output/playwright/acceptance-2026-09-24/engine/dense-real-ui.input.json';
+const old=parseMissionDocument(JSON.parse(await readFile(source,'utf8')));
+const replacements=new Map(old.scenario.vehicles.map((v,i)=>[v.id,`dense25-uav-${i+1}`]));
+old.batteries.forEach((b,i)=>replacements.set(b.id,`dense25-battery-${i+1}`));
+const copied=JSON.parse(JSON.stringify(old),(_key,value)=>typeof value==='string'?(replacements.get(value)??value):value);
+copied.id='demo2-dense-20260925';
+copied.name='Демо 2 · Плотные препятствия, перенос баз';
+copied.scenario.name=copied.name;
+delete copied.fleetSnapshot;
+const migrated=migrateMissionCameraBindings(copied);
+const document=parseMissionDocument(migrated.document);
+await writeFile(`${out}/dense-real-ui.input.json`,JSON.stringify(document,null,2));
+await writeFile(`${out}/dense-fixture.json`,JSON.stringify({source,sourceHash:await sha256(old),inputHash:await sha256(document),warnings:migrated.warnings,changes:['Новая рабочая копия; старый архив не меняется','Явная миграция установленной камеры до нового расчёта','Новые ID аппаратов и батарей, исходная геометрия/лимиты/каталоги сохранены'],vehicles:document.scenario.vehicles.map(v=>({id:v.id,model:v.model,jobs:v.jobs,cameraIds:v.cameraIds})),sameRestrictions:JSON.stringify(document.restrictions)===JSON.stringify(old.restrictions),sameGeometry:JSON.stringify(document.scenario.airspace)===JSON.stringify(old.scenario.airspace)},null,2));
+console.log(JSON.stringify({path:`${out}/dense-real-ui.input.json`,inputHash:await sha256(document)}));

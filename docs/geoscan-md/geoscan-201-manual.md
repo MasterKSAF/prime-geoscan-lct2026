@@ -1,6 +1,6 @@
 ---
 title: "Геоскан 201 — руководство по эксплуатации"
-source: "tmp/geoscan-plan/geoscan-201-manual.pdf"
+source: "docs/planner/references/manufacturers/geoscan-201-manual.pdf"
 source_sha256: "ebab1cbfa1ed014c08b402a0e084fdd67d6a242735ec279eddc76644570d4875"
 converted_at: "2026-09-15T15:25:32+00:00"
 source_status: "reference-snapshot"
@@ -9,7 +9,7 @@ extraction: "pdf-native-text-and-selective-ocr"
 
 # Геоскан 201 — руководство по эксплуатации
 
-Источник: [geoscan-201-manual.pdf](../../tmp/geoscan-plan/geoscan-201-manual.pdf). [Каталог Markdown](README.md).
+Источник: [geoscan-201-manual.pdf](../planner/references/manufacturers/geoscan-201-manual.pdf). [Каталог Markdown](README.md).
 
 > Копия для поиска и парсинга, не новый нормативный документ. Сохранены физические номера страниц. Текст PDF дан в блоках `text`, чтобы не потерять расположение строк и колонок; схемы и подписи внутри изображений могут отсутствовать. OCR отмечен отдельно.
 
@@ -17,7 +17,7 @@ extraction: "pdf-native-text-and-selective-ocr"
 
 ## Страница 1
 
-[Оригинал, страница 1](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=1)
+[Оригинал, страница 1](../planner/references/manufacturers/geoscan-201-manual.pdf#page=1)
 
 > Извлечение: `native-plus-ocr`. Растровых объектов в PDF: 1.
 
@@ -42,7 +42,7 @@ oN
 
 ## Страница 2
 
-[Оригинал, страница 2](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=2)
+[Оригинал, страница 2](../planner/references/manufacturers/geoscan-201-manual.pdf#page=2)
 
 > Извлечение: `blank-or-graphics-only`. Растровых объектов в PDF: 0.
 
@@ -52,7 +52,7 @@ oN
 
 ## Страница 3
 
-[Оригинал, страница 3](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=3)
+[Оригинал, страница 3](../planner/references/manufacturers/geoscan-201-manual.pdf#page=3)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -105,7 +105,7 @@ oN
 
 ## Страница 4
 
-[Оригинал, страница 4](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=4)
+[Оригинал, страница 4](../planner/references/manufacturers/geoscan-201-manual.pdf#page=4)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -163,7 +163,7 @@ oN
 
 ## Страница 5
 
-[Оригинал, страница 5](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=5)
+[Оригинал, страница 5](../planner/references/manufacturers/geoscan-201-manual.pdf#page=5)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -215,7 +215,7 @@ oN
 
 ## Страница 6
 
-[Оригинал, страница 6](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=6)
+[Оригинал, страница 6](../planner/references/manufacturers/geoscan-201-manual.pdf#page=6)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -275,7 +275,7 @@ https:// www.geoscan.ru/ ru/ support.Мы с удовольствием помо
 
 ## Страница 7
 
-[Оригинал, страница 7](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=7)
+[Оригинал, страница 7](../planner/references/manufacturers/geoscan-201-manual.pdf#page=7)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -317,7 +317,7 @@ https:// www.geoscan.ru/ ru/ support.Мы с удовольствием помо
 
 ## Страница 8
 
-[Оригинал, страница 8](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=8)
+[Оригинал, страница 8](../planner/references/manufacturers/geoscan-201-manual.pdf#page=8)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 1.
 
@@ -361,7 +361,7 @@ https:// www.geoscan.ru/ ru/ support.Мы с удовольствием помо
 
 ## Страница 9
 
-[Оригинал, страница 9](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=9)
+[Оригинал, страница 9](../planner/references/manufacturers/geoscan-201-manual.pdf#page=9)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -415,7 +415,7 @@ https:// www.geoscan.ru/ ru/ support.Мы с удовольствием помо
 
 ## Страница 10
 
-[Оригинал, страница 10](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=10)
+[Оригинал, страница 10](../planner/references/manufacturers/geoscan-201-manual.pdf#page=10)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -464,7 +464,7 @@ https:// www.geoscan.ru/ ru/ support.Мы с удовольствием помо
 
 ## Страница 11
 
-[Оригинал, страница 11](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=11)
+[Оригинал, страница 11](../planner/references/manufacturers/geoscan-201-manual.pdf#page=11)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -520,7 +520,7 @@ https:// www.geoscan.ru/ ru/ support.Мы с удовольствием помо
 
 ## Страница 12
 
-[Оригинал, страница 12](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=12)
+[Оригинал, страница 12](../planner/references/manufacturers/geoscan-201-manual.pdf#page=12)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -584,7 +584,7 @@ https:// www.geoscan.ru/ ru/ support.Мы с удовольствием помо
 
 ## Страница 13
 
-[Оригинал, страница 13](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=13)
+[Оригинал, страница 13](../planner/references/manufacturers/geoscan-201-manual.pdf#page=13)
 
 > Извлечение: `native-plus-ocr`. Растровых объектов в PDF: 1.
 
@@ -655,7 +655,7 @@ Fe
 
 ## Страница 14
 
-[Оригинал, страница 14](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=14)
+[Оригинал, страница 14](../planner/references/manufacturers/geoscan-201-manual.pdf#page=14)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -694,7 +694,7 @@ Fe
 
 ## Страница 15
 
-[Оригинал, страница 15](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=15)
+[Оригинал, страница 15](../planner/references/manufacturers/geoscan-201-manual.pdf#page=15)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -729,7 +729,7 @@ Fe
 
 ## Страница 16
 
-[Оригинал, страница 16](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=16)
+[Оригинал, страница 16](../planner/references/manufacturers/geoscan-201-manual.pdf#page=16)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -770,7 +770,7 @@ Fe
 
 ## Страница 17
 
-[Оригинал, страница 17](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=17)
+[Оригинал, страница 17](../planner/references/manufacturers/geoscan-201-manual.pdf#page=17)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -814,7 +814,7 @@ Fe
 
 ## Страница 18
 
-[Оригинал, страница 18](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=18)
+[Оригинал, страница 18](../planner/references/manufacturers/geoscan-201-manual.pdf#page=18)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 1.
 
@@ -843,7 +843,7 @@ Fe
 
 ## Страница 19
 
-[Оригинал, страница 19](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=19)
+[Оригинал, страница 19](../planner/references/manufacturers/geoscan-201-manual.pdf#page=19)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -886,7 +886,7 @@ Fe
 
 ## Страница 20
 
-[Оригинал, страница 20](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=20)
+[Оригинал, страница 20](../planner/references/manufacturers/geoscan-201-manual.pdf#page=20)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 4.
 
@@ -920,7 +920,7 @@ Fe
 
 ## Страница 21
 
-[Оригинал, страница 21](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=21)
+[Оригинал, страница 21](../planner/references/manufacturers/geoscan-201-manual.pdf#page=21)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -959,7 +959,7 @@ Fe
 
 ## Страница 22
 
-[Оригинал, страница 22](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=22)
+[Оригинал, страница 22](../planner/references/manufacturers/geoscan-201-manual.pdf#page=22)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 3.
 
@@ -992,7 +992,7 @@ Fe
 
 ## Страница 23
 
-[Оригинал, страница 23](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=23)
+[Оригинал, страница 23](../planner/references/manufacturers/geoscan-201-manual.pdf#page=23)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -1030,7 +1030,7 @@ Fe
 
 ## Страница 24
 
-[Оригинал, страница 24](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=24)
+[Оригинал, страница 24](../planner/references/manufacturers/geoscan-201-manual.pdf#page=24)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -1071,7 +1071,7 @@ Fe
 
 ## Страница 25
 
-[Оригинал, страница 25](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=25)
+[Оригинал, страница 25](../planner/references/manufacturers/geoscan-201-manual.pdf#page=25)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 1.
 
@@ -1111,7 +1111,7 @@ Fe
 
 ## Страница 26
 
-[Оригинал, страница 26](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=26)
+[Оригинал, страница 26](../planner/references/manufacturers/geoscan-201-manual.pdf#page=26)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 1.
 
@@ -1141,7 +1141,7 @@ Fe
 
 ## Страница 27
 
-[Оригинал, страница 27](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=27)
+[Оригинал, страница 27](../planner/references/manufacturers/geoscan-201-manual.pdf#page=27)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 1.
 
@@ -1171,7 +1171,7 @@ Fe
 
 ## Страница 28
 
-[Оригинал, страница 28](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=28)
+[Оригинал, страница 28](../planner/references/manufacturers/geoscan-201-manual.pdf#page=28)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -1210,7 +1210,7 @@ Fe
 
 ## Страница 29
 
-[Оригинал, страница 29](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=29)
+[Оригинал, страница 29](../planner/references/manufacturers/geoscan-201-manual.pdf#page=29)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -1246,7 +1246,7 @@ Fe
 
 ## Страница 30
 
-[Оригинал, страница 30](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=30)
+[Оригинал, страница 30](../planner/references/manufacturers/geoscan-201-manual.pdf#page=30)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 3.
 
@@ -1285,7 +1285,7 @@ Fe
 
 ## Страница 31
 
-[Оригинал, страница 31](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=31)
+[Оригинал, страница 31](../planner/references/manufacturers/geoscan-201-manual.pdf#page=31)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 1.
 
@@ -1335,7 +1335,7 @@ Fe
 
 ## Страница 32
 
-[Оригинал, страница 32](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=32)
+[Оригинал, страница 32](../planner/references/manufacturers/geoscan-201-manual.pdf#page=32)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -1383,7 +1383,7 @@ Fe
 
 ## Страница 33
 
-[Оригинал, страница 33](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=33)
+[Оригинал, страница 33](../planner/references/manufacturers/geoscan-201-manual.pdf#page=33)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 1.
 
@@ -1438,7 +1438,7 @@ Fe
 
 ## Страница 34
 
-[Оригинал, страница 34](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=34)
+[Оригинал, страница 34](../planner/references/manufacturers/geoscan-201-manual.pdf#page=34)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -1488,7 +1488,7 @@ Fe
 
 ## Страница 35
 
-[Оригинал, страница 35](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=35)
+[Оригинал, страница 35](../planner/references/manufacturers/geoscan-201-manual.pdf#page=35)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -1524,7 +1524,7 @@ Fe
 
 ## Страница 36
 
-[Оригинал, страница 36](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=36)
+[Оригинал, страница 36](../planner/references/manufacturers/geoscan-201-manual.pdf#page=36)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -1564,7 +1564,7 @@ Fe
 
 ## Страница 37
 
-[Оригинал, страница 37](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=37)
+[Оригинал, страница 37](../planner/references/manufacturers/geoscan-201-manual.pdf#page=37)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 1.
 
@@ -1613,7 +1613,7 @@ Fe
 
 ## Страница 38
 
-[Оригинал, страница 38](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=38)
+[Оригинал, страница 38](../planner/references/manufacturers/geoscan-201-manual.pdf#page=38)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -1646,7 +1646,7 @@ Fe
 
 ## Страница 39
 
-[Оригинал, страница 39](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=39)
+[Оригинал, страница 39](../planner/references/manufacturers/geoscan-201-manual.pdf#page=39)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -1680,7 +1680,7 @@ Fe
 
 ## Страница 40
 
-[Оригинал, страница 40](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=40)
+[Оригинал, страница 40](../planner/references/manufacturers/geoscan-201-manual.pdf#page=40)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -1716,7 +1716,7 @@ Fe
 
 ## Страница 41
 
-[Оригинал, страница 41](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=41)
+[Оригинал, страница 41](../planner/references/manufacturers/geoscan-201-manual.pdf#page=41)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -1751,7 +1751,7 @@ Fe
 
 ## Страница 42
 
-[Оригинал, страница 42](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=42)
+[Оригинал, страница 42](../planner/references/manufacturers/geoscan-201-manual.pdf#page=42)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 1.
 
@@ -1787,7 +1787,7 @@ Fe
 
 ## Страница 43
 
-[Оригинал, страница 43](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=43)
+[Оригинал, страница 43](../planner/references/manufacturers/geoscan-201-manual.pdf#page=43)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 1.
 
@@ -1840,7 +1840,7 @@ Fe
 
 ## Страница 44
 
-[Оригинал, страница 44](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=44)
+[Оригинал, страница 44](../planner/references/manufacturers/geoscan-201-manual.pdf#page=44)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -1893,7 +1893,7 @@ Fe
 
 ## Страница 45
 
-[Оригинал, страница 45](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=45)
+[Оригинал, страница 45](../planner/references/manufacturers/geoscan-201-manual.pdf#page=45)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -1948,7 +1948,7 @@ exFAT. Рекомендуемый объем памяти — от 128 Гб. К�
 
 ## Страница 46
 
-[Оригинал, страница 46](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=46)
+[Оригинал, страница 46](../planner/references/manufacturers/geoscan-201-manual.pdf#page=46)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 1.
 
@@ -2010,7 +2010,7 @@ exFAT. Рекомендуемый объем памяти — от 128 Гб. К�
 
 ## Страница 47
 
-[Оригинал, страница 47](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=47)
+[Оригинал, страница 47](../planner/references/manufacturers/geoscan-201-manual.pdf#page=47)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 1.
 
@@ -2071,7 +2071,7 @@ exFAT. Рекомендуемый объем памяти — от 128 Гб. К�
 
 ## Страница 48
 
-[Оригинал, страница 48](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=48)
+[Оригинал, страница 48](../planner/references/manufacturers/geoscan-201-manual.pdf#page=48)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -2131,7 +2131,7 @@ Menu и задайте следующие параметры:
 
 ## Страница 49
 
-[Оригинал, страница 49](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=49)
+[Оригинал, страница 49](../planner/references/manufacturers/geoscan-201-manual.pdf#page=49)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -2193,7 +2193,7 @@ Menu и задайте следующие параметры:
 
 ## Страница 50
 
-[Оригинал, страница 50](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=50)
+[Оригинал, страница 50](../planner/references/manufacturers/geoscan-201-manual.pdf#page=50)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 1.
 
@@ -2249,7 +2249,7 @@ https:// www.sony.com/ electronics/ support/ res/ manuals/ 4579/ 45798683M.pdf ,
 
 ## Страница 51
 
-[Оригинал, страница 51](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=51)
+[Оригинал, страница 51](../planner/references/manufacturers/geoscan-201-manual.pdf#page=51)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 1.
 
@@ -2311,7 +2311,7 @@ https:// www.sony.com/ electronics/ support/ res/ manuals/ 4579/ 45798683M.pdf ,
 
 ## Страница 52
 
-[Оригинал, страница 52](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=52)
+[Оригинал, страница 52](../planner/references/manufacturers/geoscan-201-manual.pdf#page=52)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 7.
 
@@ -2357,7 +2357,7 @@ https:// www.sony.com/ electronics/ support/ res/ manuals/ 4579/ 45798683M.pdf ,
 
 ## Страница 53
 
-[Оригинал, страница 53](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=53)
+[Оригинал, страница 53](../planner/references/manufacturers/geoscan-201-manual.pdf#page=53)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 3.
 
@@ -2411,7 +2411,7 @@ https:// www.sony.com/ electronics/ support/ res/ manuals/ 4579/ 45798683M.pdf ,
 
 ## Страница 54
 
-[Оригинал, страница 54](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=54)
+[Оригинал, страница 54](../planner/references/manufacturers/geoscan-201-manual.pdf#page=54)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -2440,7 +2440,7 @@ https:// www.sony.com/ electronics/ support/ res/ manuals/ 4579/ 45798683M.pdf ,
 
 ## Страница 55
 
-[Оригинал, страница 55](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=55)
+[Оригинал, страница 55](../planner/references/manufacturers/geoscan-201-manual.pdf#page=55)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -2515,7 +2515,7 @@ https:// www.sony.com/ electronics/ support/ res/ manuals/ 5027/ 14720adf8b80e68
 
 ## Страница 56
 
-[Оригинал, страница 56](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=56)
+[Оригинал, страница 56](../planner/references/manufacturers/geoscan-201-manual.pdf#page=56)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -2587,7 +2587,7 @@ https:// www.sony.com/ electronics/ support/ res/ manuals/ 5027/ 14720adf8b80e68
 
 ## Страница 57
 
-[Оригинал, страница 57](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=57)
+[Оригинал, страница 57](../planner/references/manufacturers/geoscan-201-manual.pdf#page=57)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -2656,7 +2656,7 @@ MENU →   (Подраздел 4) →Форматировать
 
 ## Страница 58
 
-[Оригинал, страница 58](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=58)
+[Оригинал, страница 58](../planner/references/manufacturers/geoscan-201-manual.pdf#page=58)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -2713,7 +2713,7 @@ https:// download.geoscan.ru/ site-files/ pollux/ Pollux_Manual.pdf
 
 ## Страница 59
 
-[Оригинал, страница 59](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=59)
+[Оригинал, страница 59](../planner/references/manufacturers/geoscan-201-manual.pdf#page=59)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 1.
 
@@ -2760,7 +2760,7 @@ https:// download.geoscan.ru/ site-files/ pollux/ Pollux_Manual.pdf
 
 ## Страница 60
 
-[Оригинал, страница 60](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=60)
+[Оригинал, страница 60](../planner/references/manufacturers/geoscan-201-manual.pdf#page=60)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 1.
 
@@ -2801,7 +2801,7 @@ https:// download.geoscan.ru/ site-files/ pollux/ Pollux_Manual.pdf
 
 ## Страница 61
 
-[Оригинал, страница 61](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=61)
+[Оригинал, страница 61](../planner/references/manufacturers/geoscan-201-manual.pdf#page=61)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -2859,7 +2859,7 @@ https:// download.geoscan.ru/ site-files/ pollux/ Pollux_Manual.pdf
 
 ## Страница 62
 
-[Оригинал, страница 62](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=62)
+[Оригинал, страница 62](../planner/references/manufacturers/geoscan-201-manual.pdf#page=62)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -2913,7 +2913,7 @@ https:// download.geoscan.ru/ site-files/ pollux/ Pollux_Manual.pdf
 
 ## Страница 63
 
-[Оригинал, страница 63](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=63)
+[Оригинал, страница 63](../planner/references/manufacturers/geoscan-201-manual.pdf#page=63)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 1.
 
@@ -2970,7 +2970,7 @@ https:// download.geoscan.ru/ site-files/ pollux/ Pollux_Manual.pdf
 
 ## Страница 64
 
-[Оригинал, страница 64](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=64)
+[Оригинал, страница 64](../planner/references/manufacturers/geoscan-201-manual.pdf#page=64)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -3032,7 +3032,7 @@ https:// download.geoscan.ru/ site-files/ pollux/ Pollux_Manual.pdf
 
 ## Страница 65
 
-[Оригинал, страница 65](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=65)
+[Оригинал, страница 65](../planner/references/manufacturers/geoscan-201-manual.pdf#page=65)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -3080,7 +3080,7 @@ https:// download.geoscan.ru/ site-files/ pollux/ Pollux_Manual.pdf
 
 ## Страница 66
 
-[Оригинал, страница 66](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=66)
+[Оригинал, страница 66](../planner/references/manufacturers/geoscan-201-manual.pdf#page=66)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -3138,7 +3138,7 @@ https:// download.geoscan.ru/ site-files/ pollux/ Pollux_Manual.pdf
 
 ## Страница 67
 
-[Оригинал, страница 67](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=67)
+[Оригинал, страница 67](../planner/references/manufacturers/geoscan-201-manual.pdf#page=67)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -3200,7 +3200,7 @@ https:// download.geoscan.ru/ site-files/ pollux/ Pollux_Manual.pdf
 
 ## Страница 68
 
-[Оригинал, страница 68](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=68)
+[Оригинал, страница 68](../planner/references/manufacturers/geoscan-201-manual.pdf#page=68)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -3242,7 +3242,7 @@ https:// download.geoscan.ru/ site-files/ pollux/ Pollux_Manual.pdf
 
 ## Страница 69
 
-[Оригинал, страница 69](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=69)
+[Оригинал, страница 69](../planner/references/manufacturers/geoscan-201-manual.pdf#page=69)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -3286,7 +3286,7 @@ https:// download.geoscan.ru/ site-files/ pollux/ Pollux_Manual.pdf
 
 ## Страница 70
 
-[Оригинал, страница 70](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=70)
+[Оригинал, страница 70](../planner/references/manufacturers/geoscan-201-manual.pdf#page=70)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -3326,7 +3326,7 @@ Voltage — 4.2 V.
 
 ## Страница 71
 
-[Оригинал, страница 71](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=71)
+[Оригинал, страница 71](../planner/references/manufacturers/geoscan-201-manual.pdf#page=71)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -3387,7 +3387,7 @@ Voltage — 4.2 V.
 
 ## Страница 72
 
-[Оригинал, страница 72](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=72)
+[Оригинал, страница 72](../planner/references/manufacturers/geoscan-201-manual.pdf#page=72)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -3442,7 +3442,7 @@ Voltage — 4.2 V.
 
 ## Страница 73
 
-[Оригинал, страница 73](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=73)
+[Оригинал, страница 73](../planner/references/manufacturers/geoscan-201-manual.pdf#page=73)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 3.
 
@@ -3509,7 +3509,7 @@ Voltage — 4.2 V.
 
 ## Страница 74
 
-[Оригинал, страница 74](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=74)
+[Оригинал, страница 74](../planner/references/manufacturers/geoscan-201-manual.pdf#page=74)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 3.
 
@@ -3573,7 +3573,7 @@ Voltage — 4.2 V.
 
 ## Страница 75
 
-[Оригинал, страница 75](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=75)
+[Оригинал, страница 75](../planner/references/manufacturers/geoscan-201-manual.pdf#page=75)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -3610,7 +3610,7 @@ Voltage — 4.2 V.
 
 ## Страница 76
 
-[Оригинал, страница 76](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=76)
+[Оригинал, страница 76](../planner/references/manufacturers/geoscan-201-manual.pdf#page=76)
 
 > Извлечение: `native-source-order`. Растровых объектов в PDF: 0.
 
@@ -3656,7 +3656,7 @@ BALANCE PORT
 
 ## Страница 77
 
-[Оригинал, страница 77](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=77)
+[Оригинал, страница 77](../planner/references/manufacturers/geoscan-201-manual.pdf#page=77)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -3728,7 +3728,7 @@ BALANCE PORT
 
 ## Страница 78
 
-[Оригинал, страница 78](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=78)
+[Оригинал, страница 78](../planner/references/manufacturers/geoscan-201-manual.pdf#page=78)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -3791,7 +3791,7 @@ BALANCE PORT
 
 ## Страница 79
 
-[Оригинал, страница 79](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=79)
+[Оригинал, страница 79](../planner/references/manufacturers/geoscan-201-manual.pdf#page=79)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -3857,7 +3857,7 @@ iCharger 4010 Duo. Ниже представлены основные конст
 
 ## Страница 80
 
-[Оригинал, страница 80](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=80)
+[Оригинал, страница 80](../planner/references/manufacturers/geoscan-201-manual.pdf#page=80)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -3916,7 +3916,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 81
 
-[Оригинал, страница 81](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=81)
+[Оригинал, страница 81](../planner/references/manufacturers/geoscan-201-manual.pdf#page=81)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -3966,7 +3966,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 82
 
-[Оригинал, страница 82](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=82)
+[Оригинал, страница 82](../planner/references/manufacturers/geoscan-201-manual.pdf#page=82)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 1.
 
@@ -4030,7 +4030,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 83
 
-[Оригинал, страница 83](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=83)
+[Оригинал, страница 83](../planner/references/manufacturers/geoscan-201-manual.pdf#page=83)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 3.
 
@@ -4068,7 +4068,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 84
 
-[Оригинал, страница 84](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=84)
+[Оригинал, страница 84](../planner/references/manufacturers/geoscan-201-manual.pdf#page=84)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -4110,7 +4110,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 85
 
-[Оригинал, страница 85](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=85)
+[Оригинал, страница 85](../planner/references/manufacturers/geoscan-201-manual.pdf#page=85)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -4156,7 +4156,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 86
 
-[Оригинал, страница 86](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=86)
+[Оригинал, страница 86](../planner/references/manufacturers/geoscan-201-manual.pdf#page=86)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -4198,7 +4198,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 87
 
-[Оригинал, страница 87](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=87)
+[Оригинал, страница 87](../planner/references/manufacturers/geoscan-201-manual.pdf#page=87)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -4232,7 +4232,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 88
 
-[Оригинал, страница 88](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=88)
+[Оригинал, страница 88](../planner/references/manufacturers/geoscan-201-manual.pdf#page=88)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 3.
 
@@ -4272,7 +4272,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 89
 
-[Оригинал, страница 89](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=89)
+[Оригинал, страница 89](../planner/references/manufacturers/geoscan-201-manual.pdf#page=89)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -4309,7 +4309,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 90
 
-[Оригинал, страница 90](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=90)
+[Оригинал, страница 90](../planner/references/manufacturers/geoscan-201-manual.pdf#page=90)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 1.
 
@@ -4351,7 +4351,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 91
 
-[Оригинал, страница 91](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=91)
+[Оригинал, страница 91](../planner/references/manufacturers/geoscan-201-manual.pdf#page=91)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -4411,7 +4411,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 92
 
-[Оригинал, страница 92](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=92)
+[Оригинал, страница 92](../planner/references/manufacturers/geoscan-201-manual.pdf#page=92)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 3.
 
@@ -4464,7 +4464,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 93
 
-[Оригинал, страница 93](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=93)
+[Оригинал, страница 93](../planner/references/manufacturers/geoscan-201-manual.pdf#page=93)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 1.
 
@@ -4497,7 +4497,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 94
 
-[Оригинал, страница 94](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=94)
+[Оригинал, страница 94](../planner/references/manufacturers/geoscan-201-manual.pdf#page=94)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -4547,7 +4547,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 95
 
-[Оригинал, страница 95](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=95)
+[Оригинал, страница 95](../planner/references/manufacturers/geoscan-201-manual.pdf#page=95)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 4.
 
@@ -4617,7 +4617,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 96
 
-[Оригинал, страница 96](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=96)
+[Оригинал, страница 96](../planner/references/manufacturers/geoscan-201-manual.pdf#page=96)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 1.
 
@@ -4663,7 +4663,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 97
 
-[Оригинал, страница 97](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=97)
+[Оригинал, страница 97](../planner/references/manufacturers/geoscan-201-manual.pdf#page=97)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 3.
 
@@ -4713,7 +4713,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 98
 
-[Оригинал, страница 98](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=98)
+[Оригинал, страница 98](../planner/references/manufacturers/geoscan-201-manual.pdf#page=98)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -4762,7 +4762,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 99
 
-[Оригинал, страница 99](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=99)
+[Оригинал, страница 99](../planner/references/manufacturers/geoscan-201-manual.pdf#page=99)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -4815,7 +4815,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 100
 
-[Оригинал, страница 100](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=100)
+[Оригинал, страница 100](../planner/references/manufacturers/geoscan-201-manual.pdf#page=100)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -4859,7 +4859,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 101
 
-[Оригинал, страница 101](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=101)
+[Оригинал, страница 101](../planner/references/manufacturers/geoscan-201-manual.pdf#page=101)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 3.
 
@@ -4913,7 +4913,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 102
 
-[Оригинал, страница 102](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=102)
+[Оригинал, страница 102](../planner/references/manufacturers/geoscan-201-manual.pdf#page=102)
 
 > Извлечение: `native-source-order`. Растровых объектов в PDF: 1.
 
@@ -4946,7 +4946,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 103
 
-[Оригинал, страница 103](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=103)
+[Оригинал, страница 103](../planner/references/manufacturers/geoscan-201-manual.pdf#page=103)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -4973,7 +4973,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 104
 
-[Оригинал, страница 104](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=104)
+[Оригинал, страница 104](../planner/references/manufacturers/geoscan-201-manual.pdf#page=104)
 
 > Извлечение: `native-source-order`. Растровых объектов в PDF: 1.
 
@@ -5005,7 +5005,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 105
 
-[Оригинал, страница 105](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=105)
+[Оригинал, страница 105](../planner/references/manufacturers/geoscan-201-manual.pdf#page=105)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -5046,7 +5046,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 106
 
-[Оригинал, страница 106](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=106)
+[Оригинал, страница 106](../planner/references/manufacturers/geoscan-201-manual.pdf#page=106)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -5075,7 +5075,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 107
 
-[Оригинал, страница 107](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=107)
+[Оригинал, страница 107](../planner/references/manufacturers/geoscan-201-manual.pdf#page=107)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -5113,7 +5113,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 108
 
-[Оригинал, страница 108](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=108)
+[Оригинал, страница 108](../planner/references/manufacturers/geoscan-201-manual.pdf#page=108)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 2.
 
@@ -5158,7 +5158,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 109
 
-[Оригинал, страница 109](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=109)
+[Оригинал, страница 109](../planner/references/manufacturers/geoscan-201-manual.pdf#page=109)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -5226,7 +5226,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 110
 
-[Оригинал, страница 110](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=110)
+[Оригинал, страница 110](../planner/references/manufacturers/geoscan-201-manual.pdf#page=110)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -5296,7 +5296,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 111
 
-[Оригинал, страница 111](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=111)
+[Оригинал, страница 111](../planner/references/manufacturers/geoscan-201-manual.pdf#page=111)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -5359,7 +5359,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 112
 
-[Оригинал, страница 112](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=112)
+[Оригинал, страница 112](../planner/references/manufacturers/geoscan-201-manual.pdf#page=112)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 3.
 
@@ -5420,7 +5420,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 113
 
-[Оригинал, страница 113](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=113)
+[Оригинал, страница 113](../planner/references/manufacturers/geoscan-201-manual.pdf#page=113)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -5482,7 +5482,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 114
 
-[Оригинал, страница 114](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=114)
+[Оригинал, страница 114](../planner/references/manufacturers/geoscan-201-manual.pdf#page=114)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -5530,7 +5530,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 115
 
-[Оригинал, страница 115](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=115)
+[Оригинал, страница 115](../planner/references/manufacturers/geoscan-201-manual.pdf#page=115)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -5590,7 +5590,7 @@ LiPo Cap.— Ignore, Cells —Auto, Current — 10 A, Chg Mode — Slow Balance.
 
 ## Страница 116
 
-[Оригинал, страница 116](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=116)
+[Оригинал, страница 116](../planner/references/manufacturers/geoscan-201-manual.pdf#page=116)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -5662,7 +5662,7 @@ GNSS-приемник U-blox ZED-F9P *
 
 ## Страница 117
 
-[Оригинал, страница 117](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=117)
+[Оригинал, страница 117](../planner/references/manufacturers/geoscan-201-manual.pdf#page=117)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -5737,7 +5737,7 @@ GNSS-приемник U-blox ZED-F9P *
 
 ## Страница 118
 
-[Оригинал, страница 118](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=118)
+[Оригинал, страница 118](../planner/references/manufacturers/geoscan-201-manual.pdf#page=118)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 
@@ -5749,7 +5749,7 @@ GNSS-приемник U-blox ZED-F9P *
 
 ## Страница 119
 
-[Оригинал, страница 119](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=119)
+[Оригинал, страница 119](../planner/references/manufacturers/geoscan-201-manual.pdf#page=119)
 
 > Извлечение: `blank-or-graphics-only`. Растровых объектов в PDF: 0.
 
@@ -5759,7 +5759,7 @@ GNSS-приемник U-blox ZED-F9P *
 
 ## Страница 120
 
-[Оригинал, страница 120](../../tmp/geoscan-plan/geoscan-201-manual.pdf#page=120)
+[Оригинал, страница 120](../planner/references/manufacturers/geoscan-201-manual.pdf#page=120)
 
 > Извлечение: `native-text-layout`. Растровых объектов в PDF: 0.
 

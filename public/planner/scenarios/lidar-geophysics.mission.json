@@ -24,9 +24,9 @@
     }
   ],
   "flightEnvelope": {
-    "maxAltitudeM": 500,
+    "maxAltitudeM": 149,
     "minSurveyAltitudeM": 10,
-    "source": "Учебный диапазон сценария, не разрешение воздушного пространства."
+    "source": "Предел трека ниже 150 м AGL; потолок 149 м включает модельный запас 1 м. Не разрешение на полёт."
   },
   "id": "lidar-geophysics",
   "jobs": [
@@ -243,6 +243,8 @@
           "Числа скорости, ресурса и совместимости заданы для синтетического теста."
         ],
         "batteryPct": 100,
+        "cameraIds": [],
+        "cameraProfiles": [],
         "climbMps": 3,
         "descentMps": 1,
         "effectiveEnduranceMin": 28,
@@ -272,6 +274,8 @@
           "Числа скорости, ресурса и совместимости заданы для синтетического теста."
         ],
         "batteryPct": 100,
+        "cameraIds": [],
+        "cameraProfiles": [],
         "climbMps": 3,
         "descentMps": 1,
         "effectiveEnduranceMin": 28,

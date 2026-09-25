@@ -1,4 +1,5 @@
 import { DOMParser } from '@xmldom/xmldom';
+import { qualityForJob } from './quality.ts';
 import { MAX_OBSTACLE_MISSION_BYTES } from './obstacle-layer.ts';
 import {
   isAlias,
@@ -103,7 +104,11 @@ export function parseMissionText(
   format: 'auto' | 'json' | 'yaml' = 'auto',
 ): MissionDocument {
   const value = parseStructuredText(text, format, MAX_OBSTACLE_MISSION_BYTES);
-  if (!value || typeof value !== 'object' || !('obstacleLayer' in value))
+  if (
+    !value ||
+    typeof value !== 'object' ||
+    (!('obstacleLayer' in value) && !('catalogLayers' in value))
+  )
     checkTextSize(text);
   const document =
     value &&
@@ -119,11 +124,13 @@ export function parseMissionText(
 }
 
 export function checkMissionSize(document: MissionDocument): void {
-  const { obstacleLayer, ...core } = document;
+  const { obstacleLayer, catalogLayers, ...core } = document;
   checkTextSize(JSON.stringify(core));
   checkTextSize(
     JSON.stringify(document),
-    obstacleLayer ? MAX_OBSTACLE_MISSION_BYTES : MAX_MISSION_FILE_BYTES,
+    obstacleLayer || catalogLayers
+      ? MAX_OBSTACLE_MISSION_BYTES
+      : MAX_MISSION_FILE_BYTES,
   );
 }
 
@@ -156,7 +163,7 @@ export function serializeMissionJson(document: MissionDocument): string {
   const pretty = JSON.stringify(JSON.parse(compact), null, 2) + '\n';
   // Whitespace must not prevent saving a document accepted by the import boundary.
   return new TextEncoder().encode(pretty).length <=
-    (document.obstacleLayer
+    (document.obstacleLayer || document.catalogLayers
       ? MAX_OBSTACLE_MISSION_BYTES
       : MAX_MISSION_FILE_BYTES)
     ? pretty
@@ -176,7 +183,7 @@ export function serializeMissionYaml(document: MissionDocument): string {
     });
   checkTextSize(
     text,
-    document.obstacleLayer
+    document.obstacleLayer || document.catalogLayers
       ? MAX_OBSTACLE_MISSION_BYTES
       : MAX_MISSION_FILE_BYTES,
   );
@@ -235,10 +242,22 @@ export function missionSummaryMarkdown(document: MissionDocument): string {
     '',
     '## Работы',
     '',
-    ...doc.jobs.map(
-      (j) =>
-        `- ${markdown(j.name)}: ${j.job.type}, ${j.job.altitudeM} м, полоса ${j.job.swathM} м. Назначение: ${j.assignedVehicleIds.length ? j.assignedVehicleIds.map(markdown).join(', ') : 'автоматическое'}. Освещение: ${j.daylight === 'none' ? 'не ограничено профилем' : j.daylight === 'topographicClearSky' ? 'топографическая съёмка, ясное небо, Солнце ≥15°' : 'Солнце над горизонтом'}. Параметры ${j.quality.status === 'documented' ? 'документированы' : j.quality.status === 'assumed' ? 'приняты для примера' : 'неизвестны'}: ${markdown(j.quality.source)}`,
-    ),
+    ...doc.jobs.map((j) => {
+      // This is an input summary, not a candidate with an assigned camera.
+      const effective =
+        j.quality.mode === 'camera'
+          ? j.job
+          : qualityForJob(j, undefined, doc.flightEnvelope).job;
+      const height =
+        j.quality.altitudeMode === 'gsd'
+          ? 'высота по камере — будет рассчитана после назначения'
+          : `${effective.altitudeM} м (заданная высота)`;
+      const swath =
+        j.quality.mode === 'camera'
+          ? 'полоса по камере — будет рассчитана после назначения'
+          : `полоса ${effective.swathM} м`;
+      return `- ${markdown(j.name)}: ${j.job.type}, ${height}, ${swath}. Назначение: ${j.assignedVehicleIds.length ? j.assignedVehicleIds.map(markdown).join(', ') : 'автоматическое'}. Освещение: ${j.daylight === 'none' ? 'не ограничено профилем' : j.daylight === 'topographicClearSky' ? 'топографическая съёмка, ясное небо, Солнце ≥15°' : 'Солнце над горизонтом'}. Требования работы ${j.quality.status === 'documented' ? 'документированы' : j.quality.status === 'assumed' ? 'приняты для примера' : 'неизвестны'}: ${markdown(j.quality.source)}${j.quality.mode === 'camera' ? ' Оптика выбранного БВС проверяется отдельно; старые поля работы не подтверждают установленную камеру.' : ''}`;
+    }),
     '',
     '## Примечание оператора',
     '',

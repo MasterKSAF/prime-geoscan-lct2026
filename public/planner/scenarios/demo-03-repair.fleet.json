@@ -26,6 +26,28 @@
       "jobs": [
         "RGB"
       ],
+      "cameraProfiles": [
+        {
+          "id": "pf1b",
+          "name": "PF1B (миграция)",
+          "type": "RGB",
+          "status": "assumed",
+          "source": "Миграция legacy-camera-binding-v1: перенесена оптика старой работы; фактическую установку подтверждает оператор. PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры.",
+          "supportedModels": [
+            "Gemini"
+          ],
+          "sensorWidthMm": 23.5,
+          "sensorHeightMm": 15.6,
+          "focalLengthMm": 20,
+          "imageWidthPx": 6000,
+          "imageHeightPx": 4000,
+          "minimumIntervalSec": 1,
+          "shutterSec": 0.001
+        }
+      ],
+      "cameraIds": [
+        "pf1b"
+      ],
       "assumptions": [
         "Числа скорости, ресурса и совместимости заданы для синтетического теста."
       ],

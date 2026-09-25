@@ -1,0 +1,171 @@
+{
+  "name": "dense-20260925-browser",
+  "startedAt": "2026-09-25T11:07:27.057Z",
+  "finishedAt": "2026-09-25T11:09:13.962Z",
+  "exitCode": 0,
+  "passed": true,
+  "result": {
+    "name": "dense-20260925-browser",
+    "checks": [
+      {
+        "name": "Real dense-area source and explicit current camera bindings imported",
+        "pass": true,
+        "detail": [
+          {
+            "id": "dense25-uav-1",
+            "cameras": [
+              "pf1b"
+            ]
+          },
+          {
+            "id": "dense25-uav-2",
+            "cameras": [
+              "pollux"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Mouse drag really relocates base",
+        "pass": true,
+        "detail": {
+          "id": "base-1",
+          "from": [
+            38.12079515544474,
+            55.56362952425461
+          ],
+          "to": [
+            38.120831251144416,
+            55.563665175028895
+          ]
+        }
+      },
+      {
+        "name": "Moving base preserves aircraft and camera bindings",
+        "pass": true
+      },
+      {
+        "name": "Removing flight boundary disables calculation",
+        "pass": true
+      },
+      {
+        "name": "Imported layer classified as flight boundary",
+        "pass": true
+      },
+      {
+        "name": "Boundary restored, moved base and expert source retained",
+        "pass": true
+      },
+      {
+        "name": "Relocated dense-area mission has feasible 0.4.0 plan",
+        "pass": true,
+        "detail": [
+          {
+            "id": "makespan",
+            "status": "feasible_model",
+            "metrics": {
+              "makespanSec": 563.6256132941617,
+              "flightTimeSec": 748.9906847239306,
+              "distanceM": 2528.2967447365018,
+              "sortieCount": 2,
+              "vehicleCount": 2,
+              "coveragePct": 99.9999999982917,
+              "grossCoveragePct": 99.9999999982917,
+              "batteryChanges": 0,
+              "minimumRemainingPct": 80.8749707955161
+            },
+            "failures": []
+          },
+          {
+            "id": "flightTime",
+            "status": "feasible_model",
+            "metrics": {
+              "makespanSec": 563.6256132941617,
+              "flightTimeSec": 748.9906847239306,
+              "distanceM": 2528.2967447365018,
+              "sortieCount": 2,
+              "vehicleCount": 2,
+              "coveragePct": 99.9999999982917,
+              "grossCoveragePct": 99.9999999982917,
+              "batteryChanges": 0,
+              "minimumRemainingPct": 80.8749707955161
+            },
+            "failures": []
+          }
+        ]
+      },
+      {
+        "name": "Dense obstacle and separation checks pass",
+        "pass": true,
+        "detail": [
+          {
+            "id": "SEPARATION",
+            "status": "pass",
+            "title": "Непрерывное разнесение",
+            "detail": "Аналитический минимум расстояния между линейными сегментами с учётом вертикального объёма БВС–геофизический подвес, не проверка по кадрам. Параметры: Учебные защитные интервалы 30/20 м и 2 с; не утверждённый норматив. Временная неопределённость консервативно расширяет защитные расстояния и интервалы. Колебания подвеса не моделируются."
+          },
+          {
+            "id": "GROUND_SEPARATION",
+            "status": "pass",
+            "title": "Свободные места взлёта и посадки",
+            "detail": "Проверены все переданные БВС на земле: до первого вылета, между вылетами и после посадки; также неназначенные аппараты. Удаление с площадки без данных не предполагается."
+          },
+          {
+            "id": "EXTERNAL_OBSTACLES",
+            "title": "Препятствия исходного KML",
+            "status": "pass",
+            "detail": "Полный каталог: 5164; сегментов: 81; точных проверок: 32. Пересечений защитных контуров в принятой горизонтальной модели не найдено."
+          }
+        ]
+      },
+      {
+        "name": "Dense moved-base mission completes in actual UI",
+        "pass": true
+      },
+      {
+        "name": "Dense completed proof and routes downloaded",
+        "pass": true
+      },
+      {
+        "name": "No browser exceptions",
+        "pass": true,
+        "detail": []
+      }
+    ],
+    "errors": [],
+    "engineVersion": "0.4.0",
+    "inputHash": "9b59ea7aa4dccee95ff3487f4a4d87d8ae97eb299b731b6e53fdc3d1a33fafa9",
+    "candidates": [
+      {
+        "id": "makespan",
+        "status": "feasible_model",
+        "metrics": {
+          "makespanSec": 563.6256132941617,
+          "flightTimeSec": 748.9906847239306,
+          "distanceM": 2528.2967447365018,
+          "sortieCount": 2,
+          "vehicleCount": 2,
+          "coveragePct": 99.9999999982917,
+          "grossCoveragePct": 99.9999999982917,
+          "batteryChanges": 0,
+          "minimumRemainingPct": 80.8749707955161
+        }
+      },
+      {
+        "id": "flightTime",
+        "status": "feasible_model",
+        "metrics": {
+          "makespanSec": 563.6256132941617,
+          "flightTimeSec": 748.9906847239306,
+          "distanceM": 2528.2967447365018,
+          "sortieCount": 2,
+          "vehicleCount": 2,
+          "coveragePct": 99.9999999982917,
+          "grossCoveragePct": 99.9999999982917,
+          "batteryChanges": 0,
+          "minimumRemainingPct": 80.8749707955161
+        }
+      }
+    ]
+  }
+}

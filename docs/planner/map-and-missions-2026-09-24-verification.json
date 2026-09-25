@@ -1,0 +1,446 @@
+{
+  "checkedAtUtc": "2026-09-24T00:37:44.5092956Z",
+  "baseCommit": "3abfcd138fc0ab36ea5d7fe497ac7c55a6cec248",
+  "workingTreeHasUncommittedChanges": true,
+  "frozen": false,
+  "submissionReady": false,
+  "runtimeUrl": "http://127.0.0.1:3016/planner?v=map-missions-final-20260924",
+  "dockerImage": "sha256:3a5a7e7b7361c690e6a3d38cf399cdc6493a3fc9d8e4257489c0697772307d67",
+  "health": {
+    "status": "ok",
+    "engineVersion": "0.1.0",
+    "missionEngineVersion": "0.3.8",
+    "missionSchemaVersion": "2.0",
+    "safetyValidationPolicy": "continuous-occupancy-v1",
+    "mode": "engineering-preview",
+    "flightReady": false
+  },
+  "automatedTests": {
+    "log": "output/planner-queue-20260924-build.log",
+    "passed": 621,
+    "failed": 0
+  },
+  "browser": {
+    "objects": {
+      "passed": 34,
+      "checks": [
+        {
+          "name": "Three defaults plus a permanent upload card",
+          "pass": true
+        },
+        {
+          "name": "Import preserves custom ID and wind 1",
+          "pass": true
+        },
+        {
+          "name": "Import preserves work geometry 1",
+          "pass": true
+        },
+        {
+          "name": "Import preserves custom ID and wind 2",
+          "pass": true
+        },
+        {
+          "name": "Import preserves work geometry 2",
+          "pass": true
+        },
+        {
+          "name": "Import preserves custom ID and wind 3",
+          "pass": true
+        },
+        {
+          "name": "Import preserves work geometry 3",
+          "pass": true
+        },
+        {
+          "name": "Import preserves custom ID and wind 4",
+          "pass": true
+        },
+        {
+          "name": "Import preserves work geometry 4",
+          "pass": true
+        },
+        {
+          "name": "Import preserves custom ID and wind 5",
+          "pass": true
+        },
+        {
+          "name": "Import preserves work geometry 5",
+          "pass": true
+        },
+        {
+          "name": "Five imports create eight independent missions and upload card",
+          "pass": true
+        },
+        {
+          "name": "Broken import keeps existing cards",
+          "pass": true
+        },
+        {
+          "name": "Duplicate ID requires explicit choice",
+          "pass": true
+        },
+        {
+          "name": "Cancel duplicate preserves all cards",
+          "pass": true
+        },
+        {
+          "name": "Duplicate can create an independent copy",
+          "pass": true
+        },
+        {
+          "name": "Delete one copy preserves neighbours",
+          "pass": true
+        },
+        {
+          "name": "Missing boundary disables calculation",
+          "pass": true
+        },
+        {
+          "name": "Restore exact boundary",
+          "pass": true
+        },
+        {
+          "name": "Boundary editing exposes map vertex handles",
+          "pass": true
+        },
+        {
+          "name": "Boundary vertices fit inside the map",
+          "pass": true
+        },
+        {
+          "name": "Dragging a boundary vertex changes the saved geometry",
+          "pass": true
+        },
+        {
+          "name": "Cancel boundary editing restores exact original geometry",
+          "pass": true
+        },
+        {
+          "name": "Map selection fills base coordinates",
+          "pass": true
+        },
+        {
+          "name": "Cancelled base does not change input",
+          "pass": true
+        },
+        {
+          "name": "Shared base has separate explicit pads",
+          "pass": true
+        },
+        {
+          "name": "Base move preserves battery charge",
+          "pass": true
+        },
+        {
+          "name": "Shared-base placement has a feasible fully rechecked plan",
+          "pass": true,
+          "detail": [
+            {
+              "status": "feasible_model",
+              "checks": []
+            },
+            {
+              "status": "feasible_model",
+              "checks": []
+            }
+          ]
+        },
+        {
+          "name": "Other draft sees shared UAV base change",
+          "pass": true
+        },
+        {
+          "name": "Cannot delete occupied base without reassignment",
+          "pass": true
+        },
+        {
+          "name": "Delete with reassignment removes only base",
+          "pass": true
+        },
+        {
+          "name": "Zone import does not default to replacing work area",
+          "pass": true
+        },
+        {
+          "name": "No page-wide horizontal overflow on narrow display",
+          "pass": true
+        },
+        {
+          "name": "No browser runtime errors",
+          "pass": true,
+          "detail": []
+        }
+      ],
+      "errors": []
+    },
+    "layers": {
+      "passed": 18,
+      "checks": [
+        {
+          "name": "Sample flight-boundary.geojson is served",
+          "pass": true
+        },
+        {
+          "name": "Context selects airspace for flight-boundary.geojson",
+          "pass": true
+        },
+        {
+          "name": "Boundary imports actual sample coordinates",
+          "pass": true
+        },
+        {
+          "name": "Sample reserve-site.geojson is served",
+          "pass": true
+        },
+        {
+          "name": "Context selects reserve for reserve-site.geojson",
+          "pass": true
+        },
+        {
+          "name": "Reserve import adds a reserve, not a work or base",
+          "pass": true
+        },
+        {
+          "name": "Reserve can be deleted",
+          "pass": true
+        },
+        {
+          "name": "Sample no-flight-zone.geojson is served",
+          "pass": true
+        },
+        {
+          "name": "Context selects exclusion for no-flight-zone.geojson",
+          "pass": true
+        },
+        {
+          "name": "No-flight layer preserves work geometry",
+          "pass": true
+        },
+        {
+          "name": "No-flight layer creates a restriction",
+          "pass": true
+        },
+        {
+          "name": "Restriction removal restores original counts",
+          "pass": true
+        },
+        {
+          "name": "Drawn zone is saved as a closed restriction",
+          "pass": true
+        },
+        {
+          "name": "Drawing a restriction does not activate unrelated area vertices",
+          "pass": true
+        },
+        {
+          "name": "dark theme applied",
+          "pass": true
+        },
+        {
+          "name": "light theme applied",
+          "pass": true
+        },
+        {
+          "name": "Back returns from reports to editor",
+          "pass": true
+        },
+        {
+          "name": "No runtime exceptions in layer lifecycle",
+          "pass": true
+        }
+      ],
+      "errors": []
+    },
+    "plans": {
+      "passed": 20,
+      "checks": [
+        {
+          "name": "Before planning only useful calculate action is shown",
+          "pass": true
+        },
+        {
+          "name": "Calculation returns HTTP 200",
+          "pass": true,
+          "detail": 200
+        },
+        {
+          "name": "Demo 1 expected result",
+          "pass": true
+        },
+        {
+          "name": "Demo 1 report has direct checks",
+          "pass": true
+        },
+        {
+          "name": "Demo 1 evidence downloaded",
+          "pass": true
+        },
+        {
+          "name": "Calculation returns HTTP 200",
+          "pass": true,
+          "detail": 200
+        },
+        {
+          "name": "Demo 2 expected result",
+          "pass": true
+        },
+        {
+          "name": "Demo 2 completes its obstacle-aware plan through UI",
+          "pass": true
+        },
+        {
+          "name": "Demo 2 report has direct checks",
+          "pass": true
+        },
+        {
+          "name": "Demo 2 evidence downloaded",
+          "pass": true
+        },
+        {
+          "name": "Calculation returns HTTP 200",
+          "pass": true,
+          "detail": 200
+        },
+        {
+          "name": "Demo 3 expected result",
+          "pass": true
+        },
+        {
+          "name": "Demo 3 report has direct checks",
+          "pass": true
+        },
+        {
+          "name": "Refused mission has no misleading route download",
+          "pass": true
+        },
+        {
+          "name": "Demo 3 evidence downloaded",
+          "pass": true
+        },
+        {
+          "name": "Calculation returns HTTP 200",
+          "pass": true,
+          "detail": 200
+        },
+        {
+          "name": "Arbitrary imported ID solves without demo reassignment",
+          "pass": true
+        },
+        {
+          "name": "Custom mission completes through actual UI",
+          "pass": true
+        },
+        {
+          "name": "Execution progress and coverage are separate",
+          "pass": true
+        },
+        {
+          "name": "No browser exceptions",
+          "pass": true,
+          "detail": []
+        }
+      ],
+      "calculations": [
+        {
+          "id": "demo-01-survey",
+          "candidates": [
+            {
+              "id": "makespan",
+              "status": "feasible_model",
+              "makespanSec": 645.7802189750706,
+              "coveragePct": 99.99999999367931
+            },
+            {
+              "id": "flightTime",
+              "status": "feasible_model",
+              "makespanSec": 1042.4953483099266,
+              "coveragePct": 99.99999999367931
+            }
+          ]
+        },
+        {
+          "id": "demo-02-expert-obstacles",
+          "candidates": [
+            {
+              "id": "makespan",
+              "status": "feasible_model",
+              "makespanSec": 601.3646557576931,
+              "coveragePct": 99.50112217319538
+            },
+            {
+              "id": "flightTime",
+              "status": "feasible_model",
+              "makespanSec": 601.3922747580395,
+              "coveragePct": 99.50112217319538
+            }
+          ]
+        },
+        {
+          "id": "demo-03-repair",
+          "candidates": [
+            {
+              "id": "makespan",
+              "status": "not_found",
+              "makespanSec": 0,
+              "coveragePct": 0
+            },
+            {
+              "id": "flightTime",
+              "status": "not_found",
+              "makespanSec": 0,
+              "coveragePct": 0
+            }
+          ]
+        }
+      ],
+      "errors": []
+    }
+  },
+  "downloadedArchives": [
+    {
+      "file": "output/playwright/queue-prod-demo1.evidence.zip",
+      "bytes": 614425,
+      "sha256": "425439b73e2083c7d99e14977c4b5e28dee3825ede0fc310f993fec13019d76d",
+      "status": "passes-declared-model",
+      "files": 27
+    },
+    {
+      "file": "output/playwright/queue-prod-demo2.evidence.zip",
+      "bytes": 51914693,
+      "sha256": "e93d67d6f5046a19c9339c1c739fe8eada3d970bcd0be08b693f48a0a7d928cd",
+      "status": "passes-declared-model",
+      "files": 41
+    },
+    {
+      "file": "output/playwright/queue-prod-demo3.evidence.zip",
+      "bytes": 160184,
+      "sha256": "43c5add5c1e36ba237493c4520ce613f4358c133249a7f22c4c125a5344ba1a0",
+      "status": "diagnostic-only-not-flight-approved",
+      "files": 19
+    },
+    {
+      "file": "output/playwright/queue-prod-custom-completed.evidence.zip",
+      "bytes": 1659685,
+      "sha256": "a408f4f357c535171176a482367ab1fce1c6f4757258d9e5ae683dba96578856",
+      "status": "passes-declared-model",
+      "files": 33
+    }
+  ],
+  "sourceSha256": {
+    "lib/planner/geometry.ts": "43a89d55e6b52072cadceda73fba0e21ee33c58bf61f73e035f39e9eb83cba66",
+    "components/planner/mission-workbench.tsx": "b2dd4444c10f3d049d937449402ed1d3f602ae878223a35e0b916aee1cdf6b07",
+    "lib/planner/fleet-registry.ts": "62715f816fc31b1abc6114f89d7c9bb8838b58504a20303f910262017f1f4a69",
+    "components/planner/mission-data-panel.tsx": "bc5830446805d062c9fbb28923a1234533795412503b00c76ef669241042c7e0",
+    "components/planner/mission-map-objects.tsx": "2087a22a788b64d2625f0e516560800b97c4794b392d25133bee31a70c7b72c7",
+    "app/planner/mission-expert.css": "689f3f9b413e01e18479e8f7532774d8856eb2a5c1624a544a309b017fd0f3d7",
+    "lib/planner/mission-operations.ts": "b0cfcf1d313f323afaae7cca1efdea26b47225965116b3acb1f0d55c5a1c4b24",
+    "components/planner/mission-map.tsx": "747b36ee61bab8a1d0a1e7c3f3913121c34087abff2114eebcc92d6aaa9fc799",
+    "components/planner/mission-session-cards.tsx": "d91c62d488aca51bea9cfacc28102889c13b8e49e6918e7c8a5d54518766bea5",
+    "components/planner/mission-session-report.tsx": "7ca0ad965207d9844ef70804f77e61a72b57fe7c357bfd9a962acc16a1abb168",
+    "lib/planner/mission-collection.ts": "43bac0330832b8c327095f6546178e5285f9b5493bb08690bf5f695087744461",
+    "lib/planner/mission-bases.ts": "2f34857de26315f2e031db4225974f7d6c685bcbd03c2718afe5771fe9fef7c1",
+    "hooks/use-mission-operations.ts": "72692407a27cd9109fe2e1cfbaf49fb6329e740a6a887d43e619979247f64b50",
+    "components/planner/mission-wizard.tsx": "0f985590d5fa8116618ba03b56af0a408a1a1874163b54e66161e9296b38d53f"
+  }
+}

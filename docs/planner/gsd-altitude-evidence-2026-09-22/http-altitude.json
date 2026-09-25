@@ -1,0 +1,40 @@
+{
+  "at": "2026-09-22T18:15:48.564Z",
+  "base": "http://127.0.0.1:3016",
+  "status": "pass",
+  "results": [
+    {
+      "name": "gsd-2cm",
+      "pass": true
+    },
+    {
+      "name": "gsd-cap-even-in-700m-corridor",
+      "pass": true
+    },
+    {
+      "name": "lower-operator-ceiling",
+      "pass": true
+    },
+    {
+      "name": "impossible-gsd-minimum",
+      "pass": true
+    },
+    {
+      "name": "fixed-150-refused",
+      "pass": true
+    },
+    {
+      "name": "fixed-151-refused",
+      "pass": true
+    },
+    {
+      "name": "fixed-height-bad-gsd-refused",
+      "pass": true
+    },
+    {
+      "name": "legacy-150-http-422",
+      "pass": true
+    }
+  ],
+  "retries": 0
+}

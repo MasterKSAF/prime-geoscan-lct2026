@@ -1,0 +1,271 @@
+{
+  "name": "demo3-20260925-browser",
+  "startedAt": "2026-09-25T11:09:42.306Z",
+  "finishedAt": "2026-09-25T11:10:06.618Z",
+  "exitCode": 0,
+  "passed": true,
+  "result": {
+    "name": "demo3-20260925-browser",
+    "checks": [
+      {
+        "name": "Calculation HTTP 200",
+        "pass": true,
+        "detail": 200
+      },
+      {
+        "name": "Current engine refuses original insufficient-charge Demo3",
+        "pass": true,
+        "detail": [
+          {
+            "status": "not_found",
+            "failures": [
+              {
+                "id": "STRIPS",
+                "status": "fail",
+                "title": "Все рабочие полосы назначены",
+                "detail": "Сверены идентификаторы и геометрия каждой исходной полосы, пропуски и повторы запрещены."
+              },
+              {
+                "id": "PHOTO_demo-repair-rgb_COVERAGE",
+                "status": "fail",
+                "title": "Покрытие ожидаемыми кадрами",
+                "detail": "0 модельных экспозиций; непокрыто 66000.00 из 66000.00 м². Проверяются исходный контур, отверстия, края и стыки. Камера вниз, плоская поверхность; реальные фото не получены."
+              },
+              {
+                "id": "COVERAGE_demo-repair-rgb",
+                "status": "fail",
+                "title": "Геометрическое покрытие работы",
+                "detail": "0.000% доступной области; 0.000% исходной. Исключённая запретами часть не засчитана как выполненная."
+              }
+            ]
+          },
+          {
+            "status": "not_found",
+            "failures": [
+              {
+                "id": "STRIPS",
+                "status": "fail",
+                "title": "Все рабочие полосы назначены",
+                "detail": "Сверены идентификаторы и геометрия каждой исходной полосы, пропуски и повторы запрещены."
+              },
+              {
+                "id": "PHOTO_demo-repair-rgb_COVERAGE",
+                "status": "fail",
+                "title": "Покрытие ожидаемыми кадрами",
+                "detail": "0 модельных экспозиций; непокрыто 66000.00 из 66000.00 м². Проверяются исходный контур, отверстия, края и стыки. Камера вниз, плоская поверхность; реальные фото не получены."
+              },
+              {
+                "id": "COVERAGE_demo-repair-rgb",
+                "status": "fail",
+                "title": "Геометрическое покрытие работы",
+                "detail": "0.000% доступной области; 0.000% исходной. Исключённая запретами часть не засчитана как выполненная."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Unsafe mission cannot be approved",
+        "pass": true
+      },
+      {
+        "name": "Battery replacement trial is recalculated and feasible",
+        "pass": true
+      },
+      {
+        "name": "Calculation HTTP 200",
+        "pass": true,
+        "detail": 200
+      },
+      {
+        "name": "Explicit battery repair changes input hash and produces feasible recalculation",
+        "pass": true,
+        "detail": {
+          "originalHash": "9ca14b66f0cc842064ab8ec8049e02109a24521c570b0b87df5264625b9bc880",
+          "repairedHash": "a173f73f83f46f5e4760b5644ce507d6814b40fd1173a1c697016236fb78af7e",
+          "batteries": [
+            {
+              "id": "demo-07-battery-1",
+              "vehicleId": "demo-07",
+              "name": "АКБ 1 · demo-07",
+              "initialPct": 100,
+              "readyAt": "2026-06-15T09:00:00.000Z",
+              "rechargeSec": null,
+              "cycles": null,
+              "commissionedAt": null,
+              "source": "ГИПОТЕЗА: установленная батарея заменена до старта и даёт 100%; состояние должно быть подтверждено заново."
+            },
+            {
+              "id": "north-201-rgb-4-current",
+              "vehicleId": "north-201-rgb-4",
+              "name": "Текущая · Геоскан 201 · RGB · Север 4",
+              "initialPct": 100,
+              "readyAt": "2026-06-15T09:00:00.000Z",
+              "rechargeSec": null,
+              "cycles": null,
+              "commissionedAt": null,
+              "source": "Начальный заряд общего модельного парка; симуляция."
+            },
+            {
+              "id": "north-801-rgb-ir-3-current",
+              "vehicleId": "north-801-rgb-ir-3",
+              "name": "Текущая · Геоскан 801 · RGB + ИК · Север 3",
+              "initialPct": 100,
+              "readyAt": "2026-06-15T09:00:00.000Z",
+              "rechargeSec": null,
+              "cycles": null,
+              "commissionedAt": null,
+              "source": "Начальный заряд общего модельного парка; симуляция."
+            },
+            {
+              "id": "north-gemini-ms-1-current",
+              "vehicleId": "north-gemini-ms-1",
+              "name": "Текущая · Геоскан Gemini · Pollux · Север 1",
+              "initialPct": 100,
+              "readyAt": "2026-06-15T09:00:00.000Z",
+              "rechargeSec": null,
+              "cycles": null,
+              "commissionedAt": null,
+              "source": "Начальный заряд общего модельного парка; симуляция."
+            },
+            {
+              "id": "north-gemini-ms-2-current",
+              "vehicleId": "north-gemini-ms-2",
+              "name": "Текущая · Геоскан Gemini · Pollux · Север 2",
+              "initialPct": 100,
+              "readyAt": "2026-06-15T09:00:00.000Z",
+              "rechargeSec": null,
+              "cycles": null,
+              "commissionedAt": null,
+              "source": "Начальный заряд общего модельного парка; симуляция."
+            },
+            {
+              "id": "rgb-center-battery-1",
+              "vehicleId": "rgb-center",
+              "name": "АКБ 1 · БВС 01 · центральная база",
+              "initialPct": 100,
+              "readyAt": "2026-06-15T09:00:00.000Z",
+              "rechargeSec": null,
+              "cycles": null,
+              "commissionedAt": null,
+              "source": "Синтетическая доступность заряженного экземпляра АКБ; не измеренное время реальной подготовки."
+            },
+            {
+              "id": "rgb-fast-battery-1",
+              "vehicleId": "rgb-fast",
+              "name": "АКБ 1 · БВС 03 · быстрый",
+              "initialPct": 100,
+              "readyAt": "2026-06-15T09:00:00.000Z",
+              "rechargeSec": null,
+              "cycles": null,
+              "commissionedAt": null,
+              "source": "Синтетическая доступность заряженного экземпляра АКБ; не измеренное время реальной подготовки."
+            },
+            {
+              "id": "rgb-near-battery-1",
+              "vehicleId": "rgb-near",
+              "name": "АКБ 1 · БВС 02 · ближняя база",
+              "initialPct": 100,
+              "readyAt": "2026-06-15T09:00:00.000Z",
+              "rechargeSec": null,
+              "cycles": null,
+              "commissionedAt": null,
+              "source": "Синтетическая доступность заряженного экземпляра АКБ; не измеренное время реальной подготовки."
+            }
+          ]
+        }
+      },
+      {
+        "name": "Repaired mission actually completes through UI",
+        "pass": true
+      },
+      {
+        "name": "Repaired run is completed in mission report",
+        "pass": true,
+        "detail": "3\tНедостаточный заряд и решение\tЗавершено\nПроходы: 100%\nПокрытие: 100%\n\t1 / 1\tОткрыть отчёт\nДругие файлы\n\t\nМодель · ограничений проверки: 6\nВсе проверки\t\nСкачать маршруты\n\tДоказательства ZIP"
+      },
+      {
+        "name": "Diagnostic and completed evidence plus routes downloaded",
+        "pass": true
+      },
+      {
+        "name": "No browser exceptions",
+        "pass": true,
+        "detail": []
+      }
+    ],
+    "errors": [],
+    "engineVersion": "0.4.0",
+    "refused": {
+      "inputHash": "9ca14b66f0cc842064ab8ec8049e02109a24521c570b0b87df5264625b9bc880",
+      "candidates": [
+        {
+          "id": "makespan",
+          "status": "not_found",
+          "metrics": {
+            "makespanSec": 0,
+            "flightTimeSec": 0,
+            "distanceM": 0,
+            "sortieCount": 0,
+            "vehicleCount": 0,
+            "coveragePct": 0,
+            "grossCoveragePct": 0,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 0
+          }
+        },
+        {
+          "id": "flightTime",
+          "status": "not_found",
+          "metrics": {
+            "makespanSec": 0,
+            "flightTimeSec": 0,
+            "distanceM": 0,
+            "sortieCount": 0,
+            "vehicleCount": 0,
+            "coveragePct": 0,
+            "grossCoveragePct": 0,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 0
+          }
+        }
+      ]
+    },
+    "repaired": {
+      "id": "demo-03-repair",
+      "inputHash": "a173f73f83f46f5e4760b5644ce507d6814b40fd1173a1c697016236fb78af7e",
+      "candidates": [
+        {
+          "id": "makespan",
+          "status": "feasible_model",
+          "metrics": {
+            "makespanSec": 484.82103467188966,
+            "flightTimeSec": 424.82103467188966,
+            "distanceM": 2202.971965747588,
+            "sortieCount": 1,
+            "vehicleCount": 1,
+            "coveragePct": 99.99999999565911,
+            "grossCoveragePct": 99.99999999565911,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 74.71303365048276
+          }
+        },
+        {
+          "id": "flightTime",
+          "status": "feasible_model",
+          "metrics": {
+            "makespanSec": 484.82103467188966,
+            "flightTimeSec": 424.82103467188966,
+            "distanceM": 2202.971965747588,
+            "sortieCount": 1,
+            "vehicleCount": 1,
+            "coveragePct": 99.99999999565911,
+            "grossCoveragePct": 99.99999999565911,
+            "batteryChanges": 0,
+            "minimumRemainingPct": 74.71303365048276
+          }
+        }
+      ]
+    }
+  }
+}

@@ -161,7 +161,7 @@ export function parseObstacleKml(sourceText: string): ObstacleCatalog {
       )
         throw new Error('Неподдержанное число контуров.');
       obj.coordinates = coordinateNodes.map((n) => {
-        const raw = (n.textContent ?? '').trim().split(/\s+/);
+        const raw = (n.textContent ?? '').trim().replace(/\s*,\s*/g, ',').split(/\s+/);
         if ((tuples += raw.length) > 200000)
           throw new Error('KML: превышено 200 000 координат.');
         if (raw.length > 70)
@@ -190,11 +190,13 @@ export function parseObstacleKml(sourceText: string): ObstacleCatalog {
       });
       obj.bounds = coordinateBounds(obj.coordinates.flat());
       if (
-        !['absolute', 'relativeToGround', 'clampToGround'].includes(
+        !['absolute', 'relativeToGround', 'clampToGround', 'relativeToSeaFloor', 'clampToSeaFloor'].includes(
           obj.altitudeMode,
         )
       )
         throw new Error('Неизвестная система высот.');
+      // Preserve the declared datum, including non-gx exports. The footprint is
+      // avoided at ALL heights: no sea-floor-to-AGL conversion is being claimed.
       if (obj.kind === 'Polygon') {
         for (const ring of obj.coordinates) {
           if (ring.length < 3) throw new Error('Недостаточно вершин полигона.');

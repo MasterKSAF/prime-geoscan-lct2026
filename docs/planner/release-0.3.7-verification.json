@@ -1,0 +1,128 @@
+{
+  "version": "0.3.7",
+  "checkedAt": "2026-09-23T19:06:37.894Z",
+  "status": "pass",
+  "frozen": false,
+  "committed": false,
+  "pushed": false,
+  "unitTests": {
+    "windows": 600,
+    "dockerLinux": 600,
+    "failed": 0
+  },
+  "browser": {
+    "passed": 47,
+    "failed": 0,
+    "groups": [
+      {
+        "name": "browser-production",
+        "passed": 17,
+        "failed": 0,
+        "evidence": "release-0.3.7-evidence/browser-production.json"
+      },
+      {
+        "name": "regression-production",
+        "passed": 16,
+        "failed": 0,
+        "evidence": "release-0.3.7-evidence/regression-production.json"
+      },
+      {
+        "name": "recovery-returned",
+        "passed": 7,
+        "failed": 0,
+        "evidence": "release-0.3.7-evidence/recovery-returned.json"
+      },
+      {
+        "name": "recovery-blocked",
+        "passed": 7,
+        "failed": 0,
+        "evidence": "release-0.3.7-evidence/recovery-blocked.json"
+      }
+    ]
+  },
+  "archives": [
+    {
+      "name": "archive-demo2",
+      "status": "passes-declared-model",
+      "checkCounts": {
+        "pass": 54,
+        "unknown": 9
+      }
+    },
+    {
+      "name": "archive-demo2-linux",
+      "status": "passes-declared-model",
+      "checkCounts": {
+        "pass": 54,
+        "unknown": 9
+      }
+    },
+    {
+      "name": "archive-demo3",
+      "status": "diagnostic-only-not-flight-approved",
+      "checkCounts": {
+        "pass": 32,
+        "fail": 3,
+        "unknown": 6
+      }
+    },
+    {
+      "name": "archive-returned",
+      "status": "incident-diagnostic-reproduced",
+      "stage": "landed",
+      "checkCounts": {}
+    },
+    {
+      "name": "archive-blocked",
+      "status": "incident-diagnostic-reproduced",
+      "stage": "blocked",
+      "checkCounts": {}
+    }
+  ],
+  "runtime": {
+    "imageId": "sha256:de319b50561adf2d20afb0974533845450d7d0f20e0e42949a5b84576d5608b7",
+    "files": 269,
+    "mismatches": [],
+    "health": {
+      "status": "ok",
+      "engineVersion": "0.1.0",
+      "missionEngineVersion": "0.3.7",
+      "missionSchemaVersion": "2.0",
+      "safetyValidationPolicy": "continuous-occupancy-v1",
+      "mode": "engineering-preview",
+      "flightReady": false
+    }
+  },
+  "artifacts": [
+    {
+      "path": "output/playwright/0.3.7-demo2-evidence.zip",
+      "bytes": 43247794,
+      "sha256": "e8f6134101d17245bb6c5bcae81484cfc30c489afabc99863e571b47330ebef4"
+    },
+    {
+      "path": "output/playwright/0.3.7-demo3-evidence.zip",
+      "bytes": 125585,
+      "sha256": "d010bf5cbd66e0ce666e50affbe8073e7be812431d4affca2d1f3ca07d9c07a2"
+    },
+    {
+      "path": "output/playwright/0.3.7-returned.incident.zip",
+      "bytes": 672117,
+      "sha256": "b23ff247c42d79b4077209acbe7c0c02cb6e4a2077ffcb2de9753edb89291a3c"
+    },
+    {
+      "path": "output/playwright/0.3.7-blocked.incident.zip",
+      "bytes": 391747,
+      "sha256": "efc19dd45a078f040f4f8dbf77327bf69d1c18153fd6c78305120712c51482c2"
+    },
+    {
+      "path": "output/playwright/0.3.7-demo2.mp4",
+      "bytes": 364114,
+      "sha256": "2aba65d871fd8bcd5da1f93e6440687e29df277bea1c02e242214be640c1ee0d"
+    }
+  ],
+  "limits": [
+    "Model checks, not physical flight validation or guaranteed jury score.",
+    "Search is budget limited; no global optimum claim.",
+    "Presentation is a working draft pending team details."
+  ]
+}

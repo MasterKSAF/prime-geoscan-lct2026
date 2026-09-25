@@ -1,0 +1,92 @@
+{
+  "at": "2026-09-22T18:18:29.213Z",
+  "base": "http://127.0.0.1:3016",
+  "status": "pass",
+  "retries": 0,
+  "results": [
+    {
+      "name": "round 1: oversized /api/planner/missions/solve then valid solve, no retry",
+      "pass": true
+    },
+    {
+      "name": "round 1: oversized /api/planner/missions/contingency then valid solve, no retry",
+      "pass": true
+    },
+    {
+      "name": "round 1: oversized /api/planner/missions/analyze then valid solve, no retry",
+      "pass": true
+    },
+    {
+      "name": "round 2: oversized /api/planner/missions/solve then valid solve, no retry",
+      "pass": true
+    },
+    {
+      "name": "round 2: oversized /api/planner/missions/contingency then valid solve, no retry",
+      "pass": true
+    },
+    {
+      "name": "round 2: oversized /api/planner/missions/analyze then valid solve, no retry",
+      "pass": true
+    },
+    {
+      "name": "round 3: oversized /api/planner/missions/solve then valid solve, no retry",
+      "pass": true
+    },
+    {
+      "name": "round 3: oversized /api/planner/missions/contingency then valid solve, no retry",
+      "pass": true
+    },
+    {
+      "name": "round 3: oversized /api/planner/missions/analyze then valid solve, no retry",
+      "pass": true
+    },
+    {
+      "name": "round 4: oversized /api/planner/missions/solve then valid solve, no retry",
+      "pass": true
+    },
+    {
+      "name": "round 4: oversized /api/planner/missions/contingency then valid solve, no retry",
+      "pass": true
+    },
+    {
+      "name": "round 4: oversized /api/planner/missions/analyze then valid solve, no retry",
+      "pass": true
+    },
+    {
+      "name": "round 5: oversized /api/planner/missions/solve then valid solve, no retry",
+      "pass": true
+    },
+    {
+      "name": "round 5: oversized /api/planner/missions/contingency then valid solve, no retry",
+      "pass": true
+    },
+    {
+      "name": "round 5: oversized /api/planner/missions/analyze then valid solve, no retry",
+      "pass": true
+    },
+    {
+      "name": "chunked oversize then valid solve",
+      "pass": true
+    },
+    {
+      "name": "extended endpoint still refuses above 12 MiB",
+      "pass": true
+    },
+    {
+      "name": "slow upload timeout then valid solve",
+      "pass": true
+    },
+    {
+      "name": "ORIGIN then valid solve",
+      "pass": true
+    },
+    {
+      "name": "TYPE then valid solve",
+      "pass": true
+    },
+    {
+      "name": "malformed JSON then valid solve",
+      "pass": true
+    }
+  ]
+}

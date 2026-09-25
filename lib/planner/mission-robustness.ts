@@ -3,7 +3,11 @@ import { distance } from './geometry.ts';
 import { fixedWingSegmentKinematics } from './fixed-wing-mission.ts';
 import { missionJobContext, missionLegSpeed } from './mission-engine.ts';
 import type { JobContext } from './mission-engine.ts';
-import { assertSafeTree, checkTextSize, checkMissionSize } from './mission-io.ts';
+import {
+  assertSafeTree,
+  checkTextSize,
+  checkMissionSize,
+} from './mission-io.ts';
 import { MAX_OBSTACLE_MISSION_BYTES } from './obstacle-layer.ts';
 import {
   missionDocumentSchema,
@@ -26,6 +30,7 @@ import {
   validateMissionCandidate,
 } from './mission-validation.ts';
 import { missionWeatherChecks, weatherEnvelope } from './mission-weather.ts';
+import { migrateMissionCameraBindings } from './camera-profile.ts';
 
 export const MAX_ROBUSTNESS_REQUEST_BYTES = 2 * 1024 * 1024;
 export const MAX_ROBUSTNESS_SEGMENTS = 1200;
@@ -72,6 +77,7 @@ const segmentSchema = z
     batteryFromPct: finite(0, 100),
     batteryToPct: finite(0, 100),
     stripId: finite(0, 400).int().optional(),
+    jobId: identifier.optional(),
     fixedWing: fixedWingSegmentMetadataSchema.optional(),
   })
   .strict();
@@ -80,6 +86,7 @@ const sortieSchema = z
     id: identifier,
     jobId: identifier,
     batteryId: identifier,
+    cameraId: identifier.optional(),
     vehicleId: identifier,
     name: z.string().min(1).max(60),
     startSec: finite(0, 604800),
@@ -183,6 +190,8 @@ const candidateSchema = z
         z
           .object({
             jobId: identifier,
+            cameraProfileId: identifier.optional(),
+            cameraVehicleId: identifier.optional(),
             bearingDeg: finite(0, 180),
             grossAreaHa: finite(),
             targetAreaHa: finite(),
@@ -334,15 +343,25 @@ function contextsFor(
   candidate: MissionCandidate,
 ): JobContext[] {
   return document.jobs.map((job) =>
-    missionJobContext(document, {
-      ...job,
-      job: {
-        ...job.job,
-        bearingDeg: candidate.jobCoverage.find((row) => row.jobId === job.id)!
-          .bearingDeg,
-        autoBearing: false,
+    missionJobContext(
+      document,
+      {
+        ...job,
+        job: {
+          ...job.job,
+          bearingDeg: candidate.jobCoverage.find((row) => row.jobId === job.id)!
+            .bearingDeg,
+          autoBearing: false,
+        },
       },
-    }),
+      false,
+      document.scenario.vehicles.find(
+        (v) =>
+          v.id ===
+          candidate.jobCoverage.find((row) => row.jobId === job.id)
+            ?.cameraVehicleId,
+      ),
+    ),
   );
 }
 
@@ -472,11 +491,26 @@ export async function analyzeMissionRobustness(
 ): Promise<MissionRobustnessReport> {
   const started = performance.now();
   assertSafeTree(value);
-  checkTextSize(JSON.stringify(value), MAX_OBSTACLE_MISSION_BYTES + MAX_ROBUSTNESS_REQUEST_BYTES);
+  checkTextSize(
+    JSON.stringify(value),
+    MAX_OBSTACLE_MISSION_BYTES + MAX_ROBUSTNESS_REQUEST_BYTES,
+  );
   const request = requestSchema.parse(value);
-  const document = parseMissionDocument(request.document);
+  const document = migrateMissionCameraBindings(
+    parseMissionDocument(request.document),
+  ).document;
   checkMissionSize(document);
-  checkTextSize(JSON.stringify({ ...request, document: { ...document, obstacleLayer: undefined } }), MAX_ROBUSTNESS_REQUEST_BYTES);
+  checkTextSize(
+    JSON.stringify({
+      ...request,
+      document: {
+        ...document,
+        obstacleLayer: undefined,
+        catalogLayers: undefined,
+      },
+    }),
+    MAX_ROBUSTNESS_REQUEST_BYTES,
+  );
   const candidate: MissionCandidate = request.candidate;
   const perturbations =
     request.perturbations ?? DEFAULT_ROBUSTNESS_PERTURBATIONS;

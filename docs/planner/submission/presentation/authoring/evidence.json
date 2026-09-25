@@ -1,0 +1,32 @@
+{
+  "engineVersion": "0.4.0",
+  "date": "2026-09-25",
+  "testLog": "output/camera-regression-2026-09-25/full-suite.log",
+  "releaseEvidence": "output/submission-validation-20260925/package-docker-build.log",
+  "productionImage": "sha256:2c4a199ef1ae6f749be17fd9113d831401a7a3d3c5bf3848af5be8ab517f470f",
+  "demo1": {
+    "sourceDirectory": "output/playwright/video-demo1-20260925/take-03",
+    "runId": "run-1790326339466-csscx",
+    "archiveSha256": "128265352e840cb3c139b177b396f75db3acf5fccc340a75b915f5081d13b63f"
+  },
+  "demo2": {
+    "image": "demo2-dense.png",
+    "crop": { "left": 0.504, "top": 0.35, "right": 0.009, "bottom": 0.15 },
+    "browserEvidence": "dense-20260925-browser.result.json",
+    "sourceImage": "output/playwright/acceptance-2026-09-25/ui/dense-plans.png",
+    "archiveSha256": "fbdb254489d5e3581f000b0aed5be6ed9717a6b3da90c633105ec72c2150fdca",
+    "edits": [
+      ["sh/5k7yt03a", "Отдельная проверочная копия Демо 2. 54 объекта в окрестности; 5 габаритов пересекают коридор.", "Отдельная проверочная копия Демо 2. 2 Gemini, 3 работы, каталог препятствий экспертов."]
+    ],
+    "notes": "Planner 0.4.0, 25.09.2026. Свежая плотная копия Демо 2, не исходное Демо 2. Источник: output/playwright/acceptance-2026-09-25/ui/dense-20260925-browser.result.json: PASS 11/11, errors=[]. inputHash 9b59ea7aa4dccee95ff3487f4a4d87d8ae97eb299b731b6e53fdc3d1a33fafa9. 563.6256132941617 с до завершения (9,4 мин), 748.9906847239306 с налёта (12,5 мин), 2 Gemini: PF1B и Pollux, 3 работы. Критерии дали одинаковый найденный маршрут. Миссия действительно завершена в UI-симуляции, скачаны dense.completed.evidence.zip и индивидуальные маршруты. Перетаскивание базы, сохранение БВС/камер, отказ без границы и восстановление границы проверены. EXTERNAL_OBSTACLES: полный каталог 5164; сегментов 81; точных проверок 32; пересечений защитных контуров в принятой горизонтальной модели не найдено. Аналитическое разнесение использует учебные интервалы, не утверждённый норматив. Фактический кадр dense-plans.png нативно обрезан до карты. Глобальная оптимальность и физический полёт не заявляются."
+  },
+  "demo3": {
+    "image": "demo3-repair-card.png",
+    "crop": { "left": 0, "top": 0, "right": 0, "bottom": 0.005 },
+    "browserEvidence": "demo3-20260925-browser.result.json",
+    "sourceImage": "output/playwright/acceptance-2026-09-25/ui/demo3-repair-card.png",
+    "archiveSha256": "9b0e6c00b6af40c47ccbed72860c06bbe05da86b4521469e3ce16ce52ac30e65",
+    "edits": [],
+    "notes": "Planner 0.4.0, 25.09.2026. Источник: output/playwright/acceptance-2026-09-25/ui/demo3-20260925-browser.result.json: PASS 10/10, errors=[]. Исходный inputHash 9ca14b66f0cc842064ab8ec8049e02109a24521c570b0b87df5264625b9bc880: not_found при 26% заряда назначенного БВС; запуск нельзя подтвердить. На слайде фактическая карточка повторного расчёта замены батареи до старта: 26→100%, feasible_model. Это модельная гипотеза, не проверка реальной батареи; будущая замена в полёте не выдумывается. После явного изменения входа repairedHash a173f73f83f46f5e4760b5644ce507d6814b40fd1173a1c697016236fb78af7e исправленная миссия также завершена в UI-симуляции: 484.82103467188966 с, 424.82103467188966 с налёта, 1 БВС. Скачаны диагностический и завершённый ZIP и маршруты. Отказ относится к текущему входу и ограниченному поиску, а не доказывает математическую невозможность."
+  }
+}

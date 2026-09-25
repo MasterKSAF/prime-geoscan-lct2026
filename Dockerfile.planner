@@ -1,6 +1,15 @@
 # Reproducible local stand; not a hardened public production deployment.
 FROM node:24.14.1-bookworm-slim@sha256:b506e7321f176aae77317f99d67a24b272c1f09f1d10f1761f2773447d8da26c
 WORKDIR /app
+# Install recording support before application layers, so UI edits reuse it.
+# Use the public Mozilla roots bundled with the pinned Node runtime for TLS.
+RUN node -e "require('node:fs').writeFileSync('/app/node-trust-roots.pem', require('node:tls').rootCertificates.join('\n'))"
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    rm -f /etc/apt/apt.conf.d/docker-clean \
+    && sed -i 's|http://deb.debian.org|https://deb.debian.org|g' /etc/apt/sources.list.d/debian.sources \
+    && apt-get -o Acquire::https::CaInfo=/app/node-trust-roots.pem -o Acquire::Retries=2 -o Acquire::https::Timeout=45 update \
+    && apt-get -o Acquire::https::CaInfo=/app/node-trust-roots.pem -o Acquire::Retries=2 -o Acquire::https::Timeout=45 install -y --no-install-recommends ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY tsconfig.json next.config.ts vite.config.ts ./
@@ -11,6 +20,8 @@ COPY lib ./lib
 COPY hooks ./hooks
 COPY public ./public
 COPY tests ./tests
+COPY docs/planner/expert-materials/2026-09-22/originals/primorsky-obstacles.kml ./docs/planner/expert-materials/2026-09-22/originals/primorsky-obstacles.kml
+COPY docs/planner/expert-materials/2026-09-23/originals/*.kml ./docs/planner/expert-materials/2026-09-23/originals/
 COPY scripts/verify-mission-evidence.ts ./scripts/verify-mission-evidence.ts
 COPY scripts/verify-mission-archive.ts ./scripts/verify-mission-archive.ts
 COPY scripts/verify-mission-run-report.ts ./scripts/verify-mission-run-report.ts
@@ -18,10 +29,8 @@ COPY scripts/benchmark-missions.ts ./scripts/benchmark-missions.ts
 COPY scripts/verify-mission-robustness.ts ./scripts/verify-mission-robustness.ts
 COPY scripts/verify-mission-contingency.ts ./scripts/verify-mission-contingency.ts
 COPY scripts/create-geometry-overflow-fixtures.ts ./scripts/create-geometry-overflow-fixtures.ts
+COPY scripts/start-planner.mjs ./scripts/start-planner.mjs
 RUN npm run typecheck && npm run test:planner && npm run build
-# workerd on slim Linux has no system CA store. Reuse the public Mozilla trust
-# roots bundled with the pinned Node runtime; never disable TLS verification.
-RUN node -e "require('node:fs').writeFileSync('/app/node-trust-roots.pem', require('node:tls').rootCertificates.join('\n'))"
 RUN mkdir -p /app/.wrangler /app/dist/server/.wrangler /app/node_modules/.mf \
     && chown node:node /app \
     && chown -R node:node /app/.wrangler /app/dist/server/.wrangler /app/node_modules/.mf
@@ -29,6 +38,7 @@ USER node
 ENV WRANGLER_SEND_METRICS=false
 ENV WRANGLER_WRITE_LOGS=false
 ENV NODE_EXTRA_CA_CERTS=/app/node-trust-roots.pem
+ENV PLANNER_HOST=0.0.0.0
 EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=40s CMD node -e "fetch('http://127.0.0.1:3000/api/planner/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
-CMD ["./node_modules/.bin/wrangler", "dev", "--config", "dist/server/wrangler.json", "--ip", "0.0.0.0", "--port", "3000", "--local"]
+CMD ["node", "--experimental-transform-types", "scripts/start-planner.mjs"]

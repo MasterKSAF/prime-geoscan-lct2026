@@ -29,7 +29,7 @@ function costFixture(
   return candidate;
 }
 
-void test('balanced recommendation retains two required objectives and an independently valid exported candidate', async () => {
+void test('deadline recommendation retains both required objectives and independently valid evidence', async () => {
   assert.equal(solved.candidates.length, 2);
   assert.deepEqual(
     solved.candidates.map((candidate) => candidate.objective),
@@ -39,11 +39,11 @@ void test('balanced recommendation retains two required objectives and an indepe
   assert.ok(recommendation);
   assert.equal(recommendation.candidate.id, 'balanced');
   assert.equal(recommendation.candidate.status, 'feasible_model');
-  assert.equal(recommendation.policy, 'balanced-normalized-v1');
+  assert.equal(recommendation.policy, 'deadline-min-flight-v1');
   assert.equal(recommendation.resourceProxy, 'flightTimeSec');
   assert.match(
     recommendation.explanation,
-    /50\/50.*налёт.*не физический износ/,
+    /Уложиться в срок.*налёт.*не физический износ/,
   );
   assert.ok(
     recommendation.candidate.assumptions.includes(recommendation.explanation),
@@ -64,7 +64,7 @@ void test('balanced recommendation retains two required objectives and an indepe
   );
 });
 
-void test('50/50 normalized compromise may select an interior option from the full existing pool', () => {
+void test('deadline policy selects smallest flight sum, not a fabricated 50/50 compromise', () => {
   const fast = costFixture('fast', 100, 300);
   const economical = costFixture('economical', 300, 100);
   const compromise = costFixture('interior', 160, 160);
@@ -74,17 +74,13 @@ void test('50/50 normalized compromise may select an interior option from the fu
     [fast, economical],
   );
   assert.ok(result);
-  assert.equal(result.candidate.metrics.makespanSec, 160);
-  assert.equal(result.candidate.metrics.flightTimeSec, 160);
-  assert.ok(Math.abs(result.score - 0.3) < 1e-12);
-  assert.deepEqual(result.ranges, {
-    makespanSec: { min: 100, max: 300 },
-    flightTimeSec: { min: 100, max: 300 },
-  });
+  assert.equal(result.candidate.metrics.makespanSec, 300);
+  assert.equal(result.candidate.metrics.flightTimeSec, 100);
+  assert.equal(result.slackSec, result.deadlineSec - 300);
   assert.equal(result.poolSize, 3);
   assert.equal(result.distinctPlanCount, 3);
-  assert.equal(result.samePlan, false);
-  assert.deepEqual(result.samePlanAs, []);
+  assert.equal(result.samePlan, true);
+  assert.deepEqual(result.samePlanAs, [economical.objective]);
   assert.equal(
     compromise.id,
     'interior',
@@ -116,7 +112,7 @@ void test('unsafe or incomplete cheap plans never participate in normalization o
   assert.ok(result);
   assert.equal(result.poolSize, 1);
   assert.equal(result.candidate.metrics.makespanSec, 100);
-  assert.equal(result.score, 0);
+  assert.equal(result.slackSec, result.deadlineSec - 100);
   assert.equal(
     buildMissionRecommendation(
       document,
@@ -141,8 +137,7 @@ void test('zero metric ranges and identical routes are explicit without inventin
     [fast, economical],
   );
   assert.ok(result);
-  assert.equal(result.score, 0);
-  assert.deepEqual(result.normalized, { makespan: 0, flightTime: 0 });
+  assert.equal(result.slackSec, result.deadlineSec - fast.metrics.makespanSec);
   assert.equal(result.poolSize, 2);
   assert.equal(result.distinctPlanCount, 1);
   assert.equal(result.samePlan, true);

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { demoScenario } from '../lib/planner/demo.ts';
-import { demoMission } from '../lib/planner/mission-demo.ts';
+import { createDemoQuality, demoMission } from '../lib/planner/mission-demo.ts';
 import {
   addMissionVehicle,
   serializeMissionFleet,
@@ -107,15 +107,15 @@ void test('new 201 receives a complete independent model without changing legacy
   assert.deepEqual(demoScenario(), legacy);
 });
 
-for (const [model, configuration, work] of [
-  ['Gemini', 'rgb', 'RGB'],
-  ['Gemini', 'ms', 'MS'],
-  ['801', 'rgb-ir', 'RGB'],
-  ['801', 'rgb-ir', 'IR'],
-  ['201', 'rgb', 'RGB'],
-  ['201', 'ms', 'MS'],
+for (const [model, configuration, work, hasCompleteOptics] of [
+  ['Gemini', 'rgb', 'RGB', true],
+  ['Gemini', 'ms', 'MS', true],
+  ['801', 'rgb-ir', 'RGB', false],
+  ['801', 'rgb-ir', 'IR', false],
+  ['201', 'rgb', 'RGB', false],
+  ['201', 'ms', 'MS', true],
 ] as const) {
-  void test(`catalogue ${model}/${configuration}/${work} schedules and independently replays a suitable model mission`, async () => {
+  void test(`catalogue ${model}/${configuration}/${work}: ${hasCompleteOptics ? 'complete optics schedule and independently replay' : 'incomplete optics block the plan without a guessed camera'}`, async () => {
     const { d } = fixedWingFixture(2);
     const added = addMissionVehicle(d, model, configuration);
     const v = added.scenario.vehicles.at(-1)!;
@@ -126,6 +126,11 @@ for (const [model, configuration, work] of [
       (battery) => battery.vehicleId === v.id,
     );
     added.jobs[0].job.type = work;
+    added.jobs[0].quality = {
+      ...createDemoQuality(work),
+      altitudeMode: 'gsd',
+      forwardOverlap: 0.6,
+    };
     added.scenario.job = added.jobs[0].job;
     added.planning.maxComputeMs = 6000;
     const input = installedBatteryDocument(parseMissionDocument(added));
@@ -133,6 +138,25 @@ for (const [model, configuration, work] of [
     const candidate = result.candidates.find(
       (item) => item.status === 'feasible_model',
     );
+    if (!hasCompleteOptics) {
+      assert.equal(candidate, undefined);
+      assert.ok(result.candidates.length > 0);
+      for (const item of result.candidates) {
+        assert.equal(item.sorties.length, 0);
+        const failed = item.checks.filter((check) => check.status === 'fail');
+        assert.ok(
+          failed.some((check) => /CAMERA/.test(check.id)),
+          JSON.stringify(failed),
+        );
+        assert.ok(
+          failed.some((check) =>
+            /не выбрана|геометри|оптика/.test(check.detail),
+          ),
+          JSON.stringify(failed),
+        );
+      }
+      return;
+    }
     assert.ok(
       candidate,
       JSON.stringify(
@@ -143,6 +167,11 @@ for (const [model, configuration, work] of [
       ),
     );
     assert.ok(candidate.sorties.every((sortie) => sortie.vehicleId === v.id));
+    assert.ok(
+      candidate.sorties.every((sortie) =>
+        v.cameraIds!.includes(sortie.cameraId!),
+      ),
+    );
     const checks = await validateExportedCandidate(input, candidate);
     assert.deepEqual(
       checks.filter((check) => check.status === 'fail'),

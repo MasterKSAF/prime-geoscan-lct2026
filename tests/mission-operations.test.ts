@@ -3,7 +3,10 @@ import assert from 'node:assert/strict';
 import { IDBFactory } from 'fake-indexeddb';
 import { SHOWCASE_SCENARIOS } from '../lib/planner/mission-showcase.ts';
 import { solveMissionDocument } from '../lib/planner/mission-engine.ts';
-import { sha256 } from '../lib/planner/mission-schema.ts';
+import {
+  sha256,
+  MISSION_ENGINE_VERSION,
+} from '../lib/planner/mission-schema.ts';
 import type {
   MissionOperation,
   EnqueueMissionOperation,
@@ -96,7 +99,7 @@ void test('enqueue clones approved snapshot and persists independently without m
   original.document.name = 'Mutated outside';
   assert.equal(row.status, 'scheduled');
   assert.equal(row.progressSec, 0);
-  assert.equal(row.engineVersion, '0.3.0');
+  assert.equal(row.engineVersion, MISSION_ENGINE_VERSION);
   assert.equal(row.createdAt, clock);
   assert.equal(row.startedAt, null);
   assert.notEqual(
@@ -151,6 +154,78 @@ void test('rehashed approval cannot promote a physically invalid plan', async ()
   snapshot.approval.planHash = await sha256(snapshot.candidate);
   await assert.rejects(lib.enqueue(snapshot), /повторную модельную проверку/);
   assert.equal((await lib.list()).length, 0);
+  lib.close();
+});
+
+void test('cached static proof never trusts object identity or rehashed changed input/plan', async () => {
+  const lib = store(),
+    row = await lib.enqueue(await input('cache-hashes'));
+  await verifyMissionOperation(row);
+  await verifyMissionOperation(structuredClone(row));
+
+  const sameObject = structuredClone(row);
+  await verifyMissionOperation(sameObject);
+  sameObject.candidate.sorties[0].remainingPct = 99;
+  await assert.rejects(verifyMissionOperation(sameObject), /целостность/);
+  sameObject.planHash = await sha256(sameObject.candidate);
+  sameObject.approval.planHash = sameObject.planHash;
+  await assert.rejects(
+    verifyMissionOperation(await reseal(sameObject)),
+    /повторную модельную проверку/,
+  );
+
+  const changedInput = structuredClone(row);
+  changedInput.document.scenario.wind.speedMps = 25;
+  changedInput.inputHash = await sha256(changedInput.document);
+  changedInput.candidate.plan.inputHash = changedInput.inputHash;
+  changedInput.approval.inputHash = changedInput.inputHash;
+  changedInput.planHash = await sha256(changedInput.candidate);
+  changedInput.approval.planHash = changedInput.planHash;
+  await assert.rejects(
+    verifyMissionOperation(await reseal(changedInput)),
+    /повторную модельную проверку/,
+  );
+  assert.deepEqual(await verifyMissionOperation(row), row);
+  lib.close();
+});
+
+void test('cached static proof never bypasses lifecycle or dynamic recovery checks', async () => {
+  const lib = store(),
+    row = await lib.enqueue(await input('cache-live-state'));
+  await verifyMissionOperation(row);
+  const invalidStatus = structuredClone(row);
+  invalidStatus.status = 'completed';
+  invalidStatus.startedAt = clock;
+  invalidStatus.finishedAt = clock;
+  await assert.rejects(
+    verifyMissionOperation(await reseal(invalidStatus)),
+    /Статус, модельное время/,
+  );
+
+  const invalidSafety = structuredClone(row);
+  invalidSafety.status = 'paused';
+  invalidSafety.startedAt = clock;
+  invalidSafety.safety = {
+    id: '3fbdc5af-39dc-4a1d-93cd-019ee8c9a103',
+    source: 'simulation',
+    kind: 'crash',
+    vehicleId: row.candidate.sorties[0].vehicleId,
+    modelTimeSec: 0,
+    detectedAt: clock,
+    windMps: 1,
+    batteryPct: 50,
+    stage: 'returning',
+    delaySec: 0,
+    policy: 'home',
+    progressSec: 0,
+    decision: 'immediate',
+    events: [{ at: clock, text: 'Invalid return after crash regression' }],
+  };
+  await assert.rejects(
+    verifyMissionOperation(await reseal(invalidSafety)),
+    /Защитная траектория/,
+  );
+  assert.deepEqual(await verifyMissionOperation(row), row);
   lib.close();
 });
 

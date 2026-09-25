@@ -20,6 +20,7 @@ import './mission-execution-queue.css';
 import './mission-operation-journal.css';
 import './mission-dispatcher.css';
 import './mission-editor-refinement.css';
+import './mission-expert.css';
 export const metadata = {
   title: 'Миссии · планирование полётов',
   description:

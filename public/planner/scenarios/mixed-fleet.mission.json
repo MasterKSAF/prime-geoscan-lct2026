@@ -35,9 +35,9 @@
     }
   ],
   "flightEnvelope": {
-    "maxAltitudeM": 500,
+    "maxAltitudeM": 149,
     "minSurveyAltitudeM": 10,
-    "source": "Учебный диапазон сценария, не разрешение воздушного пространства."
+    "source": "Предел трека ниже 150 м AGL; потолок 149 м включает модельный запас 1 м. Не разрешение на полёт."
   },
   "id": "mixed-fleet",
   "jobs": [
@@ -332,6 +332,28 @@
           "Числа скорости, ресурса и совместимости заданы для синтетического теста."
         ],
         "batteryPct": 100,
+        "cameraIds": [
+          "pf1b"
+        ],
+        "cameraProfiles": [
+          {
+            "focalLengthMm": 20,
+            "id": "pf1b",
+            "imageHeightPx": 4000,
+            "imageWidthPx": 6000,
+            "minimumIntervalSec": 1,
+            "name": "PF1B (миграция)",
+            "sensorHeightMm": 15.6,
+            "sensorWidthMm": 23.5,
+            "shutterSec": 0.001,
+            "source": "Миграция legacy-camera-binding-v1: перенесена оптика старой работы; фактическую установку подтверждает оператор. PF1B: 23,5×15,6 мм, 6000×4000, 20 мм по буклету Gemini. Перекрытия, выдержка и период — учебные параметры.",
+            "status": "assumed",
+            "supportedModels": [
+              "Gemini"
+            ],
+            "type": "RGB"
+          }
+        ],
         "climbMps": 3,
         "descentMps": 1,
         "effectiveEnduranceMin": 28,
@@ -361,6 +383,28 @@
           "Числа скорости, ресурса и совместимости заданы для синтетического теста."
         ],
         "batteryPct": 100,
+        "cameraIds": [
+          "pollux"
+        ],
+        "cameraProfiles": [
+          {
+            "focalLengthMm": 8,
+            "id": "pollux",
+            "imageHeightPx": 1080,
+            "imageWidthPx": 1440,
+            "minimumIntervalSec": 1,
+            "name": "Pollux (миграция)",
+            "sensorHeightMm": 3.726,
+            "sensorWidthMm": 4.968,
+            "shutterSec": 0.001,
+            "source": "Миграция legacy-camera-binding-v1: перенесена оптика старой работы; фактическую установку подтверждает оператор. Геометрия Pollux по буклету Gemini; период/перекрытия/GSD — параметры учебного задания.",
+            "status": "assumed",
+            "supportedModels": [
+              "Gemini"
+            ],
+            "type": "MS"
+          }
+        ],
         "climbMps": 3,
         "descentMps": 1,
         "effectiveEnduranceMin": 28,
@@ -390,6 +434,28 @@
           "Числа скорости, ресурса и совместимости заданы для синтетического теста."
         ],
         "batteryPct": 100,
+        "cameraIds": [
+          "legacy-ir"
+        ],
+        "cameraProfiles": [
+          {
+            "focalLengthMm": 9.1,
+            "id": "legacy-ir",
+            "imageHeightPx": 512,
+            "imageWidthPx": 640,
+            "minimumIntervalSec": 1,
+            "name": "Ручная IR (миграция)",
+            "sensorHeightMm": 6.144,
+            "sensorWidthMm": 7.68,
+            "shutterSec": 0.001,
+            "source": "Миграция legacy-camera-binding-v1: перенесена оптика старой работы; фактическую установку подтверждает оператор. Учебная ИК-камера: геометрия/период условные, реальная метрическая съёмка 801 не подтверждена.",
+            "status": "assumed",
+            "supportedModels": [
+              "Custom"
+            ],
+            "type": "IR"
+          }
+        ],
         "climbMps": 3,
         "descentMps": 1,
         "effectiveEnduranceMin": 28,
@@ -404,8 +470,8 @@
           60.034100679636275
         ],
         "maxWindMps": 10,
-        "model": "801",
-        "name": "801 · ir-1",
+        "model": "Custom",
+        "name": "Custom · ir-1",
         "source": "Учебная конфигурация стенда; реальная совместимость нагрузки не подтверждена.",
         "start": [
           30.312243713686986,

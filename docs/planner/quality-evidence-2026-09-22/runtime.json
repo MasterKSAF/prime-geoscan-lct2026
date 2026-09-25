@@ -1,0 +1,969 @@
+{
+  "checkedAt": "2026-09-22T17:47:24.302Z",
+  "status": "pass",
+  "base": "http://127.0.0.1:3016",
+  "container": "lct-planner-1",
+  "imageId": "sha256:40ad2435f11fe6dba9859f0818061f5a75e605c59591f12fa56bbc5e81f21bf9",
+  "files": 237,
+  "mismatches": [],
+  "health": {
+    "status": "ok",
+    "engineVersion": "0.1.0",
+    "missionEngineVersion": "0.3.0",
+    "missionSchemaVersion": "2.0",
+    "safetyValidationPolicy": "continuous-occupancy-v1",
+    "mode": "engineering-preview",
+    "flightReady": false
+  },
+  "sourceHashes": [
+    {
+      "path": "app/api/planner/health/route.ts",
+      "sha256": "77697b029b32301d72d9dac997e3e0ca7279b23cd3d7904ad8ebcec2ec253edf"
+    },
+    {
+      "path": "app/api/planner/missions/analyze/route.ts",
+      "sha256": "78e2e0723d67e6d3c85d3833357a3c2cce003de560e2dbbe9bd78bb58c61d42a"
+    },
+    {
+      "path": "app/api/planner/missions/contingency/route.ts",
+      "sha256": "3ea56021461028a1caa2482d59a85bd9db7ebce7c9bb2e1157ae2be31034b210"
+    },
+    {
+      "path": "app/api/planner/missions/solve-with-obstacles/route.ts",
+      "sha256": "a1f70af84f4fd25a69fc952b209cd873eb4540d60a59908d43051634d09e22ea"
+    },
+    {
+      "path": "app/api/planner/missions/solve/route.ts",
+      "sha256": "746786fa8f6eaa4eba1a26e44ddefe0e195b911abeb43bfe3c1b092af31de04f"
+    },
+    {
+      "path": "app/api/planner/solve/route.ts",
+      "sha256": "b335c47e71c82849250efa4551ad338ffdbe69ba34186da669467d108f25faa0"
+    },
+    {
+      "path": "app/api/planner/weather/route.ts",
+      "sha256": "fa99e98e3c964daa50f298f4b93296f68136958e36b431cf7d4b861cd1f09288"
+    },
+    {
+      "path": "app/planner/legacy/page.tsx",
+      "sha256": "6538960468af86f8772a7aa24ab5ce3781cab033748a69f1853a1b8645bdcfc0"
+    },
+    {
+      "path": "app/planner/mission-action-colors.css",
+      "sha256": "ce92471308363dadeb0128fb4f5ca351653f6d8ae7851a70bb80d4dbb5b639ed"
+    },
+    {
+      "path": "app/planner/mission-analysis.css",
+      "sha256": "b7c04344beea6a42791460b47e22bf2139f7513a0c1dd2cc762d0c35858dfc95"
+    },
+    {
+      "path": "app/planner/mission-console.css",
+      "sha256": "ee98cc415d3ac1b0ece32539de9d86dd07e37cf2d952e1bda9218a32eaf7c03e"
+    },
+    {
+      "path": "app/planner/mission-dispatcher.css",
+      "sha256": "8b319c4eb6275a781a7764172709ddc5976fa88c09e803dd5410e9372cff75e0"
+    },
+    {
+      "path": "app/planner/mission-editor-refinement.css",
+      "sha256": "ebe93a4a775aff4cdc7ad916fd365c49e7c2010e6967b6ce1e1119f0ad69bd70"
+    },
+    {
+      "path": "app/planner/mission-execution-queue.css",
+      "sha256": "da4188a4c878a5ba90bf027ccba5548e6881ac4675c4f7dc43ced890b4b10d52"
+    },
+    {
+      "path": "app/planner/mission-experience.css",
+      "sha256": "ee11afa3e623bf0feaf59fba8335b621cac2d00e13eee935b831ee85d875c891"
+    },
+    {
+      "path": "app/planner/mission-home.css",
+      "sha256": "d3811181a697bd28d189bb513ed770f446db960f7db66ea6cc540ca214b88e6a"
+    },
+    {
+      "path": "app/planner/mission-journal-review.css",
+      "sha256": "d0a3271ec9c5f9f7719282f8ddc179ccfb03515709a02584c3a00f41c3521406"
+    },
+    {
+      "path": "app/planner/mission-map-details.css",
+      "sha256": "bd29bd94e47ebb3230e4f70e10fd081a010a1d444ecfdd994d1a0597fcb8fc5b"
+    },
+    {
+      "path": "app/planner/mission-notifications.css",
+      "sha256": "108b0aded3864321ab4e2d0cc542aa5adb2d106132927c1e52dd5d375065b1a8"
+    },
+    {
+      "path": "app/planner/mission-operation-journal.css",
+      "sha256": "7ef3c3ca074b6c60e678eba355f36f65a631a6bfd5e0f85cde7a4bf928e5ae15"
+    },
+    {
+      "path": "app/planner/mission-operations.css",
+      "sha256": "9ebc7c51173ae2d4b0d34210bcedc37e8b4caf0492dfbf9504331fc1a2919465"
+    },
+    {
+      "path": "app/planner/mission-showcase.css",
+      "sha256": "82a0fc831ce0231f6b91cd23c7722683fb3102e8634d16f6a175e2738af7ae31"
+    },
+    {
+      "path": "app/planner/mission-simple-console.css",
+      "sha256": "75f65b8432b2723f731c0bfc68e35ea62724c491554f31285f2bf9bbba481a1d"
+    },
+    {
+      "path": "app/planner/mission-simple-editor.css",
+      "sha256": "25f6804493ad2b7cb28107bb97496c2d22630a872c1f84dccd6d2e30e4809e43"
+    },
+    {
+      "path": "app/planner/mission-territory-console.css",
+      "sha256": "c8297eefc9c3ad5de1bb962b1571539a15ba7a11f89589daa84187dce684eea9"
+    },
+    {
+      "path": "app/planner/mission-theme.css",
+      "sha256": "a24095a3fb555442df7b2db2547590c6a806be216ec921afb9b5c9ee816c5a18"
+    },
+    {
+      "path": "app/planner/mission-workbench.css",
+      "sha256": "3094837385b0457f2e6b3782e26b3babbd300d51f40e1f7fdc1379f14dcc2ebf"
+    },
+    {
+      "path": "app/planner/mission-workspaces.css",
+      "sha256": "70ea1b9ed6d52153ddde07a2375afd450f313fc6ea056c36326155e5c3de8aa1"
+    },
+    {
+      "path": "app/planner/page.tsx",
+      "sha256": "0bca176c06bd9d9e65176c8ae5e527107c480c8cfecfbab9167873e61deecf0e"
+    },
+    {
+      "path": "app/planner/planner.css",
+      "sha256": "e1a786b33ad871fb45648ba03ec716123f9c2c5dd60753cf8f4d7f3176a67bc0"
+    },
+    {
+      "path": "components/planner/fleet-workspace.tsx",
+      "sha256": "0d37b5fb21be6d0748c91a7545a084357ead306963b3851b6d41f957c42e07a7"
+    },
+    {
+      "path": "components/planner/mission-analysis-panel.tsx",
+      "sha256": "ff2afe5d060c42fa5eaf8cb234abf2645c12b8aad68f23dcf6c5372b350ed4ba"
+    },
+    {
+      "path": "components/planner/mission-brief.tsx",
+      "sha256": "4b3514cc5b7894d5ef4530fb5d5812c1fdef2210a30a71d87fccfa769caff4af"
+    },
+    {
+      "path": "components/planner/mission-comparison-view.tsx",
+      "sha256": "4782cf6f5b7a1147ec7a9997ff73d973373044bc4d35f43ed1215d15fffc851a"
+    },
+    {
+      "path": "components/planner/mission-contingency-panel.tsx",
+      "sha256": "1cd779976865c6ce3d26cf41208d689ed2470daee7a138eac74eebc594b8bcc2"
+    },
+    {
+      "path": "components/planner/mission-data-summary.tsx",
+      "sha256": "243779c81a488b1780d825c0fbfd19384df2dcd09e2c6e6b39105f0c219ac893"
+    },
+    {
+      "path": "components/planner/mission-editor.tsx",
+      "sha256": "166a0f6541badb0ac52efe69010319a006682bb144e2348751b971af03cf7f17"
+    },
+    {
+      "path": "components/planner/mission-execution-queue.tsx",
+      "sha256": "e2663a167e0618c202e04ac3c4adc2f2ceae13c3c67c439d9e860887b5783ec9"
+    },
+    {
+      "path": "components/planner/mission-fleet-editor.tsx",
+      "sha256": "38b284ba7f12df7bc419459f83f9c1fc9085f2b473cb2f7f2367f46d861924ac"
+    },
+    {
+      "path": "components/planner/mission-fleet-state-panel.tsx",
+      "sha256": "f76d2bc8ba1cd2667502ae26b72cba1c20019274ec2191f744b700b030a5219b"
+    },
+    {
+      "path": "components/planner/mission-gallery.tsx",
+      "sha256": "5cef496dfdfc4af35becfc55a470bb4b3c929a1f9dcd86a18817eece0d20e614"
+    },
+    {
+      "path": "components/planner/mission-help.tsx",
+      "sha256": "616fb9d4c77f116a56fecce5fc198c4bfc79d05e943fd76a762324ac9d18507b"
+    },
+    {
+      "path": "components/planner/mission-home.tsx",
+      "sha256": "169021be76d6e4b36f103cb99f6aea72d18e492e31fe25dc78a7afb7b587f8cb"
+    },
+    {
+      "path": "components/planner/mission-journal-review.tsx",
+      "sha256": "849c8df68f9718a8a8f07d3c89ab3b7e60f28cc30d61de175c841ac9b7268cfd"
+    },
+    {
+      "path": "components/planner/mission-map.tsx",
+      "sha256": "8131d3c2b7cb38502d27e783b8800621f6413922f1ed7366a25caa4b23b3b250"
+    },
+    {
+      "path": "components/planner/mission-notification-center.tsx",
+      "sha256": "5ee842e7c258d610a3545de5efeaefaf9760d4f7b2300fae0bcf08c944485040"
+    },
+    {
+      "path": "components/planner/mission-operation-journal.tsx",
+      "sha256": "c520a80e529e03232d1a3aedfc72f7e6cae45194492ef5e351068921506631e6"
+    },
+    {
+      "path": "components/planner/mission-operations-board.tsx",
+      "sha256": "99eb41243a085f60836765a1d698a2e2525c23e5e814f188a8101185a1977494"
+    },
+    {
+      "path": "components/planner/mission-program-help.tsx",
+      "sha256": "22ae5b3e30abb7fe8b9d6daef4c6c26b3217ddbe84fca87297c0ac89e8274a9c"
+    },
+    {
+      "path": "components/planner/mission-safety-summary.tsx",
+      "sha256": "d58d960432da1cf93c979d4c5c07d68d29208010b9b666f1732a3db1d92dc939"
+    },
+    {
+      "path": "components/planner/mission-territory-editor.tsx",
+      "sha256": "a91c49ec4e5e66d3f2b5ea08654236bbc367a5abfbc7888015949378e7dbb1ab"
+    },
+    {
+      "path": "components/planner/mission-theme.tsx",
+      "sha256": "edfe916d0c0e06d28ffed232c0099f084e6c47b30af45446d7b5d1b5bf21b489"
+    },
+    {
+      "path": "components/planner/mission-weather-panel.tsx",
+      "sha256": "9895df3c55cfeace6bd32fb6bd736f22cb54c16734a94cc9ccf3a4182f4d6629"
+    },
+    {
+      "path": "components/planner/mission-wind.tsx",
+      "sha256": "36687cce7e8901e99441ed76ab939ae8df770f7ee27ef5c9b43e4c4fc6422a2f"
+    },
+    {
+      "path": "components/planner/mission-wizard.tsx",
+      "sha256": "0ec661bbd23f8baf1c6d2c4c6c42077acc0b20c5f0b7b5f1979c812206253474"
+    },
+    {
+      "path": "components/planner/mission-workbench.tsx",
+      "sha256": "55465dda42abca7384a9004d2f1aab9dd9dee2ed2c909731f2cbd6581830f7a5"
+    },
+    {
+      "path": "components/planner/obstacle-layer-panel.tsx",
+      "sha256": "74db6e2beae2f33c66ef4e8e402e1217f054db3fdcfef7cb412eb1f5fdc47f7f"
+    },
+    {
+      "path": "components/planner/workspace.tsx",
+      "sha256": "989364c6ce2de9ff53f046e24745cdd24a08eb50ae7f4b9be3c6baa15019b378"
+    },
+    {
+      "path": "components/ui/accordion.tsx",
+      "sha256": "33e1c60ba503f4eb36f9a8b1f68b236174b11656d8efea6bac65abddda2f9019"
+    },
+    {
+      "path": "components/ui/alert-dialog.tsx",
+      "sha256": "ed0f1fc432bca4c72f9dd8741ae2268a00d2d3429ff1149bf463c4271b13d8e9"
+    },
+    {
+      "path": "components/ui/alert.tsx",
+      "sha256": "e760c470414c9e617d7292094146d906352fee3b1526b790a611d4a118e79196"
+    },
+    {
+      "path": "components/ui/aspect-ratio.tsx",
+      "sha256": "b7fb499905e441a0602392ce118828425ad059079060109694d01f9fac00ad20"
+    },
+    {
+      "path": "components/ui/attachment.tsx",
+      "sha256": "dcb9e899f1322158f016d75c400fa8cce9b797ea49bec65528bac686cee2ec5c"
+    },
+    {
+      "path": "components/ui/avatar.tsx",
+      "sha256": "342f32b683937b826cdff2999d5e3057836d459aa43eadb0c3538b818d195b9a"
+    },
+    {
+      "path": "components/ui/badge.tsx",
+      "sha256": "5706189b86e8670499fb33f37147dd6f65c39d59eef5211e34157f2952c35e32"
+    },
+    {
+      "path": "components/ui/breadcrumb.tsx",
+      "sha256": "b28b76d6f8d0feafbbeff2220cf83f9a6b03d8c81f0145b3af4c7d19933ab2c0"
+    },
+    {
+      "path": "components/ui/bubble.tsx",
+      "sha256": "dfb9f52ae3b89e4a419b336c3893ab6fb658fc324fb402759d878d54e3b2db5a"
+    },
+    {
+      "path": "components/ui/button-group.tsx",
+      "sha256": "79ad8fb6644a775cc49131c1aa737ca26cae6a563beec0fa52ef6e8d85202fab"
+    },
+    {
+      "path": "components/ui/button.tsx",
+      "sha256": "081d2a1cb4f3aec636a6894d9eff4e90d476d5db85b82d0399c1f4d18517112e"
+    },
+    {
+      "path": "components/ui/calendar.tsx",
+      "sha256": "e7bc682eff8f2215e6b0aab40d1afb7ee927c5f5bef348ccff207631b9261658"
+    },
+    {
+      "path": "components/ui/card.tsx",
+      "sha256": "625fce5e16577a45108a86d7afcd70b8931cb2032abe0d6a3faf1010f666d672"
+    },
+    {
+      "path": "components/ui/carousel.tsx",
+      "sha256": "a2a758f8a01db4c17b915c6260316b9946a75f46001bcd56210d82ed2cf9a8af"
+    },
+    {
+      "path": "components/ui/chart.tsx",
+      "sha256": "b9955b869cf6fa098f052dcfa4d934d81f263008d4a44e383170348376ffa267"
+    },
+    {
+      "path": "components/ui/checkbox.tsx",
+      "sha256": "56b2869e5478f38238e6a3d8aefabfbe8af565b38b2ffad06466487b3eacf154"
+    },
+    {
+      "path": "components/ui/collapsible.tsx",
+      "sha256": "3fdf7ef1ca89c4d85de5ecbb25813d0f572003a53b021baf43c5f3523e48ec97"
+    },
+    {
+      "path": "components/ui/combobox.tsx",
+      "sha256": "282041e2e8c52cc12e7bbc717bbd3f8c9c5ba18e7fa75b97053bc79687e1181e"
+    },
+    {
+      "path": "components/ui/command.tsx",
+      "sha256": "9c1eae65aa105935a34c6b736f673b71a2ef939dde53dce29d986221edbf1f9f"
+    },
+    {
+      "path": "components/ui/context-menu.tsx",
+      "sha256": "05c3646b452f5e3b9eb952eeba3d90657606d2b0875cb77652cdb5eadba0eb5c"
+    },
+    {
+      "path": "components/ui/dialog.tsx",
+      "sha256": "8bc85def62538b4e62e8530c6b0ba167a192c38519c05f104bf6e10de73b811f"
+    },
+    {
+      "path": "components/ui/direction.tsx",
+      "sha256": "2dea8a95accb1723db2454ccc858697d5b1f1454568cf4da5e8fcbd0cf7cc1ee"
+    },
+    {
+      "path": "components/ui/drawer.tsx",
+      "sha256": "b7ac53d0e5d1fed25fc3f2ac5f5a36e247ca684c677ac376829fa8a7c039b79e"
+    },
+    {
+      "path": "components/ui/dropdown-menu.tsx",
+      "sha256": "efc088f3d79f64cf96e222701ae23dcf385b53947b3cd57ffb7be6f5dadcbfe2"
+    },
+    {
+      "path": "components/ui/empty.tsx",
+      "sha256": "bf54bac4881b79f6a53f55e70c18640f58a058add88aed763c71be35c4f64f59"
+    },
+    {
+      "path": "components/ui/field.tsx",
+      "sha256": "79023ca89aae39f9cffa83a9483c9c672099b4547cc821486283db61c6ae9327"
+    },
+    {
+      "path": "components/ui/hover-card.tsx",
+      "sha256": "d8cb7270c5893213fc00b5f270f9bc461e2d7ce5b81f77b8778253a1aeda6a2c"
+    },
+    {
+      "path": "components/ui/input-group.tsx",
+      "sha256": "d1f4f625961098cefaa971e033e3b5381a4493f0f828f72898f082ad0bfbc17c"
+    },
+    {
+      "path": "components/ui/input-otp.tsx",
+      "sha256": "867f568259caac95f682d128d72e681b3fe7c31701a396eacc9284401d917a6a"
+    },
+    {
+      "path": "components/ui/input.tsx",
+      "sha256": "6763c86c34c1c07826386d376f5da8fe2e41585bff3615716d5da88915e088d8"
+    },
+    {
+      "path": "components/ui/item.tsx",
+      "sha256": "9c5e45e6c4aae5b9c4c1304e1f1208d32681ab616a6e0de9de6e0d6b22690592"
+    },
+    {
+      "path": "components/ui/kbd.tsx",
+      "sha256": "bdfb38a4f7b9b604e196b5cee0d86f12311dae72946f0dbf5928c8ad0638178f"
+    },
+    {
+      "path": "components/ui/label.tsx",
+      "sha256": "aa644fc81fa99523f7bab8e7176ab862c805f1c0e8d3d5ce65bd72f6138ce22f"
+    },
+    {
+      "path": "components/ui/marker.tsx",
+      "sha256": "cd1e872384cf5001e48b4dc3cc2bb011eba9700561d41c83a89e872b60baf175"
+    },
+    {
+      "path": "components/ui/menubar.tsx",
+      "sha256": "a3715f8e8b78261f5784929c532e100759c58e831c91e842438730797bc9a124"
+    },
+    {
+      "path": "components/ui/message-scroller.tsx",
+      "sha256": "9512c586d1b0885cf3ae4f1c3dd4281cbdfec7428fe98ff48a66b4ba2a7319f4"
+    },
+    {
+      "path": "components/ui/message.tsx",
+      "sha256": "2fedcc64ed8563a44f6697615e77574d96f819fe6e5e2fa8a555e30f8ed6bbd7"
+    },
+    {
+      "path": "components/ui/native-select.tsx",
+      "sha256": "3aafb74b98c039dae4eb2c64c47ec6f5d61fdc888c057de47550346f702f434b"
+    },
+    {
+      "path": "components/ui/navigation-menu.tsx",
+      "sha256": "c8e64bf5241145b512ae18f1062da8275691edf927736496a3860bec76ad6fa1"
+    },
+    {
+      "path": "components/ui/pagination.tsx",
+      "sha256": "c060c25184757491e20c73bcbd7fbf378ed69a56827f6b2203ba483327dee4f6"
+    },
+    {
+      "path": "components/ui/popover.tsx",
+      "sha256": "7376624438588e2d64b6e0c5cdf82cbc5fd4530bbcf1f0235c5f3ee08d12e877"
+    },
+    {
+      "path": "components/ui/progress.tsx",
+      "sha256": "0d8ddec9731940e104b851cf3ac67d2fa8589b289824317a9e8f326e090ba65a"
+    },
+    {
+      "path": "components/ui/radio-group.tsx",
+      "sha256": "43f2d6c2f5bdd4a26c57d93e6f141be20472f9bb8777d9a0d61cd8a5e281a999"
+    },
+    {
+      "path": "components/ui/resizable.tsx",
+      "sha256": "ea7b85817d4dc70866e0bcf15264e7e1bd7e1893eb4404261fbc23a4d6ff9029"
+    },
+    {
+      "path": "components/ui/scroll-area.tsx",
+      "sha256": "730c4cc49f8f1b705eb1389cd32c774056a0a2a7a48a9b092cbe44c608be3a0b"
+    },
+    {
+      "path": "components/ui/select.tsx",
+      "sha256": "45489c502a21fdd5271481d64ad8f762181c9653d8d26bdc6f75450b78c3c852"
+    },
+    {
+      "path": "components/ui/separator.tsx",
+      "sha256": "92ad5065f03d7edc98f367e729f3ec84ece1d99ee8cd0d3a8137f266d4ab3d8a"
+    },
+    {
+      "path": "components/ui/sheet.tsx",
+      "sha256": "adb432b6f9d7a4733caa45ba8bf510a8a7ff0f6d0dd3aa1f013959fb61268234"
+    },
+    {
+      "path": "components/ui/sidebar.tsx",
+      "sha256": "aa3322ca63f098aa1d2abf750f9d097da07362fce25939357f2cefc9b6a03988"
+    },
+    {
+      "path": "components/ui/skeleton.tsx",
+      "sha256": "4c342102b2bbf5bd8c04fa151fe5c13c42faee2f9587a3586c27322020ca35d1"
+    },
+    {
+      "path": "components/ui/slider.tsx",
+      "sha256": "af657e73d672f4dd205f19abf151d21a172cf36abfdca49fd7014a20e12367a9"
+    },
+    {
+      "path": "components/ui/spinner.tsx",
+      "sha256": "8ddbb330e5564a1f53026da36c2322ed4b027687e91a88f63348ab10f26ae0cb"
+    },
+    {
+      "path": "components/ui/switch.tsx",
+      "sha256": "04b085443a1c6a72d408e6eb7dd45df881ca27814415b81b39f614806b52c8fc"
+    },
+    {
+      "path": "components/ui/table.tsx",
+      "sha256": "88f2ba7877eea7f34a5da18b7fa096eb2c7bed602677ce54f5494b494c5afc2e"
+    },
+    {
+      "path": "components/ui/tabs.tsx",
+      "sha256": "dd914d769bc223b5d5ea56839a7752e534eb475f8d2897d5675606c368bbca1f"
+    },
+    {
+      "path": "components/ui/textarea.tsx",
+      "sha256": "7ae7f0f5d907be24658652c771fee1685193102bf3200aafbf578d144d379fbf"
+    },
+    {
+      "path": "components/ui/toast.tsx",
+      "sha256": "9126b09f47f0b117bf748cf19aaa4987a1f72d0813d10bfc4b4b0128e6439e48"
+    },
+    {
+      "path": "components/ui/toggle-group.tsx",
+      "sha256": "9b006523be0fe3230cd75f7adf78a501829d594fd3506c56c55bb38211ff1850"
+    },
+    {
+      "path": "components/ui/toggle.tsx",
+      "sha256": "6bf41d6f6ffe602c3e28274a82ac029e6ee1331ba3c670a6d814048e1823cc28"
+    },
+    {
+      "path": "components/ui/tooltip.tsx",
+      "sha256": "b86e51969931c3d62e88d0bdacd1cd8219105dc6d6b6a588a80011bf92e987cd"
+    },
+    {
+      "path": "hooks/use-mission-operations.ts",
+      "sha256": "c44025cf27752174d53c40ce9ba9b88ff0a0e49e9a75f4a42feebec6f9e6a397"
+    },
+    {
+      "path": "hooks/use-mobile.ts",
+      "sha256": "f15a643c1ab521be536865c97a29f7e54149dd772912663794a69045f4b3de73"
+    },
+    {
+      "path": "lib/planner/demo.ts",
+      "sha256": "9bf59163df99f150ee9094be6f563606d3276b224b617bd7aba3cdab335337ef"
+    },
+    {
+      "path": "lib/planner/engine.ts",
+      "sha256": "3f96ceb3a4a04f937a78d65aba1ca8729ca7042db54144ce7d11c61faf36d50c"
+    },
+    {
+      "path": "lib/planner/export.ts",
+      "sha256": "af448afba0fc3ce45913b05184fb72fd8bdf59fc0fb78887039f8a661ffd9cf1"
+    },
+    {
+      "path": "lib/planner/fixed-wing-dubins.ts",
+      "sha256": "8576adb93b0e5245876caf1fd63dbc7cd71ebf345385e6cd8df9bed1d01f1dc9"
+    },
+    {
+      "path": "lib/planner/fixed-wing-geometry.ts",
+      "sha256": "6a66cc40f312a5db673bd51aaaf82246059e5f3828e5f8c0f71b1bfe8cce8c8d"
+    },
+    {
+      "path": "lib/planner/fixed-wing-mission.ts",
+      "sha256": "13b967c778a186bfddf964a1d4bffa7496398d019f9f6fa062507aaf67c9e2c6"
+    },
+    {
+      "path": "lib/planner/fixed-wing-profile.ts",
+      "sha256": "26312021b5a3d23e681e9e998f813d6a31f13f4907a0fb604ee684d7d9fd8f91"
+    },
+    {
+      "path": "lib/planner/fleet-availability.ts",
+      "sha256": "21ed0c0580793eb94e3536b81486655a8335831202dcca7d668cdb8d0f46b2f5"
+    },
+    {
+      "path": "lib/planner/fleet-registry.ts",
+      "sha256": "c844a4b139bb49ca72bc36f07c07a1a27a23ed90010cfe0f0a97adc85352e51c"
+    },
+    {
+      "path": "lib/planner/geometry.ts",
+      "sha256": "f86920ffdad83903f507861aba2f9d1098df6ecb04fa7721b7587a975d749f96"
+    },
+    {
+      "path": "lib/planner/mission-archive.ts",
+      "sha256": "de45d360a33d3fd33e759e0830a83573c6ab36a350a0f6626c26ddf6f6548be0"
+    },
+    {
+      "path": "lib/planner/mission-benchmark.ts",
+      "sha256": "29b1de3c830880094a9eba15f584e88bed4555162f834b0ca1e050e34d60f1f5"
+    },
+    {
+      "path": "lib/planner/mission-browser.ts",
+      "sha256": "9009e85a26cf6137e2a0c2c4871d44117aaaa1162dc6e75746de565f862472b4"
+    },
+    {
+      "path": "lib/planner/mission-comparison.ts",
+      "sha256": "68e464b9b6f60d898a9c0b6f793c85656606a4e2b374ef3407e7ac7351ec285a"
+    },
+    {
+      "path": "lib/planner/mission-contingency.ts",
+      "sha256": "62d2a3c4ac3c0ac94d0ee46dbb958eca9912483613d2be06802bb8f59a112ee8"
+    },
+    {
+      "path": "lib/planner/mission-coordination.ts",
+      "sha256": "0ca70ef3677283a9a7460d31ec53e17bae1738569237db346e5f3d713cbe47c1"
+    },
+    {
+      "path": "lib/planner/mission-coverage-view.ts",
+      "sha256": "78ab00b591c71c4d995f8a06756191af1dab543371dcac684ed2edd8c0a1b91d"
+    },
+    {
+      "path": "lib/planner/mission-delivery-manifest.ts",
+      "sha256": "8089e62269832601e5d01281c367770c3738eb211cbed0bfbe1d05f80567ee76"
+    },
+    {
+      "path": "lib/planner/mission-demo.ts",
+      "sha256": "64e75028b469a97046f073498a5293ce42ed154894e0599182ecf739d2aa5b31"
+    },
+    {
+      "path": "lib/planner/mission-editing.ts",
+      "sha256": "de26474d6f9e7f8d24b4178b1b5c9886c812b64a36146179d0d9d164308309cb"
+    },
+    {
+      "path": "lib/planner/mission-engine.ts",
+      "sha256": "29a1aec7e1e36518a0fec0c6aff953722a4f8fb912ee60aaa7a0415d7844ebc2"
+    },
+    {
+      "path": "lib/planner/mission-events.ts",
+      "sha256": "e6cc39dc6faa1215eaff41ce223d9e7a1951b7ab4cb7cdababfcc1f480f8f5f5"
+    },
+    {
+      "path": "lib/planner/mission-export.ts",
+      "sha256": "7b19e98dec3a760b0a0c19b2e765f7b0fcc9bd8009024c6f142e38e8d9c0e12b"
+    },
+    {
+      "path": "lib/planner/mission-fleet-state.ts",
+      "sha256": "fe6a4df1e863013121fa33878adc5b2dcda09443c411b33cf56a9befafda7a17"
+    },
+    {
+      "path": "lib/planner/mission-fleet.ts",
+      "sha256": "30eb8ea93d4d074c4212e144f99eb8a37caf3e80373f4ec79d46469d7af90985"
+    },
+    {
+      "path": "lib/planner/mission-guidance.ts",
+      "sha256": "3bb317d731245348dc10a9e28a8f20d2a8ae161dae930c732f3e76605ad6e1d2"
+    },
+    {
+      "path": "lib/planner/mission-insights.ts",
+      "sha256": "9a6c16923bb1b1b3f0f2de6fe592f825e7e2d91b6a726fbfe94357421ba32ea4"
+    },
+    {
+      "path": "lib/planner/mission-io.ts",
+      "sha256": "fe507d42583bfc6bc433cfa9305a8082a4d3ae83a0a848a5318e9b38e07d0967"
+    },
+    {
+      "path": "lib/planner/mission-layers.ts",
+      "sha256": "c91b29a859d8743ff306cd5ca5f667a9bc31c3a5287f974a64e4fcf63a98936c"
+    },
+    {
+      "path": "lib/planner/mission-library.ts",
+      "sha256": "9b157e5be9fcd228216cd43f071ab93d763e400f281d608350694a29a51e569b"
+    },
+    {
+      "path": "lib/planner/mission-notifications.ts",
+      "sha256": "dfaf27b7692b29ed1a3221fd182b8f76b2c24145bc3b71ff0be589d430f79122"
+    },
+    {
+      "path": "lib/planner/mission-operation-journal.ts",
+      "sha256": "9bcb9ea56eb28a89b0c7f5dda82d68fc4f4608b1d869d532c97c929345d2ec08"
+    },
+    {
+      "path": "lib/planner/mission-operations.ts",
+      "sha256": "887e2c62c0b5822baf72728b9030032ec6dd79c76cc37e1b80cd618fd744d4e3"
+    },
+    {
+      "path": "lib/planner/mission-photo-footprints.ts",
+      "sha256": "29fe12bbcc5e66c78dcb644ad3437cb019c727bb2f966025ce3d61d572dafe02"
+    },
+    {
+      "path": "lib/planner/mission-presentation.ts",
+      "sha256": "25b8f49d4586622db10e1038ad80eafc4b98635a21c8726a26a0947c8fc1dad1"
+    },
+    {
+      "path": "lib/planner/mission-remaining-work.ts",
+      "sha256": "ed40d2d8eb6349d7eba88b604b09c01f00759fc8a74886706efceb3ea5292013"
+    },
+    {
+      "path": "lib/planner/mission-revision-binding.ts",
+      "sha256": "c26e072facd2e3fd78a436eb06242ab63c80108d99625b2564a553126e240073"
+    },
+    {
+      "path": "lib/planner/mission-revision.ts",
+      "sha256": "1591030d5d320b7f81e111fca33ebc64d1d3575476a1bfaaf34c5c0303300525"
+    },
+    {
+      "path": "lib/planner/mission-robustness.ts",
+      "sha256": "dfefd30d46e775e4d362dfffa45a0c670a0a5415d9b03042ea8aa95f8bb6fcea"
+    },
+    {
+      "path": "lib/planner/mission-run-export.ts",
+      "sha256": "dd594f043ff5b10307f639f0ae43285f943d4c7553eee9128b5442dc7d746d4a"
+    },
+    {
+      "path": "lib/planner/mission-safety.ts",
+      "sha256": "e096335a5dc946a628cfe07bdece9921ae6dbc3ac0bf85b06090da5199ffa9bc"
+    },
+    {
+      "path": "lib/planner/mission-schema.ts",
+      "sha256": "b41bcd84a1dd4d0b32cf026800d80a9036e4ba4cda46ab4a48ac68dec5100b55"
+    },
+    {
+      "path": "lib/planner/mission-showcase.ts",
+      "sha256": "6fadd596dbae0d2fbf4452fdf7549c088a413f3c15e7d9c190a6e0c6e485a038"
+    },
+    {
+      "path": "lib/planner/mission-theme-settings.ts",
+      "sha256": "b27614e9ba7d2a7daa50968cc42e56f92e815511ae6307b6f3f54933bda220d7"
+    },
+    {
+      "path": "lib/planner/mission-validation.ts",
+      "sha256": "418681ebd2e58b61982d35237d99fb5b45d7eae931f48b5b23c54393cb88fc31"
+    },
+    {
+      "path": "lib/planner/mission-vehicle-catalog.ts",
+      "sha256": "2900ef8a4219f3900cc2e2531bd69cf4e85d204781d5fae576da23425e0cf401"
+    },
+    {
+      "path": "lib/planner/mission-vehicle-label.ts",
+      "sha256": "4eb0881b0a9a5f84d24076559fe4616cf3da7b4bd54e98bed456ce40f504b2ae"
+    },
+    {
+      "path": "lib/planner/mission-weather.ts",
+      "sha256": "cb4d2a4e84c191b4319d900e38efedae06ff4968fad4bb5950c5b61e483bbc9d"
+    },
+    {
+      "path": "lib/planner/obstacle-demo.ts",
+      "sha256": "0f83a24c406004a20bb718a227982e197bf3d1976b8ad1a98a546dfdf7ea3f95"
+    },
+    {
+      "path": "lib/planner/obstacle-import.worker.ts",
+      "sha256": "5f6f1e1966a421420600d69415a7a2651bec3fc145e0f582b5a6e2b183592ed4"
+    },
+    {
+      "path": "lib/planner/obstacle-layer.ts",
+      "sha256": "66080c98c43047822fa292ff954035b91d65395b4d06bb4e9adc9e21cedd9233"
+    },
+    {
+      "path": "lib/planner/obstacle-store.ts",
+      "sha256": "e87813ca88c563179520b1fae7644b0d5da7a4dc876ff158c4dcfb7cd7d4baf0"
+    },
+    {
+      "path": "lib/planner/quality.ts",
+      "sha256": "58e203bf8e111c4229ed6f043b3982ed5eece34b3a044422fbdaf98b87593e60"
+    },
+    {
+      "path": "lib/planner/schema.ts",
+      "sha256": "c002b9d1421af6d0b4d1a3d8086f9820b288c614802ea3fa44b5a321902bb6bf"
+    },
+    {
+      "path": "lib/planner/territory-editing.ts",
+      "sha256": "3f2acc12edd200ee17f45f9169a17be48077807c8f0023ca9cf4decc80bc9db0"
+    },
+    {
+      "path": "lib/planner/weather-provider.ts",
+      "sha256": "b90406cb31db206be8de0cb443101248b2f25c2efd34a68e1fd478970a93d15b"
+    },
+    {
+      "path": "lib/planner/worker-imports.d.ts",
+      "sha256": "1c40ed0ba9b39d1e9c6a3a6e66261d356ec1a4973201d0170180a711b901429c"
+    },
+    {
+      "path": "lib/server/planner-ingress.ts",
+      "sha256": "2bf11ac3251ebc05238d7406d23d8d18c6c2311a7d7f93beda460948d46b9cf6"
+    },
+    {
+      "path": "package.json",
+      "sha256": "48e348798e0674dec288d8d992c7173a94a563081b4d7e45b82c0d294187428d"
+    },
+    {
+      "path": "public/planner/help/dispatcher-editor.png",
+      "sha256": "9fa4e3f50df5089ff1f30461984b4a9fffc6d23e80475dc89933876810330691"
+    },
+    {
+      "path": "public/planner/help/dispatcher-execution.png",
+      "sha256": "0f474df57443ffd6f81d5f605fa027ee2184b79db37cd7e2c6cabb61d49996ae"
+    },
+    {
+      "path": "public/planner/help/dispatcher-missions.png",
+      "sha256": "ba3cae19284ba0a1e987813e3238912987f714c110cf24695eb94ef5e2148547"
+    },
+    {
+      "path": "public/planner/help/editor.png",
+      "sha256": "47bb939e789dd0e4d8ac61c87d80e76329ce90df7dc84d9e7a41eb5d77b63239"
+    },
+    {
+      "path": "public/planner/help/execution.png",
+      "sha256": "85fe128bcaea47e43e87b7b85e96bb54a1fa97361c050c456d5833ab79e9c271"
+    },
+    {
+      "path": "public/planner/help/missions.png",
+      "sha256": "c444957b0642c77d6ca8f602c715fc73dba33b72a352fa574b3a2ea6eab68f33"
+    },
+    {
+      "path": "public/planner/scenarios/area-with-hole.area.geojson",
+      "sha256": "8df8f516c893f1efd443ed81636701f67d39b81a4eb2edfaab20095087e50c1d"
+    },
+    {
+      "path": "public/planner/scenarios/area-with-hole.fleet.json",
+      "sha256": "d5b2e2121533cb79d844f5599b8881bb6159ca9abb459d4c45aab198e74f812a"
+    },
+    {
+      "path": "public/planner/scenarios/area-with-hole.mission.json",
+      "sha256": "eb4ada955ebf35550876c0b46b2e35ad77c49dece4246f10a3cbec406dd24296"
+    },
+    {
+      "path": "public/planner/scenarios/area-with-hole.restrictions.json",
+      "sha256": "c1ca96d06a00859d4582bff65b08597f953dd1279e1b1e65e0b4942fa32fbc74"
+    },
+    {
+      "path": "public/planner/scenarios/automatic-tradeoff.area.geojson",
+      "sha256": "a8dd142fb271065cee3a54506072e92e4c1ba20ef00b4fb80e5d9bbdf1e5a480"
+    },
+    {
+      "path": "public/planner/scenarios/automatic-tradeoff.fleet.json",
+      "sha256": "622c40c57f9a133d7cc12422d8813ee5193ca1ff3c7791bde68a99731291d07e"
+    },
+    {
+      "path": "public/planner/scenarios/automatic-tradeoff.mission.json",
+      "sha256": "8c21ef9143da7775aa791c038a0592ba29508419b633795301ae24dafc0a9a04"
+    },
+    {
+      "path": "public/planner/scenarios/automatic-tradeoff.restrictions.json",
+      "sha256": "f79e0e6384cd90195c99593316e6c9c851aeefb5e954211aae0634fb3a7d7b58"
+    },
+    {
+      "path": "public/planner/scenarios/demo-01-survey.area.geojson",
+      "sha256": "852a584c96e58ce64b5391c3f7421029dcb654d780cfc6d420d513aa8be3ad2e"
+    },
+    {
+      "path": "public/planner/scenarios/demo-01-survey.fleet.json",
+      "sha256": "622c40c57f9a133d7cc12422d8813ee5193ca1ff3c7791bde68a99731291d07e"
+    },
+    {
+      "path": "public/planner/scenarios/demo-01-survey.mission.json",
+      "sha256": "5f750e28d5e6a0d0d8eafded290b385fc99330749a171744318db05539ca7981"
+    },
+    {
+      "path": "public/planner/scenarios/demo-01-survey.restrictions.json",
+      "sha256": "91c7e10f51d4e6f1effec723737ce726fa1b61a6cec4ea192413f5c12ac7df2f"
+    },
+    {
+      "path": "public/planner/scenarios/demo-02-expert-obstacles.mission.json",
+      "sha256": "5d3bb00141506933f6ffdb9d8f42a9102e4087db1a90913a95a8c76dc297ebfd"
+    },
+    {
+      "path": "public/planner/scenarios/demo-02-obstacles.area.geojson",
+      "sha256": "fd4548f66be00d14b179fad2042c039fdb5c53d9cc45ebbebdfe480def344b30"
+    },
+    {
+      "path": "public/planner/scenarios/demo-02-obstacles.fleet.json",
+      "sha256": "c38bfb4ea228adb2ba47bb0aa8528fda0929a9ce4c28294702748a8b860e57e1"
+    },
+    {
+      "path": "public/planner/scenarios/demo-02-obstacles.mission.json",
+      "sha256": "c7a8e66833b8612f2a846e541db2c9d4cc3188202daa54ca20bf5d70e96eb9cb"
+    },
+    {
+      "path": "public/planner/scenarios/demo-02-obstacles.restrictions.json",
+      "sha256": "0baf36d61e8841c8c12f8278381a90d40fd64a75937ed6b2274198b5dcfd924a"
+    },
+    {
+      "path": "public/planner/scenarios/demo-03-repair.area.geojson",
+      "sha256": "103a853f66cb929fda9f42636041cb2c952521b03c9149b8a63f9c510bef241d"
+    },
+    {
+      "path": "public/planner/scenarios/demo-03-repair.fleet.json",
+      "sha256": "eb8351087dc92dae192909527aa5d5b560ec2e541ac4a54fcb427f79287bb2ee"
+    },
+    {
+      "path": "public/planner/scenarios/demo-03-repair.mission.json",
+      "sha256": "4a8627d98499038377ff2349dac1f8ba03a319dc1d8df9d2fb7bc47cebfdbe51"
+    },
+    {
+      "path": "public/planner/scenarios/demo-03-repair.restrictions.json",
+      "sha256": "6bf2634b4c43e64cffee8d97be358258793af01044e66261a02106afa0c76e88"
+    },
+    {
+      "path": "public/planner/scenarios/demo-parallel-east.mission.json",
+      "sha256": "e8f067cf198d64e07c4bdc2ed48de9f2c3287f0d62bcc76d2819de9f67424e86"
+    },
+    {
+      "path": "public/planner/scenarios/geoscan-201-model.mission.json",
+      "sha256": "a9f8a9d3ea0bbc82897f4669c487056471aa1eb06b839e8059a92650ad64245d"
+    },
+    {
+      "path": "public/planner/scenarios/height-obstacle.area.geojson",
+      "sha256": "9640cd59e4284441708964b5f925d710f06b1e08f7f225bc6bcf7bf4ea670af9"
+    },
+    {
+      "path": "public/planner/scenarios/height-obstacle.fleet.json",
+      "sha256": "3b992092aabbf2899ae1907a9d11b337ca7a921623806ab62810fa9d6a105395"
+    },
+    {
+      "path": "public/planner/scenarios/height-obstacle.mission.json",
+      "sha256": "6740ee40caca4af64db2b53136a433349e1984d170f611304bfa1903fec52160"
+    },
+    {
+      "path": "public/planner/scenarios/height-obstacle.restrictions.json",
+      "sha256": "8209c3b4cf26f5097914d9125c1fe67a79e2dbbc1d83c0bce9953b3be432f485"
+    },
+    {
+      "path": "public/planner/scenarios/insufficient-energy.area.geojson",
+      "sha256": "e431f245c7b3ea6f87201e56b7366e81fb40a78729e05da6496bc52de3eaf073"
+    },
+    {
+      "path": "public/planner/scenarios/insufficient-energy.fleet.json",
+      "sha256": "6e34596893fe555ce9a4914f6623d4045fea3c4638e4a7fb2653b28e3e34bb55"
+    },
+    {
+      "path": "public/planner/scenarios/insufficient-energy.mission.json",
+      "sha256": "67fce44e4b4a07a8b27f33d53c5c41ffabc3e4e4eeef37760a09e739aa32b088"
+    },
+    {
+      "path": "public/planner/scenarios/insufficient-energy.restrictions.json",
+      "sha256": "55ad92bbc8174cf250a50e054cb59dbc55baab29f2e8bec7e6bc15c7d790b3ec"
+    },
+    {
+      "path": "public/planner/scenarios/lidar-geophysics.area.geojson",
+      "sha256": "1357ee3cc8e92b2757fcf6f332d92904f012997daa88a000e804c313e5d1ee89"
+    },
+    {
+      "path": "public/planner/scenarios/lidar-geophysics.fleet.json",
+      "sha256": "2f001f9b34e0888ac31c3223efb64f05b554ab0e70d344e8efe50e3e1c459c26"
+    },
+    {
+      "path": "public/planner/scenarios/lidar-geophysics.mission.json",
+      "sha256": "3fcc334fc3ff7ad99020985b6273988e46e952460598220655b568ada807c60a"
+    },
+    {
+      "path": "public/planner/scenarios/lidar-geophysics.restrictions.json",
+      "sha256": "15806826f13e30dc54feb8f9cc1012a92edd4125e5892f113412406c6f7a8266"
+    },
+    {
+      "path": "public/planner/scenarios/mixed-fleet.area.geojson",
+      "sha256": "4b1db459bd7de95b414c8d37deaedf046c9ba4c88fabda2b944a90c289d861ed"
+    },
+    {
+      "path": "public/planner/scenarios/mixed-fleet.fleet.json",
+      "sha256": "a5d1699a32b21ee7e6f82648b8d76b23d3c6eb368c16177595f6d001f436f286"
+    },
+    {
+      "path": "public/planner/scenarios/mixed-fleet.mission.json",
+      "sha256": "e79f5f4bb69237184b5ce00eec53492c68c6b0173a9caa9445a47672194cdaaa"
+    },
+    {
+      "path": "public/planner/scenarios/mixed-fleet.restrictions.json",
+      "sha256": "661e5a7242b7b6b356b85e57de08a0f38575ec36161b686b19f5a2cac2354b08"
+    },
+    {
+      "path": "public/planner/scenarios/repeat-sorties.area.geojson",
+      "sha256": "0575999aeed0c0a3d9bbdcdc142bd1b1a5a4ae0301cd35d6f2f3d028af562b17"
+    },
+    {
+      "path": "public/planner/scenarios/repeat-sorties.fleet.json",
+      "sha256": "9e2c0c6fb5f850bc48c10557758fb60bfa242559e6b4426814315fcc57b106dd"
+    },
+    {
+      "path": "public/planner/scenarios/repeat-sorties.mission.json",
+      "sha256": "0b0125090331ff02af059a0eaae6cae91ca61274a90d71e0c2277b774d6e59db"
+    },
+    {
+      "path": "public/planner/scenarios/repeat-sorties.restrictions.json",
+      "sha256": "1b464a639249394bfce156e678b6fa098a977f2b9573cbae9f72b4fce8f60467"
+    },
+    {
+      "path": "public/planner/scenarios/timed-airspace.area.geojson",
+      "sha256": "8c82e6bb1963ec93739e86962ca68e544487e90c9352d9e16ad0c52282113909"
+    },
+    {
+      "path": "public/planner/scenarios/timed-airspace.fleet.json",
+      "sha256": "d5b2e2121533cb79d844f5599b8881bb6159ca9abb459d4c45aab198e74f812a"
+    },
+    {
+      "path": "public/planner/scenarios/timed-airspace.mission.json",
+      "sha256": "03d8be492f19921ec4a2344fcb2a2b7d4bec4bd871bf754d345038b1335d4196"
+    },
+    {
+      "path": "public/planner/scenarios/timed-airspace.restrictions.json",
+      "sha256": "61f6038711f748aafd885def176d689acb4c3924a531bcc77ee8ffd48dac154c"
+    },
+    {
+      "path": "public/planner/scenarios/wind-limit.area.geojson",
+      "sha256": "6fefb7b838b6dc48253a5a5dd8c820bf2a39666e7664be16ab92bded0d51b316"
+    },
+    {
+      "path": "public/planner/scenarios/wind-limit.fleet.json",
+      "sha256": "d5b2e2121533cb79d844f5599b8881bb6159ca9abb459d4c45aab198e74f812a"
+    },
+    {
+      "path": "public/planner/scenarios/wind-limit.mission.json",
+      "sha256": "947bfafb93e7606307eca55672875d6e5d7ce72e75bb85888b41495e4d3cc2e4"
+    },
+    {
+      "path": "public/planner/scenarios/wind-limit.restrictions.json",
+      "sha256": "21771a51611880ebc2f3ddb30650fce4f410ebc35585ec6ebd863b036cda3858"
+    },
+    {
+      "path": "scripts/start-planner.mjs",
+      "sha256": "99461345896d69c5aaa55f803a447f681fd219fcaf85dc358629cf70ed827314"
+    }
+  ],
+  "claimBoundary": "Selected source byte identity and health only; no flight certification or reproducible image digest guarantee."
+}
